@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Abyss RPG — Index local com Zonas de Dificuldade — revisão 2026-09-05 -->
+<!-- Abyss RPG — Index local com filtros e rolagem de múltiplos dados — revisão 2026-09-05 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -418,6 +418,8 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .training-key { display: flex; align-items: center; gap: 22px; color: var(--muted); font-size: 0.78rem; }
 .training-key > span { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .legend-die { display: grid; width: 29px; height: 29px; color: var(--accent); }
+.legend-die[data-static-die="12"] { color: #72b4d0; }
+.legend-die[data-static-die="20"] { color: #d7ba62; }
 .legend-die svg { width: 100%; height: 100%; }
 
 .poly-die .die-outline,
@@ -445,12 +447,85 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .roll-formula { display: flex; align-items: center; gap: 9px; color: var(--dim); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; }
 .roll-formula b { color: var(--line-strong); font-size: 1rem; }
 
+.skills-filters {
+  display: grid;
+  grid-template-columns: minmax(210px, 1.3fr) minmax(138px, 0.72fr) minmax(148px, 0.78fr) auto;
+  align-items: end;
+  gap: 12px;
+  padding: 17px 24px 19px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(5, 6, 8, 0.2);
+}
+
+.filter-control { display: grid; gap: 6px; min-width: 0; }
+.filter-control > span {
+  color: var(--dim);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.filter-input-shell { position: relative; }
+.filter-input-shell svg {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: var(--dim);
+  stroke-linecap: round;
+  stroke-width: 1.6;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.filter-input,
+.filter-select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--text);
+  background: #0d0f12;
+  font-size: 0.78rem;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+.filter-input { padding: 0 12px 0 39px; }
+.filter-input::-webkit-search-cancel-button { filter: invert(0.7); }
+.filter-input::placeholder { color: #606670; }
+.filter-select { padding: 0 10px; cursor: pointer; }
+.filter-input:hover,
+.filter-select:hover { border-color: var(--line-strong); }
+
+.filter-clear {
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--muted);
+  background: #15181c;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+.filter-clear:hover { border-color: var(--line-strong); color: var(--text); background: #1c2025; }
+
+.skills-empty {
+  margin: 0;
+  padding: 38px 24px 42px;
+  color: var(--muted);
+  font: 500 1rem Georgia, "Times New Roman", serif;
+  text-align: center;
+}
+
 .skills-column-head,
 .skill-row {
   display: grid;
-  grid-template-columns: minmax(170px, 1.35fr) 136px 168px 126px 102px 48px;
+  grid-template-columns: minmax(150px, 1.3fr) 122px 154px 82px 116px 90px 48px;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 
 .skills-column-head {
@@ -474,7 +549,9 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 }
 .skill-row:last-child { border-bottom: 0; }
 .skill-row:hover { background: rgba(255, 255, 255, 0.018); }
-.skill-info { min-width: 0; }
+.skill-row.is-adepto { box-shadow: inset 2px 0 #72b4d0; }
+.skill-row.is-treinado { box-shadow: inset 2px 0 #d7ba62; }
+.skill-info { display: flex; align-items: center; gap: 9px; min-width: 0; }
 .skill-info strong {
   display: block;
   overflow: hidden;
@@ -482,6 +559,24 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.training-signal {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+.skill-row.is-adepto .training-signal { color: #72b4d0; background: rgba(114, 180, 208, 0.08); }
+.skill-row.is-treinado .training-signal { color: #d7ba62; background: rgba(215, 186, 98, 0.09); box-shadow: 0 0 14px rgba(215, 186, 98, 0.12); }
+.skill-row.is-adepto .training-die { color: #72b4d0; }
+.skill-row.is-treinado .training-die { color: #d7ba62; }
+.skill-row.is-adepto .training-select { border-color: rgba(114, 180, 208, 0.45); color: #9acbe0; }
+.skill-row.is-treinado .training-select { border-color: rgba(215, 186, 98, 0.48); color: #e4cd88; }
 
 .control-caption { display: none; }
 .skill-select-wrap,
@@ -535,6 +630,7 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .modifier-input { padding: 0 10px; color: var(--text); font-size: 0.78rem; }
 .modifier-input::placeholder { color: #575d66; }
 .modifier-input.is-invalid { border-color: #b86868; background: rgba(184, 104, 104, 0.07); }
+.main-dice-count { color: var(--text); font-variant-numeric: tabular-nums; text-align: center; }
 .fixed-modifier { appearance: textfield; }
 .fixed-modifier::-webkit-inner-spin-button,
 .fixed-modifier::-webkit-outer-spin-button { margin: 0; appearance: none; }
@@ -593,8 +689,8 @@ body.modal-open { overflow: hidden; }
 
 .roll-dialog.outcome-critical-failure { --outcome-color: #a63d58; --outcome-tint: rgba(96, 18, 42, 0.2); }
 .roll-dialog.outcome-failure { --outcome-color: #ef646b; --outcome-tint: rgba(239, 100, 107, 0.1); }
-.roll-dialog.outcome-partial { --outcome-color: #55c989; --outcome-tint: rgba(85, 201, 137, 0.1); }
-.roll-dialog.outcome-normal { --outcome-color: #a9e7b6; --outcome-tint: rgba(169, 231, 182, 0.1); }
+.roll-dialog.outcome-partial { --outcome-color: #b8953f; --outcome-tint: rgba(184, 149, 63, 0.13); }
+.roll-dialog.outcome-normal { --outcome-color: #b8f05a; --outcome-tint: rgba(184, 240, 90, 0.12); }
 .roll-dialog.outcome-extreme { --outcome-color: #e4c362; --outcome-tint: rgba(228, 195, 98, 0.12); }
 .roll-dialog.outcome-extreme-critical {
   --outcome-color: #ffd66b;
@@ -796,7 +892,7 @@ body.modal-open { overflow: hidden; }
   .attributes-row { gap: 8px; }
   .skills-column-head,
   .skill-row {
-    grid-template-columns: minmax(140px, 1fr) 108px 154px 108px 84px 46px;
+    grid-template-columns: minmax(128px, 1fr) 100px 142px 72px 102px 76px 46px;
     gap: 8px;
     padding-right: 16px;
     padding-left: 18px;
@@ -846,6 +942,9 @@ body.modal-open { overflow: hidden; }
   .skills-heading { display: grid; }
   .skills-title-zone { width: 100%; justify-content: space-between; }
   .training-key { width: 100%; justify-content: space-between; gap: 8px; padding-top: 4px; }
+  .skills-filters { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .filter-search { grid-column: 1 / -1; }
+  .filter-clear { grid-column: 1 / -1; }
   .skills-column-head { display: none; }
   .roll-formula { display: none; }
   .skills-panel-head { align-items: flex-start; }
@@ -889,6 +988,9 @@ body.modal-open { overflow: hidden; }
   .training-key { flex-wrap: wrap; justify-content: flex-start; gap: 10px 16px; }
   .legend-die { width: 26px; height: 26px; }
   .skills-panel-head { padding: 20px; }
+  .skills-filters { grid-template-columns: 1fr; padding: 17px 20px 20px; }
+  .filter-search { grid-column: auto; }
+  .filter-clear { grid-column: auto; }
   .skill-row { gap: 10px; padding: 17px 14px; }
   .roll-button { right: 12px; }
   .roll-modal { padding: 12px; }
@@ -1104,10 +1206,10 @@ body.modal-open { overflow: hidden; }
           <div class="skills-panel-head">
             <div>
               <h2>Lista de perícias</h2>
-              <p>Em dados extras, use formatos como 1d6 ou 2d4.</p>
+              <p>Nos dados principais, fica o maior resultado. Em extras, use formatos como 1d6 ou 2d4.</p>
             </div>
             <div class="roll-formula" aria-label="Fórmula da rolagem">
-              <span>Dado principal</span>
+              <span>Melhor dado</span>
               <b>+</b>
               <span>Atributo</span>
               <b>+</b>
@@ -1115,15 +1217,54 @@ body.modal-open { overflow: hidden; }
             </div>
           </div>
 
+          <div class="skills-filters" role="search" aria-label="Filtrar perícias">
+            <label class="filter-control filter-search">
+              <span>Nome</span>
+              <span class="filter-input-shell">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                  <path d="m15.5 15.5 5 5"></path>
+                </svg>
+                <input id="skill-search" class="filter-input" type="search" autocomplete="off" placeholder="Buscar perícia..." />
+              </span>
+            </label>
+
+            <label class="filter-control">
+              <span>Atributo</span>
+              <select id="attribute-filter" class="filter-select">
+                <option value="all">Todos</option>
+                <option value="FOR">FOR · Força</option>
+                <option value="AGI">AGI · Agilidade</option>
+                <option value="INT">INT · Intelecto</option>
+                <option value="CON">CON · Constituição</option>
+                <option value="POD">POD · Poder</option>
+              </select>
+            </label>
+
+            <label class="filter-control">
+              <span>Treinamento</span>
+              <select id="training-filter" class="filter-select">
+                <option value="all">Todos</option>
+                <option value="leigo">Leigo</option>
+                <option value="adepto">Adepto</option>
+                <option value="treinado">Treinado</option>
+              </select>
+            </label>
+
+            <button id="clear-skill-filters" class="filter-clear" type="button">Limpar</button>
+          </div>
+
           <div class="skills-column-head" aria-hidden="true">
             <span>Perícia</span>
             <span>Atributo</span>
             <span>Treinamento</span>
+            <span>Qtd. dados</span>
             <span>Dados extras</span>
             <span>Mod. fixo</span>
             <span></span>
           </div>
           <div id="skills-list" class="skills-list"></div>
+          <p id="skills-empty" class="skills-empty" role="status" hidden>Nenhuma perícia encontrada com esses filtros.</p>
         </section>
       </section>
     </main>
@@ -1280,6 +1421,11 @@ const resultSummary = document.querySelector("#result-summary");
 const resultOutcomeLabel = document.querySelector("#result-outcome-label");
 const resultDifficultyLabel = document.querySelector("#result-difficulty-label");
 const difficultyButtons = [...document.querySelectorAll("[data-difficulty]")];
+const skillSearchInput = document.querySelector("#skill-search");
+const attributeFilter = document.querySelector("#attribute-filter");
+const trainingFilter = document.querySelector("#training-filter");
+const clearSkillFiltersButton = document.querySelector("#clear-skill-filters");
+const skillsEmpty = document.querySelector("#skills-empty");
 let rollInterval;
 let rollTimeout;
 let activeRollButton;
@@ -1304,8 +1450,9 @@ function renderSkills() {
 
   skillsList.innerHTML = SKILLS.map(
     (skill, index) => `
-      <article class="skill-row">
+      <article class="skill-row" data-skill-index="${index}" data-training="leigo">
         <div class="skill-info">
+          <span class="training-signal" aria-hidden="true" hidden></span>
           <strong>${skill.name}</strong>
         </div>
 
@@ -1328,6 +1475,22 @@ function renderSkills() {
             </select>
           </label>
         </div>
+
+        <label class="modifier-control">
+          <span class="control-caption">Dados principais</span>
+          <input
+            class="modifier-input main-dice-count"
+            type="number"
+            inputmode="numeric"
+            min="1"
+            max="20"
+            step="1"
+            value="1"
+            data-main-dice-count="${index}"
+            aria-label="Quantidade de dados principais em ${skill.name}; o maior resultado será usado"
+            title="Role de 1 a 20 dados e use o maior resultado"
+          />
+        </label>
 
         <label class="modifier-control">
           <span class="control-caption">Dados extras</span>
@@ -1371,6 +1534,66 @@ function hydrateLegendDice() {
   document.querySelectorAll("[data-static-die]").forEach((icon) => {
     icon.innerHTML = dieSvg(Number(icon.dataset.staticDie));
   });
+}
+
+function normalizeSearchTerm(value) {
+  return value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function updateTrainingIndicator(row, trainingKey) {
+  const signal = row.querySelector(".training-signal");
+  row.dataset.training = trainingKey;
+  row.classList.toggle("is-adepto", trainingKey === "adepto");
+  row.classList.toggle("is-treinado", trainingKey === "treinado");
+
+  if (trainingKey === "adepto") {
+    signal.textContent = "◆";
+    signal.title = "Adepto";
+    signal.hidden = false;
+  } else if (trainingKey === "treinado") {
+    signal.textContent = "✦";
+    signal.title = "Treinado";
+    signal.hidden = false;
+  } else {
+    signal.textContent = "";
+    signal.removeAttribute("title");
+    signal.hidden = true;
+  }
+}
+
+function filterSkills() {
+  const nameQuery = normalizeSearchTerm(skillSearchInput.value);
+  const selectedAttribute = attributeFilter.value;
+  const selectedTraining = trainingFilter.value;
+  let visibleCount = 0;
+
+  skillsList.querySelectorAll(".skill-row").forEach((row) => {
+    const skillIndex = Number.parseInt(row.dataset.skillIndex, 10);
+    const skill = SKILLS[skillIndex];
+    const currentAttribute = row.querySelector("[data-skill-attribute]").value;
+    const currentTraining = row.querySelector("[data-training-index]").value;
+    const matchesName = normalizeSearchTerm(skill.name).includes(nameQuery);
+    const matchesAttribute = selectedAttribute === "all" || currentAttribute === selectedAttribute;
+    const matchesTraining = selectedTraining === "all" || currentTraining === selectedTraining;
+    const isVisible = matchesName && matchesAttribute && matchesTraining;
+
+    row.hidden = !isVisible;
+    if (isVisible) visibleCount += 1;
+  });
+
+  skillsEmpty.hidden = visibleCount !== 0;
+}
+
+function clearSkillFilters() {
+  skillSearchInput.value = "";
+  attributeFilter.value = "all";
+  trainingFilter.value = "all";
+  filterSkills();
+  skillSearchInput.focus();
 }
 
 function changeView(viewName) {
@@ -1424,6 +1647,13 @@ function parseDiceModifier(rawValue) {
 
 function rollDice(count, faces) {
   return Array.from({ length: count }, () => Math.floor(Math.random() * faces) + 1);
+}
+
+function normalizeMainDiceCount(input) {
+  const parsed = Number.parseInt(input.value, 10);
+  const count = Number.isFinite(parsed) ? Math.min(20, Math.max(1, parsed)) : 1;
+  input.value = String(count);
+  return count;
 }
 
 function sum(values) {
@@ -1511,6 +1741,7 @@ function rollSkill(skillIndex, triggerButton) {
   const skill = SKILLS[skillIndex];
   const trainingSelect = document.querySelector(`[data-training-index="${skillIndex}"]`);
   const attributeSelect = document.querySelector(`[data-skill-attribute="${skillIndex}"]`);
+  const mainDiceInput = document.querySelector(`[data-main-dice-count="${skillIndex}"]`);
   const diceInput = document.querySelector(`[data-dice-modifier="${skillIndex}"]`);
   const fixedInput = document.querySelector(`[data-fixed-modifier="${skillIndex}"]`);
   const diceModifier = parseDiceModifier(diceInput.value);
@@ -1529,7 +1760,9 @@ function rollSkill(skillIndex, triggerButton) {
   const attributeValue = getAttributeValue(attribute);
   const parsedFixed = Number.parseInt(fixedInput.value, 10);
   const fixedModifier = Number.isFinite(parsedFixed) ? parsedFixed : 0;
-  const mainResult = rollDice(1, training.die)[0];
+  const mainDiceCount = normalizeMainDiceCount(mainDiceInput);
+  const mainResults = rollDice(mainDiceCount, training.die);
+  const mainResult = Math.max(...mainResults);
   const extraResults = diceModifier.count ? rollDice(diceModifier.count, diceModifier.faces) : [];
   const extraTotal = sum(extraResults);
   const total = mainResult + attributeValue + extraTotal + fixedModifier;
@@ -1540,8 +1773,8 @@ function rollSkill(skillIndex, triggerButton) {
   clearOutcomeStyle();
   activeRollButton = triggerButton;
   document.querySelector("#result-skill").textContent = skill.name;
-  document.querySelector("#result-context").textContent = `${training.label} · ${ATTRIBUTES[attribute]} (${attribute})`;
-  document.querySelector("#roll-status").textContent = `Rolando o dado de ${training.die} faces...`;
+  document.querySelector("#result-context").textContent = `${training.label} · ${mainDiceCount}d${training.die} (melhor) · ${ATTRIBUTES[attribute]} (${attribute})`;
+  document.querySelector("#roll-status").textContent = `Rolando ${mainDiceCount}d${training.die}...`;
   resultOutcomeLabel.textContent = outcome.label;
   resultDifficultyLabel.textContent = `Zona ${difficulty.label}`;
   document.querySelector("#result-total").textContent = total;
@@ -1567,10 +1800,15 @@ function rollSkill(skillIndex, triggerButton) {
     setRollingDie(training.die, mainResult);
     rollingDie.classList.remove("is-rolling");
     rollingDie.classList.add("is-settled");
-    document.querySelector("#roll-status").textContent = `Resultado natural: ${mainResult}`;
+    document.querySelector("#roll-status").textContent = mainDiceCount > 1
+      ? `Melhor resultado natural: ${mainResult}`
+      : `Resultado natural: ${mainResult}`;
     rollDialog.classList.add(`outcome-${outcome.key}`);
 
-    addBreakdownLine("Dado principal", `${training.label} · d${training.die}`, mainResult, false);
+    const mainDiceDetail = mainDiceCount > 1
+      ? `${training.label} · ${mainDiceCount}d${training.die} → ${mainResults.join(" · ")} · melhor`
+      : `${training.label} · 1d${training.die}`;
+    addBreakdownLine(mainDiceCount > 1 ? "Dados principais" : "Dado principal", mainDiceDetail, mainResult, false);
     addBreakdownLine("Atributo", `${attribute} · ${ATTRIBUTES[attribute]}`, attributeValue);
     if (extraResults.length) {
       addBreakdownLine("Dados extras", `${diceModifier.formula} → ${extraResults.join(" + ")}`, extraTotal);
@@ -1619,6 +1857,11 @@ difficultyButtons.forEach((button) => {
   button.addEventListener("click", () => selectDifficulty(button.dataset.difficulty));
 });
 
+skillSearchInput.addEventListener("input", filterSkills);
+attributeFilter.addEventListener("change", filterSkills);
+trainingFilter.addEventListener("change", filterSkills);
+clearSkillFiltersButton.addEventListener("click", clearSkillFilters);
+
 skillsList.addEventListener("click", (event) => {
   const rollButton = event.target.closest("[data-roll-index]");
   if (!rollButton) return;
@@ -1626,10 +1869,22 @@ skillsList.addEventListener("click", (event) => {
 });
 
 skillsList.addEventListener("change", (event) => {
-  if (!event.target.matches("[data-training-index]")) return;
-  const training = TRAINING[event.target.value];
-  const icon = event.target.closest(".training-control").querySelector(".training-die");
-  icon.innerHTML = dieSvg(training.die);
+  if (event.target.matches("[data-training-index]")) {
+    const training = TRAINING[event.target.value];
+    const row = event.target.closest(".skill-row");
+    const icon = row.querySelector(".training-die");
+    icon.innerHTML = dieSvg(training.die);
+    updateTrainingIndicator(row, event.target.value);
+    filterSkills();
+  }
+
+  if (event.target.matches("[data-skill-attribute]")) {
+    filterSkills();
+  }
+
+  if (event.target.matches("[data-main-dice-count]")) {
+    normalizeMainDiceCount(event.target);
+  }
 });
 
 skillsList.addEventListener("input", (event) => {
