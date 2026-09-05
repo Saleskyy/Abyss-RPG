@@ -1,0 +1,1474 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#090a0c" />
+    <meta
+      name="description"
+      content="Ficha digital de personagem para o sistema Abyss RPG."
+    />
+    <title>Abyss RPG</title>
+    <!-- Estilos incorporados: este arquivo funciona sozinho. -->
+    <style>
+:root {
+  color-scheme: dark;
+  --bg: #090a0c;
+  --surface: #101216;
+  --surface-raised: #15181d;
+  --line: #292d34;
+  --line-strong: #454b55;
+  --text: #f1f2f4;
+  --muted: #9298a2;
+  --dim: #626873;
+  --accent: #c7ccd4;
+  --result: #d9caa2;
+  --topbar-height: 76px;
+  --sidebar-width: 224px;
+}
+
+* { box-sizing: border-box; }
+html { min-width: 320px; background: var(--bg); }
+[hidden] { display: none !important; }
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 72% 15%, rgba(98, 106, 119, 0.08), transparent 30rem),
+    linear-gradient(rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.012) 1px, transparent 1px),
+    var(--bg);
+  background-size: auto, 42px 42px, 42px 42px, auto;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+button, input, select { font: inherit; }
+button, select { -webkit-tap-highlight-color: transparent; }
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+.portrait-frame:focus-within {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 10px;
+  left: 12px;
+  z-index: 100;
+  padding: 10px 14px;
+  color: #090a0c;
+  background: #fff;
+  transform: translateY(-150%);
+}
+.skip-link:focus { transform: none; }
+
+.topbar {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  height: var(--topbar-height);
+  border-bottom: 1px solid var(--line);
+  background: rgba(9, 10, 12, 0.94);
+  backdrop-filter: blur(18px);
+}
+
+.brand-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin-left: 24px;
+}
+
+.brand-mark::before,
+.brand-mark::after,
+.brand-mark span {
+  position: absolute;
+  content: "";
+  border: 1px solid var(--line-strong);
+  transform: rotate(45deg);
+}
+.brand-mark::before { width: 27px; height: 27px; }
+.brand-mark::after { width: 13px; height: 13px; border-color: #8d939c; }
+.brand-mark span { width: 5px; height: 5px; border: 0; background: var(--text); }
+
+.brand-copy {
+  display: grid;
+  gap: 1px;
+  min-width: calc(var(--sidebar-width) - 80px);
+  padding-left: 8px;
+}
+
+.brand-copy strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.brand-copy span {
+  color: var(--dim);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.topbar-rule {
+  width: 1px;
+  height: 28px;
+  margin-left: 16px;
+  background: var(--line);
+}
+
+.sidebar {
+  position: fixed;
+  inset: var(--topbar-height) auto 0 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  width: var(--sidebar-width);
+  border-right: 1px solid var(--line);
+  background: rgba(12, 13, 16, 0.92);
+}
+
+.sidebar-nav {
+  display: grid;
+  gap: 6px;
+  padding: 28px 16px;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  transition: color 160ms ease, background 160ms ease, border-color 160ms ease;
+}
+
+.nav-item::before {
+  position: absolute;
+  inset: 9px auto 9px -17px;
+  width: 2px;
+  content: "";
+  background: transparent;
+}
+.nav-item:hover { color: var(--text); background: var(--surface); }
+.nav-item.is-active { border-color: var(--line); color: var(--text); background: linear-gradient(90deg, #191c21, #121418); }
+.nav-item.is-active::before { background: #fff; box-shadow: 0 0 12px rgba(255, 255, 255, 0.35); }
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+.nav-item span { font-size: 0.9rem; font-weight: 650; letter-spacing: 0.025em; }
+
+.sidebar-footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: auto;
+  padding: 20px 24px;
+  color: var(--dim);
+}
+.sidebar-footer span { font: 0.78rem Georgia, "Times New Roman", serif; }
+.sidebar-footer i { width: 26px; height: 1px; background: var(--line-strong); }
+.sidebar-footer small { font-size: 0.62rem; letter-spacing: 0.2em; }
+
+.main-content { min-height: 100vh; margin-left: var(--sidebar-width); padding-top: var(--topbar-height); }
+.view { width: min(1220px, calc(100% - 72px)); margin: 0 auto; padding: 52px 0 70px; }
+.view.is-entering { animation: view-in 240ms ease both; }
+@keyframes view-in { from { opacity: 0; transform: translateY(5px); } }
+
+.page-heading,
+.panel-heading,
+.skills-panel-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+.page-heading { margin-bottom: 28px; }
+
+.eyebrow {
+  margin: 0 0 7px;
+  color: var(--dim);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+h1, h2, p { margin-top: 0; }
+h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
+h1 { margin-bottom: 0; font-size: clamp(2.5rem, 5vw, 4.2rem); line-height: 0.95; letter-spacing: -0.035em; }
+h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
+.heading-note, .panel-heading > p { margin: 0; color: var(--muted); font-size: 0.84rem; }
+
+.identity-panel,
+.attributes-panel,
+.skills-panel {
+  position: relative;
+  border: 1px solid var(--line);
+  background: linear-gradient(145deg, rgba(21, 24, 29, 0.9), rgba(14, 16, 19, 0.96));
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+}
+
+.identity-panel::before,
+.attributes-panel::before,
+.skills-panel::before {
+  position: absolute;
+  inset: -1px auto auto -1px;
+  width: 34px;
+  height: 1px;
+  content: "";
+  background: var(--accent);
+}
+
+.identity-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 192px;
+  min-height: 288px;
+  margin-bottom: 18px;
+  padding: 30px;
+}
+
+.identity-copy {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 24px;
+  padding-right: 42px;
+}
+.section-index { color: var(--dim); font: 0.76rem Georgia, "Times New Roman", serif; letter-spacing: 0.08em; }
+.identity-fields { display: grid; align-content: center; gap: 24px; max-width: 680px; }
+.identity-fields h2 { margin-bottom: 2px; }
+.text-field { display: grid; gap: 7px; }
+.text-field span, .field-label { color: var(--muted); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.13em; text-transform: uppercase; }
+
+.text-field input {
+  width: 100%;
+  padding: 7px 0 10px;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  border-radius: 0;
+  color: var(--text);
+  background: transparent;
+  font: 1.2rem Georgia, "Times New Roman", serif;
+  transition: border-color 160ms ease;
+}
+.text-field input::placeholder { color: #5f646d; }
+.text-field input:hover, .text-field input:focus { border-color: var(--accent); }
+
+.portrait-field { display: grid; align-content: start; gap: 8px; }
+.portrait-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 162px;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+  background:
+    linear-gradient(135deg, transparent 49.5%, rgba(255, 255, 255, 0.04) 50%, transparent 50.5%),
+    linear-gradient(45deg, transparent 49.5%, rgba(255, 255, 255, 0.04) 50%, transparent 50.5%),
+    #0c0e11;
+  cursor: pointer;
+}
+.portrait-frame:hover { border-color: #747b86; color: var(--text); }
+.portrait-frame img { width: 100%; height: 100%; object-fit: cover; }
+.portrait-empty { display: grid; place-items: center; gap: 6px; text-align: center; }
+.portrait-empty svg { width: 24px; height: 24px; margin-bottom: 3px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.4; }
+.portrait-empty strong { font-size: 0.78rem; font-weight: 650; }
+.portrait-empty small { color: var(--dim); font-size: 0.66rem; }
+
+.portrait-corner { position: absolute; width: 13px; height: 13px; pointer-events: none; }
+.portrait-corner-top { top: 6px; right: 6px; border-top: 1px solid var(--accent); border-right: 1px solid var(--accent); }
+.portrait-corner-bottom { bottom: 6px; left: 6px; border-bottom: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+
+#portrait-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.attributes-panel { padding: 30px; }
+.panel-heading { margin-bottom: 24px; }
+.attributes-row { display: grid; grid-template-columns: repeat(5, minmax(126px, 1fr)); gap: 18px; }
+.attribute { display: grid; justify-items: center; min-width: 0; cursor: text; }
+
+.hex-shell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 142px;
+  max-width: 100%;
+  aspect-ratio: 1.1 / 1;
+  background: var(--line-strong);
+  clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0 50%);
+  transition: background 160ms ease, transform 160ms ease;
+}
+
+.hex-shell::before {
+  position: absolute;
+  inset: 1px;
+  content: "";
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.055), transparent 45%), #111318;
+  clip-path: inherit;
+}
+.attribute:hover .hex-shell, .attribute:focus-within .hex-shell { background: #8b929c; transform: translateY(-2px); }
+.attribute-code, .hex-shell input { position: relative; z-index: 1; }
+.attribute-code { align-self: end; margin-bottom: 2px; color: var(--muted); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.18em; }
+
+.hex-shell input {
+  align-self: start;
+  width: 86px;
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  background: transparent;
+  font: 2.55rem/1 Georgia, "Times New Roman", serif;
+  text-align: center;
+  appearance: textfield;
+}
+.hex-shell input::-webkit-inner-spin-button, .hex-shell input::-webkit-outer-spin-button { margin: 0; appearance: none; }
+.attribute-name { margin-top: 8px; color: var(--dim); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+
+.training-key { display: flex; align-items: center; gap: 22px; color: var(--muted); font-size: 0.78rem; }
+.training-key > span { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+.legend-die { display: grid; width: 29px; height: 29px; color: var(--accent); }
+.legend-die svg { width: 100%; height: 100%; }
+
+.poly-die .die-outline,
+.poly-die .die-facet {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.poly-die .die-outline { stroke-width: 4; }
+.poly-die .die-facet { opacity: 0.45; stroke-width: 2.2; }
+.poly-die text {
+  fill: currentColor;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 25px;
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+.skills-panel { padding: 0; }
+.skills-panel-head { min-height: 96px; padding: 22px 26px; border-bottom: 1px solid var(--line); }
+.skills-panel-head > div:first-child { display: grid; gap: 3px; }
+.skills-panel-head h2 { margin: 0; }
+.skills-panel-head p { margin: 0; color: var(--muted); font-size: 0.8rem; }
+.roll-formula { display: flex; align-items: center; gap: 9px; color: var(--dim); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.roll-formula b { color: var(--line-strong); font-size: 1rem; }
+
+.skills-column-head,
+.skill-row {
+  display: grid;
+  grid-template-columns: minmax(170px, 1.35fr) 136px 168px 126px 102px 48px;
+  align-items: center;
+  gap: 12px;
+}
+
+.skills-column-head {
+  min-height: 43px;
+  padding: 0 20px 0 24px;
+  border-bottom: 1px solid var(--line);
+  color: var(--dim);
+  background: rgba(0, 0, 0, 0.12);
+  font-size: 0.65rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.skills-list { display: block; }
+.skill-row {
+  min-height: 72px;
+  padding: 12px 20px 12px 24px;
+  border-bottom: 1px solid var(--line);
+  transition: background 140ms ease;
+}
+.skill-row:last-child { border-bottom: 0; }
+.skill-row:hover { background: rgba(255, 255, 255, 0.018); }
+.skill-info { min-width: 0; }
+.skill-info strong {
+  display: block;
+  overflow: hidden;
+  font: 500 1rem Georgia, "Times New Roman", serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.control-caption { display: none; }
+.skill-select-wrap,
+.modifier-control { position: relative; min-width: 0; }
+.skill-select-wrap::after,
+.training-control::after {
+  position: absolute;
+  top: 50%;
+  right: 11px;
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid var(--muted);
+  border-bottom: 1px solid var(--muted);
+  content: "";
+  pointer-events: none;
+  transform: translateY(-70%) rotate(45deg);
+}
+
+.attribute-select,
+.training-select,
+.modifier-input {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--muted);
+  background: #0d0f12;
+  transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
+}
+.attribute-select,
+.training-select { padding: 0 28px 0 11px; cursor: pointer; appearance: none; font-size: 0.76rem; font-weight: 700; }
+.attribute-select:hover,
+.training-select:hover,
+.modifier-input:hover { border-color: var(--line-strong); color: var(--text); }
+
+.training-control { position: relative; min-width: 0; }
+.training-select { padding-left: 48px; }
+.training-die {
+  position: absolute;
+  top: 7px;
+  left: 10px;
+  z-index: 1;
+  display: grid;
+  width: 28px;
+  height: 28px;
+  color: var(--accent);
+  pointer-events: none;
+}
+.training-die svg { width: 100%; height: 100%; }
+
+.modifier-input { padding: 0 10px; color: var(--text); font-size: 0.78rem; }
+.modifier-input::placeholder { color: #575d66; }
+.modifier-input.is-invalid { border-color: #b86868; background: rgba(184, 104, 104, 0.07); }
+.fixed-modifier { appearance: textfield; }
+.fixed-modifier::-webkit-inner-spin-button,
+.fixed-modifier::-webkit-outer-spin-button { margin: 0; appearance: none; }
+
+.roll-button {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  color: var(--text);
+  background: #181b20;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease, transform 140ms ease, box-shadow 140ms ease;
+}
+.roll-button:hover { border-color: #9299a4; background: #22262d; box-shadow: 0 0 20px rgba(255, 255, 255, 0.08); transform: translateY(-1px); }
+.roll-button:active { transform: translateY(0) scale(0.96); }
+.roll-button svg { width: 27px; height: 27px; }
+
+body.modal-open { overflow: hidden; }
+
+.roll-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.roll-backdrop {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at center, rgba(61, 66, 75, 0.18), transparent 34rem),
+    rgba(3, 4, 5, 0.8);
+  backdrop-filter: blur(9px);
+  animation: backdrop-in 180ms ease both;
+}
+
+.roll-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(560px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(150deg, #181b20, #0d0f12 72%);
+  box-shadow: 0 42px 120px rgba(0, 0, 0, 0.68);
+  animation: dialog-in 230ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+@keyframes backdrop-in { from { opacity: 0; } }
+@keyframes dialog-in { from { opacity: 0; transform: translateY(14px) scale(0.97); } }
+
+.dialog-corner {
+  position: absolute;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  pointer-events: none;
+}
+.dialog-corner-top { top: 8px; left: 8px; border-top: 1px solid var(--accent); border-left: 1px solid var(--accent); }
+.dialog-corner-bottom { right: 8px; bottom: 8px; border-right: 1px solid var(--accent); border-bottom: 1px solid var(--accent); }
+
+.roll-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 27px 28px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.roll-dialog-head h2 { margin: 0 0 4px; font-size: 1.55rem; }
+.roll-dialog-head .eyebrow { margin-bottom: 5px; }
+.result-context { margin: 0; color: var(--muted); font-size: 0.78rem; }
+
+.result-close {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 1px solid transparent;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+}
+.result-close:hover { border-color: var(--line); color: var(--text); background: rgba(255, 255, 255, 0.025); }
+.result-close svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.5; }
+
+.roll-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 254px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line);
+  background:
+    radial-gradient(circle at 50% 46%, rgba(217, 202, 162, 0.09), transparent 9rem),
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: auto, 26px 26px, 26px 26px;
+  perspective: 700px;
+}
+
+.roll-stage::after {
+  position: absolute;
+  bottom: 48px;
+  width: 118px;
+  height: 18px;
+  border-radius: 50%;
+  content: "";
+  background: rgba(0, 0, 0, 0.56);
+  filter: blur(9px);
+  transform: scale(0.7);
+  animation: die-shadow 760ms ease-in-out infinite;
+}
+
+.rolling-die {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 138px;
+  height: 138px;
+  color: var(--result);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 15px rgba(217, 202, 162, 0.15));
+  transform-style: preserve-3d;
+}
+.rolling-die svg { width: 100%; height: 100%; overflow: visible; }
+.rolling-die .die-outline { stroke-width: 2.5; }
+.rolling-die .die-facet { stroke-width: 1.45; }
+.rolling-die text { font-size: 21px; }
+.rolling-die.is-rolling { animation: die-tumble 920ms cubic-bezier(0.45, 0.02, 0.28, 1) both; }
+.rolling-die.is-settled { animation: die-settle 300ms ease both; }
+
+@keyframes die-tumble {
+  0% { transform: translateY(-32px) rotate(-18deg) scale(0.82); }
+  18% { transform: translate(24px, 4px) rotate(88deg) scale(1.04); }
+  38% { transform: translate(-20px, -18px) rotate(178deg) scale(0.9); }
+  61% { transform: translate(16px, 8px) rotate(282deg) scale(1.03); }
+  82% { transform: translate(-8px, -5px) rotate(344deg) scale(0.97); }
+  100% { transform: translateY(0) rotate(360deg) scale(1); }
+}
+@keyframes die-settle { from { transform: scale(1.12); filter: brightness(1.6) drop-shadow(0 0 28px rgba(217, 202, 162, 0.34)); } }
+@keyframes die-shadow { 0%, 100% { opacity: 0.46; transform: scale(0.68); } 50% { opacity: 0.8; transform: scale(1); } }
+
+.roll-status {
+  position: absolute;
+  bottom: 20px;
+  z-index: 2;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.68rem;
+  font-weight: 750;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.result-summary { padding: 22px 28px 24px; animation: summary-in 260ms ease both; }
+@keyframes summary-in { from { opacity: 0; transform: translateY(6px); } }
+.result-total-block { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
+.result-total-block span { color: var(--muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
+.result-total-block strong { color: var(--result); font: 500 3.4rem/1 Georgia, "Times New Roman", serif; }
+.result-breakdown { display: grid; gap: 0; padding-top: 8px; }
+
+.breakdown-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 42px;
+  border-bottom: 1px solid rgba(41, 45, 52, 0.65);
+}
+.breakdown-line:last-child { border-bottom: 0; }
+.breakdown-line span { display: grid; color: var(--text); font-size: 0.8rem; }
+.breakdown-line small { color: var(--dim); font-size: 0.68rem; }
+.breakdown-line strong { color: var(--accent); font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+
+.roll-dialog-footer { display: flex; justify-content: flex-end; padding: 0 28px 26px; }
+.dialog-button {
+  min-width: 96px;
+  min-height: 42px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  color: var(--text);
+  background: #191c21;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+.dialog-button:hover { border-color: #858c96; background: #22262d; }
+
+@media (max-width: 1040px) {
+  :root { --sidebar-width: 88px; }
+  .brand-copy { min-width: auto; }
+  .brand-copy span, .nav-item span, .sidebar-footer i, .sidebar-footer small { display: none; }
+  .topbar-rule { margin-left: 22px; }
+  .sidebar-nav { padding-inline: 14px; }
+  .nav-item { justify-content: center; padding: 0; }
+  .sidebar-footer { justify-content: center; padding-inline: 0; }
+  .attributes-row { gap: 8px; }
+  .skills-column-head,
+  .skill-row {
+    grid-template-columns: minmax(140px, 1fr) 108px 154px 108px 84px 46px;
+    gap: 8px;
+    padding-right: 16px;
+    padding-left: 18px;
+  }
+}
+
+@media (max-width: 900px) {
+  :root { --topbar-height: 66px; }
+  .topbar { padding: 0 14px; }
+  .brand-mark { width: 44px; height: 44px; margin-left: 0; }
+  .brand-copy strong { font-size: 0.96rem; }
+  .topbar-rule { display: none; }
+
+  .sidebar {
+    inset: auto 0 0;
+    width: auto;
+    height: 68px;
+    border-top: 1px solid var(--line);
+    border-right: 0;
+    background: rgba(10, 11, 14, 0.97);
+  }
+  .sidebar-nav { grid-template-columns: repeat(2, 1fr); height: 100%; padding: 8px; }
+  .nav-item { gap: 8px; min-height: 0; }
+  .nav-item::before { inset: auto 18px -9px; width: auto; height: 2px; }
+  .nav-item span { position: static; display: inline; width: auto; height: auto; overflow: visible; clip: auto; }
+  .sidebar-footer { display: none; }
+  .main-content { margin-left: 0; padding-bottom: 68px; }
+  .view { width: min(100% - 32px, 680px); padding-top: 34px; }
+  .page-heading { align-items: flex-start; }
+  .heading-note { display: none; }
+  .identity-panel { grid-template-columns: minmax(0, 1fr) 150px; padding: 24px; }
+  .identity-copy { grid-template-columns: 1fr; padding-right: 24px; }
+  .section-index { display: none; }
+  .portrait-frame { width: 100%; }
+  .attributes-panel { padding: 24px 18px; overflow: hidden; }
+  .panel-heading { padding-inline: 6px; }
+
+  .attributes-row {
+    display: flex;
+    margin-inline: -2px;
+    padding: 3px 2px 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-color: var(--line-strong) transparent;
+  }
+  .attribute { min-width: 128px; scroll-snap-align: start; }
+  .skills-heading { display: grid; }
+  .training-key { width: 100%; justify-content: space-between; gap: 8px; padding-top: 4px; }
+  .skills-column-head { display: none; }
+  .roll-formula { display: none; }
+  .skills-panel-head { align-items: flex-start; }
+
+  .skill-row {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+    padding: 18px;
+  }
+  .skill-info { grid-column: 1 / -1; padding-right: 58px; }
+  .skill-info strong { font-size: 1.08rem; }
+  .control-caption {
+    display: block;
+    color: var(--dim);
+    font-size: 0.61rem;
+    font-weight: 750;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+  }
+  .skill-select-wrap,
+  .training-control,
+  .modifier-control { display: grid; gap: 6px; }
+  .skill-select-wrap::after,
+  .training-control::after { top: auto; right: 11px; bottom: 17px; }
+  .training-die { top: auto; bottom: 7px; }
+  .roll-button { position: absolute; top: 14px; right: 14px; }
+}
+
+@media (max-width: 560px) {
+  .view { width: min(100% - 24px, 520px); }
+  h1 { font-size: 2.65rem; }
+  .identity-panel { grid-template-columns: 1fr; gap: 28px; }
+  .identity-copy { padding-right: 0; }
+  .portrait-field { grid-template-columns: 1fr; }
+  .portrait-frame { width: 148px; }
+  .panel-heading { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .training-key { flex-wrap: wrap; justify-content: flex-start; gap: 10px 16px; }
+  .legend-die { width: 26px; height: 26px; }
+  .skills-panel-head { padding: 20px; }
+  .skill-row { gap: 10px; padding: 17px 14px; }
+  .roll-button { right: 12px; }
+  .roll-modal { padding: 12px; }
+  .roll-dialog { max-height: calc(100vh - 24px); }
+  .roll-dialog-head { padding: 24px 21px 17px; }
+  .roll-stage { min-height: 222px; }
+  .rolling-die { width: 118px; height: 118px; }
+  .result-summary { padding: 19px 21px 21px; }
+  .result-total-block strong { font-size: 3rem; }
+  .roll-dialog-footer { padding: 0 21px 22px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
+
+    <header class="topbar">
+      <div class="brand-mark" aria-hidden="true">
+        <span></span>
+      </div>
+      <div class="brand-copy">
+        <strong>Abyss RPG</strong>
+        <span>Ficha de personagem</span>
+      </div>
+      <div class="topbar-rule" aria-hidden="true"></div>
+    </header>
+
+    <aside class="sidebar" aria-label="Navegação da ficha">
+      <nav class="sidebar-nav">
+        <button
+          class="nav-item is-active"
+          type="button"
+          data-view-target="profile"
+          aria-controls="profile-view"
+          aria-current="page"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M5.5 20c.5-4.2 2.7-6.3 6.5-6.3s6 2.1 6.5 6.3"></path>
+          </svg>
+          <span>Perfil</span>
+        </button>
+
+        <button
+          class="nav-item"
+          type="button"
+          data-view-target="skills"
+          aria-controls="skills-view"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 3.5h8.5L19 7v13.5H7z"></path>
+            <path d="M15 3.5V7h4M10 11h6M10 15h6"></path>
+          </svg>
+          <span>Perícias</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer" aria-hidden="true">
+        <span>I</span>
+        <i></i>
+        <small>ABYSS</small>
+      </div>
+    </aside>
+
+    <main id="main-content" class="main-content">
+      <section
+        id="profile-view"
+        class="view is-active"
+        data-view="profile"
+        aria-labelledby="profile-title"
+      >
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">Registro I</p>
+            <h1 id="profile-title">Perfil</h1>
+          </div>
+          <p class="heading-note">Dados essenciais do personagem</p>
+        </div>
+
+        <section class="identity-panel" aria-labelledby="identity-title">
+          <div class="identity-copy">
+            <div class="section-index" aria-hidden="true">01</div>
+            <div class="identity-fields">
+              <h2 id="identity-title">Identidade</h2>
+
+              <label class="text-field">
+                <span>Nome</span>
+                <input
+                  id="character-name"
+                  type="text"
+                  autocomplete="off"
+                  placeholder="Nome do personagem"
+                />
+              </label>
+
+              <label class="text-field">
+                <span>Antecedência</span>
+                <input
+                  id="character-background"
+                  type="text"
+                  autocomplete="off"
+                  placeholder="Origem, ofício ou história"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div class="portrait-field">
+            <span class="field-label">Foto</span>
+            <label class="portrait-frame" for="portrait-input">
+              <img id="portrait-preview" alt="Foto do personagem" hidden />
+              <span class="portrait-empty" id="portrait-empty">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14"></path>
+                </svg>
+                <strong>Adicionar foto</strong>
+                <small>PNG ou JPG</small>
+              </span>
+              <span class="portrait-corner portrait-corner-top"></span>
+              <span class="portrait-corner portrait-corner-bottom"></span>
+            </label>
+            <input id="portrait-input" type="file" accept="image/png,image/jpeg,image/webp" />
+          </div>
+        </section>
+
+        <section class="attributes-panel" aria-labelledby="attributes-title">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">Núcleo</p>
+              <h2 id="attributes-title">Atributos</h2>
+            </div>
+            <p>Estes valores são somados às rolagens de perícia.</p>
+          </div>
+
+          <div class="attributes-row">
+            <label class="attribute" title="Força">
+              <span class="hex-shell">
+                <span class="attribute-code">FOR</span>
+                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="FOR" aria-label="Valor de Força" />
+              </span>
+              <span class="attribute-name">Força</span>
+            </label>
+
+            <label class="attribute" title="Agilidade">
+              <span class="hex-shell">
+                <span class="attribute-code">AGI</span>
+                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="AGI" aria-label="Valor de Agilidade" />
+              </span>
+              <span class="attribute-name">Agilidade</span>
+            </label>
+
+            <label class="attribute" title="Intelecto">
+              <span class="hex-shell">
+                <span class="attribute-code">INT</span>
+                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="INT" aria-label="Valor de Intelecto" />
+              </span>
+              <span class="attribute-name">Intelecto</span>
+            </label>
+
+            <label class="attribute" title="Constituição">
+              <span class="hex-shell">
+                <span class="attribute-code">CON</span>
+                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="CON" aria-label="Valor de Constituição" />
+              </span>
+              <span class="attribute-name">Constituição</span>
+            </label>
+
+            <label class="attribute" title="Poder">
+              <span class="hex-shell">
+                <span class="attribute-code">POD</span>
+                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="POD" aria-label="Valor de Poder" />
+              </span>
+              <span class="attribute-name">Poder</span>
+            </label>
+          </div>
+        </section>
+      </section>
+
+      <section
+        id="skills-view"
+        class="view"
+        data-view="skills"
+        aria-labelledby="skills-title"
+        hidden
+      >
+        <div class="page-heading skills-heading">
+          <div>
+            <p class="eyebrow">Registro II</p>
+            <h1 id="skills-title">Perícias</h1>
+          </div>
+
+          <div class="training-key" aria-label="Níveis de treinamento">
+            <span><i class="legend-die" data-static-die="8" aria-hidden="true"></i> Leigo</span>
+            <span><i class="legend-die" data-static-die="12" aria-hidden="true"></i> Adepto</span>
+            <span><i class="legend-die" data-static-die="20" aria-hidden="true"></i> Treinado</span>
+          </div>
+        </div>
+
+        <section class="skills-panel" aria-label="Lista de perícias">
+          <div class="skills-panel-head">
+            <div>
+              <h2>Lista de perícias</h2>
+              <p>Em dados extras, use formatos como 1d6 ou 2d4.</p>
+            </div>
+            <div class="roll-formula" aria-label="Fórmula da rolagem">
+              <span>Dado principal</span>
+              <b>+</b>
+              <span>Atributo</span>
+              <b>+</b>
+              <span>Modificadores</span>
+            </div>
+          </div>
+
+          <div class="skills-column-head" aria-hidden="true">
+            <span>Perícia</span>
+            <span>Atributo</span>
+            <span>Treinamento</span>
+            <span>Dados extras</span>
+            <span>Mod. fixo</span>
+            <span></span>
+          </div>
+          <div id="skills-list" class="skills-list"></div>
+        </section>
+      </section>
+    </main>
+
+    <div id="roll-modal" class="roll-modal" hidden>
+      <div class="roll-backdrop" data-close-roll aria-hidden="true"></div>
+      <section
+        id="roll-dialog"
+        class="roll-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="result-skill"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="roll-dialog-head">
+          <div>
+            <p class="eyebrow">Teste de perícia</p>
+            <h2 id="result-skill">Perícia</h2>
+            <p id="result-context" class="result-context">Leigo · Intelecto</p>
+          </div>
+          <button class="result-close" type="button" data-close-roll aria-label="Fechar resultado">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <div id="roll-stage" class="roll-stage">
+          <div id="rolling-die" class="rolling-die" aria-label="Dado sendo rolado"></div>
+          <p id="roll-status" class="roll-status" aria-live="polite">Rolando...</p>
+        </div>
+
+        <div id="result-summary" class="result-summary" aria-live="polite" hidden>
+          <div class="result-total-block">
+            <span>Total</span>
+            <strong id="result-total">0</strong>
+          </div>
+          <div id="result-breakdown" class="result-breakdown"></div>
+        </div>
+
+        <footer class="roll-dialog-footer">
+          <button class="dialog-button" type="button" data-close-roll>Fechar</button>
+        </footer>
+      </section>
+    </div>
+
+    <!-- Lógica incorporada: este arquivo funciona sozinho. -->
+    <script>
+"use strict";
+
+const ATTRIBUTES = {
+  FOR: "Força",
+  AGI: "Agilidade",
+  INT: "Intelecto",
+  CON: "Constituição",
+  POD: "Poder",
+};
+
+const SKILLS = [
+  { name: "Acrobacia", attribute: "AGI" },
+  { name: "Adestramento", attribute: "POD" },
+  { name: "Alquimia", attribute: "INT" },
+  { name: "Arcanismo", attribute: "POD" },
+  { name: "Artes", attribute: "POD" },
+  { name: "Atletismo", attribute: "FOR" },
+  { name: "Ciências", attribute: "INT" },
+  { name: "Crime", attribute: "AGI" },
+  { name: "Diplomacia", attribute: "POD" },
+  { name: "Enganação", attribute: "POD" },
+  { name: "Fortitude", attribute: "CON" },
+  { name: "Furtividade", attribute: "AGI" },
+  { name: "Intimidação", attribute: "POD" },
+  { name: "Intuição", attribute: "POD" },
+  { name: "Investigação", attribute: "INT" },
+  { name: "Linguística", attribute: "INT" },
+  { name: "Luta", attribute: "FOR" },
+  { name: "Medicina", attribute: "INT" },
+  { name: "Monstrologia", attribute: "INT" },
+  { name: "Ofício", attribute: "INT" },
+  { name: "Pilotagem", attribute: "AGI" },
+  { name: "Pontaria", attribute: "AGI" },
+  { name: "Reflexos", attribute: "AGI" },
+  { name: "Religião", attribute: "INT" },
+  { name: "Sobrevivência", attribute: "INT" },
+  { name: "Tática", attribute: "INT" },
+  { name: "Tecnologia", attribute: "INT" },
+  { name: "Vontade", attribute: "POD" },
+];
+
+const TRAINING = {
+  leigo: { label: "Leigo", die: 8 },
+  adepto: { label: "Adepto", die: 12 },
+  treinado: { label: "Treinado", die: 20 },
+};
+
+const DICE_GEOMETRY = {
+  8: {
+    outline: "50,4 94,50 50,96 6,50",
+    facets: "M50 4 28 50 50 96M50 4l22 46-22 46M6 50h88",
+  },
+  12: {
+    outline: "50,4 76,12 94,34 94,66 76,88 50,96 24,88 6,66 6,34 24,12",
+    facets: "M50 4 66 28 94 34M94 66 66 72 50 96M6 66l28 6 16 24M6 34l28-6L50 4M34 28l-9 22 9 22h32l9-22-9-22z",
+  },
+  20: {
+    outline: "50,4 84,17 96,50 78,87 50,96 22,87 4,50 16,17",
+    facets: "M50 4 36 31 16 17M50 4l14 27 20-14M4 50l32-19h28l32 19M4 50l31 18-13 19M96 50 65 68l13 19M22 87l28-19 28 19M36 31l14 37 14-37",
+  },
+};
+
+const skillsList = document.querySelector("#skills-list");
+const viewButtons = [...document.querySelectorAll("[data-view-target]")];
+const views = [...document.querySelectorAll("[data-view]")];
+const rollModal = document.querySelector("#roll-modal");
+const rollDialog = document.querySelector("#roll-dialog");
+const rollingDie = document.querySelector("#rolling-die");
+const resultSummary = document.querySelector("#result-summary");
+let rollInterval;
+let rollTimeout;
+let activeRollButton;
+
+function dieSvg(faces, value = faces) {
+  const geometry = DICE_GEOMETRY[faces] || DICE_GEOMETRY[20];
+  const shownValue = value === null ? "" : String(value);
+
+  return `
+    <svg class="poly-die" viewBox="0 0 100 100" aria-hidden="true">
+      <polygon class="die-outline" points="${geometry.outline}"></polygon>
+      <path class="die-facet" d="${geometry.facets}"></path>
+      ${shownValue ? `<text x="50" y="58">${shownValue}</text>` : ""}
+    </svg>`;
+}
+
+function renderSkills() {
+  const attributeOptions = Object.entries(ATTRIBUTES)
+    .map(([code, name]) => `<option value="${code}">${code} · ${name}</option>`)
+    .join("");
+
+  skillsList.innerHTML = SKILLS.map(
+    (skill, index) => `
+      <article class="skill-row">
+        <div class="skill-info">
+          <strong>${skill.name}</strong>
+        </div>
+
+        <label class="skill-select-wrap">
+          <span class="control-caption">Atributo</span>
+          <select class="attribute-select" data-skill-attribute="${index}" aria-label="Atributo usado em ${skill.name}">
+            ${attributeOptions}
+          </select>
+        </label>
+
+        <div class="training-control">
+          <span class="control-caption">Treinamento</span>
+          <span class="training-die" aria-hidden="true">${dieSvg(8)}</span>
+          <label>
+            <span class="sr-only">Treinamento em ${skill.name}</span>
+            <select class="training-select" data-training-index="${index}" aria-label="Treinamento em ${skill.name}">
+              <option value="leigo">Leigo</option>
+              <option value="adepto">Adepto</option>
+              <option value="treinado">Treinado</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="modifier-control">
+          <span class="control-caption">Dados extras</span>
+          <input
+            class="modifier-input dice-modifier"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="ex.: 1d6"
+            data-dice-modifier="${index}"
+            aria-label="Dados extras em ${skill.name}"
+          />
+        </label>
+
+        <label class="modifier-control">
+          <span class="control-caption">Mod. fixo</span>
+          <input
+            class="modifier-input fixed-modifier"
+            type="number"
+            inputmode="numeric"
+            step="1"
+            placeholder="0"
+            data-fixed-modifier="${index}"
+            aria-label="Modificador fixo em ${skill.name}"
+          />
+        </label>
+
+        <button class="roll-button" type="button" data-roll-index="${index}" aria-label="Rolar ${skill.name}" title="Rolar ${skill.name}">
+          ${dieSvg(20, null)}
+        </button>
+      </article>`,
+  ).join("");
+
+  SKILLS.forEach((skill, index) => {
+    document.querySelector(`[data-skill-attribute="${index}"]`).value = skill.attribute;
+  });
+}
+
+function hydrateLegendDice() {
+  document.querySelectorAll("[data-static-die]").forEach((icon) => {
+    icon.innerHTML = dieSvg(Number(icon.dataset.staticDie));
+  });
+}
+
+function changeView(viewName) {
+  viewButtons.forEach((button) => {
+    const isCurrent = button.dataset.viewTarget === viewName;
+    button.classList.toggle("is-active", isCurrent);
+    if (isCurrent) {
+      button.setAttribute("aria-current", "page");
+    } else {
+      button.removeAttribute("aria-current");
+    }
+  });
+
+  views.forEach((view) => {
+    const isCurrent = view.dataset.view === viewName;
+    view.hidden = !isCurrent;
+    view.classList.toggle("is-active", isCurrent);
+
+    if (isCurrent) {
+      view.classList.remove("is-entering");
+      requestAnimationFrame(() => view.classList.add("is-entering"));
+    }
+  });
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function getAttributeValue(attribute) {
+  const input = document.querySelector(`[data-attribute="${attribute}"]`);
+  const parsed = Number.parseInt(input?.value, 10);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function parseDiceModifier(rawValue) {
+  const compact = rawValue.trim().toLowerCase().replaceAll(" ", "").replace(/^\+/, "");
+  if (!compact) return { count: 0, faces: 0, formula: "", error: "" };
+
+  const match = compact.match(/^(\d*)d(\d+)$/);
+  if (!match) {
+    return { error: "Use um formato como 1d6, d8 ou 2d4." };
+  }
+
+  const count = Number(match[1] || 1);
+  const faces = Number(match[2]);
+  if (!Number.isInteger(count) || !Number.isInteger(faces) || count < 1 || count > 20 || faces < 2 || faces > 1000) {
+    return { error: "Use entre 1 e 20 dados, com pelo menos 2 faces." };
+  }
+
+  return { count, faces, formula: `${count}d${faces}`, error: "" };
+}
+
+function rollDice(count, faces) {
+  return Array.from({ length: count }, () => Math.floor(Math.random() * faces) + 1);
+}
+
+function sum(values) {
+  return values.reduce((total, value) => total + value, 0);
+}
+
+function formatSigned(value) {
+  if (value > 0) return `+${value}`;
+  if (value < 0) return `−${Math.abs(value)}`;
+  return "0";
+}
+
+function setRollingDie(faces, value) {
+  rollingDie.innerHTML = dieSvg(faces, value);
+  rollingDie.setAttribute("aria-label", `Dado de ${faces} faces mostrando ${value}`);
+}
+
+function addBreakdownLine(label, detail, value, signed = true) {
+  const line = document.createElement("div");
+  line.className = "breakdown-line";
+
+  const copy = document.createElement("span");
+  copy.textContent = label;
+
+  const metadata = document.createElement("small");
+  metadata.textContent = detail;
+  copy.append(metadata);
+
+  const amount = document.createElement("strong");
+  amount.textContent = signed ? formatSigned(value) : String(value);
+
+  line.append(copy, amount);
+  document.querySelector("#result-breakdown").append(line);
+}
+
+function clearRollTimers() {
+  window.clearInterval(rollInterval);
+  window.clearTimeout(rollTimeout);
+}
+
+function closeRollModal() {
+  clearRollTimers();
+  rollModal.hidden = true;
+  document.body.classList.remove("modal-open");
+  if (activeRollButton?.isConnected) activeRollButton.focus();
+}
+
+function rollSkill(skillIndex, triggerButton) {
+  const skill = SKILLS[skillIndex];
+  const trainingSelect = document.querySelector(`[data-training-index="${skillIndex}"]`);
+  const attributeSelect = document.querySelector(`[data-skill-attribute="${skillIndex}"]`);
+  const diceInput = document.querySelector(`[data-dice-modifier="${skillIndex}"]`);
+  const fixedInput = document.querySelector(`[data-fixed-modifier="${skillIndex}"]`);
+  const diceModifier = parseDiceModifier(diceInput.value);
+
+  diceInput.setCustomValidity(diceModifier.error);
+  diceInput.classList.toggle("is-invalid", Boolean(diceModifier.error));
+  diceInput.toggleAttribute("aria-invalid", Boolean(diceModifier.error));
+  if (diceModifier.error) {
+    diceInput.reportValidity();
+    diceInput.focus();
+    return;
+  }
+
+  const training = TRAINING[trainingSelect.value];
+  const attribute = attributeSelect.value;
+  const attributeValue = getAttributeValue(attribute);
+  const parsedFixed = Number.parseInt(fixedInput.value, 10);
+  const fixedModifier = Number.isFinite(parsedFixed) ? parsedFixed : 0;
+  const mainResult = rollDice(1, training.die)[0];
+  const extraResults = diceModifier.count ? rollDice(diceModifier.count, diceModifier.faces) : [];
+  const extraTotal = sum(extraResults);
+  const total = mainResult + attributeValue + extraTotal + fixedModifier;
+
+  clearRollTimers();
+  activeRollButton = triggerButton;
+  document.querySelector("#result-skill").textContent = skill.name;
+  document.querySelector("#result-context").textContent = `${training.label} · ${ATTRIBUTES[attribute]} (${attribute})`;
+  document.querySelector("#roll-status").textContent = `Rolando o dado de ${training.die} faces...`;
+  document.querySelector("#result-total").textContent = total;
+  document.querySelector("#result-breakdown").replaceChildren();
+  resultSummary.hidden = true;
+
+  setRollingDie(training.die, Math.floor(Math.random() * training.die) + 1);
+  rollingDie.classList.remove("is-settled", "is-rolling");
+  void rollingDie.offsetWidth;
+  rollingDie.classList.add("is-rolling");
+
+  rollModal.hidden = false;
+  document.body.classList.add("modal-open");
+  rollDialog.focus();
+
+  rollInterval = window.setInterval(() => {
+    setRollingDie(training.die, Math.floor(Math.random() * training.die) + 1);
+  }, 72);
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  rollTimeout = window.setTimeout(() => {
+    window.clearInterval(rollInterval);
+    setRollingDie(training.die, mainResult);
+    rollingDie.classList.remove("is-rolling");
+    rollingDie.classList.add("is-settled");
+    document.querySelector("#roll-status").textContent = `Resultado do dado: ${mainResult}`;
+
+    addBreakdownLine("Dado principal", `${training.label} · d${training.die}`, mainResult, false);
+    addBreakdownLine("Atributo", `${attribute} · ${ATTRIBUTES[attribute]}`, attributeValue);
+    if (extraResults.length) {
+      addBreakdownLine("Dados extras", `${diceModifier.formula} → ${extraResults.join(" + ")}`, extraTotal);
+    }
+    if (fixedModifier !== 0) {
+      addBreakdownLine("Modificador fixo", "Valor informado", fixedModifier);
+    }
+
+    resultSummary.hidden = false;
+  }, reducedMotion ? 120 : 920);
+}
+
+function loadPortrait(file) {
+  if (!file || !file.type.startsWith("image/")) return;
+
+  const reader = new FileReader();
+  reader.addEventListener("load", () => {
+    const preview = document.querySelector("#portrait-preview");
+    preview.src = reader.result;
+    preview.hidden = false;
+    document.querySelector("#portrait-empty").hidden = true;
+  });
+  reader.readAsDataURL(file);
+}
+
+function trapDialogFocus(event) {
+  if (event.key !== "Tab" || rollModal.hidden) return;
+  const focusable = [...rollDialog.querySelectorAll("button:not([disabled])")];
+  const first = focusable[0];
+  const last = focusable.at(-1);
+
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === rollDialog)) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+viewButtons.forEach((button) => {
+  button.addEventListener("click", () => changeView(button.dataset.viewTarget));
+});
+
+skillsList.addEventListener("click", (event) => {
+  const rollButton = event.target.closest("[data-roll-index]");
+  if (!rollButton) return;
+  rollSkill(Number.parseInt(rollButton.dataset.rollIndex, 10), rollButton);
+});
+
+skillsList.addEventListener("change", (event) => {
+  if (!event.target.matches("[data-training-index]")) return;
+  const training = TRAINING[event.target.value];
+  const icon = event.target.closest(".training-control").querySelector(".training-die");
+  icon.innerHTML = dieSvg(training.die);
+});
+
+skillsList.addEventListener("input", (event) => {
+  if (!event.target.matches("[data-dice-modifier]")) return;
+  event.target.setCustomValidity("");
+  event.target.classList.remove("is-invalid");
+  event.target.removeAttribute("aria-invalid");
+});
+
+document.querySelector("#portrait-input").addEventListener("change", (event) => {
+  loadPortrait(event.target.files?.[0]);
+});
+
+document.querySelectorAll("[data-close-roll]").forEach((button) => {
+  button.addEventListener("click", closeRollModal);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !rollModal.hidden) closeRollModal();
+  trapDialogFocus(event);
+});
+
+renderSkills();
+hydrateLegendDice();
+
+    </script>
+  </body>
+</html>
