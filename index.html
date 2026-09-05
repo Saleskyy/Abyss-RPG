@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Abyss RPG — Index local com compêndios e constelações — revisão 2026-09-05 -->
+<!-- Abyss RPG — Index local com informações e constelações — revisão 2026-09-05 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -525,11 +525,11 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
   display: grid;
   grid-template-columns: minmax(140px, 1.15fr) 170px 146px 78px 110px 84px 48px;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .skills-column-head {
-  min-height: 43px;
+  min-height: 36px;
   padding: 0 20px 0 24px;
   border-bottom: 1px solid var(--line);
   color: var(--dim);
@@ -542,8 +542,8 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 
 .skills-list { display: block; }
 .skill-row {
-  min-height: 72px;
-  padding: 12px 20px 12px 24px;
+  min-height: 56px;
+  padding: 7px 20px 7px 24px;
   border-bottom: 1px solid var(--line);
   transition: background 140ms ease;
 }
@@ -555,14 +555,14 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .skill-info strong {
   display: block;
   overflow: hidden;
-  font: 500 1rem Georgia, "Times New Roman", serif;
+  font: 500 0.94rem Georgia, "Times New Roman", serif;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .attribute-control {
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-columns: 36px minmax(0, 1fr);
   align-items: center;
   gap: 7px;
   min-width: 0;
@@ -571,8 +571,8 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .skill-info-button {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   border: 1px solid var(--line);
   border-radius: 2px;
@@ -582,7 +582,7 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
   transition: border-color 140ms ease, color 140ms ease, background 140ms ease, box-shadow 140ms ease;
 }
 .skill-info-button:hover { border-color: #7d8490; color: var(--text); background: #1b1e24; box-shadow: 0 0 17px rgba(255, 255, 255, 0.06); }
-.skill-info-button svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.35; }
+.skill-info-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.35; }
 .skill-info-button:active { transform: scale(0.96); }
 
 .skill-row.is-adepto .training-die { color: #72b4d0; }
@@ -611,7 +611,7 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .training-select,
 .modifier-input {
   width: 100%;
-  min-height: 42px;
+  min-height: 36px;
   border: 1px solid var(--line);
   border-radius: 2px;
   color: var(--muted);
@@ -625,15 +625,15 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .modifier-input:hover { border-color: var(--line-strong); color: var(--text); }
 
 .training-control { position: relative; min-width: 0; }
-.training-select { padding-left: 48px; }
+.training-select { padding-left: 42px; }
 .training-die {
   position: absolute;
-  top: 7px;
-  left: 10px;
+  top: 6px;
+  left: 9px;
   z-index: 1;
   display: grid;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   color: var(--accent);
   pointer-events: none;
 }
@@ -650,8 +650,8 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .roll-button {
   display: grid;
   place-items: center;
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
   padding: 0;
   border: 1px solid var(--line-strong);
   border-radius: 2px;
@@ -662,7 +662,7 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 }
 .roll-button:hover { border-color: #9299a4; background: #22262d; box-shadow: 0 0 20px rgba(255, 255, 255, 0.08); transform: translateY(-1px); }
 .roll-button:active { transform: translateY(0) scale(0.96); }
-.roll-button svg { width: 27px; height: 27px; }
+.roll-button svg { width: 24px; height: 24px; }
 
 body.modal-open { overflow: hidden; }
 
@@ -971,16 +971,11 @@ body.modal-open { overflow: hidden; }
 .selected-feature-copy { min-width: 0; }
 .selected-feature-copy small { display: block; margin-bottom: 2px; color: var(--dim); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .selected-feature-name {
+  display: block;
   max-width: 100%;
-  padding: 0;
-  border: 0;
   color: var(--text);
-  background: transparent;
-  cursor: pointer;
   font: 600 1rem Georgia, "Times New Roman", serif;
-  text-align: left;
 }
-.selected-feature-name:hover { color: #f0ce68; }
 .selected-feature-copy p {
   display: -webkit-box;
   max-width: 76ch;
@@ -991,6 +986,12 @@ body.modal-open { overflow: hidden; }
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+.selected-feature-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.selected-feature-open,
 .selected-feature-remove {
   min-height: 38px;
   padding: 0 12px;
@@ -1001,15 +1002,21 @@ body.modal-open { overflow: hidden; }
   font-size: 0.72rem;
   font-weight: 750;
 }
+.selected-feature-open {
+  border-color: rgba(215, 186, 98, 0.45);
+  color: #e4cd88;
+  background: rgba(215, 186, 98, 0.06);
+}
+.selected-feature-open:hover { border-color: #d7ba62; color: #f2d67e; background: rgba(215, 186, 98, 0.12); }
 .selected-feature-remove:hover { border-color: #9e5561; color: #ef8c95; background: rgba(117, 33, 47, 0.12); }
 
 .constellation-launch {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 36px;
-  margin-top: 15px;
-  padding: 0 12px;
+  min-height: 42px;
+  margin: 0;
+  padding: 0 14px;
   border: 1px solid rgba(215, 186, 98, 0.38);
   border-radius: 2px;
   color: #d7ba62;
@@ -1120,7 +1127,9 @@ body.modal-open { overflow: hidden; }
 
 .skill-info-dialog-footer {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   padding: 18px 30px 24px;
   border-top: 1px solid var(--line);
   background: rgba(7, 8, 10, 0.3);
@@ -1150,7 +1159,14 @@ body.modal-open { overflow: hidden; }
   box-shadow: 0 42px 140px rgba(0, 0, 0, 0.78);
   animation: dialog-in 230ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
-.constellation-dialog { width: min(980px, 100%); }
+.constellation-dialog {
+  width: min(1040px, 100%);
+  border-color: rgba(176, 154, 91, 0.58);
+  background:
+    radial-gradient(circle at 50% -20%, rgba(209, 180, 92, 0.12), transparent 46%),
+    linear-gradient(155deg, #171a20, #080a0e 78%);
+  box-shadow: 0 42px 140px rgba(0, 0, 0, 0.82), 0 0 42px rgba(208, 177, 82, 0.08);
+}
 .feature-detail-dialog { width: min(720px, 100%); }
 
 .constellation-dialog-head,
@@ -1171,75 +1187,166 @@ body.modal-open { overflow: hidden; }
 .feature-detail-title-line h2 { margin: 0; font-size: clamp(1.65rem, 4vw, 2.15rem); line-height: 1.08; }
 
 .constellation-content {
+  position: relative;
   overflow: auto;
   overscroll-behavior: contain;
-  padding: 22px 24px 32px;
+  padding: 22px 26px 34px;
   background:
-    radial-gradient(circle at 12% 18%, rgba(225, 198, 116, 0.22) 0 1px, transparent 1.6px),
-    radial-gradient(circle at 84% 27%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1.5px),
-    radial-gradient(circle at 66% 78%, rgba(225, 198, 116, 0.14) 0 1px, transparent 1.7px),
-    linear-gradient(145deg, rgba(18, 20, 25, 0.98), rgba(8, 10, 13, 0.98));
-  background-size: 170px 170px, 230px 230px, 290px 290px, auto;
+    radial-gradient(circle at 11% 17%, rgba(242, 218, 145, 0.5) 0 1px, transparent 1.7px),
+    radial-gradient(circle at 79% 23%, rgba(216, 225, 239, 0.38) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 67% 81%, rgba(231, 202, 113, 0.34) 0 1.2px, transparent 1.9px),
+    radial-gradient(circle at 37% 62%, rgba(255, 255, 255, 0.22) 0 0.8px, transparent 1.5px),
+    radial-gradient(ellipse at 50% 45%, rgba(62, 72, 97, 0.14), transparent 62%),
+    linear-gradient(155deg, rgba(14, 17, 24, 0.99), rgba(5, 7, 11, 0.99));
+  background-size: 149px 149px, 211px 211px, 277px 277px, 103px 103px, auto, auto;
   scrollbar-color: var(--line-strong) transparent;
 }
-.constellation-help { margin: 0 0 18px; color: var(--muted); font-size: 0.8rem; text-align: center; }
-.constellation-tree { display: grid; gap: 22px; }
+.constellation-intro {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin: 0 0 22px;
+  padding: 10px 13px;
+  border: 1px solid rgba(89, 96, 109, 0.46);
+  border-radius: 999px;
+  background: rgba(9, 11, 16, 0.72);
+  box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.015);
+}
+.constellation-help { margin: 0; color: var(--muted); font-size: 0.78rem; }
+.constellation-key { display: flex; align-items: center; gap: 14px; flex: 0 0 auto; color: var(--dim); font-size: 0.68rem; font-weight: 750; letter-spacing: 0.04em; }
+.constellation-key span { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.constellation-key i { width: 8px; height: 8px; border-radius: 50%; background: #6f7580; box-shadow: 0 0 8px rgba(151, 158, 170, 0.2); }
+.constellation-key i.is-lit { background: #f1d477; box-shadow: 0 0 11px rgba(241, 201, 83, 0.8); }
+.constellation-tree { position: relative; display: grid; gap: 28px; }
 
 .constellation-branch {
   position: relative;
   min-width: 0;
-  padding: 28px 22px 25px;
-  border: 1px solid rgba(69, 75, 85, 0.7);
-  background: rgba(5, 7, 10, 0.52);
+  padding: 38px 28px 31px;
+  overflow: hidden;
+  border: 1px solid rgba(92, 99, 114, 0.5);
+  border-radius: 18px;
+  background:
+    radial-gradient(ellipse at 50% 25%, rgba(117, 126, 155, 0.11), transparent 48%),
+    linear-gradient(150deg, rgba(14, 17, 24, 0.8), rgba(5, 7, 11, 0.74));
+  box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.34), 0 16px 38px rgba(0, 0, 0, 0.2);
 }
 .constellation-branch::before {
   position: absolute;
-  inset: -1px auto auto -1px;
-  width: 28px;
-  height: 1px;
+  top: -38px;
+  left: 50%;
+  z-index: 0;
+  width: min(78%, 650px);
+  height: 190px;
+  border: 1px solid rgba(189, 166, 99, 0.16);
+  border-radius: 50%;
   content: "";
-  background: rgba(215, 186, 98, 0.72);
+  pointer-events: none;
+  transform: translateX(-50%);
+  box-shadow: 0 0 30px rgba(202, 176, 97, 0.025);
 }
-.constellation-connections { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
-.constellation-connections path { fill: none; stroke: rgba(116, 122, 133, 0.32); stroke-width: 1.15; vector-effect: non-scaling-stroke; }
-.constellation-connections path.is-lit { stroke: rgba(228, 195, 98, 0.76); filter: drop-shadow(0 0 4px rgba(228, 195, 98, 0.42)); }
+.constellation-branch::after {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  content: "";
+  background: rgba(230, 209, 143, 0.55);
+  box-shadow: -31px 11px 0 rgba(198, 208, 224, 0.22), -13px 34px 0 rgba(230, 209, 143, 0.2), 8px 48px 0 rgba(198, 208, 224, 0.18);
+}
+.constellation-connections { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.constellation-connections path { fill: none; stroke: rgba(131, 140, 157, 0.3); stroke-width: 1.2; stroke-dasharray: 2 4; vector-effect: non-scaling-stroke; transition: stroke 180ms ease, filter 180ms ease, opacity 180ms ease; }
+.constellation-connections path.is-awake { stroke: rgba(204, 178, 99, 0.48); stroke-dasharray: none; }
+.constellation-connections path.is-lit { stroke: rgba(242, 209, 107, 0.9); stroke-width: 1.5; stroke-dasharray: none; filter: drop-shadow(0 0 5px rgba(234, 194, 72, 0.62)); }
+.constellation-connections circle { fill: #7e8694; opacity: 0.48; }
+.constellation-connections circle.is-awake { fill: #c8ae63; opacity: 0.78; }
+.constellation-connections circle.is-lit { fill: #f3d675; opacity: 1; filter: drop-shadow(0 0 4px rgba(242, 208, 103, 0.8)); }
 .constellation-core,
-.constellation-children { position: relative; z-index: 1; }
+.constellation-children { position: relative; z-index: 2; }
 .constellation-core { display: flex; justify-content: center; }
-.constellation-children { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 14px; margin-top: 54px; }
+.constellation-children { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 18px; margin-top: 66px; }
 
 .constellation-node {
+  position: relative;
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: 6px;
+  gap: 5px;
   width: 100%;
-  min-height: 104px;
-  padding: 13px 12px;
-  border: 1px solid rgba(79, 85, 95, 0.72);
-  border-radius: 3px;
-  color: var(--muted);
-  background: radial-gradient(circle at 50% 26%, rgba(255, 255, 255, 0.035), transparent 58%), #111318;
+  min-height: 94px;
+  padding: 14px 16px;
+  border: 1px solid rgba(94, 102, 117, 0.58);
+  border-radius: 999px;
+  color: #9a9faa;
+  background:
+    radial-gradient(circle at 50% 27%, rgba(161, 170, 191, 0.09), transparent 45%),
+    rgba(12, 15, 21, 0.9);
   cursor: pointer;
-  opacity: 0.58;
+  opacity: 0.72;
   text-align: center;
-  transition: opacity 150ms ease, border-color 150ms ease, color 150ms ease, background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+  transition: opacity 170ms ease, border-color 170ms ease, color 170ms ease, background 170ms ease, box-shadow 170ms ease, transform 170ms ease;
 }
-.constellation-node:hover { border-color: #858c96; color: var(--text); opacity: 1; transform: translateY(-2px); }
+.constellation-node:hover { border-color: #9ca3af; color: var(--text); opacity: 1; box-shadow: 0 0 24px rgba(151, 163, 186, 0.1); transform: translateY(-3px); }
 .constellation-node.is-added {
-  border-color: rgba(232, 200, 102, 0.8);
-  color: #f2d67e;
-  background: radial-gradient(circle at 50% 24%, rgba(247, 208, 90, 0.2), transparent 62%), #171711;
-  box-shadow: 0 0 26px rgba(222, 177, 54, 0.18), inset 0 0 18px rgba(245, 205, 88, 0.05);
+  border-color: rgba(237, 204, 103, 0.82);
+  color: #f5db87;
+  background:
+    radial-gradient(circle at 50% 24%, rgba(251, 218, 112, 0.23), transparent 48%),
+    linear-gradient(150deg, rgba(45, 39, 21, 0.95), rgba(19, 18, 13, 0.96));
+  box-shadow: 0 0 30px rgba(228, 182, 50, 0.2), inset 0 0 24px rgba(245, 205, 88, 0.07);
   opacity: 1;
 }
-.constellation-node.is-competency { width: min(340px, 100%); min-height: 118px; }
-.constellation-node-star { color: currentColor; font-size: 1.15rem; line-height: 1; text-shadow: 0 0 10px currentColor; }
+.constellation-node.is-competency {
+  width: min(350px, 100%);
+  min-height: 124px;
+  border-color: rgba(143, 126, 77, 0.62);
+  border-radius: 50% / 58%;
+  background:
+    radial-gradient(circle at 50% 34%, rgba(219, 194, 119, 0.12), transparent 52%),
+    rgba(12, 14, 19, 0.94);
+  box-shadow: 0 0 0 8px rgba(178, 154, 84, 0.025), 0 0 0 9px rgba(178, 154, 84, 0.12);
+}
+.constellation-node.is-competency.is-added {
+  border-color: #dfc36f;
+  background: radial-gradient(circle at 50% 35%, rgba(245, 210, 101, 0.25), transparent 54%), #19170f;
+  box-shadow: 0 0 0 8px rgba(217, 184, 84, 0.05), 0 0 0 9px rgba(230, 198, 99, 0.38), 0 0 38px rgba(228, 182, 50, 0.22);
+}
+.constellation-node-star {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: currentColor;
+  background: radial-gradient(circle, currentColor 0 8%, transparent 36%);
+  font-size: 1.05rem;
+  line-height: 1;
+  text-shadow: 0 0 11px currentColor;
+}
+.constellation-node-star::before,
+.constellation-node-star::after { position: absolute; content: ""; background: currentColor; opacity: 0.28; }
+.constellation-node-star::before { width: 32px; height: 1px; }
+.constellation-node-star::after { width: 1px; height: 32px; }
+.constellation-node.is-competency .constellation-node-star { width: 36px; height: 36px; font-size: 1.35rem; }
+.constellation-node.is-competency .constellation-node-star::before { width: 42px; }
+.constellation-node.is-competency .constellation-node-star::after { height: 42px; }
+.constellation-node.is-added .constellation-node-star { animation: constellation-pulse 2.8s ease-in-out infinite; }
 .constellation-node small { color: var(--dim); font-size: 0.65rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; }
 .constellation-node.is-added small { color: #b7a56f; }
-.constellation-node strong { color: currentColor; font: 600 0.98rem/1.15 Georgia, "Times New Roman", serif; }
+.constellation-node strong { color: currentColor; font: 600 1rem/1.16 Georgia, "Times New Roman", serif; }
 .constellation-node em { color: var(--dim); font-size: 0.7rem; font-style: normal; line-height: 1.3; }
 .constellation-node.is-added em { color: #bbae86; }
+
+@keyframes constellation-pulse {
+  0%, 100% { filter: brightness(0.96); text-shadow: 0 0 8px currentColor; }
+  50% { filter: brightness(1.18); text-shadow: 0 0 17px currentColor; }
+}
 
 .constellation-empty { padding: 58px 20px; color: var(--muted); font: 500 1rem Georgia, "Times New Roman", serif; text-align: center; }
 .constellation-dialog-footer,
@@ -1305,7 +1412,7 @@ body.modal-open { overflow: hidden; }
   .attributes-row { gap: 8px; }
   .skills-column-head,
   .skill-row {
-    grid-template-columns: minmax(120px, 1fr) 148px 134px 70px 96px 72px 46px;
+    grid-template-columns: minmax(120px, 1fr) 148px 134px 70px 96px 72px 40px;
     gap: 8px;
     padding-right: 16px;
     padding-left: 18px;
@@ -1365,11 +1472,11 @@ body.modal-open { overflow: hidden; }
   .skill-row {
     position: relative;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: 12px;
-    padding: 18px;
+    gap: 9px 12px;
+    padding: 13px 14px;
   }
-  .skill-info { grid-column: 1 / -1; padding-right: 58px; }
-  .skill-info strong { font-size: 1.08rem; }
+  .skill-info { grid-column: 1 / -1; padding-right: 50px; }
+  .skill-info strong { font-size: 1rem; }
   .control-caption {
     display: block;
     color: var(--dim);
@@ -1380,14 +1487,14 @@ body.modal-open { overflow: hidden; }
   }
   .skill-select-wrap,
   .training-control,
-  .modifier-control { display: grid; gap: 6px; }
+  .modifier-control { display: grid; gap: 4px; }
   .attribute-control { align-items: end; }
   .skill-select-wrap::after,
-  .training-control::after { top: auto; right: 11px; bottom: 17px; }
-  .training-die { top: auto; bottom: 7px; }
-  .roll-button { position: absolute; top: 14px; right: 14px; }
+  .training-control::after { top: auto; right: 11px; bottom: 14px; }
+  .training-die { top: auto; bottom: 6px; }
+  .roll-button { position: absolute; top: 10px; right: 11px; }
   .sheet-features-head { align-items: flex-start; }
-  .constellation-children { grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); }
+  .constellation-children { grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); }
 }
 
 @media (max-width: 560px) {
@@ -1407,7 +1514,7 @@ body.modal-open { overflow: hidden; }
   .skills-filters { grid-template-columns: 1fr; padding: 17px 20px 20px; }
   .filter-search { grid-column: auto; }
   .filter-clear { grid-column: auto; }
-  .skill-row { gap: 10px; padding: 17px 14px; }
+  .skill-row { gap: 8px 10px; padding: 12px; }
   .roll-button { right: 12px; }
   .roll-modal { padding: 12px; }
   .roll-dialog { max-height: calc(100vh - 24px); }
@@ -1421,20 +1528,23 @@ body.modal-open { overflow: hidden; }
   .skill-info-dialog { max-height: calc(100vh - 24px); }
   .skill-info-dialog-head { padding: 23px 21px 19px; }
   .skill-info-content { padding: 22px 21px 25px; }
-  .skill-info-dialog-footer { padding: 16px 21px 20px; }
+  .skill-info-dialog-footer { gap: 8px; padding: 15px; }
   .sheet-features-head { align-items: flex-start; flex-direction: column; gap: 13px; padding: 21px 20px; }
   .selected-feature-card { grid-template-columns: 40px minmax(0, 1fr); gap: 11px; padding: 16px 14px; }
-  .selected-feature-remove { grid-column: 2; justify-self: start; }
+  .selected-feature-actions { grid-column: 2; justify-self: start; }
   .constellation-modal,
   .feature-detail-modal { padding: 12px; }
   .constellation-dialog,
   .feature-detail-dialog { max-height: calc(100vh - 24px); }
   .constellation-dialog-head,
   .feature-detail-dialog-head { padding: 22px 20px 18px; }
-  .constellation-content { padding: 18px 12px 24px; }
-  .constellation-branch { padding: 23px 12px 20px; }
-  .constellation-children { grid-template-columns: 1fr; gap: 11px; margin-top: 43px; }
-  .constellation-node { min-height: 92px; }
+  .constellation-content { padding: 16px 11px 24px; }
+  .constellation-intro { align-items: flex-start; flex-direction: column; gap: 8px; border-radius: 13px; }
+  .constellation-key { width: 100%; justify-content: space-between; }
+  .constellation-branch { padding: 30px 12px 23px; border-radius: 14px; }
+  .constellation-children { grid-template-columns: 1fr; gap: 15px; margin-top: 56px; }
+  .constellation-node { min-height: 88px; }
+  .constellation-node.is-competency { min-height: 112px; }
   .constellation-dialog-footer,
   .feature-detail-dialog-footer { display: grid; grid-template-columns: 1fr; padding: 15px 20px 19px; }
   .constellation-dialog-footer .dialog-button,
@@ -1445,7 +1555,7 @@ body.modal-open { overflow: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
     </style>
@@ -1575,7 +1685,7 @@ body.modal-open { overflow: hidden; }
             <label class="attribute" title="Força">
               <span class="hex-shell">
                 <span class="attribute-code">FOR</span>
-                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="FOR" aria-label="Valor de Força" />
+                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="FOR" aria-label="Valor de Força" />
               </span>
               <span class="attribute-name">Força</span>
             </label>
@@ -1583,7 +1693,7 @@ body.modal-open { overflow: hidden; }
             <label class="attribute" title="Agilidade">
               <span class="hex-shell">
                 <span class="attribute-code">AGI</span>
-                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="AGI" aria-label="Valor de Agilidade" />
+                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="AGI" aria-label="Valor de Agilidade" />
               </span>
               <span class="attribute-name">Agilidade</span>
             </label>
@@ -1591,7 +1701,7 @@ body.modal-open { overflow: hidden; }
             <label class="attribute" title="Intelecto">
               <span class="hex-shell">
                 <span class="attribute-code">INT</span>
-                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="INT" aria-label="Valor de Intelecto" />
+                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="INT" aria-label="Valor de Intelecto" />
               </span>
               <span class="attribute-name">Intelecto</span>
             </label>
@@ -1599,7 +1709,7 @@ body.modal-open { overflow: hidden; }
             <label class="attribute" title="Constituição">
               <span class="hex-shell">
                 <span class="attribute-code">CON</span>
-                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="CON" aria-label="Valor de Constituição" />
+                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="CON" aria-label="Valor de Constituição" />
               </span>
               <span class="attribute-name">Constituição</span>
             </label>
@@ -1607,7 +1717,7 @@ body.modal-open { overflow: hidden; }
             <label class="attribute" title="Poder">
               <span class="hex-shell">
                 <span class="attribute-code">POD</span>
-                <input type="number" value="0" min="-99" max="99" inputmode="numeric" data-attribute="POD" aria-label="Valor de Poder" />
+                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="POD" aria-label="Valor de Poder" />
               </span>
               <span class="attribute-name">Poder</span>
             </label>
@@ -1711,7 +1821,7 @@ body.modal-open { overflow: hidden; }
         <section class="sheet-features-panel" aria-labelledby="selected-features-title">
           <header class="sheet-features-head">
             <div>
-              <p class="eyebrow">Constelação da ficha</p>
+              <p class="eyebrow">Competências do personagem</p>
               <h2 id="selected-features-title">Competências e Especializações</h2>
               <p>As escolhas acesas em suas constelações aparecem aqui.</p>
             </div>
@@ -1723,7 +1833,7 @@ body.modal-open { overflow: hidden; }
               <path d="m12 3 2.2 5.3L20 9l-4.3 3.8 1.3 5.7-5-3-5 3 1.3-5.7L4 9l5.8-.7L12 3Z"></path>
             </svg>
             <strong>Nenhuma estrela acesa</strong>
-            <span>Abra o compêndio de uma perícia e entre em sua constelação.</span>
+            <span>Abra as Informações de uma perícia e acesse suas Competências.</span>
           </div>
           <div id="selected-features-list" class="selected-features-list"></div>
         </section>
@@ -1746,17 +1856,11 @@ body.modal-open { overflow: hidden; }
 
         <header class="skill-info-dialog-head">
           <div>
-            <p class="eyebrow">Compêndio de perícias</p>
+            <p class="eyebrow">Informações</p>
             <div class="skill-info-title-line">
               <span id="skill-info-attribute" class="skill-info-attribute">AGI</span>
               <h2 id="skill-info-title">Acrobacia</h2>
             </div>
-            <button id="open-constellation" class="constellation-launch" type="button">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="m12 3 2.2 5.3L20 9l-4.3 3.8 1.3 5.7-5-3-5 3 1.3-5.7L4 9l5.8-.7L12 3Z"></path>
-              </svg>
-              <span>Constelação</span>
-            </button>
           </div>
           <button class="result-close" type="button" data-close-skill-info aria-label="Fechar informações da perícia">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1776,6 +1880,12 @@ body.modal-open { overflow: hidden; }
         </div>
 
         <footer class="skill-info-dialog-footer">
+          <button id="open-constellation" class="constellation-launch" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m12 3 2.2 5.3L20 9l-4.3 3.8 1.3 5.7-5-3-5 3 1.3-5.7L4 9l5.8-.7L12 3Z"></path>
+            </svg>
+            <span>Competências</span>
+          </button>
           <button class="dialog-button" type="button" data-close-skill-info>Fechar</button>
         </footer>
       </section>
@@ -1796,7 +1906,7 @@ body.modal-open { overflow: hidden; }
 
         <header class="constellation-dialog-head">
           <div>
-            <p class="eyebrow">Árvore de Competências</p>
+            <p class="eyebrow">Mapa de Competências</p>
             <div class="constellation-title-line">
               <span id="constellation-attribute" class="skill-info-attribute">AGI</span>
               <h2 id="constellation-title">Acrobacia</h2>
@@ -1810,13 +1920,19 @@ body.modal-open { overflow: hidden; }
         </header>
 
         <div class="constellation-content">
-          <p class="constellation-help">Selecione uma estrela para abrir seu compêndio. Estrelas acesas já fazem parte da ficha.</p>
+          <div class="constellation-intro">
+            <p class="constellation-help">Selecione uma estrela para abrir suas Informações.</p>
+            <div class="constellation-key" aria-label="Legenda da constelação">
+              <span><i class="is-dormant" aria-hidden="true"></i>Disponível</span>
+              <span><i class="is-lit" aria-hidden="true"></i>Na ficha</span>
+            </div>
+          </div>
           <div id="constellation-tree" class="constellation-tree"></div>
           <div id="constellation-empty" class="constellation-empty" hidden>Nenhuma Competência foi cadastrada para esta perícia.</div>
         </div>
 
         <footer class="constellation-dialog-footer">
-          <button class="dialog-button" type="button" data-close-constellation>Voltar ao compêndio</button>
+          <button class="dialog-button" type="button" data-close-constellation>Voltar</button>
         </footer>
       </section>
     </div>
@@ -1843,7 +1959,7 @@ body.modal-open { overflow: hidden; }
             </div>
             <p id="feature-detail-context" class="feature-detail-context">Acrobacia</p>
           </div>
-          <button class="result-close" type="button" data-close-feature-detail aria-label="Fechar compêndio">
+          <button class="result-close" type="button" data-close-feature-detail aria-label="Fechar informações">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="m7 7 10 10M17 7 7 17"></path>
             </svg>
@@ -2170,8 +2286,8 @@ const SKILL_DETAILS = {
   Tática: {
     description: "Tática representa sua capacidade de interpretar confrontos, reconhecer oportunidades e coordenar ações durante situações de conflito.",
     uses: [
-      { name: "Analisar Campo", text: "Você observa um confronto para identificar uma informação taticamente relevante, como uma posição vantajosa, ameaça prioritária, padrão de movimentação, rota de aproximação ou vulnerabilidade circunstancial. As informações reveladas devem ser plausíveis a partir da situação observada." },
-      { name: "Coordenar", text: "Quando houver comunicação suficiente, você orienta um aliado com base em uma informação ou oportunidade tática disponível. Em caso de sucesso, ele recebe +1d4 no próximo teste diretamente relacionado à orientação que você deu. O resultado desse dado é somado ao valor do teste." },
+      { name: "Analisar Campo", text: "Você observa um confronto para identificar uma informação taticamente relevante, como uma posição vantajosa, ameaça prioritária, padrão de movimentação, rota de aproximação ou vulnerabilidade circunstancial. As informações obtidas devem ser plausíveis a partir daquilo que você é capaz de observar." },
+      { name: "Coordenar", text: "Caso consiga se comunicar adequadamente com um aliado, você pode orientá-lo com base em uma informação ou oportunidade tática disponível. Em caso de sucesso, ele recebe +1d4 em sua próxima Rolagem diretamente relacionada à orientação fornecida." },
     ],
   },
   Tecnologia: {
@@ -2810,7 +2926,23 @@ const COMPETENCY_TREES = {
           "text": "Caso já tenha estabelecido um padrão sobre alguém, você pode reconhecer quando seu comportamento foge significativamente do habitual, mesmo que não saiba imediatamente o motivo dessa mudança."
         }
       ],
-      "specializations": []
+      "specializations": [
+        {
+          "name": "Mentiras",
+          "ability": "Ler a Mentira",
+          "text": "Quando obtiver sucesso em [Perceber Mentira], você pode analisar como a pessoa construiu sua versão. Escolha uma opção: identificar qual informação ou parte da história ela parece estar tentando esconder, qual parte foi provavelmente inventada ou qual assunto ela está evitando abordar. Isso não revela automaticamente a verdade por trás da mentira. Em um Sucesso Extremo, escolha duas opções."
+        },
+        {
+          "name": "Emoções",
+          "ability": "Identificar Gatilho",
+          "text": "Após identificar uma emoção relevante através de [Interpretar Emoção], você pode tentar descobrir qual assunto, pessoa, objeto ou acontecimento presente parece estar provocando aquela reação."
+        },
+        {
+          "name": "Psicologia",
+          "ability": "Traçar Perfil",
+          "text": "Após observar ou interagir com alguém por tempo suficiente, você pode construir um perfil comportamental. Em um sucesso, descubra uma motivação, medo, vínculo ou necessidade relevante daquela pessoa. Em um Sucesso Bom ou superior, descubra dois desses elementos."
+        }
+      ]
     }
   ],
   "Investigação": [
@@ -2952,7 +3084,28 @@ const COMPETENCY_TREES = {
           "text": "Após estudar uma criatura, seus rastros ou restos por tempo suficiente, você pode produzir um registro sobre ela. Em encontros futuros com criaturas semelhantes, informações já confirmadas não precisam ser descobertas novamente através de Monstrologia."
         }
       ],
-      "specializations": []
+      "specializations": [
+        {
+          "name": "Abissais",
+          "ability": "Conhecimento Abissal",
+          "text": "Ao analisar criaturas originárias ou profundamente relacionadas ao Abismo, reduza em um nível a Zona de Dificuldade dos testes de Monstrologia. Além disso, você pode reconhecer características e padrões próprios de grupos abissais mesmo em criaturas que nunca encontrou antes."
+        },
+        {
+          "name": "Espirituais",
+          "ability": "Analisar Manifestação",
+          "text": "Você pode estudar criaturas incorpóreas, assombrações e entidades espirituais mesmo quando sua anatomia ou comportamento não puderem ser analisados por meios convencionais, identificando manifestações, vínculos ou condições relacionadas à sua existência."
+        },
+        {
+          "name": "Bestiais",
+          "ability": "Prever Comportamento",
+          "text": "Após observar suficientemente uma criatura guiada principalmente por instinto, você pode determinar sua reação provável diante de estímulos como ameaça, alimento, território, ferimento ou presença de outras criaturas."
+        },
+        {
+          "name": "Anatomia Monstruosa",
+          "ability": "Identificar Vulnerabilidade",
+          "text": "Ao analisar a anatomia, estruturas corporais ou adaptações anormais de uma criatura, você pode identificar vulnerabilidades físicas plausíveis a partir das características observadas. A análise revela a natureza da vulnerabilidade e as condições necessárias para explorá-la, mas não concede benefícios ofensivos por si só."
+        }
+      ]
     }
   ],
   "Pilotagem": [
@@ -3097,6 +3250,39 @@ const COMPETENCY_TREES = {
           "name": "Viridis",
           "ability": "Desbravador de Viridis",
           "text": "Você possui experiência prática com os ecossistemas anormais de Viridis, podendo reconhecer e tomar precauções contra perigos ambientais característicos da região. Reduza em um nível a Zona de Dificuldade dos testes de Sobrevivência diretamente relacionados a esses perigos."
+        }
+      ]
+    }
+  ],
+  "Tática": [
+    {
+      "name": "Doutrina Militar",
+      "description": "Você conhece métodos formais de combate, organização operacional e funcionamento de grupos armados.",
+      "uses": [
+        {
+          "name": "Leitura Tática",
+          "text": "Você reconhece formações, padrões de movimentação, procedimentos e métodos táticos utilizados por forças organizadas, podendo identificar como seus integrantes estão distribuídos, quais funções exercem e como estão coordenando suas ações."
+        },
+        {
+          "name": "Avaliar Operação",
+          "text": "Ao analisar um plano ou operação, você pode identificar problemas previsíveis em sua execução, como posicionamento inadequado, rotas ruins, falhas logísticas, ausência de contingências ou conflitos entre diferentes etapas. Margens de Sucesso maiores podem revelar problemas mais relevantes ou menos evidentes."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Estratégia",
+          "ability": "Planejar Operação",
+          "text": "Com tempo e informações suficientes, você pode realizar uma Rolagem de Tática para preparar uma operação futura. Em caso de sucesso, identifique uma ameaça, dificuldade ou necessidade previsível que possa ser preparada antecipadamente. Margens maiores podem revelar fatores adicionais ou menos evidentes."
+        },
+        {
+          "name": "Logística",
+          "ability": "Prever Necessidade",
+          "text": "Durante uma operação, missão ou deslocamento previamente planejado, uma vez por cena, quando surgir a necessidade de um suprimento, ferramenta ou equipamento mundano que poderia razoavelmente ter sido previsto durante a preparação, você pode declarar que incluiu aquele recurso no planejamento. O item deve ser compatível com os recursos disponíveis antes da operação e com aquilo que seria razoável transportar. Esse Uso não permite obter equipamentos raros, restritos ou cuja necessidade não pudesse ter sido antecipada."
+        },
+        {
+          "name": "Armamentos",
+          "ability": "Avaliar Arsenal",
+          "text": "Você consegue identificar a função, características, limitações e aplicações táticas de armas e equipamentos militares que saiba reconhecer. Esse conhecimento não concede treinamento para utilizá-los."
         }
       ]
     }
@@ -3556,14 +3742,22 @@ function renderSelectedFeatures() {
       ? `Competência · ${feature.skillName}`
       : `Especialização · ${feature.skillName} › ${feature.competencyName}`;
 
-    const name = document.createElement("button");
+    const name = document.createElement("strong");
     name.className = "selected-feature-name";
-    name.type = "button";
-    name.dataset.openSelectedFeature = feature.id;
     name.textContent = featureDisplayName(feature);
 
     const summary = document.createElement("p");
     summary.textContent = feature.description;
+
+    const actions = document.createElement("div");
+    actions.className = "selected-feature-actions";
+
+    const open = document.createElement("button");
+    open.className = "selected-feature-open";
+    open.type = "button";
+    open.dataset.openSelectedFeature = feature.id;
+    open.textContent = "Abrir";
+    open.setAttribute("aria-label", `Abrir informações de ${featureDisplayName(feature)}`);
 
     const remove = document.createElement("button");
     remove.className = "selected-feature-remove";
@@ -3572,8 +3766,9 @@ function renderSelectedFeatures() {
     remove.textContent = "Remover";
     remove.setAttribute("aria-label", `Remover ${featureDisplayName(feature)} da ficha`);
 
+    actions.append(open, remove);
     copy.append(metadata, name, summary);
-    card.append(star, copy, remove);
+    card.append(star, copy, actions);
     selectedFeaturesList.append(card);
   });
 }
@@ -3619,7 +3814,7 @@ function createConstellationNode(feature, type) {
   button.dataset.featureId = feature.id;
   button.dataset.openFeature = feature.id;
   button.classList.toggle("is-added", selectedFeatureIds.has(feature.id));
-  button.setAttribute("aria-label", `Abrir compêndio de ${featureDisplayName(feature)}`);
+  button.setAttribute("aria-label", `Abrir informações de ${featureDisplayName(feature)}`);
 
   const star = document.createElement("span");
   star.className = "constellation-node-star";
@@ -3705,6 +3900,7 @@ function drawConstellationConnections() {
 
     const startX = coreRect.left - branchRect.left + coreRect.width / 2;
     const startY = coreRect.bottom - branchRect.top;
+    const coreIsAdded = selectedFeatureIds.has(core.dataset.featureId);
     children.forEach((child) => {
       const childRect = child.getBoundingClientRect();
       const endX = childRect.left - branchRect.left + childRect.width / 2;
@@ -3712,8 +3908,19 @@ function drawConstellationConnections() {
       const bendY = startY + (endY - startY) * 0.5;
       const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
       path.setAttribute("d", `M ${startX} ${startY} C ${startX} ${bendY}, ${endX} ${bendY}, ${endX} ${endY}`);
-      path.classList.toggle("is-lit", selectedFeatureIds.has(child.dataset.featureId));
-      svg.append(path);
+      const childIsAdded = selectedFeatureIds.has(child.dataset.featureId);
+      path.classList.toggle("is-awake", coreIsAdded);
+      path.classList.toggle("is-lit", childIsAdded);
+
+      const joint = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+      const jointX = (startX + endX) / 2;
+      const jointY = startY * 0.125 + bendY * 0.75 + endY * 0.125;
+      joint.setAttribute("cx", String(jointX));
+      joint.setAttribute("cy", String(jointY));
+      joint.setAttribute("r", childIsAdded ? "2.4" : "1.8");
+      joint.classList.toggle("is-awake", coreIsAdded);
+      joint.classList.toggle("is-lit", childIsAdded);
+      svg.append(path, joint);
     });
   });
 }
@@ -3827,7 +4034,7 @@ function openSkillInfo(skillIndex, triggerButton) {
   openConstellationButton.disabled = competencyCount === 0;
   openConstellationButton.querySelector("span").textContent = competencyCount === 0
     ? "Sem Competências"
-    : "Constelação";
+    : "Competências";
   openConstellationButton.title = competencyCount === 0
     ? "Nenhuma Competência cadastrada para esta perícia"
     : `Abrir ${competencyCount === 1 ? "a Competência" : "as Competências"} de ${skill.name}`;
