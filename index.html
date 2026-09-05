@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Abyss RPG — Index local com compêndio de perícias — revisão 2026-09-05 -->
+<!-- Abyss RPG — Index local com compêndios e constelações — revisão 2026-09-05 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -893,6 +893,138 @@ body.modal-open { overflow: hidden; }
 }
 .dialog-button:hover { border-color: #858c96; background: #22262d; }
 
+.sheet-features-panel {
+  position: relative;
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  background: linear-gradient(145deg, rgba(21, 24, 29, 0.9), rgba(14, 16, 19, 0.96));
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.18);
+}
+.sheet-features-panel::before {
+  position: absolute;
+  inset: -1px auto auto -1px;
+  width: 34px;
+  height: 1px;
+  content: "";
+  background: #d7ba62;
+}
+
+.sheet-features-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: 112px;
+  padding: 23px 26px;
+  border-bottom: 1px solid var(--line);
+}
+.sheet-features-head h2 { margin-bottom: 4px; }
+.sheet-features-head > div > p:last-child { margin: 0; color: var(--muted); font-size: 0.82rem; }
+.selected-features-count {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: #111318;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.selected-features-empty {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  padding: 38px 24px 42px;
+  color: var(--dim);
+  text-align: center;
+}
+.selected-features-empty svg { width: 31px; height: 31px; margin-bottom: 4px; fill: none; stroke: currentColor; stroke-width: 1.2; }
+.selected-features-empty strong { color: var(--muted); font: 500 1.05rem Georgia, "Times New Roman", serif; }
+.selected-features-empty span { max-width: 42ch; font-size: 0.8rem; }
+
+.selected-features-list { display: grid; }
+.selected-feature-card {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-height: 92px;
+  padding: 15px 20px 15px 24px;
+  border-bottom: 1px solid var(--line);
+  background: radial-gradient(circle at 25px 50%, rgba(226, 192, 91, 0.1), transparent 90px);
+}
+.selected-feature-card:last-child { border-bottom: 0; }
+.selected-feature-star {
+  display: grid;
+  place-items: center;
+  width: 39px;
+  height: 39px;
+  border: 1px solid rgba(228, 195, 98, 0.66);
+  border-radius: 50%;
+  color: #f0ce68;
+  background: rgba(228, 195, 98, 0.1);
+  box-shadow: 0 0 22px rgba(228, 195, 98, 0.15);
+  font-size: 1rem;
+}
+.selected-feature-copy { min-width: 0; }
+.selected-feature-copy small { display: block; margin-bottom: 2px; color: var(--dim); font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.selected-feature-name {
+  max-width: 100%;
+  padding: 0;
+  border: 0;
+  color: var(--text);
+  background: transparent;
+  cursor: pointer;
+  font: 600 1rem Georgia, "Times New Roman", serif;
+  text-align: left;
+}
+.selected-feature-name:hover { color: #f0ce68; }
+.selected-feature-copy p {
+  display: -webkit-box;
+  max-width: 76ch;
+  margin: 4px 0 0;
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 0.78rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.selected-feature-remove {
+  min-height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: #111318;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+.selected-feature-remove:hover { border-color: #9e5561; color: #ef8c95; background: rgba(117, 33, 47, 0.12); }
+
+.constellation-launch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-top: 15px;
+  padding: 0 12px;
+  border: 1px solid rgba(215, 186, 98, 0.38);
+  border-radius: 2px;
+  color: #d7ba62;
+  background: rgba(215, 186, 98, 0.055);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: border-color 150ms ease, background 150ms ease, box-shadow 150ms ease, color 150ms ease;
+}
+.constellation-launch svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linejoin: round; stroke-width: 1.45; }
+.constellation-launch:hover { border-color: #d7ba62; color: #f0d783; background: rgba(215, 186, 98, 0.1); box-shadow: 0 0 22px rgba(215, 186, 98, 0.12); }
+.constellation-launch:disabled { border-color: var(--line); color: var(--dim); background: transparent; cursor: not-allowed; box-shadow: none; opacity: 0.52; }
+
 .skill-info-modal {
   position: fixed;
   inset: 0;
@@ -994,6 +1126,174 @@ body.modal-open { overflow: hidden; }
   background: rgba(7, 8, 10, 0.3);
 }
 
+.constellation-modal,
+.feature-detail-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.constellation-modal { z-index: 90; }
+.feature-detail-modal { z-index: 95; }
+
+.constellation-dialog,
+.feature-detail-dialog {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(150deg, #181b20, #0b0d10 78%);
+  box-shadow: 0 42px 140px rgba(0, 0, 0, 0.78);
+  animation: dialog-in 230ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.constellation-dialog { width: min(980px, 100%); }
+.feature-detail-dialog { width: min(720px, 100%); }
+
+.constellation-dialog-head,
+.feature-detail-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 26px 30px 21px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.012);
+}
+.constellation-dialog-head .eyebrow,
+.feature-detail-dialog-head .eyebrow { margin-bottom: 8px; }
+.constellation-title-line,
+.feature-detail-title-line { display: flex; align-items: center; gap: 12px; }
+.constellation-title-line h2,
+.feature-detail-title-line h2 { margin: 0; font-size: clamp(1.65rem, 4vw, 2.15rem); line-height: 1.08; }
+
+.constellation-content {
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 22px 24px 32px;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(225, 198, 116, 0.22) 0 1px, transparent 1.6px),
+    radial-gradient(circle at 84% 27%, rgba(255, 255, 255, 0.18) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 66% 78%, rgba(225, 198, 116, 0.14) 0 1px, transparent 1.7px),
+    linear-gradient(145deg, rgba(18, 20, 25, 0.98), rgba(8, 10, 13, 0.98));
+  background-size: 170px 170px, 230px 230px, 290px 290px, auto;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.constellation-help { margin: 0 0 18px; color: var(--muted); font-size: 0.8rem; text-align: center; }
+.constellation-tree { display: grid; gap: 22px; }
+
+.constellation-branch {
+  position: relative;
+  min-width: 0;
+  padding: 28px 22px 25px;
+  border: 1px solid rgba(69, 75, 85, 0.7);
+  background: rgba(5, 7, 10, 0.52);
+}
+.constellation-branch::before {
+  position: absolute;
+  inset: -1px auto auto -1px;
+  width: 28px;
+  height: 1px;
+  content: "";
+  background: rgba(215, 186, 98, 0.72);
+}
+.constellation-connections { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.constellation-connections path { fill: none; stroke: rgba(116, 122, 133, 0.32); stroke-width: 1.15; vector-effect: non-scaling-stroke; }
+.constellation-connections path.is-lit { stroke: rgba(228, 195, 98, 0.76); filter: drop-shadow(0 0 4px rgba(228, 195, 98, 0.42)); }
+.constellation-core,
+.constellation-children { position: relative; z-index: 1; }
+.constellation-core { display: flex; justify-content: center; }
+.constellation-children { display: grid; grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)); gap: 14px; margin-top: 54px; }
+
+.constellation-node {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 104px;
+  padding: 13px 12px;
+  border: 1px solid rgba(79, 85, 95, 0.72);
+  border-radius: 3px;
+  color: var(--muted);
+  background: radial-gradient(circle at 50% 26%, rgba(255, 255, 255, 0.035), transparent 58%), #111318;
+  cursor: pointer;
+  opacity: 0.58;
+  text-align: center;
+  transition: opacity 150ms ease, border-color 150ms ease, color 150ms ease, background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+.constellation-node:hover { border-color: #858c96; color: var(--text); opacity: 1; transform: translateY(-2px); }
+.constellation-node.is-added {
+  border-color: rgba(232, 200, 102, 0.8);
+  color: #f2d67e;
+  background: radial-gradient(circle at 50% 24%, rgba(247, 208, 90, 0.2), transparent 62%), #171711;
+  box-shadow: 0 0 26px rgba(222, 177, 54, 0.18), inset 0 0 18px rgba(245, 205, 88, 0.05);
+  opacity: 1;
+}
+.constellation-node.is-competency { width: min(340px, 100%); min-height: 118px; }
+.constellation-node-star { color: currentColor; font-size: 1.15rem; line-height: 1; text-shadow: 0 0 10px currentColor; }
+.constellation-node small { color: var(--dim); font-size: 0.65rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; }
+.constellation-node.is-added small { color: #b7a56f; }
+.constellation-node strong { color: currentColor; font: 600 0.98rem/1.15 Georgia, "Times New Roman", serif; }
+.constellation-node em { color: var(--dim); font-size: 0.7rem; font-style: normal; line-height: 1.3; }
+.constellation-node.is-added em { color: #bbae86; }
+
+.constellation-empty { padding: 58px 20px; color: var(--muted); font: 500 1rem Georgia, "Times New Roman", serif; text-align: center; }
+.constellation-dialog-footer,
+.feature-detail-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 18px 30px 23px;
+  border-top: 1px solid var(--line);
+  background: rgba(7, 8, 10, 0.38);
+}
+
+.feature-detail-dialog.is-added { border-color: rgba(228, 195, 98, 0.72); box-shadow: 0 35px 120px rgba(0, 0, 0, 0.72), 0 0 34px rgba(228, 195, 98, 0.12); }
+.feature-detail-star {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 auto;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: var(--dim);
+  background: #111318;
+  transition: color 150ms ease, border-color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+.feature-detail-dialog.is-added .feature-detail-star { border-color: #d7ba62; color: #f0ce68; background: rgba(215, 186, 98, 0.1); box-shadow: 0 0 22px rgba(215, 186, 98, 0.2); }
+.feature-detail-context { margin: 7px 0 0 50px; color: var(--muted); font-size: 0.78rem; }
+.feature-detail-content { overflow: auto; overscroll-behavior: contain; padding: 27px 30px 31px; scrollbar-color: var(--line-strong) transparent; }
+.feature-detail-description { margin: 0; color: #d3d6db; font: italic 1rem/1.7 Georgia, "Times New Roman", serif; }
+.feature-detail-ability { margin-top: 23px; padding: 17px 18px 19px; border: 1px solid var(--line); border-left-color: #d7ba62; background: rgba(215, 186, 98, 0.045); }
+.feature-detail-ability > span { color: var(--dim); font-size: 0.68rem; font-weight: 850; letter-spacing: 0.12em; text-transform: uppercase; }
+.feature-detail-ability h3 { margin: 6px 0 7px; color: #e2c66f; font: 600 1.15rem Georgia, "Times New Roman", serif; }
+.feature-detail-ability p { margin: 0; color: var(--muted); font-size: 0.9rem; line-height: 1.68; }
+
+.feature-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid rgba(215, 186, 98, 0.68);
+  border-radius: 2px;
+  color: #f0ce68;
+  background: rgba(215, 186, 98, 0.08);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+.feature-toggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linejoin: round; stroke-width: 1.45; }
+.feature-toggle:hover { background: rgba(215, 186, 98, 0.14); box-shadow: 0 0 20px rgba(215, 186, 98, 0.1); }
+.feature-toggle.is-added { border-color: #9c5b65; color: #e9929e; background: rgba(116, 38, 50, 0.1); }
+.feature-toggle.is-added:hover { background: rgba(116, 38, 50, 0.18); box-shadow: none; }
+
 @media (max-width: 1040px) {
   :root { --sidebar-width: 88px; }
   .brand-copy { min-width: auto; }
@@ -1086,6 +1386,8 @@ body.modal-open { overflow: hidden; }
   .training-control::after { top: auto; right: 11px; bottom: 17px; }
   .training-die { top: auto; bottom: 7px; }
   .roll-button { position: absolute; top: 14px; right: 14px; }
+  .sheet-features-head { align-items: flex-start; }
+  .constellation-children { grid-template-columns: repeat(auto-fit, minmax(145px, 1fr)); }
 }
 
 @media (max-width: 560px) {
@@ -1120,6 +1422,26 @@ body.modal-open { overflow: hidden; }
   .skill-info-dialog-head { padding: 23px 21px 19px; }
   .skill-info-content { padding: 22px 21px 25px; }
   .skill-info-dialog-footer { padding: 16px 21px 20px; }
+  .sheet-features-head { align-items: flex-start; flex-direction: column; gap: 13px; padding: 21px 20px; }
+  .selected-feature-card { grid-template-columns: 40px minmax(0, 1fr); gap: 11px; padding: 16px 14px; }
+  .selected-feature-remove { grid-column: 2; justify-self: start; }
+  .constellation-modal,
+  .feature-detail-modal { padding: 12px; }
+  .constellation-dialog,
+  .feature-detail-dialog { max-height: calc(100vh - 24px); }
+  .constellation-dialog-head,
+  .feature-detail-dialog-head { padding: 22px 20px 18px; }
+  .constellation-content { padding: 18px 12px 24px; }
+  .constellation-branch { padding: 23px 12px 20px; }
+  .constellation-children { grid-template-columns: 1fr; gap: 11px; margin-top: 43px; }
+  .constellation-node { min-height: 92px; }
+  .constellation-dialog-footer,
+  .feature-detail-dialog-footer { display: grid; grid-template-columns: 1fr; padding: 15px 20px 19px; }
+  .constellation-dialog-footer .dialog-button,
+  .feature-detail-dialog-footer .dialog-button,
+  .feature-toggle { width: 100%; }
+  .feature-detail-content { padding: 22px 20px 25px; }
+  .feature-detail-context { margin-left: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1385,6 +1707,26 @@ body.modal-open { overflow: hidden; }
           <div id="skills-list" class="skills-list"></div>
           <p id="skills-empty" class="skills-empty" role="status" hidden>Nenhuma perícia encontrada com esses filtros.</p>
         </section>
+
+        <section class="sheet-features-panel" aria-labelledby="selected-features-title">
+          <header class="sheet-features-head">
+            <div>
+              <p class="eyebrow">Constelação da ficha</p>
+              <h2 id="selected-features-title">Competências e Especializações</h2>
+              <p>As escolhas acesas em suas constelações aparecem aqui.</p>
+            </div>
+            <span id="selected-features-count" class="selected-features-count" aria-live="polite">0 adicionadas</span>
+          </header>
+
+          <div id="selected-features-empty" class="selected-features-empty">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m12 3 2.2 5.3L20 9l-4.3 3.8 1.3 5.7-5-3-5 3 1.3-5.7L4 9l5.8-.7L12 3Z"></path>
+            </svg>
+            <strong>Nenhuma estrela acesa</strong>
+            <span>Abra o compêndio de uma perícia e entre em sua constelação.</span>
+          </div>
+          <div id="selected-features-list" class="selected-features-list"></div>
+        </section>
       </section>
     </main>
 
@@ -1409,6 +1751,12 @@ body.modal-open { overflow: hidden; }
               <span id="skill-info-attribute" class="skill-info-attribute">AGI</span>
               <h2 id="skill-info-title">Acrobacia</h2>
             </div>
+            <button id="open-constellation" class="constellation-launch" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m12 3 2.2 5.3L20 9l-4.3 3.8 1.3 5.7-5-3-5 3 1.3-5.7L4 9l5.8-.7L12 3Z"></path>
+              </svg>
+              <span>Constelação</span>
+            </button>
           </div>
           <button class="result-close" type="button" data-close-skill-info aria-label="Fechar informações da perícia">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1429,6 +1777,102 @@ body.modal-open { overflow: hidden; }
 
         <footer class="skill-info-dialog-footer">
           <button class="dialog-button" type="button" data-close-skill-info>Fechar</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="constellation-modal" class="constellation-modal" hidden>
+      <div class="roll-backdrop" data-close-constellation aria-hidden="true"></div>
+      <section
+        id="constellation-dialog"
+        class="constellation-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="constellation-title"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="constellation-dialog-head">
+          <div>
+            <p class="eyebrow">Árvore de Competências</p>
+            <div class="constellation-title-line">
+              <span id="constellation-attribute" class="skill-info-attribute">AGI</span>
+              <h2 id="constellation-title">Acrobacia</h2>
+            </div>
+          </div>
+          <button class="result-close" type="button" data-close-constellation aria-label="Fechar constelação">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <div class="constellation-content">
+          <p class="constellation-help">Selecione uma estrela para abrir seu compêndio. Estrelas acesas já fazem parte da ficha.</p>
+          <div id="constellation-tree" class="constellation-tree"></div>
+          <div id="constellation-empty" class="constellation-empty" hidden>Nenhuma Competência foi cadastrada para esta perícia.</div>
+        </div>
+
+        <footer class="constellation-dialog-footer">
+          <button class="dialog-button" type="button" data-close-constellation>Voltar ao compêndio</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="feature-detail-modal" class="feature-detail-modal" hidden>
+      <div class="roll-backdrop" data-close-feature-detail aria-hidden="true"></div>
+      <section
+        id="feature-detail-dialog"
+        class="feature-detail-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="feature-detail-title"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="feature-detail-dialog-head">
+          <div>
+            <p id="feature-detail-type" class="eyebrow">Competência</p>
+            <div class="feature-detail-title-line">
+              <span id="feature-detail-star" class="feature-detail-star" aria-hidden="true">✦</span>
+              <h2 id="feature-detail-title">Domínio Acrobático</h2>
+            </div>
+            <p id="feature-detail-context" class="feature-detail-context">Acrobacia</p>
+          </div>
+          <button class="result-close" type="button" data-close-feature-detail aria-label="Fechar compêndio">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <div class="feature-detail-content">
+          <p id="feature-detail-description" class="feature-detail-description"></p>
+
+          <section id="feature-detail-ability" class="feature-detail-ability" hidden>
+            <span>Uso da Especialização</span>
+            <h3 id="feature-detail-ability-name"></h3>
+            <p id="feature-detail-ability-text"></p>
+          </section>
+
+          <section id="feature-detail-uses-section" class="skill-info-uses-section" hidden>
+            <h3>Usos</h3>
+            <div id="feature-detail-uses" class="skill-info-uses"></div>
+          </section>
+        </div>
+
+        <footer class="feature-detail-dialog-footer">
+          <button id="feature-toggle" class="feature-toggle" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m12 3 2.2 5.3L20 9l-4.3 3.8 1.3 5.7-5-3-5 3 1.3-5.7L4 9l5.8-.7L12 3Z"></path>
+            </svg>
+            <span>Adicionar à ficha</span>
+          </button>
+          <button class="dialog-button" type="button" data-close-feature-detail>Voltar</button>
         </footer>
       </section>
     </div>
@@ -1747,6 +2191,1021 @@ const SKILL_DETAILS = {
   },
 };
 
+const COMPETENCY_TREES = {
+  "Acrobacia": [
+    {
+      "name": "Domínio Acrobático",
+      "description": "Você possui treinamento avançado em técnicas de movimentação e controle corporal, sabendo utilizar seu próprio corpo e os elementos ao seu redor para realizar movimentos acrobáticos de maneira eficiente.",
+      "uses": [
+        {
+          "name": "Percurso Acrobático",
+          "text": "Você pode atravessar obstáculos, mobiliários e outros elementos apropriados do cenário como parte do seu deslocamento, sem precisar interrompê-lo para realizar a manobra."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Parkour",
+          "ability": "Corrida Livre",
+          "text": "Você domina técnicas de transposição de obstáculos e movimentação pelo ambiente. Durante seu deslocamento, pode utilizar paredes, obstáculos e estruturas para alcançar posições que normalmente exigiriam uma rota mais longa ou outra forma de movimentação."
+        },
+        {
+          "name": "Ginástica",
+          "ability": "Movimento Preciso",
+          "text": "Você domina movimentos que exigem grande coordenação, equilíbrio e precisão corporal. Quando realizar um teste de Acrobacia envolvendo saltos, giros, aterrissagens, equilíbrio ou outros movimentos acrobáticos complexos, reduza a Zona de Dificuldade em um nível. Além disso, uma vez por turno, você pode combinar dois desses movimentos em um único teste de Acrobacia, desde que façam parte da mesma ação."
+        },
+        {
+          "name": "Contorcionismo",
+          "ability": "Corpo Flexível",
+          "text": "Você possui domínio excepcional sobre a flexibilidade e os limites de movimentação do próprio corpo. Pode atravessar espaços extremamente estreitos e tentar escapar de contenções que normalmente impossibilitariam uma tentativa. Além disso, reduza em um nível a Zona de Dificuldade de testes de Acrobacia que dependam principalmente da sua flexibilidade corporal."
+        }
+      ]
+    }
+  ],
+  "Adestramento": [
+    {
+      "name": "Manejo Animal",
+      "description": "Você possui conhecimento técnico sobre comportamento, cuidado e treinamento animal, sendo capaz de reconhecer padrões comportamentais e desenvolver novos comandos através de condicionamento e prática.",
+      "uses": [
+        {
+          "name": "Treinar",
+          "text": "Durante Interlúdios ou outros períodos apropriados, você pode ensinar novos comandos, tarefas e comportamentos a um animal. O tempo e as condições necessárias dependem da complexidade do treinamento, da natureza do animal e daquilo que está sendo ensinado."
+        },
+        {
+          "name": "Avaliar Animal",
+          "text": "Você analisa o comportamento e a condição aparente de um animal para reconhecer sinais mais sutis de estresse, agressividade, condicionamento, maus-tratos, doença ou necessidades específicas. Esse Uso permite compreender aspectos relacionados ao comportamento e manejo do animal, mas não substitui conhecimentos médicos necessários para diagnosticar ou tratar ferimentos e doenças."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Caninos",
+          "ability": "Treinamento Canino",
+          "text": "Você possui conhecimento aprofundado sobre o comportamento e treinamento de caninos. Reduza em um nível a Zona de Dificuldade de testes de Adestramento envolvendo seu manejo ou treinamento. Além disso, você pode treiná-los para desempenhar tarefas complexas, como rastreamento, guarda, busca, resgate ou identificação de odores."
+        },
+        {
+          "name": "Equinos",
+          "ability": "Cavaleiro",
+          "text": "Você possui experiência aprofundada no manejo e condução de equinos. Reduza em um nível a Zona de Dificuldade de testes de Adestramento realizados para conduzir ou controlar um equino enquanto estiver montado. Além disso, animais adequadamente treinados por você podem ser conduzidos em situações de perigo, perseguição ou grande agitação sem se assustarem automaticamente diante de movimentos bruscos, ruídos ou ameaças."
+        },
+        {
+          "name": "Aves",
+          "ability": "Falcoaria",
+          "text": "Você domina técnicas de criação, treinamento e manejo de aves. Pode treiná-las para desempenhar tarefas como reconhecimento, busca, caça, entrega ou transporte de pequenos objetos. Aves treinadas por você também podem reconhecer e responder a comandos previamente ensinados a grandes distâncias, desde que sejam capazes de percebê-los."
+        },
+        {
+          "name": "Fauna Selvagem",
+          "ability": "Manejo Selvagem",
+          "text": "Você compreende o comportamento de animais não domesticados e sabe como se aproximar deles sem depender das mesmas técnicas utilizadas com animais acostumados à presença humana. Você pode tentar manejar e treinar animais selvagens que normalmente não aceitariam treinamento ou comandos humanos, desde que sua natureza permita algum grau de condicionamento."
+        }
+      ]
+    }
+  ],
+  "Alquimia": [
+    {
+      "name": "Preparação Alquímica",
+      "description": "Você domina processos de refinamento, estabilização e transformação de componentes, sendo capaz de manipulá-los para aplicações alquímicas mais complexas.",
+      "uses": [
+        {
+          "name": "Refinar",
+          "text": "Você purifica, trata ou estabiliza um componente bruto ou impuro para torná-lo apropriado para fórmulas mais complexas ou que exijam materiais refinados."
+        },
+        {
+          "name": "Adaptar Componente",
+          "text": "Ao preparar uma fórmula, você pode tentar substituir um de seus componentes por outro que possua propriedades semelhantes. Para realizar a substituição, deve atingir a Margem Necessária determinada pela compatibilidade entre os componentes e pela complexidade da fórmula."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Toxicologia",
+          "ability": "Produzir Toxina",
+          "text": "Você domina a preparação e manipulação de substâncias nocivas. Pode desenvolver e produzir venenos, sedativos e outros compostos destinados a prejudicar ou alterar as funções de um organismo. Além disso, pode tentar identificar toxinas desconhecidas e compreender suas propriedades gerais sem precisar conhecer previamente sua fórmula."
+        },
+        {
+          "name": "Farmacologia",
+          "ability": "Produzir Medicamento",
+          "text": "Você domina a preparação de substâncias destinadas a interagir beneficamente com um organismo. Pode desenvolver e produzir medicamentos, estimulantes e outros compostos utilizados para auxiliar na recuperação, tratamento ou aprimoramento temporário de suas funções."
+        },
+        {
+          "name": "Explosivos",
+          "ability": "Composto Reativo",
+          "text": "Você domina a preparação e estabilização de compostos altamente reativos, podendo produzir substâncias capazes de gerar combustão, explosões ou outras reações violentas de maneira controlada. A potência e estabilidade do composto dependem da fórmula utilizada e dos componentes disponíveis."
+        },
+        {
+          "name": "Extração",
+          "ability": "Extrair Propriedade",
+          "text": "Ao [Coletar Componentes] de uma criatura, planta ou material especial, você pode tentar preservar uma propriedade incomum presente em sua fonte. A propriedade deve ser passível de preservação através de processos alquímicos e pode ser posteriormente utilizada como componente de uma fórmula compatível."
+        }
+      ]
+    }
+  ],
+  "Arcanismo": [
+    {
+      "name": "Arcanologia",
+      "description": "Você estudou formalmente a estrutura da magia, suas Entidades, Afinidades e os fenômenos sobrenaturais associados à feitiçaria.",
+      "uses": [
+        {
+          "name": "Teoria Arcana",
+          "text": "Você possui conhecimento teórico sobre feitiçaria, Afinidades e fenômenos arcanos, podendo utilizar Sabedoria para obter respostas sobre questões técnicas relacionadas a esses assuntos como parte do conhecimento adquirido por seus estudos."
+        },
+        {
+          "name": "Analisar Fluxo",
+          "text": "Você analisa o fluxo de uma manifestação mágica para identificar interferências, alterações ou anormalidades presentes em sua estrutura."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Umbra",
+          "ability": "Conhecimento de Umbra",
+          "text": "Ao analisar manifestações diretamente relacionadas a Umbra, reduza em um nível a Zona de Dificuldade do teste. Além disso, seu conhecimento especializado permite obter informações avançadas sobre seus fenômenos."
+        },
+        {
+          "name": "Lumen",
+          "ability": "Conhecimento de Lumen",
+          "text": "Ao analisar manifestações diretamente relacionadas a Lumen, reduza em um nível a Zona de Dificuldade do teste. Além disso, seu conhecimento especializado permite obter informações avançadas sobre seus fenômenos."
+        },
+        {
+          "name": "Caos",
+          "ability": "Conhecimento de Caos",
+          "text": "Ao analisar manifestações diretamente relacionadas ao Caos, reduza em um nível a Zona de Dificuldade do teste. Além disso, seu conhecimento especializado permite obter informações avançadas sobre seus fenômenos."
+        },
+        {
+          "name": "Éter",
+          "ability": "Conhecimento de Éter",
+          "text": "Ao analisar manifestações diretamente relacionadas ao Éter, reduza em um nível a Zona de Dificuldade do teste. Além disso, seu conhecimento especializado permite obter informações avançadas sobre seus fenômenos."
+        },
+        {
+          "name": "Ley",
+          "ability": "Conhecimento de Ley",
+          "text": "Ao analisar manifestações diretamente relacionadas a Ley, reduza em um nível a Zona de Dificuldade do teste. Além disso, seu conhecimento especializado permite obter informações avançadas sobre seus fenômenos."
+        },
+        {
+          "name": "Artefatos",
+          "ability": "Decifrar Artefato",
+          "text": "Ao analisar um Artefato, você pode descobrir propriedades ocultas, condições de ativação, riscos ou possíveis formas de desativá-lo que não seriam reveladas através de uma análise comum."
+        }
+      ]
+    }
+  ],
+  "Artes": [
+    {
+      "name": "Formação Artística",
+      "description": "Você possui formação técnica na criação, análise e execução artística, compreendendo métodos, princípios e critérios utilizados profissionalmente em diferentes formas de arte.",
+      "uses": [
+        {
+          "name": "Produzir Obra",
+          "text": "Com o tempo, ferramentas e materiais apropriados, você pode produzir obras com qualidade técnica profissional, capazes de possuir valor artístico ou comercial. A qualidade final e o tempo necessário dependem da complexidade da obra e do resultado obtido."
+        },
+        {
+          "name": "Avaliar Obra",
+          "text": "Você realiza uma análise técnica de uma obra para determinar aspectos como sua qualidade, técnica empregada, período, influências, possível autoria e sinais de alteração ou falsificação. Quando aplicável, também pode estimar seu valor artístico ou comercial."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Música",
+          "ability": "Domínio Musical",
+          "text": "Você possui conhecimento aprofundado sobre teoria, composição e execução musical, sendo capaz de utilizar adequadamente instrumentos com os quais tenha familiaridade, além da própria voz. Você pode compor, adaptar ou improvisar músicas através de Artes, mesmo durante uma apresentação. Além disso, após ouvir atentamente uma melodia por tempo suficiente, consegue memorizá-la e reproduzi-la posteriormente sem precisar realizar um novo teste apenas para recordá-la."
+        },
+        {
+          "name": "Teatro",
+          "ability": "Personificação",
+          "text": "Você domina técnicas de interpretação e construção de personagens, sendo capaz de desenvolver e sustentar uma identidade fictícia através da voz, postura, comportamento e maneirismos. Enquanto estiver interpretando essa identidade, pode utilizar Artes no lugar de Enganação para sustentar sua personificação, inclusive durante interações prolongadas."
+        },
+        {
+          "name": "Artes Visuais",
+          "ability": "Reprodução",
+          "text": "Você domina técnicas de representação e reprodução visual. Após estudar adequadamente uma imagem, símbolo, assinatura ou obra visual, pode tentar reproduzi-la com grande precisão. Além disso, pode utilizar Artes no lugar de Crime quando uma falsificação depender principalmente de habilidade artística, como na reprodução de pinturas, selos, assinaturas ou símbolos."
+        },
+        {
+          "name": "Literatura",
+          "ability": "Retórica Escrita",
+          "text": "Você domina técnicas de escrita capazes de transmitir ideias e provocar reações específicas através do texto. Quando uma tentativa de persuadir, enganar ou impressionar alguém ocorrer exclusivamente através de um texto escrito por você, pode utilizar Artes no lugar da Perícia normalmente utilizada."
+        },
+        {
+          "name": "Dança",
+          "ability": "Expressão Corporal",
+          "text": "Você domina técnicas de expressão e comunicação através de movimentos corporais coreografados. Pode utilizar Artes no lugar de Acrobacia quando o objetivo principal de um movimento for sua execução estética ou performática. Além disso, pode realizar [Apresentar] através de uma performance exclusivamente corporal, sem depender de fala ou acompanhamento musical."
+        }
+      ]
+    }
+  ],
+  "Atletismo": [
+    {
+      "name": "Condicionamento Atlético",
+      "description": "Você possui treinamento físico para utilizar seu corpo de maneira eficiente durante esforços intensos.",
+      "uses": [
+        {
+          "name": "Manter Ritmo",
+          "text": "Durante atividades físicas prolongadas, você pode utilizar Atletismo no lugar de Fortitude quando a principal dificuldade estiver relacionada ao condicionamento físico, e não à resistência contra uma ameaça direta ao organismo."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Corrida",
+          "ability": "Arrancada",
+          "text": "Uma vez por turno, ao utilizar [Correr], aumente em +2Q a distância final percorrida."
+        },
+        {
+          "name": "Escalada",
+          "ability": "Escalada Técnica",
+          "text": "Ao escalar superfícies que permitam o uso adequado de técnicas e apoios, reduza em um nível a Zona de Dificuldade do teste."
+        },
+        {
+          "name": "Natação",
+          "ability": "Natação Técnica",
+          "text": "Você pode utilizar seu Deslocamento normal para se mover nadando, sem precisar realizar um teste de Atletismo. Condições adversas ou tentativas de nadar além desse limite ainda podem exigir um teste de [Nadar e Mergulhar]."
+        },
+        {
+          "name": "Salto",
+          "ability": "Impulsão",
+          "text": "Ao utilizar [Saltar], aumente em +2Q a distância obtida, em saltos verticais, aumente +2Q antes de aplicar a redução."
+        },
+        {
+          "name": "Levantamento",
+          "ability": "Força Aplicada",
+          "text": "Ao tentar levantar, empurrar ou arrastar uma carga extrema, reduza em um nível a Zona de Dificuldade do teste."
+        }
+      ]
+    }
+  ],
+  "Ciências": [
+    {
+      "name": "Ciências Exatas",
+      "description": "Você possui formação em áreas que utilizam cálculo, medição e modelos para compreender matéria, energia e fenômenos mensuráveis.",
+      "uses": [
+        {
+          "name": "Análise Quantitativa",
+          "text": "Você realiza cálculos e estimativas a partir das informações disponíveis, determinando valores como distância, velocidade, proporção, quantidade, pressão, intensidade, duração ou outras grandezas mensuráveis."
+        },
+        {
+          "name": "Projetar Resultado",
+          "text": "Quando possuir informações suficientes sobre um fenômeno mensurável, você pode estimar o que acontecerá caso uma de suas condições seja alterada."
+        },
+        {
+          "name": "Determinar Precisão",
+          "text": "Você analisa medições, dados ou resultados para identificar margens de erro, inconsistências ou valores incompatíveis com o comportamento esperado."
+        },
+        {
+          "name": "Dimensionar",
+          "text": "Você determina aproximadamente quais quantidades, medidas ou proporções seriam necessárias para alcançar um resultado específico."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Matemática",
+          "ability": "Modelagem",
+          "text": "Você transforma conjuntos de dados em modelos capazes de revelar padrões, relações e tendências que não seriam evidentes apenas pela observação. Com informações suficientes, pode estimar resultados futuros, encontrar valores ausentes ou identificar anomalias."
+        },
+        {
+          "name": "Matemática",
+          "ability": "Otimização",
+          "text": "Quando existirem diferentes maneiras mensuráveis de alcançar um mesmo objetivo, você pode determinar qual delas exige menos tempo, recursos, distância ou esforço, desde que possua dados suficientes para realizar a comparação."
+        },
+        {
+          "name": "Física",
+          "ability": "Analisar Fenômeno Físico",
+          "text": "Você compreende profundamente fenômenos envolvendo movimento, forças, energia, calor, pressão, eletricidade, ondas e outras propriedades físicas, podendo determinar como uma alteração específica afetaria seu comportamento."
+        },
+        {
+          "name": "Física",
+          "ability": "Aplicação Física",
+          "text": "Após analisar corretamente um fenômeno físico, você pode identificar uma forma prática de explorá-lo, como determinar onde aplicar força, qual suporte sustenta uma estrutura, qual trajetória um objeto seguirá ou qual posição oferece maior estabilidade. Quando outro teste seguir diretamente essa análise, o Mestre pode reduzir sua Zona de Dificuldade em um nível."
+        },
+        {
+          "name": "Química",
+          "ability": "Analisar Composição",
+          "text": "Com ferramentas ou condições adequadas, você identifica propriedades, componentes e características químicas de uma substância, incluindo inflamabilidade, corrosividade, toxicidade, reatividade ou outras propriedades."
+        },
+        {
+          "name": "Química",
+          "ability": "Prever Reação",
+          "text": "Quando conhecer os materiais envolvidos, você pode prever aproximadamente como reagirão entre si e determinar métodos plausíveis para provocar, impedir, neutralizar ou conter essa reação."
+        },
+        {
+          "name": "Química",
+          "ability": "Separar Composto",
+          "text": "Com equipamentos e materiais apropriados, você pode isolar ou purificar componentes presentes em uma mistura comum. Esse Uso não permite reproduzir fórmulas ou propriedades sobrenaturais pertencentes à Alquimia."
+        }
+      ]
+    },
+    {
+      "name": "Ciências Naturais",
+      "description": "Você possui formação voltada ao estudo dos seres vivos, ecossistemas, ambientes naturais e processos que moldam a vida e o terreno.",
+      "uses": [
+        {
+          "name": "Análise Natural",
+          "text": "Você analisa organismos, ambientes ou materiais naturais para compreender suas características, relações e possíveis causas, reconhecendo condições e processos naturais relevantes."
+        },
+        {
+          "name": "Classificar",
+          "text": "Você compara um organismo, amostra ou formação natural com conhecimentos existentes para determinar sua provável origem, grupo, espécie ou características gerais. Quanto melhor o resultado, mais específica pode ser a classificação."
+        },
+        {
+          "name": "Analisar Ecossistema",
+          "text": "Você observa um ambiente e identifica relações entre fauna, flora, clima e recursos naturais, podendo determinar se determinada presença, ausência ou comportamento é incomum naquele ecossistema."
+        },
+        {
+          "name": "Identificar Alteração Natural",
+          "text": "Você reconhece quando um organismo, ambiente ou formação apresenta características incompatíveis com seu desenvolvimento natural, permitindo identificar indícios de interferências externas, artificiais ou sobrenaturais quando houver evidências suficientes."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Biologia",
+          "ability": "Analisar Organismo",
+          "text": "Você estuda a estrutura e o funcionamento de seres vivos, identificando funções de órgãos, adaptações, necessidades biológicas e possíveis causas de anormalidades em organismos biologicamente compreensíveis."
+        },
+        {
+          "name": "Biologia",
+          "ability": "Comparar Anatomia",
+          "text": "Ao analisar um organismo desconhecido, você pode compará-lo com espécies conhecidas para deduzir a provável função de estruturas corporais, órgãos ou adaptações. Esse conhecimento pode ser aplicado junto de Medicina ou Monstrologia quando apropriado."
+        },
+        {
+          "name": "Biologia",
+          "ability": "Processo Biológico",
+          "text": "Você determina como fatores como alimentação, reprodução, desenvolvimento, doenças ou alterações ambientais provavelmente afetariam um organismo ao longo do tempo."
+        },
+        {
+          "name": "Botânica",
+          "ability": "Analisar Flora",
+          "text": "Você reconhece espécies vegetais, estruturas e ciclos de desenvolvimento, podendo determinar se uma planta é comum naquele ambiente, se apresenta alterações e quais partes possuem possíveis aplicações."
+        },
+        {
+          "name": "Botânica",
+          "ability": "Identificar Propriedade",
+          "text": "Ao estudar uma planta, você pode descobrir propriedades relevantes como toxicidade, valor medicinal, capacidade nutritiva, inflamabilidade ou outras características naturais. Quando aplicável, esse conhecimento pode ser utilizado junto de Medicina, Sobrevivência ou Alquimia."
+        },
+        {
+          "name": "Botânica",
+          "ability": "Cultivo",
+          "text": "Com condições e recursos adequados, você pode determinar como cultivar, preservar ou recuperar uma espécie vegetal, incluindo quais condições ambientais são necessárias para seu desenvolvimento."
+        },
+        {
+          "name": "Zoologia",
+          "ability": "Analisar Fauna",
+          "text": "Você reconhece espécies animais e compreende sua anatomia, alimentação, reprodução e padrões naturais de comportamento. Pode deduzir características gerais de um animal mesmo sem ter encontrado aquela espécie anteriormente."
+        },
+        {
+          "name": "Zoologia",
+          "ability": "Prever Comportamento",
+          "text": "Após observar um animal por tempo suficiente, você identifica sinais de territorialidade, medo, caça, proteção ou fuga e prevê seu comportamento provável diante de um estímulo natural."
+        },
+        {
+          "name": "Zoologia",
+          "ability": "Identificar Vestígio",
+          "text": "Você reconhece animais através de pegadas, pelos, penas, fezes, marcas de alimentação, ninhos ou outros vestígios biológicos. Esse conhecimento pode ser aplicado junto de Sobrevivência para identificar aquilo que deixou um rastro."
+        },
+        {
+          "name": "Geologia",
+          "ability": "Analisar Formação",
+          "text": "Você identifica rochas, minerais, sedimentos e formações geológicas, determinando processos que provavelmente as produziram e reconhecendo elementos incomuns em sua composição."
+        },
+        {
+          "name": "Geologia",
+          "ability": "Avaliar Terreno",
+          "text": "Você identifica instabilidade, erosão, risco de deslizamento, cavidades, falhas ou outros perigos geológicos. Quando houver evidências suficientes, pode prever como determinada alteração afetaria o terreno."
+        },
+        {
+          "name": "Geologia",
+          "ability": "Prospectar",
+          "text": "Você analisa terrenos e formações para determinar onde minerais, recursos subterrâneos, água ou outros materiais naturais possuem maior probabilidade de serem encontrados."
+        }
+      ]
+    }
+  ],
+  "Crime": [
+    {
+      "name": "Segurança",
+      "description": "Você conhece mecanismos de proteção, fechaduras e técnicas de invasão física.",
+      "uses": [
+        {
+          "name": "Contornar Segurança",
+          "text": "Você analisa um sistema físico de proteção para identificar vulnerabilidades, rotas alternativas ou métodos plausíveis de superá-lo."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Fechaduras",
+          "ability": "Arrombamento Avançado",
+          "text": "Você pode tentar superar cofres, fechaduras profissionais e outros mecanismos de travamento que normalmente exigiriam conhecimento especializado. Ao utilizar [Arrombar] contra uma fechadura, reduza sua Zona de Dificuldade em um nível."
+        },
+        {
+          "name": "Alarmes",
+          "ability": "Neutralizar Alarme",
+          "text": "Você consegue identificar e tentar neutralizar mecanismos físicos de detecção ou alarme sem acioná-los."
+        },
+        {
+          "name": "Alarmes",
+          "ability": "Mapear Detecção",
+          "text": "Você analisa sensores, gatilhos e mecanismos de detecção para determinar sua área de cobertura, pontos cegos e quais ações provavelmente os acionariam."
+        }
+      ]
+    },
+    {
+      "name": "Submundo",
+      "description": "Você conhece práticas, códigos, organizações e métodos comuns do meio criminoso, sabendo como operar e buscar recursos dentro dele.",
+      "uses": [
+        {
+          "name": "Contatos Criminosos",
+          "text": "Você pode tentar localizar pessoas, serviços, informações ou mercadorias através do submundo. A disponibilidade e a dificuldade dependem da presença e do acesso ao meio criminoso na região."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Contrabando",
+          "ability": "Rota Clandestina",
+          "text": "Você consegue planejar formas de transportar ou ocultar materiais evitando fiscalizações, inspeções e controles comuns."
+        },
+        {
+          "name": "Mercado Ilegal",
+          "ability": "Mercado Negro",
+          "text": "Você consegue estimar o valor, a origem e a disponibilidade de produtos ilegais, além de saber onde procurar possíveis compradores ou vendedores."
+        },
+        {
+          "name": "Furto",
+          "ability": "Mãos Criminosas",
+          "text": "Ao utilizar [Furtar] ou [Plantar] diretamente em outro ser, você recebe +1d4. O resultado desse dado é somado ao valor do seu teste."
+        }
+      ]
+    }
+  ],
+  "Diplomacia": [
+    {
+      "name": "Relações Sociais",
+      "description": "Você conhece técnicas formais de comunicação, convivência e comportamento social.",
+      "uses": [
+        {
+          "name": "Navegar Etiqueta",
+          "text": "Você conhece protocolos, formas de tratamento e comportamentos esperados em ambientes formais ou culturalmente específicos. Nesses ambientes, pode utilizar Diplomacia para evitar gafes, abordar corretamente figuras importantes ou acessar interações que normalmente seriam barradas por protocolo."
+        },
+        {
+          "name": "Mapear Relações",
+          "text": "Após observar ou interagir com um grupo por tempo suficiente, você pode identificar quem possui influência, quem responde a quem e quais relações parecem envolver respeito, rivalidade, dependência ou tensão. Em um Sucesso Bom ou superior, o Mestre também revela qual pessoa presente parece ser o melhor caminho para obter algo específico daquele grupo."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Mediação",
+          "ability": "Encontrar Acordo",
+          "text": "Ao conversar com duas ou mais partes em conflito, você pode identificar quais exigências são realmente importantes para cada lado e quais podem ser negociadas. Em um Sucesso Normal, o Mestre revela uma condição capaz de tornar um acordo possível; em um Sucesso Bom ou superior, você também identifica uma concessão que uma das partes provavelmente aceitaria sem comprometer seus interesses principais."
+        },
+        {
+          "name": "Oratória",
+          "ability": "Mover Multidões",
+          "text": "Você pode utilizar Diplomacia para influenciar grupos e grandes plateias como um único alvo, desde que consiga se comunicar com a maioria de seus integrantes. O resultado determina a reação geral da multidão, permitindo acalmar, inspirar, convencer ou direcionar sua atenção para uma ideia ou objetivo."
+        },
+        {
+          "name": "Protocolo",
+          "ability": "Influência Institucional",
+          "text": "Você conhece os procedimentos, hierarquias e formalidades utilizados por instituições e ambientes de poder. Ao lidar com uma organização estruturada, pode utilizar Diplomacia para descobrir a forma correta de conseguir uma audiência, encaminhar um pedido, acessar alguém de posição superior ou fazer com que uma solicitação seja levada oficialmente a quem possui autoridade para resolvê-la."
+        }
+      ]
+    },
+    {
+      "name": "Humanidades",
+      "description": "Você possui conhecimentos sobre sociedades, instituições, história e relações humanas, permitindo compreender por que grupos agem de determinada forma e como estruturas sociais se organizam.",
+      "uses": [
+        {
+          "name": "Contextualizar Sociedade",
+          "text": "Você analisa costumes, conflitos, instituições e comportamentos coletivos a partir de seu contexto histórico e cultural. Em um sucesso, pode identificar a origem provável de uma tradição, tensão, divisão social ou comportamento coletivo relevante."
+        },
+        {
+          "name": "Reconhecer Estrutura Social",
+          "text": "Você identifica como poder, prestígio, classe, crenças, tradições ou funções institucionais organizam determinado grupo. Isso pode revelar quais posições possuem autoridade real, quais dependem principalmente de status e quais grupos se encontram em conflito."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Política",
+          "ability": "Ler Jogo de Poder",
+          "text": "Você identifica interesses, alianças, rivalidades e relações de dependência entre figuras ou grupos políticos. Em um Sucesso Bom ou superior, o Mestre também revela qual mudança, apoio ou perda provavelmente alteraria o equilíbrio de poder naquele cenário."
+        },
+        {
+          "name": "Direito",
+          "ability": "Interpretar Norma",
+          "text": "Você pode analisar leis, contratos, regulamentos e procedimentos para determinar direitos, obrigações, brechas ou consequências legais relevantes. Quando existir uma forma legítima de alcançar determinado objetivo através das regras existentes, um Sucesso Normal ou superior pode identificá-la."
+        },
+        {
+          "name": "Sociologia",
+          "ability": "Analisar Dinâmica Social",
+          "text": "Ao observar uma comunidade, organização ou multidão, você pode identificar tensões, divisões, valores dominantes e fatores capazes de alterar seu comportamento coletivo. Em um Sucesso Bom ou superior, pode descobrir qual acontecimento, argumento ou pressão teria maior chance de mobilizar aquele grupo."
+        }
+      ]
+    }
+  ],
+  "Enganação": [
+    {
+      "name": "Manipulação",
+      "description": "Você conhece técnicas deliberadas de construção de mentiras e controle de narrativas.",
+      "uses": [
+        {
+          "name": "Construir Mentira",
+          "text": "Com preparação, você cria uma história falsa estruturada e coerente. Realize um teste de Enganação durante a preparação; seu resultado pode ser utilizado posteriormente contra tentativas de encontrar contradições na história enquanto novas evidências não a comprometerem."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Blefe",
+          "ability": "Sustentar Mentira",
+          "text": "Na primeira vez que uma mentira preparada através de [Construir Mentira] for diretamente questionada, você pode manter o resultado obtido durante sua preparação em vez de realizar um novo teste, desde que não tenham surgido evidências concretas contra ela."
+        },
+        {
+          "name": "Golpes",
+          "ability": "Esquema",
+          "text": "Você pode preparar fraudes que dependam de múltiplas etapas, identidades, documentos ou participantes. Realize um teste de Enganação durante a preparação; seu resultado é utilizado contra tentativas de perceber inconsistências ou descobrir que o esquema é uma fraude enquanto sua estrutura permanecer intacta."
+        },
+        {
+          "name": "Jogos",
+          "ability": "Viciar Jogo",
+          "text": "Quando utilizar [Trapacear] durante um jogo de azar ou competição, o +1d4 recebido pode ser aplicado a todos os seus testes diretamente relacionados àquela partida, em vez de apenas ao próximo. O benefício termina quando você falhar em um desses testes ou sua trapaça for descoberta."
+        }
+      ]
+    },
+    {
+      "name": "Disfarce",
+      "description": "Você conhece técnicas destinadas a alterar sua aparência e assumir identidades falsas.",
+      "uses": [
+        {
+          "name": "Disfarçar",
+          "text": "Com recursos adequados, você modifica sua aparência para dificultar seu reconhecimento. Realize um teste de Enganação; o resultado é utilizado contra tentativas posteriores de reconhecê-lo através de sua aparência."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Impostura",
+          "ability": "Assumir Identidade",
+          "text": "Com materiais adequados, tempo de preparação e oportunidade de estudar o alvo, você pode assumir a aparência e imitar características de uma pessoa específica. Realize um teste de Enganação durante a preparação; seu resultado é utilizado contra tentativas de perceber inconsistências na impostura através de Sentidos ou Intuição, conforme aquilo que estiver sendo analisado."
+        },
+        {
+          "name": "Identidade Falsa",
+          "ability": "Criar Persona",
+          "text": "Você pode construir uma identidade fictícia completa, incluindo nome, história, profissão, hábitos e informações pessoais coerentes. Após preparar a persona, realize um teste de Enganação; seu resultado é utilizado contra tentativas de encontrar contradições nela durante interações comuns. A identidade não precisa corresponder a uma pessoa real."
+        }
+      ]
+    }
+  ],
+  "Furtividade": [
+    {
+      "name": "Infiltração",
+      "description": "Você possui treinamento específico para atravessar áreas vigiadas, explorar pontos cegos e evitar sistemas de vigilância.",
+      "uses": [
+        {
+          "name": "Infiltrar",
+          "text": "Ao observar uma área protegida por tempo suficiente, você pode identificar rotas, pontos cegos, horários ou comportamentos de vigilância que facilitem sua entrada. Em um sucesso, o Mestre revela uma oportunidade de infiltração existente naquele local."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Camuflagem",
+          "ability": "Adaptar Camuflagem",
+          "text": "Com tempo e materiais adequados, você pode preparar sua aparência para um ambiente específico. Enquanto permanecer em um cenário compatível com essa camuflagem, reduza em um nível a Zona de Dificuldade dos testes de Furtividade realizados enquanto estiver utilizando cobertura ou permanecendo parado."
+        },
+        {
+          "name": "Espreitamento",
+          "ability": "Perseguição Discreta",
+          "text": "Ao [Espreitar] um alvo, você pode utilizar seu Deslocamento normal em vez de reduzi-lo pela metade, desde que permaneça em condições que permitam movimentação furtiva."
+        },
+        {
+          "name": "Movimento Silencioso",
+          "ability": "Passos Fantasmas",
+          "text": "Ruídos naturais provocados pelo seu deslocamento, como pisos rangendo, folhas, cascalho ou água rasa, não denunciam sua presença nem aumentam, por si só, a dificuldade dos seus testes de Furtividade. Fontes excepcionalmente barulhentas ainda podem fazê-lo normalmente."
+        }
+      ]
+    }
+  ],
+  "Intimidação": [
+    {
+      "name": "Coerção",
+      "description": "Você conhece métodos deliberados de pressão psicológica, sabendo explorar medo, insegurança e situações de vulnerabilidade para conseguir aquilo que deseja.",
+      "uses": [
+        {
+          "name": "Explorar Fraqueza",
+          "text": "Caso conheça um medo, vínculo, segredo ou outra vulnerabilidade relevante de alguém, você pode explorá-la durante uma tentativa de [Coagir], reduzindo a Zona de Dificuldade da Rolagem em um nível. A vulnerabilidade utilizada deve ser relevante para a ameaça realizada."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Interrogatório Hostil",
+          "ability": "Quebrar Resistência",
+          "text": "Após obter sucesso em [Coagir] alguém durante um interrogatório, você pode realizar uma pergunta direta. Caso o alvo saiba a resposta e seja capaz de fornecê-la, ele não pode simplesmente permanecer em silêncio ou se recusar a responder, mas ainda pode mentir, omitir informações ou distorcer sua resposta."
+        },
+        {
+          "name": "Ameaça Velada",
+          "ability": "Subentendido",
+          "text": "Você pode [Coagir] através de insinuações, contexto ou consequências implícitas, sem formular uma ameaça explícita. Para alguém que não compreenda a situação ou seu contexto, suas palavras podem parecer completamente inofensivas."
+        }
+      ]
+    }
+  ],
+  "Intuição": [
+    {
+      "name": "Leitura Comportamental",
+      "description": "Você possui experiência ou estudo voltado à análise consciente de padrões de comportamento.",
+      "uses": [
+        {
+          "name": "Estabelecer Padrão",
+          "text": "Após observar ou interagir com alguém por tempo suficiente, você pode identificar hábitos, reações recorrentes, preferências ou comportamentos característicos daquela pessoa. O tempo necessário depende da quantidade e da qualidade das interações disponíveis."
+        },
+        {
+          "name": "Perceber Mudança",
+          "text": "Caso já tenha estabelecido um padrão sobre alguém, você pode reconhecer quando seu comportamento foge significativamente do habitual, mesmo que não saiba imediatamente o motivo dessa mudança."
+        }
+      ],
+      "specializations": []
+    }
+  ],
+  "Investigação": [
+    {
+      "name": "Criminalística",
+      "description": "Você conhece métodos técnicos de investigação criminal, preservação de evidências e reconstrução de acontecimentos.",
+      "uses": [
+        {
+          "name": "Processar Cena",
+          "text": "Ao investigar uma cena de crime ou violência, você aplica métodos criminalísticos para reconhecer vestígios relevantes, possíveis pontos de entrada ou saída e sinais de que a cena foi adulterada, limpa ou organizada deliberadamente. Quanto maior sua Margem de Sucesso, mais completa e precisa pode ser a reconstrução."
+        },
+        {
+          "name": "Coletar Evidência",
+          "text": "Com os materiais apropriados, você pode coletar, armazenar e preservar vestígios sem contaminá-los ou comprometer informações importantes."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Vestígios",
+          "ability": "Comparar Vestígios",
+          "text": "Você pode comparar duas ou mais evidências físicas, como sangue, fibras, impressões, resíduos ou marcas, para determinar se apresentam características compatíveis e se provavelmente possuem a mesma origem ou relação com o mesmo acontecimento."
+        },
+        {
+          "name": "Balística",
+          "ability": "Análise Balística",
+          "text": "A partir de projéteis, cápsulas, impactos ou ferimentos compatíveis, você pode reconstruir aspectos de um disparo, como trajetória, direção, distância aproximada e provável posição do atirador. Com evidências suficientes, também pode determinar se diferentes disparos provavelmente foram realizados pela mesma arma."
+        },
+        {
+          "name": "Entrevista Investigativa",
+          "ability": "Reconstruir Depoimento",
+          "text": "Ao conduzir uma entrevista com o objetivo de reconstruir acontecimentos, você pode utilizar Investigação no lugar da Perícia social normalmente exigida. Em vez de persuadir, intimidar ou manipular o alvo, você confronta respostas com horários, evidências e informações conhecidas para identificar contradições, lacunas e inconsistências no relato."
+        }
+      ]
+    }
+  ],
+  "Linguística": [
+    {
+      "name": "Idiomas",
+      "description": "Você possui formação voltada ao aprendizado e utilização prática de diferentes idiomas.",
+      "uses": [
+        {
+          "name": "Comunicação Rudimentar",
+          "text": "Após observar ou interagir suficientemente com um idioma desconhecido, você pode utilizar Linguística para compreender e construir frases simples através dele, utilizando padrões, vocabulário e estruturas que tenha assimilado. Conceitos complexos, técnicos ou abstratos continuam exigindo conhecimento adequado do idioma. A Zona de Dificuldade e a Margem Necessária dependem da complexidade da comunicação e do contato que você teve com o idioma."
+        },
+        {
+          "name": "Assimilar Idioma",
+          "text": "Você possui facilidade em internalizar vocabulário, pronúncia e estruturas linguísticas. Ao aprender um novo idioma através de Interlúdios, reduza pela metade a quantidade de cenas necessárias para adquirir sua Especialização, mínimo de uma."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Idioma Específico",
+          "ability": "Fluência",
+          "text": "Escolha um idioma ao adquirir esta Especialização. Você consegue falar, compreender, ler e escrever normalmente nesse idioma sem necessidade de testes em situações comuns. Textos extremamente técnicos, arcaicos, codificados ou deliberadamente ambíguos ainda podem exigir testes de Linguística."
+        }
+      ]
+    },
+    {
+      "name": "Criptografia",
+      "description": "Você conhece métodos utilizados para ocultar, codificar e recuperar informações através de cifras, códigos e padrões.",
+      "uses": [
+        {
+          "name": "Criptoanalisar",
+          "text": "Você analisa uma mensagem codificada para identificar padrões, sua estrutura e possíveis métodos utilizados em sua construção. Com informações ou amostras suficientes, pode tentar decifrá-la mesmo sem possuir a chave original. A dificuldade depende da complexidade do método, da quantidade de informação disponível e do conhecimento que você possui sobre sua construção."
+        },
+        {
+          "name": "Codificar",
+          "text": "Você cria uma cifra ou código para proteger uma mensagem. Faça um teste de Linguística durante sua criação; o resultado pode ser utilizado posteriormente contra tentativas de decifrar a mensagem sem possuir sua chave ou conhecer o método utilizado."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Cifras",
+          "ability": "Reconstruir Chave",
+          "text": "Ao analisar diferentes mensagens produzidas pelo mesmo método de codificação, você pode identificar padrões recorrentes e tentar reconstruir sua chave ou lógica. Em caso de sucesso, você passa a compreender aquele método, podendo decifrar outras mensagens produzidas através da mesma chave ou estrutura enquanto ela permanecer inalterada."
+        },
+        {
+          "name": "Esteganografia",
+          "ability": "Mensagem Oculta",
+          "text": "Você pode esconder uma mensagem dentro de um texto, imagem, símbolo, objeto ou outra forma aparentemente comum de informação. Faça um teste de Linguística ao ocultá-la; o resultado pode ser utilizado posteriormente contra tentativas de perceber que existe uma mensagem escondida. Uma vez descoberta, seu conteúdo ainda precisa ser interpretado ou decifrado normalmente."
+        }
+      ]
+    }
+  ],
+  "Medicina": [
+    {
+      "name": "Saúde",
+      "description": "Você possui formação médica e conhecimento profissional sobre anatomia, fisiologia, doenças e tratamentos.",
+      "uses": [
+        {
+          "name": "Tratamento Clínico",
+          "text": "Você pode diagnosticar e tratar doenças, traumas e outras condições que exijam conhecimento médico profissional, determinando procedimentos, cuidados e acompanhamento adequados. A dificuldade depende da complexidade da condição e dos recursos disponíveis."
+        },
+        {
+          "name": "Analisar Exame",
+          "text": "Você interpreta exames, registros clínicos e sinais fisiológicos complexos para obter informações que não poderiam ser determinadas apenas pela observação direta do paciente."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Cirurgia",
+          "ability": "Operar",
+          "text": "Com ferramentas, ambiente e tempo apropriados, você pode realizar procedimentos invasivos para tratar ferimentos, remover corpos estranhos, reparar estruturas internas ou realizar outras intervenções cirúrgicas complexas."
+        },
+        {
+          "name": "Patologia",
+          "ability": "Análise Patológica",
+          "text": "Você examina tecidos, órgãos, amostras ou outros sinais biológicos para identificar alterações provocadas por doenças, degenerações e processos anormais no organismo."
+        },
+        {
+          "name": "Patologia",
+          "ability": "Examinar Cadáver",
+          "text": "Você pode realizar uma análise médica de um cadáver para determinar sua provável causa e tempo aproximado de morte, além de identificar ferimentos, doenças e outras alterações relevantes para compreender as condições em que ela ocorreu."
+        },
+        {
+          "name": "Farmacologia",
+          "ability": "Prescrever",
+          "text": "Você conhece os efeitos, doses, contraindicações e interações de medicamentos. Após avaliar uma condição, pode determinar quais medicamentos conhecidos são apropriados para tratá-la e reconhecer combinações potencialmente perigosas ou inadequadas."
+        },
+        {
+          "name": "Toxicologia",
+          "ability": "Tratar Intoxicação",
+          "text": "Você pode identificar os efeitos de venenos, drogas e outras substâncias nocivas sobre o organismo e determinar métodos apropriados de tratamento, neutralização ou utilização de antídotos quando existirem."
+        }
+      ]
+    }
+  ],
+  "Monstrologia": [
+    {
+      "name": "Estudos Monstruosos",
+      "description": "Você possui estudo sistemático sobre criaturas anormais, seus padrões, origens e características, permitindo analisar seres desconhecidos além daquilo que pode ser deduzido apenas pela observação.",
+      "uses": [
+        {
+          "name": "Comparar Espécime",
+          "text": "Quando encontrar uma criatura desconhecida, você pode compará-la com registros e grupos previamente estudados para determinar possíveis relações, origens ou características compartilhadas. Quanto mais evidências e informações estiverem disponíveis, mais precisa pode ser sua análise."
+        },
+        {
+          "name": "Registrar Criatura",
+          "text": "Após estudar uma criatura, seus rastros ou restos por tempo suficiente, você pode produzir um registro sobre ela. Em encontros futuros com criaturas semelhantes, informações já confirmadas não precisam ser descobertas novamente através de Monstrologia."
+        }
+      ],
+      "specializations": []
+    }
+  ],
+  "Pilotagem": [
+    {
+      "name": "Condução",
+      "description": "Você possui treinamento técnico para compreender o comportamento, limitações e operação de diferentes tipos de veículos.",
+      "uses": [
+        {
+          "name": "Avaliar Veículo",
+          "text": "Após conduzir ou examinar um veículo, você pode identificar características e problemas que afetem diretamente sua condução, como resposta dos controles, estabilidade, perda de desempenho ou danos capazes de comprometer sua pilotagem."
+        },
+        {
+          "name": "Condução Técnica",
+          "text": "Você pode tentar operar veículos com os quais não possui familiaridade, desde que consiga compreender seus controles e princípios de funcionamento. Veículos cuja operação exija formação específica ainda podem exigir uma Especialização apropriada."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Carros",
+          "ability": "Controle Automotivo",
+          "text": "Você possui domínio técnico sobre a condução de automóveis. Ao realizar uma manobra que envolva perda deliberada de aderência, frenagem brusca, mudança repentina de direção ou controle do veículo em derrapagem, reduza em um nível a Zona de Dificuldade do teste de Pilotagem."
+        },
+        {
+          "name": "Motocicletas",
+          "ability": "Recuperar Controle",
+          "text": "Ao conduzir uma motocicleta, quando uma falha faria você cair ou perder seu controle, você pode realizar imediatamente um novo teste de Pilotagem para tentar permanecer montado e recuperar o controle. As demais consequências da falha original ainda podem ocorrer."
+        },
+        {
+          "name": "Aeronaves",
+          "ability": "Voo",
+          "text": "Você possui treinamento necessário para operar aeronaves, podendo realizar procedimentos de decolagem, pouso, navegação aérea e manobras próprias de voo."
+        },
+        {
+          "name": "Embarcações",
+          "ability": "Navegação Náutica",
+          "text": "Você possui treinamento para operar embarcações e utilizar instrumentos, mapas e referências ambientais para planejar rotas, determinar sua posição e navegar mesmo sem referências terrestres visíveis."
+        },
+        {
+          "name": "Veículos Pesados",
+          "ability": "Operação Pesada",
+          "text": "Você pode operar caminhões, veículos industriais, máquinas de grande porte e outros veículos que exijam controle especializado. O tamanho, peso ou inércia próprios desses veículos não aumentam por si só a Zona de Dificuldade dos seus testes de Pilotagem."
+        }
+      ]
+    }
+  ],
+  "Religião": [
+    {
+      "name": "Teologia",
+      "description": "Você possui estudo formal sobre sistemas religiosos, doutrinas, tradições e práticas espirituais.",
+      "uses": [
+        {
+          "name": "Analisar Doutrina",
+          "text": "Você interpreta textos, ensinamentos e estruturas religiosas complexas, identificando princípios, contradições, diferentes interpretações e relações entre doutrinas."
+        },
+        {
+          "name": "Estudar Ritual",
+          "text": "Você analisa a estrutura e os procedimentos de uma cerimônia religiosa para determinar sua finalidade, tradição de origem e os elementos, etapas ou condições necessários para sua realização."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Mitologia",
+          "ability": "Identificar Mito",
+          "text": "Você relaciona símbolos, criaturas, acontecimentos, objetos e personagens a narrativas mitológicas conhecidas. Quando encontrar algo diretamente relacionado a um mito conhecido, pode reconhecer suas referências e características associadas."
+        },
+        {
+          "name": "Rituais",
+          "ability": "Conduzir Ritual",
+          "text": "Você pode executar corretamente cerimônias religiosas cujos procedimentos conheça. Caso o ritual exija componentes, condições ou etapas específicas, você sabe como incorporá-los corretamente à cerimônia."
+        },
+        {
+          "name": "Cultos",
+          "ability": "Analisar Culto",
+          "text": "Você reconhece estruturas, códigos, práticas, símbolos e sinais utilizados por grupos religiosos fechados, secretos ou clandestinos. Ao estudar um culto, pode identificar padrões de organização, hierarquias e possíveis funções exercidas por seus membros."
+        },
+        {
+          "name": "Teologia Comparada",
+          "ability": "Comparar Tradições",
+          "text": "Ao analisar duas ou mais religiões, cultos ou tradições, você pode identificar influências, origens, princípios ou práticas compartilhadas entre elas, reconhecendo também onde suas interpretações divergem. Quando uma tradição desconhecida apresentar elementos claramente relacionados a outra que você conheça, essas relações podem ser utilizadas para deduzir informações sobre ela."
+        }
+      ]
+    }
+  ],
+  "Sobrevivência": [
+    {
+      "name": "Vida Selvagem",
+      "description": "Você possui conhecimento prático sobre sobrevivência utilizando diretamente os recursos e características do ambiente natural.",
+      "uses": [
+        {
+          "name": "Explorar Ambiente",
+          "text": "Você analisa um ambiente natural para identificar recursos disponíveis, perigos, condições favoráveis e características relevantes para sua sobrevivência."
+        },
+        {
+          "name": "Improvisar",
+          "text": "Você utiliza recursos encontrados no ambiente para produzir ferramentas, utensílios ou soluções simples para necessidades imediatas. A dificuldade depende dos recursos disponíveis e da complexidade daquilo que pretende produzir."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Rastreamento",
+          "ability": "Ler Rastro",
+          "text": "Ao obter um Sucesso Bom ou superior em [Rastrear], você também descobre uma informação adicional sobre aquilo que está seguindo, como quantidade, velocidade, estado físico ou tempo aproximado desde sua passagem."
+        },
+        {
+          "name": "Ecologia",
+          "ability": "Ler Ecossistema",
+          "text": "Você interpreta as relações entre fauna, flora, recursos e condições ambientais para identificar informações úteis à sobrevivência, como áreas provavelmente seguras, disponibilidade de recursos, presença incomum de predadores ou sinais de alterações recentes no ambiente."
+        },
+        {
+          "name": "Forrageamento",
+          "ability": "Coleta Eficiente",
+          "text": "Ao obter sucesso em [Forragear], você consegue aproveitar melhor os recursos encontrados, obtendo uma quantidade ou qualidade maior quando o ambiente possuir recursos suficientes para isso."
+        }
+      ]
+    },
+    {
+      "name": "Ambientes",
+      "description": "Você possui experiência em reconhecer e enfrentar condições ambientais capazes de dificultar a sobrevivência.",
+      "uses": [
+        {
+          "name": "Adaptar-se",
+          "text": "Após permanecer e se preparar adequadamente para um ambiente, você pode estabelecer uma rotina de sobrevivência, reconhecendo os equipamentos, recursos e precauções necessários para permanecer nele. Enquanto as condições se mantiverem estáveis, situações comuns daquele ambiente não exigem novos testes apenas para manter essa rotina."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Ambientes Extremos",
+          "ability": "Preparação Extrema",
+          "text": "Você sabe se preparar para condições ambientais particularmente severas, como frio ou calor intensos, grandes altitudes e outras situações em que exposição prolongada representa risco direto. Ao possuir equipamentos e recursos apropriados, condições previsíveis desse tipo não aumentam por si só a Zona de Dificuldade dos seus testes de Sobrevivência."
+        },
+        {
+          "name": "Regiões Urbanas",
+          "ability": "Sobrevivência Urbana",
+          "text": "Você sabe utilizar estruturas, recursos descartados e características de áreas urbanas para encontrar abrigo, obter recursos e se orientar quando o objetivo for sobreviver utilizando aquilo que a cidade oferece."
+        },
+        {
+          "name": "Subterrâneos",
+          "ability": "Exploração Subterrânea",
+          "text": "Você reconhece riscos próprios de cavernas e ambientes subterrâneos, como instabilidade, passagens perigosas, alterações de ventilação e sinais de possíveis rotas, permitindo avaliar esses locais mesmo sem referências da superfície."
+        },
+        {
+          "name": "Viridis",
+          "ability": "Desbravador de Viridis",
+          "text": "Você possui experiência prática com os ecossistemas anormais de Viridis, podendo reconhecer e tomar precauções contra perigos ambientais característicos da região. Reduza em um nível a Zona de Dificuldade dos testes de Sobrevivência diretamente relacionados a esses perigos."
+        }
+      ]
+    }
+  ],
+  "Tecnologia": [
+    {
+      "name": "Computação",
+      "description": "Você possui conhecimento sobre sistemas digitais, programação, redes e computadores.",
+      "uses": [
+        {
+          "name": "Hackear",
+          "text": "Você pode tentar invadir, contornar ou manipular sistemas digitais protegidos. A Zona de Dificuldade e a Margem Necessária dependem da segurança do sistema e dos recursos disponíveis."
+        },
+        {
+          "name": "Analisar Sistema Digital",
+          "text": "Você analisa a estrutura e o funcionamento de um sistema computacional para compreender seus componentes, permissões, processos e possíveis pontos problemáticos."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Programação",
+          "ability": "Manipular Código",
+          "text": "Você pode criar, modificar ou analisar softwares, scripts e algoritmos complexos, desde que possua acesso e recursos adequados."
+        },
+        {
+          "name": "Cibersegurança",
+          "ability": "Explorar Vulnerabilidade",
+          "text": "Com acesso ou informações suficientes sobre um sistema, você pode procurar uma vulnerabilidade em sua segurança. Ao encontrá-la, determine qual camada ou proteção ela permite contornar; enquanto a vulnerabilidade permanecer válida, ela pode ser explorada sem precisar ser descoberta novamente."
+        },
+        {
+          "name": "Cibersegurança",
+          "ability": "Plantar Backdoor",
+          "text": "Após obter acesso a um sistema através de [Hackear], você pode realizar outro teste de Tecnologia para estabelecer uma forma persistente de acessá-lo posteriormente. Alterações relevantes na segurança do sistema podem comprometer ou remover esse acesso."
+        },
+        {
+          "name": "Redes",
+          "ability": "Rastrear Rede",
+          "text": "Você pode mapear dispositivos, conexões, rotas e fluxos de informação dentro de uma infraestrutura digital, identificando como seus diferentes pontos se comunicam."
+        },
+        {
+          "name": "Hardware",
+          "ability": "Intervenção Física",
+          "text": "Você pode acessar e modificar diretamente os componentes físicos de um sistema computacional para alterar sua configuração, substituir componentes ou realizar intervenções que não seriam possíveis apenas através de software."
+        }
+      ]
+    },
+    {
+      "name": "Engenharia",
+      "description": "Você possui conhecimentos sobre construção, funcionamento e modificação de máquinas, dispositivos e estruturas artificiais.",
+      "uses": [
+        {
+          "name": "Projetar",
+          "text": "Com tempo e informações suficientes, você pode elaborar um projeto para construir ou modificar uma máquina, dispositivo ou estrutura dentro dos conhecimentos que possui. A complexidade do projeto determina os recursos, tempo e Margem Necessária."
+        },
+        {
+          "name": "Modificar Equipamento",
+          "text": "Com ferramentas e materiais adequados, você pode alterar deliberadamente o funcionamento de uma máquina ou dispositivo. Modificações mais complexas podem exigir planejamento, componentes específicos ou conhecimento especializado."
+        }
+      ],
+      "specializations": [
+        {
+          "name": "Eletrônica",
+          "ability": "Modificar Circuito",
+          "text": "Você pode analisar, reparar ou alterar circuitos e sistemas eletrônicos complexos, trabalhando diretamente com seus componentes e conexões."
+        },
+        {
+          "name": "Mecânica",
+          "ability": "Modificar Mecanismo",
+          "text": "Você pode analisar, reparar ou modificar motores, engrenagens, transmissões, sistemas hidráulicos e outros mecanismos físicos complexos."
+        },
+        {
+          "name": "Estruturas",
+          "ability": "Analisar Estrutura",
+          "text": "Você pode analisar construções e estruturas artificiais para identificar sua estabilidade, distribuição de cargas, pontos de suporte e vulnerabilidades estruturais. Quando utilizar diretamente uma informação descoberta dessa forma em um teste relacionado à estrutura, reduza em um nível sua Zona de Dificuldade."
+        }
+      ]
+    }
+  ]
+};
+
+const FEATURE_STORAGE_KEY = "abyss-rpg-selected-features-v1";
+const FEATURE_CATALOG = Object.entries(COMPETENCY_TREES).flatMap(([skillName, competencies]) =>
+  competencies.flatMap((competency) => {
+    const competencyId = makeFeatureId("competency", skillName, competency.name);
+    const competencyFeature = {
+      id: competencyId,
+      type: "competency",
+      skillName,
+      name: competency.name,
+      description: competency.description,
+      uses: competency.uses,
+      specializationCount: competency.specializations.length,
+    };
+
+    const specializationFeatures = competency.specializations.map((specialization) => ({
+      id: makeFeatureId("specialization", skillName, competency.name, specialization.name, specialization.ability),
+      type: "specialization",
+      skillName,
+      competencyName: competency.name,
+      name: specialization.name,
+      ability: specialization.ability,
+      description: specialization.text,
+    }));
+
+    return [competencyFeature, ...specializationFeatures];
+  }),
+);
+const FEATURE_BY_ID = new Map(FEATURE_CATALOG.map((feature) => [feature.id, feature]));
+
 const TRAINING = {
   leigo: { label: "Leigo", die: 8 },
   adepto: { label: "Adepto", die: 12 },
@@ -1820,10 +3279,38 @@ const skillInfoDescription = document.querySelector("#skill-info-description");
 const skillInfoNotes = document.querySelector("#skill-info-notes");
 const skillInfoUsesSection = document.querySelector("#skill-info-uses-section");
 const skillInfoUses = document.querySelector("#skill-info-uses");
+const openConstellationButton = document.querySelector("#open-constellation");
+const constellationModal = document.querySelector("#constellation-modal");
+const constellationDialog = document.querySelector("#constellation-dialog");
+const constellationAttribute = document.querySelector("#constellation-attribute");
+const constellationTitle = document.querySelector("#constellation-title");
+const constellationTree = document.querySelector("#constellation-tree");
+const constellationEmpty = document.querySelector("#constellation-empty");
+const featureDetailModal = document.querySelector("#feature-detail-modal");
+const featureDetailDialog = document.querySelector("#feature-detail-dialog");
+const featureDetailType = document.querySelector("#feature-detail-type");
+const featureDetailTitle = document.querySelector("#feature-detail-title");
+const featureDetailContext = document.querySelector("#feature-detail-context");
+const featureDetailDescription = document.querySelector("#feature-detail-description");
+const featureDetailAbility = document.querySelector("#feature-detail-ability");
+const featureDetailAbilityName = document.querySelector("#feature-detail-ability-name");
+const featureDetailAbilityText = document.querySelector("#feature-detail-ability-text");
+const featureDetailUsesSection = document.querySelector("#feature-detail-uses-section");
+const featureDetailUses = document.querySelector("#feature-detail-uses");
+const featureToggleButton = document.querySelector("#feature-toggle");
+const selectedFeaturesCount = document.querySelector("#selected-features-count");
+const selectedFeaturesEmpty = document.querySelector("#selected-features-empty");
+const selectedFeaturesList = document.querySelector("#selected-features-list");
+const selectedFeatureIds = new Set();
 let rollInterval;
 let rollTimeout;
 let activeRollButton;
 let activeSkillInfoButton;
+let activeSkillInfoIndex = null;
+let activeConstellationTrigger;
+let activeFeatureTrigger;
+let activeFeatureId = null;
+let constellationDrawFrame;
 let selectedDifficulty = "medium";
 
 function dieSvg(faces, value = faces) {
@@ -1954,6 +3441,18 @@ function normalizeSearchTerm(value) {
     .trim();
 }
 
+function makeFeatureId(...parts) {
+  return parts
+    .map((part) => normalizeSearchTerm(part).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""))
+    .join("--");
+}
+
+function syncModalLock() {
+  const hasOpenModal = [rollModal, skillInfoModal, constellationModal, featureDetailModal]
+    .some((modal) => !modal.hidden);
+  document.body.classList.toggle("modal-open", hasOpenModal);
+}
+
 function updateTrainingIndicator(row, trainingKey) {
   row.dataset.training = trainingKey;
   row.classList.toggle("is-adepto", trainingKey === "adepto");
@@ -1991,12 +3490,309 @@ function clearSkillFilters() {
   skillSearchInput.focus();
 }
 
+function featureDisplayName(feature) {
+  return feature.type === "specialization"
+    ? `${feature.name} — ${feature.ability}`
+    : feature.name;
+}
+
+function createUseCard(use) {
+  const card = document.createElement("article");
+  card.className = "skill-use-card";
+
+  const heading = document.createElement("h4");
+  heading.textContent = use.name;
+
+  const description = document.createElement("p");
+  description.textContent = use.text;
+
+  card.append(heading, description);
+  return card;
+}
+
+function loadSelectedFeatures() {
+  selectedFeatureIds.clear();
+  try {
+    const stored = JSON.parse(window.localStorage.getItem(FEATURE_STORAGE_KEY) || "[]");
+    if (!Array.isArray(stored)) return;
+    stored.forEach((featureId) => {
+      if (FEATURE_BY_ID.has(featureId)) selectedFeatureIds.add(featureId);
+    });
+  } catch {
+    // A ficha continua funcional mesmo se o navegador bloquear armazenamento local.
+  }
+}
+
+function persistSelectedFeatures() {
+  try {
+    window.localStorage.setItem(FEATURE_STORAGE_KEY, JSON.stringify([...selectedFeatureIds]));
+  } catch {
+    // Mantém as escolhas durante a sessão quando o armazenamento não está disponível.
+  }
+}
+
+function renderSelectedFeatures() {
+  const selected = FEATURE_CATALOG.filter((feature) => selectedFeatureIds.has(feature.id));
+  selectedFeaturesCount.textContent = `${selected.length} ${selected.length === 1 ? "adicionada" : "adicionadas"}`;
+  selectedFeaturesEmpty.hidden = selected.length !== 0;
+  selectedFeaturesList.hidden = selected.length === 0;
+  selectedFeaturesList.replaceChildren();
+
+  selected.forEach((feature) => {
+    const card = document.createElement("article");
+    card.className = "selected-feature-card";
+    card.dataset.featureId = feature.id;
+
+    const star = document.createElement("span");
+    star.className = "selected-feature-star";
+    star.setAttribute("aria-hidden", "true");
+    star.textContent = "✦";
+
+    const copy = document.createElement("div");
+    copy.className = "selected-feature-copy";
+
+    const metadata = document.createElement("small");
+    metadata.textContent = feature.type === "competency"
+      ? `Competência · ${feature.skillName}`
+      : `Especialização · ${feature.skillName} › ${feature.competencyName}`;
+
+    const name = document.createElement("button");
+    name.className = "selected-feature-name";
+    name.type = "button";
+    name.dataset.openSelectedFeature = feature.id;
+    name.textContent = featureDisplayName(feature);
+
+    const summary = document.createElement("p");
+    summary.textContent = feature.description;
+
+    const remove = document.createElement("button");
+    remove.className = "selected-feature-remove";
+    remove.type = "button";
+    remove.dataset.removeSelectedFeature = feature.id;
+    remove.textContent = "Remover";
+    remove.setAttribute("aria-label", `Remover ${featureDisplayName(feature)} da ficha`);
+
+    copy.append(metadata, name, summary);
+    card.append(star, copy, remove);
+    selectedFeaturesList.append(card);
+  });
+}
+
+function syncFeatureDetailState() {
+  if (!activeFeatureId) return;
+  const isAdded = selectedFeatureIds.has(activeFeatureId);
+  featureDetailDialog.classList.toggle("is-added", isAdded);
+  featureToggleButton.classList.toggle("is-added", isAdded);
+  featureToggleButton.setAttribute("aria-pressed", String(isAdded));
+  featureToggleButton.querySelector("span").textContent = isAdded ? "Remover da ficha" : "Adicionar à ficha";
+}
+
+function scheduleConstellationDraw() {
+  window.cancelAnimationFrame(constellationDrawFrame);
+  constellationDrawFrame = window.requestAnimationFrame(drawConstellationConnections);
+}
+
+function refreshConstellationSelectionStates() {
+  constellationTree.querySelectorAll("[data-feature-id]").forEach((node) => {
+    node.classList.toggle("is-added", selectedFeatureIds.has(node.dataset.featureId));
+  });
+  if (!constellationModal.hidden) scheduleConstellationDraw();
+}
+
+function toggleFeatureSelection(featureId) {
+  if (!FEATURE_BY_ID.has(featureId)) return;
+  if (selectedFeatureIds.has(featureId)) {
+    selectedFeatureIds.delete(featureId);
+  } else {
+    selectedFeatureIds.add(featureId);
+  }
+  persistSelectedFeatures();
+  renderSelectedFeatures();
+  refreshConstellationSelectionStates();
+  syncFeatureDetailState();
+}
+
+function createConstellationNode(feature, type) {
+  const button = document.createElement("button");
+  button.className = `constellation-node is-${type}`;
+  button.type = "button";
+  button.dataset.featureId = feature.id;
+  button.dataset.openFeature = feature.id;
+  button.classList.toggle("is-added", selectedFeatureIds.has(feature.id));
+  button.setAttribute("aria-label", `Abrir compêndio de ${featureDisplayName(feature)}`);
+
+  const star = document.createElement("span");
+  star.className = "constellation-node-star";
+  star.setAttribute("aria-hidden", "true");
+  star.textContent = "✦";
+
+  const kind = document.createElement("small");
+  kind.textContent = feature.type === "competency" ? "Competência" : "Especialização";
+
+  const name = document.createElement("strong");
+  name.textContent = feature.name;
+
+  const detail = document.createElement("em");
+  if (feature.type === "competency") {
+    const useLabel = feature.uses.length === 1 ? "uso" : "usos";
+    const specializationLabel = feature.specializationCount === 1 ? "especialização" : "especializações";
+    detail.textContent = `${feature.uses.length} ${useLabel} · ${feature.specializationCount} ${specializationLabel}`;
+  } else {
+    detail.textContent = `[${feature.ability}]`;
+  }
+
+  button.append(star, kind, name, detail);
+  return button;
+}
+
+function renderConstellation(skill) {
+  const competencies = COMPETENCY_TREES[skill.name] || [];
+  constellationTree.replaceChildren();
+  constellationEmpty.hidden = competencies.length !== 0;
+  constellationTree.hidden = competencies.length === 0;
+
+  competencies.forEach((competency) => {
+    const branch = document.createElement("section");
+    branch.className = "constellation-branch";
+
+    const connections = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    connections.classList.add("constellation-connections");
+    connections.setAttribute("aria-hidden", "true");
+
+    const core = document.createElement("div");
+    core.className = "constellation-core";
+    const competencyId = makeFeatureId("competency", skill.name, competency.name);
+    const competencyFeature = FEATURE_BY_ID.get(competencyId);
+    core.append(createConstellationNode(competencyFeature, "competency"));
+
+    const children = document.createElement("div");
+    children.className = "constellation-children";
+    competency.specializations.forEach((specialization) => {
+      const specializationId = makeFeatureId(
+        "specialization",
+        skill.name,
+        competency.name,
+        specialization.name,
+        specialization.ability,
+      );
+      children.append(createConstellationNode(FEATURE_BY_ID.get(specializationId), "specialization"));
+    });
+    children.hidden = competency.specializations.length === 0;
+
+    branch.append(connections, core, children);
+    constellationTree.append(branch);
+  });
+
+  scheduleConstellationDraw();
+}
+
+function drawConstellationConnections() {
+  if (constellationModal.hidden) return;
+
+  constellationTree.querySelectorAll(".constellation-branch").forEach((branch) => {
+    const svg = branch.querySelector(".constellation-connections");
+    const core = branch.querySelector(".constellation-node.is-competency");
+    const children = [...branch.querySelectorAll(".constellation-node.is-specialization")];
+    svg.replaceChildren();
+    if (!core || children.length === 0) return;
+
+    const branchRect = branch.getBoundingClientRect();
+    const coreRect = core.getBoundingClientRect();
+    const width = branch.clientWidth;
+    const height = branch.clientHeight;
+    svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+    svg.setAttribute("preserveAspectRatio", "none");
+
+    const startX = coreRect.left - branchRect.left + coreRect.width / 2;
+    const startY = coreRect.bottom - branchRect.top;
+    children.forEach((child) => {
+      const childRect = child.getBoundingClientRect();
+      const endX = childRect.left - branchRect.left + childRect.width / 2;
+      const endY = childRect.top - branchRect.top;
+      const bendY = startY + (endY - startY) * 0.5;
+      const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+      path.setAttribute("d", `M ${startX} ${startY} C ${startX} ${bendY}, ${endX} ${bendY}, ${endX} ${endY}`);
+      path.classList.toggle("is-lit", selectedFeatureIds.has(child.dataset.featureId));
+      svg.append(path);
+    });
+  });
+}
+
+function openConstellation(triggerButton) {
+  const skill = SKILLS[activeSkillInfoIndex];
+  if (!skill || !(COMPETENCY_TREES[skill.name] || []).length) return;
+
+  activeConstellationTrigger = triggerButton;
+  constellationAttribute.textContent = skill.attribute;
+  constellationTitle.textContent = skill.name;
+  renderConstellation(skill);
+  skillInfoModal.inert = true;
+  constellationModal.hidden = false;
+  syncModalLock();
+  constellationDialog.querySelector(".constellation-content").scrollTop = 0;
+  constellationDialog.focus();
+  scheduleConstellationDraw();
+}
+
+function closeConstellation() {
+  constellationModal.hidden = true;
+  skillInfoModal.inert = false;
+  syncModalLock();
+  if (activeConstellationTrigger?.isConnected) activeConstellationTrigger.focus();
+}
+
+function openFeatureDetail(featureId, triggerButton) {
+  const feature = FEATURE_BY_ID.get(featureId);
+  if (!feature) return;
+
+  activeFeatureId = featureId;
+  activeFeatureTrigger = triggerButton;
+  featureDetailType.textContent = feature.type === "competency" ? "Competência" : "Especialização";
+  featureDetailTitle.textContent = feature.name;
+  featureDetailContext.textContent = feature.type === "competency"
+    ? feature.skillName
+    : `${feature.skillName} · ${feature.competencyName}`;
+
+  const isCompetency = feature.type === "competency";
+  featureDetailDescription.hidden = !isCompetency;
+  featureDetailDescription.textContent = isCompetency ? feature.description : "";
+  featureDetailAbility.hidden = isCompetency;
+  featureDetailUsesSection.hidden = !isCompetency || feature.uses.length === 0;
+  featureDetailUses.replaceChildren();
+
+  if (isCompetency) {
+    feature.uses.forEach((use) => featureDetailUses.append(createUseCard(use)));
+  } else {
+    featureDetailAbilityName.textContent = feature.ability;
+    featureDetailAbilityText.textContent = feature.description;
+  }
+
+  syncFeatureDetailState();
+  if (!constellationModal.hidden) constellationModal.inert = true;
+  featureDetailModal.hidden = false;
+  syncModalLock();
+  featureDetailDialog.querySelector(".feature-detail-content").scrollTop = 0;
+  featureDetailDialog.focus();
+}
+
+function closeFeatureDetail() {
+  featureDetailModal.hidden = true;
+  constellationModal.inert = false;
+  syncModalLock();
+  if (activeFeatureTrigger?.isConnected) {
+    activeFeatureTrigger.focus();
+  } else if (!constellationModal.hidden) {
+    constellationDialog.focus();
+  }
+}
+
 function openSkillInfo(skillIndex, triggerButton) {
   const skill = SKILLS[skillIndex];
   const details = SKILL_DETAILS[skill?.name];
   if (!skill || !details) return;
 
   activeSkillInfoButton = triggerButton;
+  activeSkillInfoIndex = skillIndex;
   skillInfoAttribute.textContent = skill.attribute;
   skillInfoTitle.textContent = skill.name;
   skillInfoDescription.textContent = details.description;
@@ -2027,15 +3823,24 @@ function openSkillInfo(skillIndex, triggerButton) {
   });
   skillInfoUsesSection.hidden = details.uses.length === 0;
 
+  const competencyCount = (COMPETENCY_TREES[skill.name] || []).length;
+  openConstellationButton.disabled = competencyCount === 0;
+  openConstellationButton.querySelector("span").textContent = competencyCount === 0
+    ? "Sem Competências"
+    : "Constelação";
+  openConstellationButton.title = competencyCount === 0
+    ? "Nenhuma Competência cadastrada para esta perícia"
+    : `Abrir ${competencyCount === 1 ? "a Competência" : "as Competências"} de ${skill.name}`;
+
   skillInfoModal.hidden = false;
-  document.body.classList.add("modal-open");
+  syncModalLock();
   skillInfoDialog.querySelector(".skill-info-content").scrollTop = 0;
   skillInfoDialog.focus();
 }
 
 function closeSkillInfo() {
   skillInfoModal.hidden = true;
-  document.body.classList.remove("modal-open");
+  syncModalLock();
   if (activeSkillInfoButton?.isConnected) activeSkillInfoButton.focus();
 }
 
@@ -2176,7 +3981,7 @@ function clearRollTimers() {
 function closeRollModal() {
   clearRollTimers();
   rollModal.hidden = true;
-  document.body.classList.remove("modal-open");
+  syncModalLock();
   if (activeRollButton?.isConnected) activeRollButton.focus();
 }
 
@@ -2230,7 +4035,7 @@ function rollSkill(skillIndex, triggerButton) {
   rollingDie.classList.add("is-rolling");
 
   rollModal.hidden = false;
-  document.body.classList.add("modal-open");
+  syncModalLock();
   rollDialog.focus();
 
   rollInterval = window.setInterval(() => {
@@ -2293,12 +4098,42 @@ function trapDialogFocus(event) {
 }
 
 function trapSkillInfoFocus(event) {
-  if (event.key !== "Tab" || skillInfoModal.hidden) return;
+  if (event.key !== "Tab" || skillInfoModal.hidden || !constellationModal.hidden || !featureDetailModal.hidden) return;
   const focusable = [...skillInfoDialog.querySelectorAll("button:not([disabled])")];
   const first = focusable[0];
   const last = focusable.at(-1);
 
   if (event.shiftKey && (document.activeElement === first || document.activeElement === skillInfoDialog)) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+function trapConstellationFocus(event) {
+  if (event.key !== "Tab" || constellationModal.hidden || !featureDetailModal.hidden) return;
+  const focusable = [...constellationDialog.querySelectorAll("button:not([disabled])")];
+  const first = focusable[0];
+  const last = focusable.at(-1);
+
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === constellationDialog)) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+function trapFeatureDetailFocus(event) {
+  if (event.key !== "Tab" || featureDetailModal.hidden) return;
+  const focusable = [...featureDetailDialog.querySelectorAll("button:not([disabled])")];
+  const first = focusable[0];
+  const last = focusable.at(-1);
+
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === featureDetailDialog)) {
     event.preventDefault();
     last.focus();
   } else if (!event.shiftKey && document.activeElement === last) {
@@ -2319,6 +4154,25 @@ skillSearchInput.addEventListener("input", filterSkills);
 attributeFilter.addEventListener("change", filterSkills);
 trainingFilter.addEventListener("change", filterSkills);
 clearSkillFiltersButton.addEventListener("click", clearSkillFilters);
+openConstellationButton.addEventListener("click", () => openConstellation(openConstellationButton));
+featureToggleButton.addEventListener("click", () => toggleFeatureSelection(activeFeatureId));
+
+constellationTree.addEventListener("click", (event) => {
+  const featureButton = event.target.closest("[data-open-feature]");
+  if (!featureButton) return;
+  openFeatureDetail(featureButton.dataset.openFeature, featureButton);
+});
+
+selectedFeaturesList.addEventListener("click", (event) => {
+  const removeButton = event.target.closest("[data-remove-selected-feature]");
+  if (removeButton) {
+    toggleFeatureSelection(removeButton.dataset.removeSelectedFeature);
+    return;
+  }
+
+  const openButton = event.target.closest("[data-open-selected-feature]");
+  if (openButton) openFeatureDetail(openButton.dataset.openSelectedFeature, openButton);
+});
 
 skillsList.addEventListener("click", (event) => {
   const infoButton = event.target.closest("[data-skill-info]");
@@ -2370,18 +4224,38 @@ document.querySelectorAll("[data-close-skill-info]").forEach((button) => {
   button.addEventListener("click", closeSkillInfo);
 });
 
+document.querySelectorAll("[data-close-constellation]").forEach((button) => {
+  button.addEventListener("click", closeConstellation);
+});
+
+document.querySelectorAll("[data-close-feature-detail]").forEach((button) => {
+  button.addEventListener("click", closeFeatureDetail);
+});
+
+window.addEventListener("resize", () => {
+  if (!constellationModal.hidden) scheduleConstellationDraw();
+});
+
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !skillInfoModal.hidden) {
+  if (event.key === "Escape" && !featureDetailModal.hidden) {
+    closeFeatureDetail();
+  } else if (event.key === "Escape" && !constellationModal.hidden) {
+    closeConstellation();
+  } else if (event.key === "Escape" && !skillInfoModal.hidden) {
     closeSkillInfo();
   } else if (event.key === "Escape" && !rollModal.hidden) {
     closeRollModal();
   }
   trapDialogFocus(event);
   trapSkillInfoFocus(event);
+  trapConstellationFocus(event);
+  trapFeatureDetailFocus(event);
 });
 
 renderSkills();
 hydrateLegendDice();
+loadSelectedFeatures();
+renderSelectedFeatures();
 
     </script>
   </body>
