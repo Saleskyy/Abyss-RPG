@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Abyss RPG — Index local com filtros e rolagem de múltiplos dados — revisão 2026-09-05 -->
+<!-- Abyss RPG — Index local com compêndio de perícias — revisão 2026-09-05 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -523,7 +523,7 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .skills-column-head,
 .skill-row {
   display: grid;
-  grid-template-columns: minmax(150px, 1.3fr) 122px 154px 82px 116px 90px 48px;
+  grid-template-columns: minmax(140px, 1.15fr) 170px 146px 78px 110px 84px 48px;
   align-items: center;
   gap: 10px;
 }
@@ -551,7 +551,7 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .skill-row:hover { background: rgba(255, 255, 255, 0.018); }
 .skill-row.is-adepto { box-shadow: inset 2px 0 #72b4d0; }
 .skill-row.is-treinado { box-shadow: inset 2px 0 #d7ba62; }
-.skill-info { display: flex; align-items: center; gap: 9px; min-width: 0; }
+.skill-info { min-width: 0; }
 .skill-info strong {
   display: block;
   overflow: hidden;
@@ -560,19 +560,31 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
   white-space: nowrap;
 }
 
-.training-signal {
+.attribute-control {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+}
+
+.skill-info-button {
   display: grid;
   place-items: center;
-  width: 24px;
-  height: 24px;
-  flex: 0 0 auto;
-  border: 1px solid currentColor;
-  border-radius: 50%;
-  font-size: 0.75rem;
-  line-height: 1;
+  width: 40px;
+  height: 42px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--muted);
+  background: #121419;
+  cursor: pointer;
+  transition: border-color 140ms ease, color 140ms ease, background 140ms ease, box-shadow 140ms ease;
 }
-.skill-row.is-adepto .training-signal { color: #72b4d0; background: rgba(114, 180, 208, 0.08); }
-.skill-row.is-treinado .training-signal { color: #d7ba62; background: rgba(215, 186, 98, 0.09); box-shadow: 0 0 14px rgba(215, 186, 98, 0.12); }
+.skill-info-button:hover { border-color: #7d8490; color: var(--text); background: #1b1e24; box-shadow: 0 0 17px rgba(255, 255, 255, 0.06); }
+.skill-info-button svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.35; }
+.skill-info-button:active { transform: scale(0.96); }
+
 .skill-row.is-adepto .training-die { color: #72b4d0; }
 .skill-row.is-treinado .training-die { color: #d7ba62; }
 .skill-row.is-adepto .training-select { border-color: rgba(114, 180, 208, 0.45); color: #9acbe0; }
@@ -881,6 +893,107 @@ body.modal-open { overflow: hidden; }
 }
 .dialog-button:hover { border-color: #858c96; background: #22262d; }
 
+.skill-info-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.skill-info-dialog {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: min(760px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+  background: linear-gradient(150deg, #181b20, #0d0f12 76%);
+  box-shadow: 0 42px 120px rgba(0, 0, 0, 0.72);
+  animation: dialog-in 230ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.skill-info-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 27px 30px 22px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.012);
+}
+.skill-info-dialog-head .eyebrow { margin-bottom: 8px; }
+
+.skill-info-title-line { display: flex; align-items: center; gap: 12px; }
+.skill-info-title-line h2 { margin: 0; font-size: clamp(1.7rem, 4vw, 2.25rem); line-height: 1.05; }
+.skill-info-attribute {
+  display: grid;
+  place-items: center;
+  min-width: 48px;
+  min-height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--line-strong);
+  color: var(--accent);
+  background: #111318;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.12em;
+}
+
+.skill-info-content {
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 27px 30px 30px;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.skill-info-description {
+  max-width: 66ch;
+  margin: 0;
+  color: #d3d6db;
+  font: italic 1rem/1.7 Georgia, "Times New Roman", serif;
+}
+.skill-info-notes { display: grid; gap: 9px; margin-top: 18px; }
+.skill-info-note {
+  margin: 0;
+  padding: 12px 14px;
+  border-left: 2px solid var(--line-strong);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.025);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.skill-info-uses-section { margin-top: 28px; }
+.skill-info-uses-section > h3 {
+  margin: 0 0 13px;
+  color: var(--muted);
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.skill-info-uses { display: grid; gap: 10px; }
+.skill-use-card {
+  padding: 15px 17px 16px;
+  border: 1px solid var(--line);
+  border-left-color: #777e89;
+  background: rgba(255, 255, 255, 0.018);
+}
+.skill-use-card h4 { margin: 0 0 5px; color: var(--text); font: 600 1rem Georgia, "Times New Roman", serif; }
+.skill-use-card p { margin: 0; color: var(--muted); font-size: 0.88rem; line-height: 1.65; white-space: pre-line; }
+
+.skill-info-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 18px 30px 24px;
+  border-top: 1px solid var(--line);
+  background: rgba(7, 8, 10, 0.3);
+}
+
 @media (max-width: 1040px) {
   :root { --sidebar-width: 88px; }
   .brand-copy { min-width: auto; }
@@ -892,7 +1005,7 @@ body.modal-open { overflow: hidden; }
   .attributes-row { gap: 8px; }
   .skills-column-head,
   .skill-row {
-    grid-template-columns: minmax(128px, 1fr) 100px 142px 72px 102px 76px 46px;
+    grid-template-columns: minmax(120px, 1fr) 148px 134px 70px 96px 72px 46px;
     gap: 8px;
     padding-right: 16px;
     padding-left: 18px;
@@ -968,6 +1081,7 @@ body.modal-open { overflow: hidden; }
   .skill-select-wrap,
   .training-control,
   .modifier-control { display: grid; gap: 6px; }
+  .attribute-control { align-items: end; }
   .skill-select-wrap::after,
   .training-control::after { top: auto; right: 11px; bottom: 17px; }
   .training-die { top: auto; bottom: 7px; }
@@ -1001,6 +1115,11 @@ body.modal-open { overflow: hidden; }
   .result-summary { padding: 19px 21px 21px; }
   .result-total-block strong { font-size: 3rem; }
   .roll-dialog-footer { padding: 0 21px 22px; }
+  .skill-info-modal { padding: 12px; }
+  .skill-info-dialog { max-height: calc(100vh - 24px); }
+  .skill-info-dialog-head { padding: 23px 21px 19px; }
+  .skill-info-content { padding: 22px 21px 25px; }
+  .skill-info-dialog-footer { padding: 16px 21px 20px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1269,6 +1388,51 @@ body.modal-open { overflow: hidden; }
       </section>
     </main>
 
+    <div id="skill-info-modal" class="skill-info-modal" hidden>
+      <div class="roll-backdrop" data-close-skill-info aria-hidden="true"></div>
+      <section
+        id="skill-info-dialog"
+        class="skill-info-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="skill-info-title"
+        aria-describedby="skill-info-description"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="skill-info-dialog-head">
+          <div>
+            <p class="eyebrow">Compêndio de perícias</p>
+            <div class="skill-info-title-line">
+              <span id="skill-info-attribute" class="skill-info-attribute">AGI</span>
+              <h2 id="skill-info-title">Acrobacia</h2>
+            </div>
+          </div>
+          <button class="result-close" type="button" data-close-skill-info aria-label="Fechar informações da perícia">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <div class="skill-info-content">
+          <p id="skill-info-description" class="skill-info-description"></p>
+          <div id="skill-info-notes" class="skill-info-notes" hidden></div>
+
+          <section id="skill-info-uses-section" class="skill-info-uses-section">
+            <h3>Usos Gerais</h3>
+            <div id="skill-info-uses" class="skill-info-uses"></div>
+          </section>
+        </div>
+
+        <footer class="skill-info-dialog-footer">
+          <button class="dialog-button" type="button" data-close-skill-info>Fechar</button>
+        </footer>
+      </section>
+    </div>
+
     <div id="roll-modal" class="roll-modal" hidden>
       <div class="roll-backdrop" data-close-roll aria-hidden="true"></div>
       <section
@@ -1361,6 +1525,228 @@ const SKILLS = [
   { name: "Vontade", attribute: "POD" },
 ];
 
+const SKILL_DETAILS = {
+  Acrobacia: {
+    description: "Acrobacia representa seu equilíbrio, flexibilidade, coordenação corporal e capacidade de realizar movimentos precisos ou incomuns.",
+    uses: [
+      { name: "Amortecer Queda", text: "Você se posiciona corretamente durante uma queda para reduzir o impacto. Em um Sucesso, você reduz o dano num valor igual ao dobro do seu Bloqueio." },
+      { name: "Equilibrar", text: "Você atravessa superfícies estreitas, instáveis, escorregadias ou em movimento sem perder o equilíbrio." },
+      { name: "Levantar Rapidamente", text: "Você tenta abandonar a condição Caído utilizando apenas uma ação de Movimento. Em caso de falha, permanece Caído." },
+      { name: "Escapar", text: "Você utiliza flexibilidade e movimentação corporal para escapar de amarras, espaços apertados ou outras contenções apropriadas." },
+      { name: "Manobra Acrobática", text: "Você realiza um movimento corporal complexo ou incomum, como um giro, rolamento, cambalhota ou outra manobra que exija coordenação e precisão." },
+    ],
+  },
+  Adestramento: {
+    description: "Adestramento representa sua capacidade de compreender, acalmar, cuidar e conduzir animais.",
+    uses: [
+      { name: "Entender Animal", text: "Você observa a postura, vocalizações e comportamento de um animal para compreender aproximadamente seu estado, emoções, necessidades ou intenções." },
+      { name: "Acalmar Animal", text: "Você tenta diminuir o medo, hostilidade ou agitação de um animal através da sua postura, aproximação e interação." },
+      { name: "Conduzir Animal", text: "Você utiliza uma ação de Movimento para instruir um animal a realizar uma ação que ele já conhece ou foi treinado para fazer. Normalmente, um teste só é necessário quando houver alguma dificuldade, resistência ou circunstância que possa impedir o animal de obedecer." },
+      { name: "Cuidar de Animal", text: "Você realiza cuidados básicos necessários ao bem-estar de um animal, podendo alimentá-lo, higienizá-lo, manejá-lo adequadamente ou reconhecer necessidades simples através de seu comportamento e condição." },
+    ],
+  },
+  Alquimia: {
+    description: "Alquimia representa sua capacidade de identificar, coletar e manipular substâncias e componentes utilizados na produção de preparos alquímicos.",
+    uses: [
+      { name: "Identificar", text: "Você analisa uma substância alquímica conhecida ou os efeitos produzidos por ela para reconhecer suas propriedades e riscos gerais. A quantidade e precisão das informações obtidas dependem daquilo que estiver disponível para análise." },
+      { name: "Coletar Componentes", text: "Você extrai e preserva materiais de criaturas, plantas ou ambientes para que possam ser utilizados como componentes alquímicos. Esse Uso não permite, por si só, localizar ou reconhecer componentes cuja identificação dependa de outro conhecimento." },
+      { name: "Preparar", text: "Você produz uma fórmula alquímica que conheça, desde que possua os componentes, equipamentos e tempo necessários para seu preparo." },
+    ],
+  },
+  Arcanismo: {
+    description: "Arcanismo representa sua capacidade de compreender, manipular e utilizar as forças sobrenaturais envolvidas na feitiçaria.",
+    uses: [
+      { name: "Identificar Afinidade", text: "Você analisa a energia sobrenatural presente em um ser para tentar identificar sua Afinidade com Umbra, Lumen, Caos, Éter ou Ley." },
+      { name: "Identificar Feitiço", text: "Você observa uma manifestação mágica ou seus efeitos para compreender sua natureza, função ou efeito geral." },
+      { name: "Analisar Artefato", text: "Você examina um objeto sobrenatural para reconhecer a presença de magia e identificar propriedades mágicas evidentes." },
+    ],
+  },
+  Artes: {
+    description: "Artes representa sua capacidade de criar, interpretar e executar diferentes formas de expressão artística.",
+    uses: [
+      { name: "Atuar", text: "Quando estiver interpretando conscientemente um papel, emoção ou personalidade, você pode utilizar Artes no lugar de Enganação quando a mentira depender diretamente da qualidade da sua atuação." },
+      { name: "Criar Obra", text: "Você cria uma obra artística utilizando os recursos e o tempo apropriados, como um desenho, pintura, composição, texto, escultura ou outra forma de expressão. A Zona de Dificuldade depende da complexidade, qualidade pretendida e condições disponíveis durante a criação." },
+      { name: "Apresentar", text: "Você realiza uma apresentação artística buscando entreter, emocionar ou impressionar aqueles que a presenciam. Quando obtiver a Margem Necessária, recebe +1d4 em testes sociais contra indivíduos positivamente influenciados pela apresentação durante o restante da cena. Apesar disso, falhas podem acarretar no efeito oposto." },
+      { name: "Analisar Obra", text: "Você examina uma obra artística para reconhecer características perceptíveis de sua produção, como técnica, estilo, qualidade, materiais utilizados ou possíveis influências." },
+    ],
+  },
+  Atletismo: {
+    description: "Atletismo representa sua capacidade de aplicar força, condicionamento e potência corporal em atividades físicas.",
+    uses: [
+      { name: "Correr", text: "Com uma Ação Completa, percorra seu Deslocamento + FOR + 1d6Q." },
+      { name: "Escalar", text: "Com uma Ação de Movimento, tente subir uma superfície escalável.\nParcial: 1/4 do Deslocamento.\nNormal: 1/2 do Deslocamento.\nBom: Deslocamento completo.\nExtremo: Deslocamento + 2Q." },
+      { name: "Nadar e Mergulhar", text: "Com uma Ação de Movimento, tente se deslocar pela água.\nParcial: 1/2 do Deslocamento.\nNormal: Deslocamento completo.\nBom: Deslocamento + 2Q.\nExtremo: Deslocamento + 4Q." },
+      { name: "Saltar", text: "Com uma Ação de Movimento, realize um salto horizontal ou vertical de FOR + 1d10Q. Em saltos verticais, reduza a distância pela metade. Condições adversas podem exigir um teste." },
+      { name: "Levantar", text: "Você tenta erguer, mover ou sustentar um objeto. Faça um teste de [FOR] Atletismo e atinja a Margem Necessária, determinada pelo peso e condições da tentativa. Resultados superiores podem permitir maior peso ou duração. Uma Falha Crítica pode fazê-lo perder o controle do objeto e acarretar em ferimentos." },
+      { name: "Arremessar", text: "Você arremessa um objeto que consiga segurar a uma distância de FOR + 1d8Q. Objetos pesados ou difíceis de manejar podem reduzir essa distância ou exigir um teste. [AGI] Pontaria pode ser exigida para determinar a precisão. Arremessar não é um teste de ataque." },
+    ],
+  },
+  Ciências: {
+    description: "Ciências representa sua capacidade de compreender fenômenos através de observação, lógica, evidências e aplicação do método científico. Ela não representa domínio absoluto sobre todas as áreas acadêmicas, mas permite interpretar informações científicas gerais, formular hipóteses e reconhecer relações entre causas e efeitos.",
+    uses: [
+      { name: "Analisar Fenômeno", text: "Você observa um fenômeno, material, ambiente ou acontecimento e utiliza conhecimentos científicos gerais para compreender o que provavelmente está acontecendo. Um sucesso pode revelar propriedades evidentes, comportamentos observáveis ou causas prováveis para aquilo que está sendo analisado." },
+      { name: "Método Científico", text: "Você organiza informações, observações e evidências para determinar como uma hipótese poderia ser testada. Um sucesso pode revelar quais dados ainda precisam ser obtidos, quais variáveis devem ser controladas ou quais procedimentos permitiriam validar uma explicação." },
+      { name: "Comparar Evidências", text: "Você compara amostras, registros, medições ou fenômenos para identificar padrões, semelhanças, diferenças e possíveis relações entre eles." },
+    ],
+  },
+  Crime: {
+    description: "Crime representa sua habilidade com atividades clandestinas, furtos, invasões e técnicas de ladinagem.",
+    uses: [
+      { name: "Arrombar", text: "Você tenta superar uma fechadura, tranca ou mecanismo de segurança através de ferramentas ou manipulação. A Zona de Dificuldade depende da complexidade e das proteções do mecanismo." },
+      { name: "Furtar", text: "Você retira discretamente um objeto da posse de alguém ou de um local observado sem ser percebido. Normalmente é resistido por Sentidos." },
+      { name: "Plantar", text: "Você coloca discretamente um objeto em posse de alguém ou em determinado local sem ser percebido. Normalmente é resistido por Sentidos." },
+      { name: "Sabotar", text: "Você interfere no funcionamento de um objeto, mecanismo ou equipamento para comprometê-lo ou alterar seu funcionamento. Para realizar a sabotagem sem ser percebido, você deve utilizar [AGI] Crime em conjunto com [AGI] Furtividade." },
+    ],
+  },
+  Diplomacia: {
+    description: "Diplomacia representa sua capacidade de persuadir, negociar e estabelecer relações através da comunicação.",
+    uses: [
+      { name: "Persuadir", text: "Você tenta negociar ou convencer alguém através de argumentos, carisma e boa comunicação. Normalmente é resistido por Vontade. O Mestre pode considerar um argumento suficientemente convincente como um sucesso sem exigir um teste." },
+      { name: "Acalmar", text: "Você tenta diminuir tensões, conflitos ou estados emocionais intensos através da comunicação. Pode ser utilizado para retirar alguém da condição Enlouquecendo." },
+      { name: "Inspirar Confiança", text: "Você transmite credibilidade e boas intenções para melhorar a atitude de alguém em relação a você. Normalmente é resistido por Vontade." },
+    ],
+  },
+  Enganação: {
+    description: "Enganação representa sua capacidade de mentir, blefar, manipular percepções e esconder suas verdadeiras intenções.",
+    uses: [
+      { name: "Lábia", text: "Você mente, omite ou distorce informações para levar alguém a acreditar em uma versão falsa ou incompleta dos fatos. Normalmente é resistido por Intuição." },
+      { name: "Fintar", text: "Com uma Ação de Movimento, você engana um inimigo para deixá-lo Desprevenido contra seu próximo ataque. Normalmente é resistido por Reflexos ou Sentidos." },
+      { name: "Disfarçar Intenções", text: "Você esconde seus verdadeiros objetivos, emoções ou motivações, dificultando que outras pessoas percebam o que realmente pretende ou sente. Normalmente é resistido por Intuição." },
+      { name: "Trapacear", text: "Ao participar de um jogo, aposta, competição ou atividade em que seja possível obter vantagem através de trapaça, você pode realizar um teste de Enganação. Em caso de sucesso, recebe +1d4 no próximo teste diretamente relacionado àquela atividade. O resultado desse dado é somado ao valor do teste. A trapaça pode ser resistida por Sentidos ou Intuição de alguém que deseja percebê-la; caso seja descoberta, as consequências dependem da situação." },
+    ],
+  },
+  Fortitude: {
+    description: "Fortitude representa a resistência do seu organismo contra dor, exaustão, doenças, venenos e outras condições capazes de comprometer fisicamente seu corpo.",
+    uses: [
+      { name: "Resistir", text: "Você utiliza Fortitude sempre que seu corpo precisa suportar ou superar uma condição física adversa, como dor intensa, venenos, doenças, exaustão, privação, falta de ar, temperaturas extremas ou outros efeitos que ameacem diretamente seu organismo. A Zona de Dificuldade, a Margem Necessária e as consequências de uma falha dependem da fonte do efeito." },
+    ],
+  },
+  Furtividade: {
+    description: "Furtividade representa sua capacidade de esconder sua presença, mover-se silenciosamente e evitar ser percebido.",
+    notes: ["Enquanto estiver se movendo furtivamente, seu Deslocamento normalmente é reduzido pela metade."],
+    uses: [
+      { name: "Ocultar Presença", text: "Você tenta permanecer despercebido utilizando cobertura, silêncio, iluminação, camuflagem ou outros elementos disponíveis no ambiente. Seu teste normalmente é resistido por Sentidos de quem possuir a possibilidade de percebê-lo." },
+      { name: "Espreitar", text: "Você segue ou observa um alvo sem revelar sua presença. Enquanto estiver Espreitando, o mesmo resultado de Furtividade pode ser mantido; um novo teste é necessário caso a situação mude de forma significativa ou o alvo passe a procurar ativamente por você." },
+    ],
+  },
+  Intimidação: {
+    description: "Intimidação representa sua capacidade de provocar medo, pressão ou submissão através de presença, palavras ou comportamento.",
+    uses: [
+      { name: "Coagir", text: "Você utiliza ameaças, violência, pressão ou medo para tentar fazer alguém cooperar, recuar, entregar uma informação ou realizar determinada ação. A ameaça deve ser crível e capaz de influenciar o alvo naquela situação. Normalmente é resistido por Vontade." },
+      { name: "Impor Presença", text: "Você utiliza postura, reputação ou demonstração de autoridade para intimidar alguém sem necessariamente exigir algo diretamente. Em caso de sucesso, o alvo pode hesitar em confrontá-lo, aproximar-se ou agir de maneira hostil enquanto sua presença continuar relevante. Normalmente é resistido por Vontade." },
+    ],
+  },
+  Intuição: {
+    description: "Intuição representa sua capacidade de interpretar comportamentos, emoções e intenções através da forma como alguém fala, age e reage.",
+    uses: [
+      { name: "Perceber Mentira", text: "Você tenta identificar se alguém está escondendo, distorcendo ou inventando informações durante uma interação. Um sucesso indica que algo naquela fala parece falso, mas não revela automaticamente qual é a verdade. Geralmente é um teste contra Enganação." },
+      { name: "Ler Intenções", text: "Você tenta compreender a intenção imediata de alguém através de seu comportamento, como perceber se pretende atacar, fugir, negociar, enganar ou tomar alguma atitude semelhante. Geralmente é um teste contra Enganação caso o alvo esteja tentando ocultar suas intenções." },
+      { name: "Interpretar Emoção", text: "Você identifica o estado emocional predominante de alguém, como medo, raiva, ansiedade, culpa ou entusiasmo. Caso o alvo esteja deliberadamente escondendo suas emoções, o teste geralmente é realizado contra Enganação." },
+    ],
+  },
+  Investigação: {
+    description: "Investigação representa sua capacidade de analisar evidências, relacionar informações e reconstruir acontecimentos.",
+    uses: [
+      { name: "Examinar Cena", text: "Você analisa um ambiente, objeto ou acontecimento em busca de pistas, alterações, inconsistências ou detalhes relevantes capazes de ajudar a compreender o que ocorreu." },
+      { name: "Interpretar Evidência", text: "Você analisa uma pista incompleta, danificada ou ambígua para determinar quais informações ainda podem ser extraídas dela. Quanto maior a Margem de Sucesso, mais precisa ou completa pode ser a informação obtida." },
+      { name: "Relacionar Evidências", text: "Você conecta duas ou mais pistas ou informações já conhecidas para determinar relações entre elas e formular uma hipótese plausível sobre os acontecimentos. Resultados superiores podem revelar conexões adicionais sustentadas pelas evidências disponíveis." },
+    ],
+  },
+  Linguística: {
+    description: "Linguística representa sua capacidade de compreender estruturas de linguagem, sistemas de escrita e diferentes formas de comunicação.",
+    uses: [
+      { name: "Decifrar Linguagem", text: "Você utiliza estrutura, contexto, padrões e conhecimentos linguísticos para extrair informações de uma mensagem escrita ou falada em um idioma que não compreende. Um sucesso revela seu sentido geral; resultados superiores podem revelar detalhes mais específicos." },
+      { name: "Analisar Linguagem", text: "Você examina um idioma, dialeto, escrita ou padrão de comunicação para identificar sua provável origem, relações com outras línguas, alterações, influências ou características incomuns." },
+      { name: "Comunicar", text: "Quando não compartilha um idioma com alguém, você pode tentar transmitir ou compreender informações simples através de palavras reconhecíveis, contexto, gestos e padrões de comunicação. Quanto mais complexa ou abstrata a mensagem, maior sua dificuldade." },
+    ],
+  },
+  Luta: {
+    description: "Luta representa sua capacidade de combater corpo a corpo, sendo utilizada em ataques e outras ações de combate que dependam diretamente de técnica, força ou domínio corporal.",
+    uses: [],
+  },
+  Medicina: {
+    description: "Medicina representa sua capacidade de avaliar ferimentos, diagnosticar condições físicas e prestar cuidados médicos.",
+    uses: [
+      { name: "Primeiros Socorros", text: "Com uma Ação Padrão, você presta atendimento emergencial a um alvo em Morrendo. Em caso de sucesso, ele se estabiliza." },
+      { name: "Diagnosticar", text: "Você analisa sintomas, ferimentos e sinais físicos para identificar a natureza geral de uma condição, sua gravidade e possíveis causas." },
+      { name: "Tratar", text: "Com materiais apropriados, você realiza cuidados básicos em ferimentos, doenças ou outras condições que não exijam procedimentos especializados. O efeito depende da condição tratada e da Margem de Sucesso obtida." },
+    ],
+  },
+  Monstrologia: {
+    description: "Monstrologia representa seu conhecimento sobre criaturas perigosas, anormais e sobrenaturais, incluindo sua natureza, comportamento e características incomuns.",
+    uses: [
+      { name: "Identificar", text: "Você tenta reconhecer uma criatura, determinar sua natureza geral ou relacioná-la a seres previamente conhecidos. Resultados superiores podem revelar informações mais específicas sobre aquilo que é conhecido a respeito dela." },
+      { name: "Analisar Criatura", text: "Você observa características físicas, comportamento, rastros ou manifestações de uma criatura para deduzir informações relevantes sobre ela, como padrões de comportamento, capacidades aparentes, resistências ou vulnerabilidades plausíveis. Informações que não possam ser deduzidas através das evidências disponíveis não são reveladas." },
+    ],
+  },
+  Ofício: {
+    description: "Ofício representa sua habilidade com trabalhos manuais, produção artesanal e outras atividades práticas que dependam do uso de técnicas, ferramentas e materiais.",
+    notes: ["Ofício abrange atividades como culinária, carpintaria, ferraria, costura, joalheria, cerâmica, construção e outros trabalhos artesanais ou manuais. Ele pode ser utilizado sempre que a atividade não for melhor representada por outra Perícia. Trabalhos que exijam conhecimento especializado podem possuir maior dificuldade ou exigir uma Competência adequada."],
+    uses: [
+      { name: "Produzir", text: "Com ferramentas, materiais e tempo adequados, você produz objetos, alimentos ou outros produtos através de técnicas que conheça. A dificuldade e o tempo necessários dependem da complexidade e qualidade pretendida." },
+      { name: "Reparar", text: "Com ferramentas e materiais adequados, você restaura objetos ou estruturas que possam ser reparados através de trabalho manual." },
+      { name: "Avaliar Trabalho", text: "Você examina um produto ou trabalho para reconhecer sua qualidade, materiais, técnicas empregadas e possíveis defeitos." },
+    ],
+  },
+  Pilotagem: {
+    description: "Pilotagem representa sua capacidade de controlar veículos quando a condução exige precisão, reação ou domínio técnico.",
+    uses: [
+      { name: "Controlar Veículo", text: "Você realiza um teste de Pilotagem quando precisa manter o controle de um veículo diante de condições adversas, como terreno difícil, perda de aderência, danos, obstáculos ou situações semelhantes." },
+      { name: "Manobrar", text: "Você executa uma manobra arriscada ou tecnicamente difícil, como uma curva brusca, derrapagem, salto, passagem estreita ou mudança repentina de trajetória." },
+      { name: "Perseguir", text: "Durante uma perseguição entre veículos, você utiliza Pilotagem para reduzir a distância até um alvo ou aumentar a distância de um perseguidor. O teste normalmente é resistido pela Pilotagem do outro condutor ou determinado pelas condições da perseguição." },
+    ],
+  },
+  Pontaria: {
+    description: "Pontaria representa sua capacidade de realizar ataques à distância e utilizar com precisão armas, projéteis ou outros meios de ataque à distância.",
+    uses: [],
+  },
+  Reflexos: {
+    description: "Reflexos representa sua capacidade de reagir fisicamente a perigos repentinos.",
+    uses: [
+      { name: "Reagir", text: "Você utiliza Reflexos para resistir a efeitos que possam ser evitados ou reduzidos através de velocidade, posicionamento ou reação física imediata, como explosões, armadilhas, ataques em área e outros perigos semelhantes." },
+    ],
+  },
+  Religião: {
+    description: "Religião representa seu conhecimento sobre crenças, tradições, mitologias, cultos e instituições religiosas.",
+    uses: [
+      { name: "Reconhecer Elemento", text: "Você identifica símbolos, objetos, vestimentas ou outros elementos associados a uma religião, culto ou tradição conhecida." },
+      { name: "Interpretar Rito", text: "Você analisa uma prática, cerimônia, texto ou tradição religiosa para compreender seu significado, propósito ou relação com determinada crença." },
+      { name: "Identificar Tradição", text: "Você compara costumes, ensinamentos e práticas para determinar a qual religião, culto ou tradição pertencem e reconhecer possíveis variações regionais ou históricas." },
+    ],
+  },
+  Sobrevivência: {
+    description: "Sobrevivência representa sua capacidade de permanecer vivo, encontrar recursos e se orientar em ambientes hostis.",
+    uses: [
+      { name: "Orientar", text: "Você determina sua posição, direção ou rota utilizando mapas, instrumentos ou informações fornecidas pelo próprio ambiente." },
+      { name: "Rastrear", text: "Você segue sinais deixados pela passagem de pessoas, animais ou criaturas, identificando sua direção e alterações relevantes no percurso. Rastros suficientemente claros também podem revelar informações gerais sobre sua passagem." },
+      { name: "Forragear", text: "Você procura alimento, água e recursos naturais básicos disponíveis no ambiente." },
+      { name: "Preparar Abrigo", text: "Você identifica um local adequado ou utiliza recursos disponíveis para preparar um abrigo capaz de oferecer proteção contra condições ambientais adversas." },
+    ],
+  },
+  Tática: {
+    description: "Tática representa sua capacidade de interpretar confrontos, reconhecer oportunidades e coordenar ações durante situações de conflito.",
+    uses: [
+      { name: "Analisar Campo", text: "Você observa um confronto para identificar uma informação taticamente relevante, como uma posição vantajosa, ameaça prioritária, padrão de movimentação, rota de aproximação ou vulnerabilidade circunstancial. As informações reveladas devem ser plausíveis a partir da situação observada." },
+      { name: "Coordenar", text: "Quando houver comunicação suficiente, você orienta um aliado com base em uma informação ou oportunidade tática disponível. Em caso de sucesso, ele recebe +1d4 no próximo teste diretamente relacionado à orientação que você deu. O resultado desse dado é somado ao valor do teste." },
+    ],
+  },
+  Tecnologia: {
+    description: "Tecnologia representa sua capacidade de operar, compreender, reparar e manipular dispositivos e sistemas tecnológicos.",
+    uses: [
+      { name: "Operar", text: "Você utiliza equipamentos tecnológicos quando sua operação exigir conhecimento, precisão ou domínio técnico. Dispositivos simples ou familiares normalmente não exigem teste." },
+      { name: "Analisar Sistema", text: "Você examina um dispositivo ou sistema tecnológico para compreender sua função, componentes, funcionamento geral ou possíveis formas de interação." },
+      { name: "Diagnosticar", text: "Você examina um equipamento para identificar falhas, danos ou componentes responsáveis por seu funcionamento inadequado." },
+      { name: "Reparar", text: "Com ferramentas, peças e condições adequadas, você tenta restaurar o funcionamento de um dispositivo danificado ou defeituoso." },
+    ],
+  },
+  Vontade: {
+    description: "Vontade representa sua força mental, disciplina e controle emocional diante de efeitos capazes de abalar ou influenciar sua mente.",
+    uses: [
+      { name: "Resistir", text: "Você utiliza Vontade para resistir ou superar efeitos que tentem afetar sua mente ou emoções, como medo, compulsões, manipulações sobrenaturais, sofrimento psicológico e outras formas de influência mental. A Zona de Dificuldade, a Margem Necessária e as consequências de uma falha dependem da fonte do efeito." },
+    ],
+  },
+};
+
 const TRAINING = {
   leigo: { label: "Leigo", die: 8 },
   adepto: { label: "Adepto", die: 12 },
@@ -1426,9 +1812,18 @@ const attributeFilter = document.querySelector("#attribute-filter");
 const trainingFilter = document.querySelector("#training-filter");
 const clearSkillFiltersButton = document.querySelector("#clear-skill-filters");
 const skillsEmpty = document.querySelector("#skills-empty");
+const skillInfoModal = document.querySelector("#skill-info-modal");
+const skillInfoDialog = document.querySelector("#skill-info-dialog");
+const skillInfoAttribute = document.querySelector("#skill-info-attribute");
+const skillInfoTitle = document.querySelector("#skill-info-title");
+const skillInfoDescription = document.querySelector("#skill-info-description");
+const skillInfoNotes = document.querySelector("#skill-info-notes");
+const skillInfoUsesSection = document.querySelector("#skill-info-uses-section");
+const skillInfoUses = document.querySelector("#skill-info-uses");
 let rollInterval;
 let rollTimeout;
 let activeRollButton;
+let activeSkillInfoButton;
 let selectedDifficulty = "medium";
 
 function dieSvg(faces, value = faces) {
@@ -1452,16 +1847,31 @@ function renderSkills() {
     (skill, index) => `
       <article class="skill-row" data-skill-index="${index}" data-training="leigo">
         <div class="skill-info">
-          <span class="training-signal" aria-hidden="true" hidden></span>
           <strong>${skill.name}</strong>
         </div>
 
-        <label class="skill-select-wrap">
-          <span class="control-caption">Atributo</span>
-          <select class="attribute-select" data-skill-attribute="${index}" aria-label="Atributo usado em ${skill.name}">
-            ${attributeOptions}
-          </select>
-        </label>
+        <div class="attribute-control">
+          <button
+            class="skill-info-button"
+            type="button"
+            data-skill-info="${index}"
+            aria-label="Ver informações de ${skill.name}"
+            title="Informações de ${skill.name}"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5.2C11.4 3.8 10.2 3 8.8 3A3.3 3.3 0 0 0 5.5 6.3v.3A3.7 3.7 0 0 0 4 13.4a3.5 3.5 0 0 0 2.3 3.3A3.3 3.3 0 0 0 9.5 21c1 0 1.9-.5 2.5-1.2"></path>
+              <path d="M12 5.2C12.6 3.8 13.8 3 15.2 3a3.3 3.3 0 0 1 3.3 3.3v.3a3.7 3.7 0 0 1 1.5 6.8 3.5 3.5 0 0 1-2.3 3.3 3.3 3.3 0 0 1-3.2 4.3c-1 0-1.9-.5-2.5-1.2V5.2Z"></path>
+              <path d="M8 8.2c1.3 0 2.3.9 2.3 2.1M16 8.2c-1.3 0-2.3.9-2.3 2.1M7.2 14c1.5-.4 2.8.3 3.3 1.6M16.8 14c-1.5-.4-2.8.3-3.3 1.6"></path>
+            </svg>
+          </button>
+
+          <label class="skill-select-wrap">
+            <span class="control-caption">Atributo</span>
+            <select class="attribute-select" data-skill-attribute="${index}" aria-label="Atributo usado em ${skill.name}">
+              ${attributeOptions}
+            </select>
+          </label>
+        </div>
 
         <div class="training-control">
           <span class="control-caption">Treinamento</span>
@@ -1545,24 +1955,9 @@ function normalizeSearchTerm(value) {
 }
 
 function updateTrainingIndicator(row, trainingKey) {
-  const signal = row.querySelector(".training-signal");
   row.dataset.training = trainingKey;
   row.classList.toggle("is-adepto", trainingKey === "adepto");
   row.classList.toggle("is-treinado", trainingKey === "treinado");
-
-  if (trainingKey === "adepto") {
-    signal.textContent = "◆";
-    signal.title = "Adepto";
-    signal.hidden = false;
-  } else if (trainingKey === "treinado") {
-    signal.textContent = "✦";
-    signal.title = "Treinado";
-    signal.hidden = false;
-  } else {
-    signal.textContent = "";
-    signal.removeAttribute("title");
-    signal.hidden = true;
-  }
 }
 
 function filterSkills() {
@@ -1594,6 +1989,54 @@ function clearSkillFilters() {
   trainingFilter.value = "all";
   filterSkills();
   skillSearchInput.focus();
+}
+
+function openSkillInfo(skillIndex, triggerButton) {
+  const skill = SKILLS[skillIndex];
+  const details = SKILL_DETAILS[skill?.name];
+  if (!skill || !details) return;
+
+  activeSkillInfoButton = triggerButton;
+  skillInfoAttribute.textContent = skill.attribute;
+  skillInfoTitle.textContent = skill.name;
+  skillInfoDescription.textContent = details.description;
+  skillInfoNotes.replaceChildren();
+  skillInfoUses.replaceChildren();
+
+  const notes = details.notes || [];
+  notes.forEach((noteText) => {
+    const note = document.createElement("p");
+    note.className = "skill-info-note";
+    note.textContent = noteText;
+    skillInfoNotes.append(note);
+  });
+  skillInfoNotes.hidden = notes.length === 0;
+
+  details.uses.forEach((use) => {
+    const card = document.createElement("article");
+    card.className = "skill-use-card";
+
+    const heading = document.createElement("h4");
+    heading.textContent = use.name;
+
+    const description = document.createElement("p");
+    description.textContent = use.text;
+
+    card.append(heading, description);
+    skillInfoUses.append(card);
+  });
+  skillInfoUsesSection.hidden = details.uses.length === 0;
+
+  skillInfoModal.hidden = false;
+  document.body.classList.add("modal-open");
+  skillInfoDialog.querySelector(".skill-info-content").scrollTop = 0;
+  skillInfoDialog.focus();
+}
+
+function closeSkillInfo() {
+  skillInfoModal.hidden = true;
+  document.body.classList.remove("modal-open");
+  if (activeSkillInfoButton?.isConnected) activeSkillInfoButton.focus();
 }
 
 function changeView(viewName) {
@@ -1849,6 +2292,21 @@ function trapDialogFocus(event) {
   }
 }
 
+function trapSkillInfoFocus(event) {
+  if (event.key !== "Tab" || skillInfoModal.hidden) return;
+  const focusable = [...skillInfoDialog.querySelectorAll("button:not([disabled])")];
+  const first = focusable[0];
+  const last = focusable.at(-1);
+
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === skillInfoDialog)) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
 viewButtons.forEach((button) => {
   button.addEventListener("click", () => changeView(button.dataset.viewTarget));
 });
@@ -1863,6 +2321,12 @@ trainingFilter.addEventListener("change", filterSkills);
 clearSkillFiltersButton.addEventListener("click", clearSkillFilters);
 
 skillsList.addEventListener("click", (event) => {
+  const infoButton = event.target.closest("[data-skill-info]");
+  if (infoButton) {
+    openSkillInfo(Number.parseInt(infoButton.dataset.skillInfo, 10), infoButton);
+    return;
+  }
+
   const rollButton = event.target.closest("[data-roll-index]");
   if (!rollButton) return;
   rollSkill(Number.parseInt(rollButton.dataset.rollIndex, 10), rollButton);
@@ -1902,9 +2366,18 @@ document.querySelectorAll("[data-close-roll]").forEach((button) => {
   button.addEventListener("click", closeRollModal);
 });
 
+document.querySelectorAll("[data-close-skill-info]").forEach((button) => {
+  button.addEventListener("click", closeSkillInfo);
+});
+
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !rollModal.hidden) closeRollModal();
+  if (event.key === "Escape" && !skillInfoModal.hidden) {
+    closeSkillInfo();
+  } else if (event.key === "Escape" && !rollModal.hidden) {
+    closeRollModal();
+  }
   trapDialogFocus(event);
+  trapSkillInfoFocus(event);
 });
 
 renderSkills();
