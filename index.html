@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- Abyss RPG — Index local com Zonas de Dificuldade — revisão 2026-09-05 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -377,6 +378,43 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 .hex-shell input::-webkit-inner-spin-button, .hex-shell input::-webkit-outer-spin-button { margin: 0; appearance: none; }
 .attribute-name { margin-top: 8px; color: var(--dim); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
 
+.skills-title-zone { display: flex; align-items: flex-end; gap: clamp(20px, 3vw, 42px); min-width: 0; }
+
+.difficulty-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  margin-bottom: 2px;
+  padding: 3px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  background: rgba(8, 9, 11, 0.72);
+}
+
+.difficulty-switch button {
+  min-width: 72px;
+  min-height: 36px;
+  padding: 0 13px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: var(--dim);
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+
+.difficulty-switch button:hover { color: var(--text); background: rgba(255, 255, 255, 0.035); }
+.difficulty-switch button.is-active {
+  border-color: var(--line-strong);
+  color: var(--text);
+  background: linear-gradient(145deg, #272b32, #191c21);
+  box-shadow: 0 5px 16px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 255, 255, 0.04);
+}
+
 .training-key { display: flex; align-items: center; gap: 22px; color: var(--muted); font-size: 0.78rem; }
 .training-key > span { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 .legend-die { display: grid; width: 29px; height: 29px; color: var(--accent); }
@@ -540,6 +578,8 @@ body.modal-open { overflow: hidden; }
 }
 
 .roll-dialog {
+  --outcome-color: var(--result);
+  --outcome-tint: rgba(217, 202, 162, 0.08);
   position: relative;
   z-index: 1;
   width: min(560px, 100%);
@@ -551,8 +591,37 @@ body.modal-open { overflow: hidden; }
   animation: dialog-in 230ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+.roll-dialog.outcome-critical-failure { --outcome-color: #a63d58; --outcome-tint: rgba(96, 18, 42, 0.2); }
+.roll-dialog.outcome-failure { --outcome-color: #ef646b; --outcome-tint: rgba(239, 100, 107, 0.1); }
+.roll-dialog.outcome-partial { --outcome-color: #55c989; --outcome-tint: rgba(85, 201, 137, 0.1); }
+.roll-dialog.outcome-normal { --outcome-color: #a9e7b6; --outcome-tint: rgba(169, 231, 182, 0.1); }
+.roll-dialog.outcome-extreme { --outcome-color: #e4c362; --outcome-tint: rgba(228, 195, 98, 0.12); }
+.roll-dialog.outcome-extreme-critical {
+  --outcome-color: #ffd66b;
+  --outcome-tint: rgba(255, 214, 107, 0.2);
+  border-color: rgba(255, 214, 107, 0.82);
+  background:
+    radial-gradient(circle at 50% 47%, rgba(255, 207, 79, 0.16), transparent 62%),
+    linear-gradient(150deg, #211e17, #0d0f12 72%);
+  box-shadow: 0 35px 110px rgba(194, 139, 27, 0.34), 0 0 34px rgba(255, 214, 107, 0.22);
+  animation: critical-dialog-glow 1.25s ease-in-out infinite alternate;
+}
+
+.roll-dialog.outcome-extreme-critical .dialog-corner { border-color: var(--outcome-color); }
+.roll-dialog.outcome-extreme-critical .roll-stage {
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 210, 90, 0.2), transparent 10rem),
+    linear-gradient(rgba(255, 214, 107, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 214, 107, 0.02) 1px, transparent 1px);
+  background-size: auto, 26px 26px, 26px 26px;
+}
+
 @keyframes backdrop-in { from { opacity: 0; } }
 @keyframes dialog-in { from { opacity: 0; transform: translateY(14px) scale(0.97); } }
+@keyframes critical-dialog-glow {
+  from { box-shadow: 0 35px 100px rgba(176, 119, 17, 0.28), 0 0 22px rgba(255, 214, 107, 0.16); }
+  to { box-shadow: 0 38px 125px rgba(220, 162, 36, 0.46), 0 0 54px rgba(255, 214, 107, 0.42); }
+}
 
 .dialog-corner {
   position: absolute;
@@ -662,9 +731,31 @@ body.modal-open { overflow: hidden; }
 
 .result-summary { padding: 22px 28px 24px; animation: summary-in 260ms ease both; }
 @keyframes summary-in { from { opacity: 0; transform: translateY(6px); } }
+.result-outcome {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  margin: -2px 0 18px;
+  padding: 15px 12px 18px;
+  border-bottom: 1px solid var(--line);
+  background: radial-gradient(ellipse at center, var(--outcome-tint), transparent 68%);
+  text-align: center;
+}
+.result-outcome strong {
+  color: var(--outcome-color);
+  font: 500 clamp(1.65rem, 5vw, 2.15rem)/1.1 Georgia, "Times New Roman", serif;
+  text-shadow: 0 0 24px var(--outcome-tint);
+}
+.result-outcome span {
+  color: var(--muted);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
 .result-total-block { display: flex; align-items: baseline; justify-content: space-between; padding-bottom: 18px; border-bottom: 1px solid var(--line); }
 .result-total-block span { color: var(--muted); font-size: 0.7rem; font-weight: 800; letter-spacing: 0.16em; text-transform: uppercase; }
-.result-total-block strong { color: var(--result); font: 500 3.4rem/1 Georgia, "Times New Roman", serif; }
+.result-total-block strong { color: var(--outcome-color); font: 500 3.4rem/1 Georgia, "Times New Roman", serif; }
 .result-breakdown { display: grid; gap: 0; padding-top: 8px; }
 
 .breakdown-line {
@@ -753,6 +844,7 @@ body.modal-open { overflow: hidden; }
   }
   .attribute { min-width: 128px; scroll-snap-align: start; }
   .skills-heading { display: grid; }
+  .skills-title-zone { width: 100%; justify-content: space-between; }
   .training-key { width: 100%; justify-content: space-between; gap: 8px; padding-top: 4px; }
   .skills-column-head { display: none; }
   .roll-formula { display: none; }
@@ -791,6 +883,9 @@ body.modal-open { overflow: hidden; }
   .portrait-field { grid-template-columns: 1fr; }
   .portrait-frame { width: 148px; }
   .panel-heading { align-items: flex-start; flex-direction: column; gap: 7px; }
+  .skills-title-zone { align-items: flex-start; flex-direction: column; gap: 16px; }
+  .difficulty-switch { display: grid; grid-template-columns: repeat(3, 1fr); width: 100%; margin-bottom: 0; }
+  .difficulty-switch button { min-width: 0; padding-inline: 8px; }
   .training-key { flex-wrap: wrap; justify-content: flex-start; gap: 10px 16px; }
   .legend-die { width: 26px; height: 26px; }
   .skills-panel-head { padding: 20px; }
@@ -985,9 +1080,17 @@ body.modal-open { overflow: hidden; }
         hidden
       >
         <div class="page-heading skills-heading">
-          <div>
-            <p class="eyebrow">Registro II</p>
-            <h1 id="skills-title">Perícias</h1>
+          <div class="skills-title-zone">
+            <div>
+              <p class="eyebrow">Registro II</p>
+              <h1 id="skills-title">Perícias</h1>
+            </div>
+
+            <div class="difficulty-switch" role="group" aria-label="Zona de dificuldade">
+              <button type="button" data-difficulty="easy" aria-pressed="false">Fácil</button>
+              <button class="is-active" type="button" data-difficulty="medium" aria-pressed="true">Média</button>
+              <button type="button" data-difficulty="hard" aria-pressed="false">Difícil</button>
+            </div>
           </div>
 
           <div class="training-key" aria-label="Níveis de treinamento">
@@ -1057,6 +1160,10 @@ body.modal-open { overflow: hidden; }
         </div>
 
         <div id="result-summary" class="result-summary" aria-live="polite" hidden>
+          <div class="result-outcome">
+            <strong id="result-outcome-label">Sucesso Parcial</strong>
+            <span id="result-difficulty-label">Zona Média</span>
+          </div>
           <div class="result-total-block">
             <span>Total</span>
             <strong id="result-total">0</strong>
@@ -1070,7 +1177,7 @@ body.modal-open { overflow: hidden; }
       </section>
     </div>
 
-    <!-- Lógica incorporada: este arquivo funciona sozinho. -->
+    <!-- JavaScript incorporado: nenhum arquivo adicional é necessário. -->
     <script>
 "use strict";
 
@@ -1119,6 +1226,35 @@ const TRAINING = {
   treinado: { label: "Treinado", die: 20 },
 };
 
+const DIFFICULTIES = {
+  easy: {
+    label: "Fácil",
+    failureMax: { 8: 4, 12: 4, 20: 5 },
+    partialMax: { 12: 6, 20: 8 },
+  },
+  medium: {
+    label: "Média",
+    failureMax: { 8: 6, 12: 6, 20: 8 },
+    partialMax: { 12: 8, 20: 11 },
+  },
+  hard: {
+    label: "Difícil",
+    failureMax: { 8: 8, 12: 8, 20: 11 },
+    partialMax: { 12: 10, 20: 14 },
+  },
+};
+
+const OUTCOMES = {
+  criticalFailure: { key: "critical-failure", label: "Falha Crítica" },
+  failure: { key: "failure", label: "Falha" },
+  partial: { key: "partial", label: "Sucesso Parcial" },
+  normal: { key: "normal", label: "Sucesso Normal" },
+  extreme: { key: "extreme", label: "Sucesso Extremo" },
+  extremeCritical: { key: "extreme-critical", label: "Sucesso Extremo (Crítico)" },
+};
+
+const OUTCOME_CLASS_NAMES = Object.values(OUTCOMES).map((outcome) => `outcome-${outcome.key}`);
+
 const DICE_GEOMETRY = {
   8: {
     outline: "50,4 94,50 50,96 6,50",
@@ -1141,9 +1277,13 @@ const rollModal = document.querySelector("#roll-modal");
 const rollDialog = document.querySelector("#roll-dialog");
 const rollingDie = document.querySelector("#rolling-die");
 const resultSummary = document.querySelector("#result-summary");
+const resultOutcomeLabel = document.querySelector("#result-outcome-label");
+const resultDifficultyLabel = document.querySelector("#result-difficulty-label");
+const difficultyButtons = [...document.querySelectorAll("[data-difficulty]")];
 let rollInterval;
 let rollTimeout;
 let activeRollButton;
+let selectedDifficulty = "medium";
 
 function dieSvg(faces, value = faces) {
   const geometry = DICE_GEOMETRY[faces] || DICE_GEOMETRY[20];
@@ -1296,6 +1436,42 @@ function formatSigned(value) {
   return "0";
 }
 
+function evaluateOutcome(faces, naturalResult, total, difficultyKey) {
+  const difficulty = DIFFICULTIES[difficultyKey] || DIFFICULTIES.medium;
+
+  if (naturalResult === 1) return OUTCOMES.criticalFailure;
+  if (faces === 20 && naturalResult === 20) return OUTCOMES.extremeCritical;
+  if (faces === 8 && naturalResult === 8) return OUTCOMES.normal;
+
+  let outcome;
+  if (total <= difficulty.failureMax[faces]) {
+    outcome = OUTCOMES.failure;
+  } else if (faces === 8 || total <= difficulty.partialMax[faces]) {
+    outcome = OUTCOMES.partial;
+  } else {
+    outcome = OUTCOMES.normal;
+  }
+
+  const isSuccessful = outcome !== OUTCOMES.failure;
+  const isExtremeNatural = (faces === 12 && naturalResult === 12) || (faces === 20 && naturalResult === 19);
+  return isSuccessful && isExtremeNatural ? OUTCOMES.extreme : outcome;
+}
+
+function selectDifficulty(difficultyKey) {
+  if (!DIFFICULTIES[difficultyKey]) return;
+  selectedDifficulty = difficultyKey;
+
+  difficultyButtons.forEach((button) => {
+    const isSelected = button.dataset.difficulty === difficultyKey;
+    button.classList.toggle("is-active", isSelected);
+    button.setAttribute("aria-pressed", String(isSelected));
+  });
+}
+
+function clearOutcomeStyle() {
+  rollDialog.classList.remove(...OUTCOME_CLASS_NAMES);
+}
+
 function setRollingDie(faces, value) {
   rollingDie.innerHTML = dieSvg(faces, value);
   rollingDie.setAttribute("aria-label", `Dado de ${faces} faces mostrando ${value}`);
@@ -1357,12 +1533,17 @@ function rollSkill(skillIndex, triggerButton) {
   const extraResults = diceModifier.count ? rollDice(diceModifier.count, diceModifier.faces) : [];
   const extraTotal = sum(extraResults);
   const total = mainResult + attributeValue + extraTotal + fixedModifier;
+  const difficulty = DIFFICULTIES[selectedDifficulty];
+  const outcome = evaluateOutcome(training.die, mainResult, total, selectedDifficulty);
 
   clearRollTimers();
+  clearOutcomeStyle();
   activeRollButton = triggerButton;
   document.querySelector("#result-skill").textContent = skill.name;
   document.querySelector("#result-context").textContent = `${training.label} · ${ATTRIBUTES[attribute]} (${attribute})`;
   document.querySelector("#roll-status").textContent = `Rolando o dado de ${training.die} faces...`;
+  resultOutcomeLabel.textContent = outcome.label;
+  resultDifficultyLabel.textContent = `Zona ${difficulty.label}`;
   document.querySelector("#result-total").textContent = total;
   document.querySelector("#result-breakdown").replaceChildren();
   resultSummary.hidden = true;
@@ -1386,7 +1567,8 @@ function rollSkill(skillIndex, triggerButton) {
     setRollingDie(training.die, mainResult);
     rollingDie.classList.remove("is-rolling");
     rollingDie.classList.add("is-settled");
-    document.querySelector("#roll-status").textContent = `Resultado do dado: ${mainResult}`;
+    document.querySelector("#roll-status").textContent = `Resultado natural: ${mainResult}`;
+    rollDialog.classList.add(`outcome-${outcome.key}`);
 
     addBreakdownLine("Dado principal", `${training.label} · d${training.die}`, mainResult, false);
     addBreakdownLine("Atributo", `${attribute} · ${ATTRIBUTES[attribute]}`, attributeValue);
@@ -1431,6 +1613,10 @@ function trapDialogFocus(event) {
 
 viewButtons.forEach((button) => {
   button.addEventListener("click", () => changeView(button.dataset.viewTarget));
+});
+
+difficultyButtons.forEach((button) => {
+  button.addEventListener("click", () => selectDifficulty(button.dataset.difficulty));
 });
 
 skillsList.addEventListener("click", (event) => {
