@@ -2273,12 +2273,35 @@ h2 { color: #ece6d8; }
   background: #07080a;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.42), inset 0 0 35px rgba(207, 173, 98, 0.04);
   cursor: grab;
+  overscroll-behavior: contain;
   touch-action: none;
   user-select: none;
 }
 .photo-editor-viewport.is-dragging { cursor: grabbing; }
 .photo-editor-viewport:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
-.photo-editor-image { position: absolute; top: 50%; left: 50%; max-width: none; transform-origin: center; pointer-events: none; user-select: none; }
+.photo-editor-image { position: absolute; top: 50%; left: 50%; max-width: none; transform-origin: center; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+.photo-editor-drag-hint {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 9px;
+  border: 1px solid rgba(240, 213, 143, 0.34);
+  border-radius: 3px;
+  color: #e5d29a;
+  background: rgba(7, 8, 10, 0.78);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.34);
+  font-size: 0.68rem;
+  font-weight: 760;
+  letter-spacing: 0.025em;
+  pointer-events: none;
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+.photo-editor-drag-hint svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.45; }
+.photo-editor-viewport.is-dragging .photo-editor-drag-hint { opacity: 0.28; transform: translateY(2px); }
 .photo-editor-grid {
   position: absolute;
   inset: 0;
@@ -2290,6 +2313,7 @@ h2 { color: #ece6d8; }
 }
 .photo-editor-controls { display: grid; align-content: center; gap: 13px; }
 .photo-editor-controls > label { color: #9a8c70; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.photo-editor-help { margin: 0; color: #7d7970; font-size: 0.72rem; line-height: 1.5; }
 .photo-zoom-row { display: grid; grid-template-columns: 34px minmax(90px, 1fr) 34px; align-items: center; gap: 9px; }
 .photo-zoom-row button,
 .photo-center-button {
@@ -3290,7 +3314,7 @@ h2 { color: #ece6d8; }
           <div>
             <p class="eyebrow">Retrato do personagem</p>
             <h2 id="photo-editor-title">Ajustar foto</h2>
-            <p>Arraste para posicionar e use o controle para aproximar.</p>
+            <p>Arraste a imagem dentro da moldura e use o controle para aproximar.</p>
           </div>
           <button class="result-close" type="button" data-close-photo-editor aria-label="Cancelar ajuste da foto">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -3303,6 +3327,12 @@ h2 { color: #ece6d8; }
           <div id="photo-editor-viewport" class="photo-editor-viewport" tabindex="0" aria-label="Área de enquadramento; arraste a foto ou use as setas do teclado">
             <img id="photo-editor-image" alt="Prévia do enquadramento da foto" draggable="false" />
             <span class="photo-editor-grid" aria-hidden="true"></span>
+            <span class="photo-editor-drag-hint" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3v18M8.5 6.5 12 3l3.5 3.5M8.5 17.5 12 21l3.5-3.5M3 12h18M6.5 8.5 3 12l3.5 3.5M17.5 8.5 21 12l-3.5 3.5"></path>
+              </svg>
+              Arraste a imagem
+            </span>
             <span class="portrait-corner portrait-corner-top" aria-hidden="true"></span>
             <span class="portrait-corner portrait-corner-bottom" aria-hidden="true"></span>
           </div>
@@ -3311,9 +3341,10 @@ h2 { color: #ece6d8; }
             <label for="photo-zoom">Zoom</label>
             <div class="photo-zoom-row">
               <button id="photo-zoom-out" type="button" aria-label="Diminuir zoom">−</button>
-              <input id="photo-zoom" type="range" min="1" max="3" step="0.01" value="1" />
+              <input id="photo-zoom" type="range" min="1" max="3" step="0.01" value="1.08" />
               <button id="photo-zoom-in" type="button" aria-label="Aumentar zoom">+</button>
             </div>
+            <p class="photo-editor-help">Mouse ou toque: arraste diretamente sobre a foto. Teclado: use as setas.</p>
             <button id="photo-center" class="photo-center-button" type="button">Centralizar imagem</button>
           </div>
         </div>
@@ -4994,7 +5025,7 @@ let localSheetOwnerUid = null;
 const photoEditorState = {
   source: "",
   image: null,
-  zoom: 1,
+  zoom: 1.08,
   x: 0,
   y: 0,
   pointerId: null,
@@ -6468,7 +6499,6 @@ function setPhotoZoom(nextZoom) {
 }
 
 function centerPhotoEditor() {
-  photoEditorState.zoom = 1;
   photoEditorState.x = 0;
   photoEditorState.y = 0;
   renderPhotoEditor();
@@ -6482,7 +6512,7 @@ function openPhotoEditor(file) {
     image.addEventListener("load", () => {
       photoEditorState.source = String(reader.result);
       photoEditorState.image = image;
-      photoEditorState.zoom = 1;
+      photoEditorState.zoom = 1.08;
       photoEditorState.x = 0;
       photoEditorState.y = 0;
       photoEditorImage.src = photoEditorState.source;
@@ -6816,21 +6846,28 @@ photoZoomInButton.addEventListener("click", () => setPhotoZoom(photoEditorState.
 
 photoEditorViewport.addEventListener("pointerdown", (event) => {
   if (!photoEditorState.image) return;
+  if (event.pointerType === "mouse" && event.button !== 0) return;
+  event.preventDefault();
   photoEditorState.pointerId = event.pointerId;
   photoEditorState.dragStartX = event.clientX;
   photoEditorState.dragStartY = event.clientY;
   photoEditorState.originX = photoEditorState.x;
   photoEditorState.originY = photoEditorState.y;
   photoEditorViewport.classList.add("is-dragging");
-  photoEditorViewport.setPointerCapture(event.pointerId);
+  try {
+    photoEditorViewport.setPointerCapture(event.pointerId);
+  } catch {
+    // O acompanhamento global abaixo mantém o arraste funcionando sem captura.
+  }
 });
 
-photoEditorViewport.addEventListener("pointermove", (event) => {
+window.addEventListener("pointermove", (event) => {
   if (photoEditorState.pointerId !== event.pointerId) return;
+  event.preventDefault();
   photoEditorState.x = photoEditorState.originX + event.clientX - photoEditorState.dragStartX;
   photoEditorState.y = photoEditorState.originY + event.clientY - photoEditorState.dragStartY;
   renderPhotoEditor();
-});
+}, { passive: false });
 
 function finishPhotoDrag(event) {
   if (photoEditorState.pointerId !== event.pointerId) return;
@@ -6838,8 +6875,10 @@ function finishPhotoDrag(event) {
   photoEditorViewport.classList.remove("is-dragging");
 }
 
-photoEditorViewport.addEventListener("pointerup", finishPhotoDrag);
-photoEditorViewport.addEventListener("pointercancel", finishPhotoDrag);
+window.addEventListener("pointerup", finishPhotoDrag);
+window.addEventListener("pointercancel", finishPhotoDrag);
+photoEditorViewport.addEventListener("lostpointercapture", finishPhotoDrag);
+photoEditorImage.addEventListener("dragstart", (event) => event.preventDefault());
 photoEditorViewport.addEventListener("wheel", (event) => {
   event.preventDefault();
   setPhotoZoom(photoEditorState.zoom + (event.deltaY < 0 ? 0.08 : -0.08));
@@ -6954,7 +6993,7 @@ const FIREBASE_CONFIG = {
   storageBucket: "abyssrpg.firebasestorage.app",
   messagingSenderId: "799391481878",
   appId: "1:799391481878:web:acbb7404cdbbe2e19fb537",
-  measurementId: "G-ERGJ6DNFMH"
+  measurementId: "G-ERGJ6DNFMH",
 };
 
 const FIREBASE_SDK_VERSION = "12.18.0";
