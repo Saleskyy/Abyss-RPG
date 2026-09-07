@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Abyss RPG — Index com ficha, constelações e sincronização Firebase — revisão 2026-09-07 -->
+<!-- Abyss RPG — ficha, constelações, habilidades, Grimório e Slots Firebase — revisão 2026-09-07 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -307,7 +307,7 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
   display: grid;
   place-items: center;
   width: 162px;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1;
   overflow: hidden;
   border: 1px solid var(--line-strong);
   color: var(--muted);
@@ -2800,6 +2800,1182 @@ h2 { color: #ece6d8; }
   .feature-detail-context { margin-left: 0; }
 }
 
+/* Habilidades, Grimório de Minerva e Slots */
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  margin-right: 24px;
+  margin-left: auto;
+}
+
+.topbar-actions .account-shell {
+  margin: 0;
+}
+
+.minerva-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 13px;
+  border: 1px solid rgba(207, 173, 98, 0.34);
+  border-radius: 3px;
+  color: #d7bd78;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(240, 213, 143, 0.12), transparent 58%),
+    rgba(15, 16, 20, 0.86);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 780;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+
+.minerva-button:hover {
+  border-color: var(--accent-bright);
+  color: #ffe39a;
+  background: rgba(207, 173, 98, 0.11);
+  box-shadow: 0 0 24px rgba(207, 173, 98, 0.13);
+}
+
+.minerva-button svg {
+  width: 17px;
+  height: 17px;
+  fill: rgba(240, 213, 143, 0.06);
+  stroke: currentColor;
+  stroke-linejoin: round;
+  stroke-width: 1.45;
+}
+
+.account-slot-card {
+  display: grid;
+  gap: 2px;
+  margin: 11px 19px 0;
+  padding: 10px 13px;
+  border-left: 2px solid rgba(207, 173, 98, 0.58);
+  background: rgba(207, 173, 98, 0.045);
+}
+
+.account-slot-card span {
+  color: #777269;
+  font-size: 0.64rem;
+  font-weight: 780;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.account-slot-card strong {
+  overflow: hidden;
+  color: #d8c99f;
+  font-size: 0.8rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-action.is-danger {
+  border-color: rgba(150, 61, 70, 0.42);
+  color: #cc7e87;
+}
+
+.account-action.is-danger:hover {
+  border-color: #b6545f;
+  color: #ef9ca5;
+  background: rgba(130, 34, 46, 0.12);
+}
+
+.sidebar-footer {
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px;
+}
+
+.sidebar-signature {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.sidebar-signature span {
+  font: 0.78rem Georgia, "Times New Roman", serif;
+}
+
+.sidebar-signature i {
+  width: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(207, 173, 98, 0.76), transparent);
+}
+
+.sidebar-signature small {
+  font-size: 0.62rem;
+  letter-spacing: 0.2em;
+}
+
+.slots-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 30px;
+  padding: 0 9px;
+  border: 1px solid rgba(207, 173, 98, 0.24);
+  border-radius: 3px;
+  color: #95876a;
+  background: rgba(207, 173, 98, 0.03);
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 790;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease;
+}
+
+.slots-button:hover {
+  border-color: rgba(207, 173, 98, 0.58);
+  color: #dec781;
+  background: rgba(207, 173, 98, 0.08);
+}
+
+.slots-button svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.abilities-panel {
+  position: relative;
+  min-height: 430px;
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.18);
+  border-radius: 5px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(207, 173, 98, 0.065), transparent 22rem),
+    linear-gradient(145deg, rgba(23, 25, 31, 0.94), rgba(12, 13, 17, 0.98));
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.3), inset 0 1px rgba(255, 255, 255, 0.025);
+}
+
+.abilities-panel::before {
+  position: absolute;
+  inset: -1px auto auto -1px;
+  width: 86px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, var(--accent-bright), rgba(207, 173, 98, 0.08));
+  box-shadow: 0 0 14px rgba(207, 173, 98, 0.24);
+}
+
+.abilities-panel::after {
+  position: absolute;
+  right: 9px;
+  bottom: 9px;
+  width: 17px;
+  height: 17px;
+  border-right: 1px solid rgba(207, 173, 98, 0.24);
+  border-bottom: 1px solid rgba(207, 173, 98, 0.24);
+  content: "";
+  pointer-events: none;
+}
+
+.abilities-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 104px;
+  padding: 22px 26px;
+  border-bottom: 1px solid rgba(207, 173, 98, 0.14);
+  background:
+    radial-gradient(circle at 90% 0, rgba(207, 173, 98, 0.08), transparent 18rem),
+    rgba(255, 255, 255, 0.008);
+}
+
+.ability-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid #2b2c31;
+  border-radius: 3px;
+  background: #0b0c0f;
+}
+
+.ability-tabs button {
+  min-height: 36px;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  color: #85827b;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 790;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.ability-tabs button:hover {
+  color: #d3cbbb;
+}
+
+.ability-tabs button.is-active {
+  border-color: rgba(207, 173, 98, 0.42);
+  color: #ecd184;
+  background: rgba(207, 173, 98, 0.11);
+  box-shadow: inset 0 0 15px rgba(207, 173, 98, 0.05);
+}
+
+.abilities-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.create-ability-button,
+.ability-secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 13px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 780;
+}
+
+.create-ability-button {
+  border: 1px solid rgba(207, 173, 98, 0.48);
+  color: #e1ca88;
+  background: rgba(207, 173, 98, 0.1);
+}
+
+.ability-secondary-button {
+  border: 1px solid #38393f;
+  color: #aaa69d;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.create-ability-button:hover {
+  border-color: #e0c36e;
+  color: #ffe7a1;
+  background: rgba(207, 173, 98, 0.16);
+}
+
+.ability-secondary-button:hover {
+  border-color: rgba(207, 173, 98, 0.46);
+  color: #dec985;
+}
+
+.create-ability-button svg,
+.ability-secondary-button svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.abilities-section-copy {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 25px 26px 15px;
+}
+
+.abilities-section-copy .eyebrow {
+  margin-bottom: 4px;
+}
+
+.abilities-count {
+  padding: 5px 10px;
+  border: 1px solid rgba(207, 173, 98, 0.22);
+  border-radius: 999px;
+  color: #aa9464;
+  background: rgba(207, 173, 98, 0.04);
+  font-size: 0.68rem;
+}
+
+.abilities-list {
+  display: grid;
+  gap: 10px;
+  padding: 0 24px 25px;
+}
+
+.ability-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 82px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 106px;
+  padding: 11px 13px 11px 11px;
+  overflow: hidden;
+  border: 1px solid #2d2e33;
+  border-radius: 3px;
+  background:
+    radial-gradient(circle at 42px 50%, rgba(207, 173, 98, 0.08), transparent 105px),
+    rgba(255, 255, 255, 0.012);
+  transition: border-color 150ms ease, background 150ms ease;
+}
+
+.ability-card::before {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  content: "";
+  background: rgba(207, 173, 98, 0.52);
+}
+
+.ability-card:hover {
+  border-color: rgba(207, 173, 98, 0.34);
+  background: linear-gradient(90deg, rgba(207, 173, 98, 0.06), rgba(255, 255, 255, 0.008));
+}
+
+.ability-card-media {
+  display: grid;
+  place-items: center;
+  width: 82px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.24);
+  border-radius: 2px;
+  color: #88764f;
+  background: radial-gradient(circle, rgba(207, 173, 98, 0.1), transparent 65%), #0a0b0e;
+}
+
+.ability-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ability-card-media span {
+  font-size: 1.45rem;
+}
+
+.ability-card-copy {
+  min-width: 0;
+}
+
+.ability-card-copy small {
+  color: #80745d;
+  font-size: 0.64rem;
+  font-weight: 800;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.ability-card-copy h3 {
+  margin: 3px 0 6px;
+  color: #eee8dc;
+  font: 600 1.08rem Georgia, "Times New Roman", serif;
+}
+
+.ability-card-copy p {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: #9b9891;
+  font-size: 0.78rem;
+  line-height: 1.55;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ability-card-damage {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 8px;
+  padding: 4px 8px;
+  border: 1px solid rgba(183, 80, 91, 0.3);
+  border-radius: 2px;
+  color: #dc8f98;
+  background: rgba(125, 33, 45, 0.07);
+  font: 700 0.7rem ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.ability-card-actions {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 6px;
+}
+
+.ability-card-action {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid #393a40;
+  border-radius: 3px;
+  color: #aaa69d;
+  background: #111217;
+  cursor: pointer;
+  font-size: 0.68rem;
+  font-weight: 760;
+}
+
+.ability-card-action:hover {
+  border-color: rgba(207, 173, 98, 0.46);
+  color: #dfca86;
+}
+
+.ability-card-action.is-roll {
+  grid-column: 1 / -1;
+  border-color: rgba(183, 80, 91, 0.4);
+  color: #df8e97;
+}
+
+.ability-card-action.is-roll:hover {
+  border-color: #c7636d;
+  background: rgba(135, 37, 49, 0.1);
+}
+
+.ability-card-action.is-delete:hover {
+  border-color: #9e5561;
+  color: #ef8c95;
+}
+
+.abilities-empty {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 58px 24px 70px;
+  color: #6b6760;
+  text-align: center;
+}
+
+.abilities-empty > span {
+  color: #927a49;
+  font-size: 1.8rem;
+  filter: drop-shadow(0 0 12px rgba(207, 173, 98, 0.2));
+}
+
+.abilities-empty strong {
+  color: #9d9689;
+  font: 600 1.08rem Georgia, "Times New Roman", serif;
+}
+
+.abilities-empty p {
+  max-width: 45ch;
+  margin: 0;
+  font-size: 0.78rem;
+}
+
+.ability-modal,
+.ability-roll-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 108;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+}
+
+#ability-editor-modal {
+  z-index: 118;
+}
+
+.ability-roll-modal {
+  z-index: 112;
+}
+
+.ability-dialog,
+.grimoire-dialog,
+.slots-dialog,
+.ability-roll-dialog {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: min(780px, 100%);
+  max-height: calc(100vh - 44px);
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.38);
+  border-radius: 5px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(207, 173, 98, 0.085), transparent 20rem),
+    linear-gradient(150deg, #191a20, #0b0c0f 78%);
+  box-shadow: 0 46px 150px rgba(0, 0, 0, 0.82), 0 0 0 1px rgba(0, 0, 0, 0.42);
+  animation: dialog-in 230ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.grimoire-dialog {
+  width: min(900px, 100%);
+}
+
+#grimoire-picker-dialog {
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+}
+
+.minerva-dialog {
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.slots-dialog {
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  width: min(680px, 100%);
+}
+
+.ability-roll-dialog {
+  width: min(520px, 100%);
+}
+
+.ability-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px 27px 21px;
+  border-bottom: 1px solid rgba(207, 173, 98, 0.18);
+  background: linear-gradient(90deg, rgba(207, 173, 98, 0.055), rgba(255, 255, 255, 0.005));
+}
+
+.ability-dialog-head h2 {
+  margin: 0;
+  font-size: 1.55rem;
+}
+
+.ability-dialog-head p:last-child {
+  margin: 5px 0 0;
+  color: #858179;
+  font-size: 0.76rem;
+}
+
+.ability-editor-form {
+  display: contents;
+}
+
+.ability-editor-content {
+  overflow-y: auto;
+  padding: 22px 27px;
+}
+
+.ability-editor-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(180px, 0.75fr);
+  gap: 14px;
+}
+
+.ability-field-help {
+  display: block;
+  margin-top: 6px;
+  color: #74716a;
+  font-size: 0.68rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.ability-media-editor {
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr);
+  gap: 18px;
+  margin-top: 18px;
+  padding: 17px;
+  border: 1px solid #2d2e33;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.ability-media-preview {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 4px;
+  width: 130px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.3);
+  border-radius: 2px;
+  color: #88764f;
+  background: radial-gradient(circle, rgba(207, 173, 98, 0.1), transparent 66%), #090a0d;
+}
+
+.ability-media-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ability-media-preview > span {
+  font-size: 1.45rem;
+}
+
+.ability-media-preview small {
+  color: #706a60;
+  font-size: 0.64rem;
+  text-transform: uppercase;
+}
+
+.ability-media-fields {
+  min-width: 0;
+}
+
+.ability-media-fields h3 {
+  margin: 1px 0 11px;
+  color: #ddd5c5;
+  font: 600 0.98rem Georgia, "Times New Roman", serif;
+}
+
+.ability-file-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-top: 9px;
+  padding: 0 11px;
+  border: 1px solid #3a3b41;
+  border-radius: 3px;
+  color: #aaa69d;
+  background: #111217;
+  cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 760;
+}
+
+.ability-file-button:hover {
+  border-color: rgba(207, 173, 98, 0.48);
+  color: #dfca86;
+}
+
+.ability-file-button input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.ability-file-button svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+}
+
+.clear-ability-media {
+  min-height: 36px;
+  margin-left: 6px;
+  padding: 0 10px;
+  border: 1px solid transparent;
+  color: #817c73;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.68rem;
+}
+
+.clear-ability-media:hover {
+  color: #dc8790;
+}
+
+.ability-file-name {
+  margin: 7px 0 0;
+  color: #74716a;
+  font-size: 0.66rem;
+}
+
+.ability-dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  padding: 15px 27px 18px;
+  border-top: 1px solid rgba(207, 173, 98, 0.15);
+  background: rgba(7, 8, 10, 0.42);
+}
+
+.grimoire-toolbar {
+  padding: 17px 23px 5px;
+}
+
+.grimoire-toolbar .filter-input-shell {
+  max-width: 370px;
+}
+
+.grimoire-list {
+  display: grid;
+  align-content: start;
+  gap: 9px;
+  min-height: 160px;
+  overflow-y: auto;
+  padding: 17px 23px 24px;
+}
+
+.grimoire-item {
+  display: grid;
+  grid-template-columns: 62px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  min-height: 80px;
+  padding: 8px 10px;
+  border: 1px solid #2d2e33;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.016);
+}
+
+.grimoire-item-media {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.2);
+  color: #88764f;
+  background: #090a0d;
+}
+
+.grimoire-item-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.grimoire-item-copy {
+  min-width: 0;
+}
+
+.grimoire-item-copy small {
+  color: #82765f;
+  font-size: 0.62rem;
+  font-weight: 790;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.grimoire-item-copy strong {
+  display: block;
+  margin: 2px 0 3px;
+  overflow: hidden;
+  color: #e9e2d5;
+  font: 600 1rem Georgia, "Times New Roman", serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.grimoire-item-copy p {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: #8c8982;
+  font-size: 0.72rem;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.grimoire-item-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.grimoire-empty {
+  align-self: center;
+  margin: 30px;
+  padding: 34px 20px;
+  border: 1px dashed #34353a;
+  color: #868078;
+  text-align: center;
+  font-size: 0.78rem;
+}
+
+.minerva-head-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.minerva-list {
+  padding-top: 22px;
+}
+
+.create-slot-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px;
+  padding: 20px 23px 12px;
+}
+
+.slots-login-note {
+  margin: 0 23px 14px;
+  padding: 12px 13px;
+  border-left: 2px solid #b9954e;
+  color: #9a9385;
+  background: rgba(207, 173, 98, 0.05);
+  font-size: 0.75rem;
+}
+
+.slots-list {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  min-height: 160px;
+  overflow-y: auto;
+  padding: 8px 23px 24px;
+}
+
+.slot-item {
+  display: grid;
+  grid-template-columns: 26px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 11px;
+  border: 1px solid #2e2f34;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.015);
+}
+
+.slot-item.is-active {
+  border-color: rgba(207, 173, 98, 0.5);
+  background: rgba(207, 173, 98, 0.065);
+}
+
+.slot-marker {
+  color: #7b7058;
+  text-align: center;
+}
+
+.slot-item.is-active .slot-marker {
+  color: #e0c673;
+  text-shadow: 0 0 12px rgba(224, 198, 115, 0.35);
+}
+
+.slot-name-editor {
+  min-width: 0;
+}
+
+.slot-name-editor strong {
+  display: block;
+  overflow: hidden;
+  color: #e2dbce;
+  font: 600 0.95rem Georgia, "Times New Roman", serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.slot-name-editor small {
+  color: #7e7a72;
+  font-size: 0.65rem;
+}
+
+.slot-rename-row {
+  display: flex;
+  gap: 6px;
+}
+
+.slot-rename-row input {
+  width: min(260px, 100%);
+  min-height: 34px;
+  padding: 0 9px;
+  border: 1px solid #44454c;
+  border-radius: 2px;
+  color: #eee8dc;
+  background: #090a0d;
+  outline: 0;
+}
+
+.slot-rename-row button,
+.slot-actions button {
+  min-height: 33px;
+  padding: 0 9px;
+  border: 1px solid #3a3b41;
+  border-radius: 3px;
+  color: #aaa69d;
+  background: #111217;
+  cursor: pointer;
+  font-size: 0.66rem;
+  font-weight: 750;
+}
+
+.slot-rename-row button:hover,
+.slot-actions button:hover {
+  border-color: rgba(207, 173, 98, 0.48);
+  color: #dfca86;
+}
+
+.slot-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.slot-actions .slot-delete:hover {
+  border-color: #9f4e59;
+  color: #ec8992;
+}
+
+.ability-roll-result {
+  display: grid;
+  justify-items: center;
+  padding: 42px 28px 44px;
+  text-align: center;
+}
+
+.ability-roll-result > span {
+  color: #867e70;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+}
+
+.ability-roll-result > strong {
+  margin: 5px 0 7px;
+  color: #f1d77f;
+  font: 600 clamp(4rem, 13vw, 6.2rem) / 1 Georgia, "Times New Roman", serif;
+  text-shadow: 0 0 28px rgba(225, 192, 96, 0.24);
+  animation: damage-result-in 280ms ease both;
+}
+
+.ability-roll-result p {
+  max-width: 55ch;
+  margin: 0;
+  color: #9b9589;
+  font: 0.75rem / 1.55 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@keyframes damage-result-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7) rotate(-4deg);
+  }
+}
+
+@media (max-width: 1040px) {
+  .sidebar-footer {
+    display: grid;
+    justify-content: center;
+    gap: 9px;
+    padding-inline: 10px;
+  }
+
+  .sidebar-signature {
+    justify-content: center;
+  }
+
+  .slots-button {
+    min-width: 42px;
+    padding: 0;
+  }
+
+  .slots-button span,
+  .minerva-button span {
+    display: none;
+  }
+
+  .topbar-actions {
+    margin-right: 14px;
+  }
+
+  .minerva-button {
+    width: 42px;
+    padding: 0;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .topbar-actions {
+    margin-right: 0;
+  }
+
+  .sidebar-nav {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    padding-right: 64px;
+  }
+
+  .sidebar-footer {
+    position: absolute;
+    right: 8px;
+    bottom: 8px;
+    display: block;
+    width: 48px;
+    padding: 0;
+  }
+
+  .sidebar-signature {
+    display: none;
+  }
+
+  .slots-button {
+    width: 48px;
+    min-height: 52px;
+    border-color: transparent;
+  }
+
+  .abilities-panel-head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .abilities-actions {
+    justify-content: flex-end;
+  }
+
+  .ability-card {
+    grid-template-columns: 74px minmax(0, 1fr);
+  }
+
+  .ability-card-media {
+    width: 74px;
+  }
+
+  .ability-card-actions {
+    grid-column: 2;
+    display: flex;
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 560px) {
+  .topbar-actions {
+    gap: 6px;
+  }
+
+  .minerva-button {
+    width: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
+
+  .abilities-panel {
+    border-radius: 3px;
+  }
+
+  .abilities-panel-head {
+    padding: 18px;
+  }
+
+  .ability-tabs {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    width: 100%;
+  }
+
+  .ability-tabs button {
+    padding-inline: 7px;
+  }
+
+  .abilities-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .abilities-actions button {
+    padding-inline: 8px;
+  }
+
+  .abilities-section-copy {
+    padding-inline: 18px;
+  }
+
+  .abilities-list {
+    padding-inline: 14px;
+  }
+
+  .ability-card {
+    grid-template-columns: 62px minmax(0, 1fr);
+    gap: 11px;
+    padding: 10px;
+  }
+
+  .ability-card-media {
+    width: 62px;
+  }
+
+  .ability-card-actions {
+    grid-column: 1 / -1;
+  }
+
+  .ability-modal,
+  .ability-roll-modal {
+    padding: 12px;
+  }
+
+  .ability-dialog,
+  .grimoire-dialog,
+  .slots-dialog,
+  .ability-roll-dialog {
+    max-height: calc(100vh - 24px);
+  }
+
+  .ability-dialog-head {
+    padding: 21px 20px 18px;
+  }
+
+  .ability-editor-content {
+    padding: 18px;
+  }
+
+  .ability-editor-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .ability-media-editor {
+    grid-template-columns: 88px minmax(0, 1fr);
+    padding: 12px;
+  }
+
+  .ability-media-preview {
+    width: 88px;
+  }
+
+  .ability-dialog-footer {
+    padding-inline: 18px;
+  }
+
+  .grimoire-item {
+    grid-template-columns: 50px minmax(0, 1fr);
+  }
+
+  .grimoire-item-media {
+    width: 50px;
+  }
+
+  .grimoire-item-actions {
+    grid-column: 2;
+  }
+
+  .minerva-dialog-head {
+    align-items: flex-start;
+  }
+
+  .minerva-head-actions .create-ability-button {
+    width: 40px;
+    padding: 0;
+  }
+
+  .minerva-head-actions .create-ability-button span {
+    display: none;
+  }
+
+  .create-slot-form {
+    grid-template-columns: 1fr;
+  }
+
+  .slot-item {
+    grid-template-columns: 22px minmax(0, 1fr);
+  }
+
+  .slot-actions {
+    grid-column: 2;
+    justify-content: flex-start;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
@@ -2819,7 +3995,21 @@ h2 { color: #ece6d8; }
       </div>
       <div class="topbar-rule" aria-hidden="true"></div>
 
-      <div class="account-shell">
+      <div class="topbar-actions">
+        <button
+          id="minerva-button"
+          class="minerva-button"
+          type="button"
+          aria-label="Abrir Grimório de Minerva"
+          hidden
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3.2 14.1 8l5.2.6-3.9 3.4 1.2 5.1-4.6-2.7-4.6 2.7 1.2-5.1-3.9-3.4L9.9 8 12 3.2Z"></path>
+          </svg>
+          <span>Grimório de Minerva</span>
+        </button>
+
+        <div class="account-shell">
         <button
           id="account-button"
           class="account-button"
@@ -2871,8 +4061,13 @@ h2 { color: #ece6d8; }
             <i class="account-status-dot" aria-hidden="true"></i>
             <div>
               <strong id="account-sync-title">Preparando salvamento</strong>
-              <p id="account-sync-message" aria-live="polite">A ficha continua salva neste dispositivo enquanto o Firebase carrega.</p>
+              <p id="account-sync-message" aria-live="polite">Aguardando o Firebase para abrir os Slots da sua conta.</p>
             </div>
+          </div>
+
+          <div id="account-slot-card" class="account-slot-card" hidden>
+            <span>Slot atual</span>
+            <strong id="account-slot-name">Nenhum Slot</strong>
           </div>
 
           <div id="firebase-setup-hint" class="firebase-setup-hint" hidden>
@@ -2883,9 +4078,11 @@ h2 { color: #ece6d8; }
           <footer class="account-menu-actions">
             <button id="account-login" class="account-action is-primary" type="button" hidden>Entrar com Google</button>
             <button id="account-sync-now" class="account-action is-primary" type="button" hidden>Sincronizar agora</button>
+            <button id="account-reset-sheet" class="account-action is-danger" type="button" hidden>Resetar ficha</button>
             <button id="account-sign-out" class="account-action" type="button" hidden>Sair</button>
           </footer>
         </section>
+        </div>
       </div>
     </header>
 
@@ -2917,12 +4114,32 @@ h2 { color: #ece6d8; }
           </svg>
           <span>Perícias</span>
         </button>
+
+        <button
+          class="nav-item"
+          type="button"
+          data-view-target="abilities"
+          aria-controls="abilities-view"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m13.5 3-8 10h6l-1 8 8-11h-6l1-7Z"></path>
+          </svg>
+          <span>Habilidades</span>
+        </button>
       </nav>
 
-      <div class="sidebar-footer" aria-hidden="true">
-        <span>I</span>
-        <i></i>
-        <small>ABYSS</small>
+      <div class="sidebar-footer">
+        <div class="sidebar-signature" aria-hidden="true">
+          <span>I</span>
+          <i></i>
+          <small>ABYSS</small>
+        </div>
+        <button id="slots-button" class="slots-button" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 5h14v5H5zM5 14h14v5H5zM8 7.5h.01M8 16.5h.01"></path>
+          </svg>
+          <span>Slots</span>
+        </button>
       </div>
     </aside>
 
@@ -3159,6 +4376,85 @@ h2 { color: #ece6d8; }
             <span>Abra as Informações de uma perícia e acesse suas Competências.</span>
           </div>
           <div id="selected-features-list" class="selected-features-list"></div>
+        </section>
+      </section>
+
+      <section
+        id="abilities-view"
+        class="view"
+        data-view="abilities"
+        aria-labelledby="abilities-title"
+        hidden
+      >
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">Registro III</p>
+            <h1 id="abilities-title">Habilidades</h1>
+          </div>
+          <p class="heading-note">Ataques, poderes e progressões do personagem</p>
+        </div>
+
+        <section class="abilities-panel" aria-label="Habilidades do personagem">
+          <header class="abilities-panel-head">
+            <div class="ability-tabs" role="tablist" aria-label="Seções de habilidades">
+              <button
+                class="is-active"
+                type="button"
+                role="tab"
+                data-ability-section="attacks"
+                aria-selected="true"
+              >
+                Ataques
+              </button>
+              <button
+                type="button"
+                role="tab"
+                data-ability-section="powers"
+                aria-selected="false"
+              >
+                Poderes
+              </button>
+              <button
+                type="button"
+                role="tab"
+                data-ability-section="tree"
+                aria-selected="false"
+              >
+                Árvore
+              </button>
+            </div>
+
+            <div class="abilities-actions">
+              <button id="open-grimoire-picker" class="ability-secondary-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m12 3 2.1 5 5.4.7-4 3.5 1.2 5.3-4.7-2.8-4.7 2.8 1.2-5.3-4-3.5 5.4-.7L12 3Z"></path>
+                </svg>
+                <span>Adicionar do Grimório</span>
+              </button>
+              <button id="create-ability" class="create-ability-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14"></path>
+                </svg>
+                <span>Criar Habilidade</span>
+              </button>
+            </div>
+          </header>
+
+          <div class="abilities-section-copy">
+            <div>
+              <p id="ability-section-eyebrow" class="eyebrow">Combate</p>
+              <h2 id="ability-section-title">Ataques</h2>
+            </div>
+            <span id="abilities-count" class="abilities-count">0 habilidades</span>
+          </div>
+
+          <div id="abilities-list" class="abilities-list"></div>
+
+          <div id="abilities-empty" class="abilities-empty">
+            <span aria-hidden="true">✦</span>
+            <strong>Nenhuma habilidade nesta seção</strong>
+            <p>Crie uma habilidade própria ou acrescente uma do Grimório de Minerva.</p>
+          </div>
         </section>
       </section>
     </main>
@@ -3499,6 +4795,349 @@ h2 { color: #ece6d8; }
             <span>Adicionar à ficha</span>
           </button>
           <button class="dialog-button" type="button" data-close-feature-detail>Voltar</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="ability-editor-modal" class="ability-modal" hidden>
+      <div class="roll-backdrop" data-close-ability-editor aria-hidden="true"></div>
+      <section
+        id="ability-editor-dialog"
+        class="ability-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ability-editor-title"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="ability-dialog-head">
+          <div>
+            <p id="ability-editor-eyebrow" class="eyebrow">Habilidade do personagem</p>
+            <h2 id="ability-editor-title">Criar Habilidade</h2>
+            <p>Combine dados, valores fixos e atributos na fórmula de dano.</p>
+          </div>
+          <button
+            class="result-close"
+            type="button"
+            data-close-ability-editor
+            aria-label="Fechar editor de habilidade"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <form id="ability-editor-form" class="ability-editor-form" novalidate>
+          <div class="ability-editor-content">
+            <div class="ability-editor-grid">
+              <label class="builder-field">
+                <span>Nome</span>
+                <input
+                  id="ability-name"
+                  type="text"
+                  maxlength="80"
+                  autocomplete="off"
+                  placeholder="Ex.: Golpe Abissal"
+                  required
+                />
+              </label>
+
+              <label class="builder-field">
+                <span>Seção</span>
+                <select id="ability-section" required>
+                  <option value="attacks">Ataques</option>
+                  <option value="powers">Poderes</option>
+                  <option value="tree">Árvore</option>
+                </select>
+              </label>
+
+              <label class="builder-field builder-field-wide">
+                <span>Descrição</span>
+                <textarea
+                  id="ability-description"
+                  rows="5"
+                  maxlength="3000"
+                  placeholder="Descreva o efeito, custo, alcance e demais regras."
+                ></textarea>
+              </label>
+
+              <label class="builder-field builder-field-wide">
+                <span>Dano</span>
+                <input
+                  id="ability-damage"
+                  type="text"
+                  maxlength="100"
+                  autocomplete="off"
+                  placeholder="Ex.: 1d10 + 1 + FOR"
+                />
+                <small class="ability-field-help">
+                  Aceita dados, números e FOR, AGI, INT, CON ou POD. Exemplos: 2d6+3, 1d10+FOR.
+                </small>
+              </label>
+            </div>
+
+            <section class="ability-media-editor" aria-labelledby="ability-media-title">
+              <div id="ability-media-preview" class="ability-media-preview">
+                <span aria-hidden="true">✦</span>
+                <small>Prévia</small>
+              </div>
+
+              <div class="ability-media-fields">
+                <h3 id="ability-media-title">Imagem ou GIF</h3>
+
+                <label class="builder-field">
+                  <span>Link da mídia</span>
+                  <input
+                    id="ability-media-url"
+                    type="url"
+                    maxlength="1600"
+                    autocomplete="off"
+                    placeholder="https://..."
+                  />
+                </label>
+
+                <label class="ability-file-button">
+                  <input
+                    id="ability-media-file"
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp,image/gif"
+                  />
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 16V4m0 0L8 8m4-4 4 4M5 13v6h14v-6"></path>
+                  </svg>
+                  <span>Escolher arquivo</span>
+                </label>
+
+                <button id="clear-ability-media" class="clear-ability-media" type="button">
+                  Remover mídia
+                </button>
+                <p id="ability-file-name" class="ability-file-name">
+                  PNG, JPG, WEBP ou GIF · até 8 MB. O envio de arquivo usa o Firebase Storage;
+                  links funcionam sem ele.
+                </p>
+              </div>
+            </section>
+
+            <p id="ability-editor-error" class="builder-error" role="alert" hidden></p>
+          </div>
+
+          <footer class="ability-dialog-footer">
+            <button class="dialog-button" type="button" data-close-ability-editor>Cancelar</button>
+            <button id="save-ability" class="builder-submit" type="submit">Salvar Habilidade</button>
+          </footer>
+        </form>
+      </section>
+    </div>
+
+    <div id="grimoire-picker-modal" class="ability-modal" hidden>
+      <div class="roll-backdrop" data-close-grimoire-picker aria-hidden="true"></div>
+      <section
+        id="grimoire-picker-dialog"
+        class="grimoire-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="grimoire-picker-title"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="ability-dialog-head">
+          <div>
+            <p class="eyebrow">Acervo compartilhado</p>
+            <h2 id="grimoire-picker-title">Grimório de Minerva</h2>
+            <p>Escolha uma habilidade para copiar para o Slot atual.</p>
+          </div>
+          <button
+            class="result-close"
+            type="button"
+            data-close-grimoire-picker
+            aria-label="Fechar Grimório"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <div class="grimoire-toolbar">
+          <label class="filter-input-shell">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5"></circle>
+              <path d="m15.5 15.5 5 5"></path>
+            </svg>
+            <input
+              id="grimoire-search"
+              class="filter-input"
+              type="search"
+              autocomplete="off"
+              placeholder="Buscar no Grimório..."
+            />
+          </label>
+        </div>
+
+        <div id="grimoire-picker-list" class="grimoire-list"></div>
+        <div id="grimoire-picker-empty" class="grimoire-empty" hidden>
+          Nenhuma habilidade disponível no Grimório.
+        </div>
+        <footer class="ability-dialog-footer">
+          <button class="dialog-button" type="button" data-close-grimoire-picker>Fechar</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="minerva-modal" class="ability-modal" hidden>
+      <div class="roll-backdrop" data-close-minerva aria-hidden="true"></div>
+      <section
+        id="minerva-dialog"
+        class="grimoire-dialog minerva-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="minerva-title"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="ability-dialog-head minerva-dialog-head">
+          <div>
+            <p class="eyebrow">Acesso da Guardiã</p>
+            <h2 id="minerva-title">Grimório de Minerva</h2>
+            <p>Crie e edite as habilidades que todos podem acrescentar às próprias fichas.</p>
+          </div>
+
+          <div class="minerva-head-actions">
+            <button id="create-minerva-ability" class="create-ability-button" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+              <span>Nova Habilidade</span>
+            </button>
+            <button
+              class="result-close"
+              type="button"
+              data-close-minerva
+              aria-label="Fechar Grimório de Minerva"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m7 7 10 10M17 7 7 17"></path>
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div id="minerva-list" class="grimoire-list minerva-list"></div>
+        <div id="minerva-empty" class="grimoire-empty" hidden>
+          O Grimório ainda não possui habilidades.
+        </div>
+        <footer class="ability-dialog-footer">
+          <button class="dialog-button" type="button" data-close-minerva>Fechar</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="slots-modal" class="ability-modal" hidden>
+      <div class="roll-backdrop" data-close-slots aria-hidden="true"></div>
+      <section
+        id="slots-dialog"
+        class="slots-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="slots-title"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="ability-dialog-head">
+          <div>
+            <p class="eyebrow">Personagens da conta</p>
+            <h2 id="slots-title">Slots de Ficha</h2>
+            <p>Cada Slot possui perfil, perícias e habilidades completamente independentes.</p>
+          </div>
+          <button
+            class="result-close"
+            type="button"
+            data-close-slots
+            aria-label="Fechar organização de Slots"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <form id="create-slot-form" class="create-slot-form" hidden>
+          <label class="builder-field">
+            <span>Novo Slot</span>
+            <input
+              id="new-slot-name"
+              type="text"
+              maxlength="60"
+              autocomplete="off"
+              placeholder="Nome do personagem ou da ficha"
+            />
+          </label>
+          <button class="create-ability-button" type="submit">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 5v14M5 12h14"></path>
+            </svg>
+            <span>Criar Slot</span>
+          </button>
+        </form>
+
+        <p id="slots-login-note" class="slots-login-note">
+          Entre com o Google para criar e organizar seus Slots.
+        </p>
+        <div id="slots-list" class="slots-list"></div>
+        <footer class="ability-dialog-footer">
+          <button class="dialog-button" type="button" data-close-slots>Fechar</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="ability-roll-modal" class="ability-roll-modal" hidden>
+      <div class="roll-backdrop" data-close-ability-roll aria-hidden="true"></div>
+      <section
+        id="ability-roll-dialog"
+        class="ability-roll-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="ability-roll-title"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="ability-dialog-head">
+          <div>
+            <p class="eyebrow">Rolagem de dano</p>
+            <h2 id="ability-roll-title">Habilidade</h2>
+            <p id="ability-roll-formula"></p>
+          </div>
+          <button
+            class="result-close"
+            type="button"
+            data-close-ability-roll
+            aria-label="Fechar rolagem de dano"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <div class="ability-roll-result">
+          <span>Total</span>
+          <strong id="ability-roll-total">0</strong>
+          <p id="ability-roll-breakdown"></p>
+        </div>
+
+        <footer class="ability-dialog-footer">
+          <button class="dialog-button" type="button" data-close-ability-roll>Fechar</button>
         </footer>
       </section>
     </div>
@@ -4873,9 +6512,12 @@ const COMPETENCY_TREES = {
   ]
 };
 
-const FEATURE_STORAGE_KEY = "abyss-rpg-selected-features-v1";
-const CUSTOM_SKILL_STORAGE_KEY = "abyss-rpg-custom-skills-v1";
-const SHEET_CACHE_STORAGE_KEY = "abyss-rpg-sheet-cache-v2";
+const ABILITY_SECTIONS = {
+  attacks: { label: "Ataques", eyebrow: "Combate" },
+  powers: { label: "Poderes", eyebrow: "Dons e técnicas" },
+  tree: { label: "Árvore", eyebrow: "Progressão" },
+};
+
 let FEATURE_CATALOG = [];
 const FEATURE_BY_ID = new Map();
 
@@ -5004,6 +6646,45 @@ const accountMenu = document.querySelector("#account-menu");
 const accountLoginButton = document.querySelector("#account-login");
 const accountSyncNowButton = document.querySelector("#account-sync-now");
 const accountSignOutButton = document.querySelector("#account-sign-out");
+const minervaButton = document.querySelector("#minerva-button");
+const slotsButton = document.querySelector("#slots-button");
+const abilitySectionButtons = [...document.querySelectorAll("[data-ability-section]")];
+const abilitiesList = document.querySelector("#abilities-list");
+const abilitiesEmpty = document.querySelector("#abilities-empty");
+const abilitiesCount = document.querySelector("#abilities-count");
+const abilitySectionEyebrow = document.querySelector("#ability-section-eyebrow");
+const abilitySectionTitle = document.querySelector("#ability-section-title");
+const createAbilityButton = document.querySelector("#create-ability");
+const openGrimoirePickerButton = document.querySelector("#open-grimoire-picker");
+const abilityEditorModal = document.querySelector("#ability-editor-modal");
+const abilityEditorDialog = document.querySelector("#ability-editor-dialog");
+const abilityEditorForm = document.querySelector("#ability-editor-form");
+const abilityEditorEyebrow = document.querySelector("#ability-editor-eyebrow");
+const abilityEditorTitle = document.querySelector("#ability-editor-title");
+const abilityNameInput = document.querySelector("#ability-name");
+const abilitySectionSelect = document.querySelector("#ability-section");
+const abilityDescriptionInput = document.querySelector("#ability-description");
+const abilityDamageInput = document.querySelector("#ability-damage");
+const abilityMediaUrlInput = document.querySelector("#ability-media-url");
+const abilityMediaFileInput = document.querySelector("#ability-media-file");
+const abilityMediaPreview = document.querySelector("#ability-media-preview");
+const abilityFileName = document.querySelector("#ability-file-name");
+const clearAbilityMediaButton = document.querySelector("#clear-ability-media");
+const abilityEditorError = document.querySelector("#ability-editor-error");
+const saveAbilityButton = document.querySelector("#save-ability");
+const grimoirePickerModal = document.querySelector("#grimoire-picker-modal");
+const grimoirePickerDialog = document.querySelector("#grimoire-picker-dialog");
+const grimoirePickerList = document.querySelector("#grimoire-picker-list");
+const grimoirePickerEmpty = document.querySelector("#grimoire-picker-empty");
+const grimoireSearchInput = document.querySelector("#grimoire-search");
+const minervaModal = document.querySelector("#minerva-modal");
+const minervaDialog = document.querySelector("#minerva-dialog");
+const minervaList = document.querySelector("#minerva-list");
+const minervaEmpty = document.querySelector("#minerva-empty");
+const slotsModal = document.querySelector("#slots-modal");
+const slotsDialog = document.querySelector("#slots-dialog");
+const abilityRollModal = document.querySelector("#ability-roll-modal");
+const abilityRollDialog = document.querySelector("#ability-roll-dialog");
 const selectedFeatureIds = new Set();
 let rollInterval;
 let rollTimeout;
@@ -5019,9 +6700,14 @@ let activeCustomSkillTrigger;
 let pendingDeleteSkillId = null;
 let pendingDeleteTrigger;
 let activePhotoTrigger;
-let sheetCacheTimer;
 let isApplyingExternalState = false;
-let localSheetOwnerUid = null;
+let abilities = [];
+let activeAbilitySection = "attacks";
+let activeAbilityId = null;
+let activeAbilityTrigger = null;
+let abilityEditorScope = "sheet";
+let pendingAbilityPreviewUrl = "";
+let grimoireAbilities = [];
 const photoEditorState = {
   source: "",
   image: null,
@@ -5103,7 +6789,7 @@ function captureCompleteSheetState() {
 
   const portraitPreview = document.querySelector("#portrait-preview");
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     profile: {
       name: document.querySelector("#character-name").value.trim().slice(0, 120),
       background: document.querySelector("#character-background").value.trim().slice(0, 240),
@@ -5116,39 +6802,20 @@ function captureCompleteSheetState() {
       selectedFeatureIds: [...selectedFeatureIds],
     },
     customSkills: getCustomSkillsForStorage(),
+    abilities: abilities.map((ability) => ({ ...ability })),
   };
 }
 
 function writeLocalSheetCache() {
-  window.clearTimeout(sheetCacheTimer);
-  try {
-    window.localStorage.setItem(SHEET_CACHE_STORAGE_KEY, JSON.stringify({
-      ownerUid: localSheetOwnerUid,
-      savedAt: new Date().toISOString(),
-      state: captureCompleteSheetState(),
-    }));
-  } catch {
-    // O estado da sessão continua funcionando se o navegador bloquear o armazenamento.
-  }
+  // A ficha é persistida exclusivamente no Slot da conta Firebase.
 }
 
 function readLocalSheetCache() {
-  try {
-    const cached = JSON.parse(window.localStorage.getItem(SHEET_CACHE_STORAGE_KEY) || "null");
-    if (!cached || typeof cached !== "object" || !cached.state) return null;
-    return {
-      ownerUid: typeof cached.ownerUid === "string" && cached.ownerUid ? cached.ownerUid : null,
-      state: cached.state,
-    };
-  } catch {
-    return null;
-  }
+  return null;
 }
 
 function notifySheetChanged(reason = "sheet") {
   if (isApplyingExternalState) return;
-  window.clearTimeout(sheetCacheTimer);
-  sheetCacheTimer = window.setTimeout(writeLocalSheetCache, 180);
   window.dispatchEvent(new CustomEvent("abyss:sheet-changed", { detail: { reason } }));
 }
 
@@ -5184,6 +6851,63 @@ function sanitizeStoredRowState(rawState) {
     mainDiceCount: String(Number.isFinite(parsedDiceCount) ? Math.min(20, Math.max(1, parsedDiceCount)) : 1),
     diceModifier: String(state.diceModifier || "").trim().slice(0, 24),
     fixedModifier: /^[-+]?\d{1,7}$/.test(fixedModifier) ? fixedModifier : "",
+  };
+}
+
+function createCleanSheetState() {
+  return {
+    schemaVersion: 3,
+    profile: {
+      name: "",
+      background: "",
+      portrait: "",
+      attributes: { FOR: 1, AGI: 1, INT: 1, CON: 1, POD: 1 },
+    },
+    sheet: {
+      difficulty: "medium",
+      skillRows: {},
+      selectedFeatureIds: [],
+    },
+    customSkills: [],
+    abilities: [],
+  };
+}
+
+function safeRemoteImageUrl(value) {
+  const source = String(value || "").trim();
+  if (!source) return "";
+
+  try {
+    const url = new URL(source);
+    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function sanitizeAbility(rawAbility) {
+  if (!rawAbility || typeof rawAbility !== "object") return null;
+
+  const name = String(rawAbility.name || "").trim().slice(0, 80);
+  if (!name) return null;
+
+  return {
+    id: String(
+      rawAbility.id || `ability-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+    ).slice(0, 120),
+    section: ABILITY_SECTIONS[rawAbility.section] ? rawAbility.section : "attacks",
+    name,
+    description: String(rawAbility.description || "").trim().slice(0, 3000),
+    damage: String(rawAbility.damage || "").trim().slice(0, 100),
+    mediaUrl: safeRemoteImageUrl(rawAbility.mediaUrl),
+    mediaStoragePath: String(rawAbility.mediaStoragePath || "").slice(0, 900),
+    mediaOwner:
+      rawAbility.mediaOwner === "minerva"
+        ? "minerva"
+        : rawAbility.mediaOwner === "slot"
+          ? "slot"
+          : "link",
+    sourceId: String(rawAbility.sourceId || "").slice(0, 120),
   };
 }
 
@@ -5226,15 +6950,18 @@ function applyCompleteSheetState(rawState, options = {}) {
       if (FEATURE_BY_ID.has(featureId)) selectedFeatureIds.add(featureId);
     });
 
+    abilities = (Array.isArray(rawState.abilities) ? rawState.abilities : [])
+      .map(sanitizeAbility)
+      .filter(Boolean);
+
     persistCustomSkills();
     persistSelectedFeatures();
     renderSelectedFeatures();
+    renderAbilities();
+    skillSearchInput.value = "";
+    attributeFilter.value = "all";
+    trainingFilter.value = "all";
     filterSkills();
-
-    if (Object.prototype.hasOwnProperty.call(options, "ownerUid")) {
-      localSheetOwnerUid = options.ownerUid || null;
-    }
-    if (options.persistLocal !== false) writeLocalSheetCache();
     return true;
   } finally {
     isApplyingExternalState = false;
@@ -5518,32 +7245,11 @@ function getCustomSkillsForStorage() {
 }
 
 function persistCustomSkills() {
-  try {
-    window.localStorage.setItem(CUSTOM_SKILL_STORAGE_KEY, JSON.stringify(getCustomSkillsForStorage()));
-  } catch {
-    // A Perícia continua disponível durante a sessão se o armazenamento local falhar.
-  }
+  // Persistido junto ao Slot da conta Firebase.
 }
 
 function loadCustomSkills() {
-  try {
-    const stored = JSON.parse(window.localStorage.getItem(CUSTOM_SKILL_STORAGE_KEY) || "[]");
-    if (!Array.isArray(stored)) return;
-    const usedNames = new Set(SKILLS.map((skill) => normalizeSearchTerm(skill.name)));
-    const usedIds = new Set();
-
-    stored.forEach((rawSkill) => {
-      const customSkill = sanitizeCustomSkill(rawSkill);
-      if (!customSkill) return;
-      const normalizedName = normalizeSearchTerm(customSkill.name);
-      if (!normalizedName || usedNames.has(normalizedName) || usedIds.has(customSkill.id)) return;
-      usedNames.add(normalizedName);
-      usedIds.add(customSkill.id);
-      registerCustomSkill(customSkill);
-    });
-  } catch {
-    // Dados inválidos são ignorados sem impedir o funcionamento da ficha.
-  }
+  // Não existe carregamento local: o Firebase fornece os dados do Slot ativo.
 }
 
 function createBuilderUseItem(kind = "skill") {
@@ -5815,6 +7521,631 @@ function deletePendingCustomSkill() {
   notifySheetChanged("custom-skill-deleted");
 }
 
+function createAbilityId(prefix = "ability") {
+  if (window.crypto?.randomUUID) return `${prefix}-${window.crypto.randomUUID()}`;
+  return `${prefix}-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+
+function parseDamageFormula(rawValue) {
+  const compact = String(rawValue || "")
+    .toUpperCase()
+    .replace(/[−–—]/g, "-")
+    .replace(/\s+/g, "");
+  if (!compact) return { formula: "", tokens: [], error: "" };
+
+  const tokenPattern = /([+-]?)(?:(\d*)D(\d+)|(\d+)|(FOR|AGI|INT|CON|POD))/g;
+  const tokens = [];
+  let cursor = 0;
+  let totalDice = 0;
+  let match;
+
+  while ((match = tokenPattern.exec(compact))) {
+    if (match.index !== cursor) {
+      return { error: "Use uma fórmula como 1d10+1 ou 1d10+FOR." };
+    }
+    if (tokens.length && !match[1]) {
+      return { error: "Separe cada termo com + ou −." };
+    }
+
+    const sign = match[1] === "-" ? -1 : 1;
+    if (match[3]) {
+      const count = Number(match[2] || 1);
+      const faces = Number(match[3]);
+      const invalidDice =
+        !Number.isInteger(count) ||
+        count < 1 ||
+        count > 50 ||
+        !Number.isInteger(faces) ||
+        faces < 2 ||
+        faces > 1000;
+
+      if (invalidDice) {
+        return { error: "Cada grupo deve ter de 1 a 50 dados e dados com 2 a 1000 faces." };
+      }
+
+      totalDice += count;
+      tokens.push({ type: "dice", sign, count, faces });
+    } else if (match[4]) {
+      tokens.push({ type: "fixed", sign, value: Number(match[4]) });
+    } else {
+      tokens.push({ type: "attribute", sign, attribute: match[5] });
+    }
+
+    cursor = tokenPattern.lastIndex;
+  }
+
+  if (cursor !== compact.length || !tokens.length) {
+    return { error: "Use uma fórmula como 1d10+1 ou 1d10+FOR." };
+  }
+  if (totalDice > 100 || tokens.length > 30) {
+    return { error: "A fórmula é grande demais. Use no máximo 100 dados e 30 termos." };
+  }
+
+  const formula = tokens
+    .map((token, index) => {
+      const sign = token.sign < 0 ? "−" : index === 0 ? "" : "+";
+      if (token.type === "dice") return `${sign}${token.count}d${token.faces}`;
+      if (token.type === "fixed") return `${sign}${token.value}`;
+      return `${sign}${token.attribute}`;
+    })
+    .join("");
+
+  return { formula, tokens, error: "" };
+}
+
+function evaluateDamageFormula(parsedFormula) {
+  let total = 0;
+  const pieces = [];
+
+  parsedFormula.tokens.forEach((token, index) => {
+    const prefix = token.sign < 0 ? "− " : index === 0 ? "" : "+ ";
+
+    if (token.type === "dice") {
+      const results = rollDice(token.count, token.faces);
+      total += sum(results) * token.sign;
+      pieces.push(`${prefix}${token.count}d${token.faces} [${results.join(", ")}]`);
+      return;
+    }
+
+    if (token.type === "attribute") {
+      const value = getAttributeValue(token.attribute);
+      total += value * token.sign;
+      pieces.push(`${prefix}${token.attribute} [${value}]`);
+      return;
+    }
+
+    total += token.value * token.sign;
+    pieces.push(`${prefix}${token.value}`);
+  });
+
+  return { total, breakdown: pieces.join(" ") };
+}
+
+function revokePendingAbilityPreview() {
+  if (pendingAbilityPreviewUrl.startsWith("blob:")) {
+    URL.revokeObjectURL(pendingAbilityPreviewUrl);
+  }
+  pendingAbilityPreviewUrl = "";
+}
+
+function renderAbilityMediaPreview(source = "") {
+  revokePendingAbilityPreview();
+
+  const safeSource = source.startsWith("blob:") ? source : safeRemoteImageUrl(source);
+  abilityMediaPreview.replaceChildren();
+
+  if (safeSource) {
+    const image = document.createElement("img");
+    image.alt = "Prévia da mídia da habilidade";
+    image.src = safeSource;
+    image.addEventListener(
+      "error",
+      () => {
+        abilityMediaPreview.replaceChildren();
+        abilityMediaPreview.append(
+          Object.assign(document.createElement("span"), { textContent: "✦" }),
+          Object.assign(document.createElement("small"), { textContent: "Link inválido" }),
+        );
+      },
+      { once: true },
+    );
+    abilityMediaPreview.append(image);
+    if (source.startsWith("blob:")) pendingAbilityPreviewUrl = source;
+    return;
+  }
+
+  const mark = document.createElement("span");
+  mark.setAttribute("aria-hidden", "true");
+  mark.textContent = "✦";
+  abilityMediaPreview.append(
+    mark,
+    Object.assign(document.createElement("small"), { textContent: "Prévia" }),
+  );
+}
+
+function abilitySectionLabel(section) {
+  return ABILITY_SECTIONS[section]?.label || ABILITY_SECTIONS.attacks.label;
+}
+
+function createAbilityMediaElement(ability, className) {
+  const media = document.createElement("div");
+  media.className = className;
+  const source = safeRemoteImageUrl(ability.mediaUrl);
+
+  if (source) {
+    const image = document.createElement("img");
+    image.alt = "";
+    image.src = source;
+    image.loading = "lazy";
+    image.addEventListener(
+      "error",
+      () => {
+        media.replaceChildren(
+          Object.assign(document.createElement("span"), { textContent: "✦" }),
+        );
+      },
+      { once: true },
+    );
+    media.append(image);
+  } else {
+    media.append(Object.assign(document.createElement("span"), { textContent: "✦" }));
+  }
+
+  return media;
+}
+
+function renderAbilities() {
+  const section = ABILITY_SECTIONS[activeAbilitySection] || ABILITY_SECTIONS.attacks;
+  const filtered = abilities
+    .filter((ability) => ability.section === activeAbilitySection)
+    .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+
+  abilitySectionEyebrow.textContent = section.eyebrow;
+  abilitySectionTitle.textContent = section.label;
+  abilitiesCount.textContent = `${filtered.length} ${filtered.length === 1 ? "habilidade" : "habilidades"}`;
+  abilitiesEmpty.hidden = filtered.length !== 0;
+  abilitiesList.hidden = filtered.length === 0;
+  abilitiesList.replaceChildren();
+
+  filtered.forEach((ability) => {
+    const card = document.createElement("article");
+    card.className = "ability-card";
+    card.dataset.abilityId = ability.id;
+
+    const copy = document.createElement("div");
+    copy.className = "ability-card-copy";
+
+    const type = document.createElement("small");
+    type.textContent = ability.sourceId ? `${section.label} · Grimório` : section.label;
+
+    const name = Object.assign(document.createElement("h3"), {
+      textContent: ability.name,
+    });
+    const description = Object.assign(document.createElement("p"), {
+      textContent: ability.description || "Sem descrição.",
+    });
+    copy.append(type, name, description);
+
+    if (ability.damage) {
+      const damage = document.createElement("span");
+      damage.className = "ability-card-damage";
+      damage.textContent = ability.damage;
+      copy.append(damage);
+    }
+
+    const actions = document.createElement("div");
+    actions.className = "ability-card-actions";
+
+    if (ability.damage) {
+      const roll = document.createElement("button");
+      roll.className = "ability-card-action is-roll";
+      roll.type = "button";
+      roll.dataset.rollAbility = ability.id;
+      roll.textContent = "Rolar dano";
+      actions.append(roll);
+    }
+
+    const edit = document.createElement("button");
+    edit.className = "ability-card-action";
+    edit.type = "button";
+    edit.dataset.editAbility = ability.id;
+    edit.textContent = "Editar";
+
+    const remove = document.createElement("button");
+    remove.className = "ability-card-action is-delete";
+    remove.type = "button";
+    remove.dataset.deleteAbility = ability.id;
+    remove.textContent = "Excluir";
+
+    actions.append(edit, remove);
+    card.append(createAbilityMediaElement(ability, "ability-card-media"), copy, actions);
+    abilitiesList.append(card);
+  });
+}
+
+function selectAbilitySection(sectionKey) {
+  if (!ABILITY_SECTIONS[sectionKey]) return;
+  activeAbilitySection = sectionKey;
+
+  abilitySectionButtons.forEach((button) => {
+    const selected = button.dataset.abilitySection === sectionKey;
+    button.classList.toggle("is-active", selected);
+    button.setAttribute("aria-selected", String(selected));
+  });
+
+  renderAbilities();
+}
+
+function setAbilityEditorError(message) {
+  abilityEditorError.textContent = message;
+  abilityEditorError.hidden = !message;
+}
+
+function openAbilityEditor(scope, ability = null, trigger = null) {
+  abilityEditorScope = scope === "minerva" ? "minerva" : "sheet";
+  activeAbilityId = ability?.id || null;
+  activeAbilityTrigger = trigger;
+  abilityEditorForm.reset();
+  abilitySectionSelect.value = ability?.section || activeAbilitySection;
+  abilityNameInput.value = ability?.name || "";
+  abilityDescriptionInput.value = ability?.description || "";
+  abilityDamageInput.value = ability?.damage || "";
+  abilityMediaUrlInput.value = ability?.mediaOwner === "link" ? ability.mediaUrl || "" : "";
+  abilityEditorForm.dataset.existingMediaUrl = ability?.mediaUrl || "";
+  abilityEditorForm.dataset.existingMediaPath = ability?.mediaStoragePath || "";
+  abilityEditorForm.dataset.existingMediaOwner = ability?.mediaOwner || "link";
+  abilityEditorForm.dataset.sourceId = ability?.sourceId || "";
+  abilityEditorForm.dataset.mediaCleared = "false";
+  abilityFileName.textContent =
+    "PNG, JPG, WEBP ou GIF · até 8 MB. Arquivos usam o Firebase Storage; links não.";
+  setAbilityEditorError("");
+  renderAbilityMediaPreview(ability?.mediaUrl || "");
+  abilityEditorEyebrow.textContent =
+    abilityEditorScope === "minerva" ? "Grimório de Minerva" : "Habilidade do personagem";
+  abilityEditorTitle.textContent = ability ? "Editar Habilidade" : "Criar Habilidade";
+  saveAbilityButton.textContent = ability ? "Salvar Alterações" : "Criar Habilidade";
+  abilityEditorModal.hidden = false;
+  syncModalLock();
+  abilityEditorDialog.focus();
+  requestAnimationFrame(() => abilityNameInput.focus());
+}
+
+function closeAbilityEditor() {
+  abilityEditorModal.hidden = true;
+  revokePendingAbilityPreview();
+  abilityMediaFileInput.value = "";
+  syncModalLock();
+  if (activeAbilityTrigger?.isConnected) activeAbilityTrigger.focus();
+}
+
+async function submitAbilityEditor(event) {
+  event.preventDefault();
+  setAbilityEditorError("");
+
+  const name = abilityNameInput.value.trim();
+  if (!name) {
+    setAbilityEditorError("Dê um nome à Habilidade.");
+    abilityNameInput.focus();
+    return;
+  }
+
+  const parsedDamage = parseDamageFormula(abilityDamageInput.value);
+  if (parsedDamage.error) {
+    setAbilityEditorError(parsedDamage.error);
+    abilityDamageInput.focus();
+    return;
+  }
+
+  const collection = abilityEditorScope === "minerva" ? grimoireAbilities : abilities;
+  const existing = collection.find((item) => item.id === activeAbilityId) || null;
+  const id =
+    existing?.id || createAbilityId(abilityEditorScope === "minerva" ? "minerva" : "ability");
+  const file = abilityMediaFileInput.files?.[0] || null;
+  const typedUrl = abilityMediaUrlInput.value.trim();
+
+  if (typedUrl && !safeRemoteImageUrl(typedUrl)) {
+    setAbilityEditorError("O link da imagem precisa começar com http:// ou https://.");
+    abilityMediaUrlInput.focus();
+    return;
+  }
+  const allowedImageTypes = new Set([
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "image/gif",
+  ]);
+  if (file && (!allowedImageTypes.has(file.type) || file.size > 8 * 1024 * 1024)) {
+    setAbilityEditorError("Escolha uma imagem ou GIF de até 8 MB.");
+    return;
+  }
+
+  const cleared = abilityEditorForm.dataset.mediaCleared === "true";
+  let mediaUrl = typedUrl ? safeRemoteImageUrl(typedUrl) : cleared ? "" : existing?.mediaUrl || "";
+  let mediaStoragePath = typedUrl || cleared ? "" : existing?.mediaStoragePath || "";
+  let mediaOwner = typedUrl || cleared ? "link" : existing?.mediaOwner || "link";
+  let newlyUploadedPath = "";
+
+  saveAbilityButton.disabled = true;
+  saveAbilityButton.textContent = file ? "Enviando mídia…" : "Salvando…";
+
+  try {
+    if (file) {
+      if (!window.AbyssCloud?.isSignedIn()) {
+        throw new Error(
+          "Entre com o Google para enviar um arquivo. Você ainda pode usar um link de imagem ou GIF.",
+        );
+      }
+
+      const uploaded = await window.AbyssCloud.uploadAbilityMedia({
+        scope: abilityEditorScope,
+        abilityId: id,
+        file,
+      });
+      mediaUrl = uploaded.url;
+      mediaStoragePath = uploaded.path;
+      mediaOwner = abilityEditorScope === "minerva" ? "minerva" : "slot";
+      newlyUploadedPath = uploaded.path;
+    }
+
+    const nextAbility = sanitizeAbility({
+      id,
+      section: abilitySectionSelect.value,
+      name,
+      description: abilityDescriptionInput.value,
+      damage: parsedDamage.formula,
+      mediaUrl,
+      mediaStoragePath,
+      mediaOwner,
+      sourceId: existing?.sourceId || abilityEditorForm.dataset.sourceId || "",
+    });
+
+    if (abilityEditorScope === "minerva") {
+      if (!window.AbyssCloud?.isMinervaAdmin()) {
+        throw new Error("Esta conta não possui acesso ao Grimório de Minerva.");
+      }
+      await window.AbyssCloud.saveMinervaAbility(nextAbility);
+      await refreshGrimoireFromCloud();
+    } else {
+      const index = abilities.findIndex((item) => item.id === id);
+      if (index >= 0) abilities[index] = nextAbility;
+      else abilities.push(nextAbility);
+
+      selectAbilitySection(nextAbility.section);
+      notifySheetChanged(index >= 0 ? "ability-edited" : "ability-created");
+    }
+
+    const oldPath = existing?.mediaStoragePath || "";
+    const ownsOld =
+      abilityEditorScope === "minerva"
+        ? existing?.mediaOwner === "minerva"
+        : existing?.mediaOwner === "slot";
+
+    if (oldPath && oldPath !== mediaStoragePath && ownsOld) {
+      window.AbyssCloud?.deleteMedia(oldPath).catch(() => {});
+    }
+
+    newlyUploadedPath = "";
+    closeAbilityEditor();
+  } catch (error) {
+    if (newlyUploadedPath) {
+      window.AbyssCloud?.deleteMedia(newlyUploadedPath).catch(() => {});
+    }
+    const friendlyCloudError = error?.code
+      ? window.AbyssCloud?.describeError?.(error)
+      : "";
+    setAbilityEditorError(
+      friendlyCloudError || error?.message || "Não foi possível salvar a Habilidade.",
+    );
+  } finally {
+    saveAbilityButton.disabled = false;
+    saveAbilityButton.textContent = existing ? "Salvar Alterações" : "Criar Habilidade";
+  }
+}
+
+async function deleteSheetAbility(abilityId) {
+  const ability = abilities.find((item) => item.id === abilityId);
+  if (!ability || !window.confirm(`Excluir “${ability.name}” deste Slot?`)) return;
+
+  abilities = abilities.filter((item) => item.id !== abilityId);
+  renderAbilities();
+  notifySheetChanged("ability-deleted");
+
+  if (ability.mediaOwner === "slot" && ability.mediaStoragePath) {
+    window.AbyssCloud?.deleteMedia(ability.mediaStoragePath).catch(() => {});
+  }
+}
+
+function rollAbilityDamage(abilityId, trigger) {
+  const ability = abilities.find((item) => item.id === abilityId);
+  if (!ability) return;
+
+  const parsed = parseDamageFormula(ability.damage);
+  if (parsed.error || !parsed.tokens.length) return;
+
+  const result = evaluateDamageFormula(parsed);
+  activeAbilityTrigger = trigger;
+  document.querySelector("#ability-roll-title").textContent = ability.name;
+  document.querySelector("#ability-roll-formula").textContent = parsed.formula;
+  document.querySelector("#ability-roll-total").textContent = result.total;
+  document.querySelector("#ability-roll-breakdown").textContent = result.breakdown;
+  abilityRollModal.hidden = false;
+  syncModalLock();
+  abilityRollDialog.focus();
+}
+
+function closeAbilityRoll() {
+  abilityRollModal.hidden = true;
+  syncModalLock();
+  if (activeAbilityTrigger?.isConnected) activeAbilityTrigger.focus();
+}
+
+function createGrimoireItem(ability, mode) {
+  const card = document.createElement("article");
+  card.className = "grimoire-item";
+
+  const copy = document.createElement("div");
+  copy.className = "grimoire-item-copy";
+
+  const type = document.createElement("small");
+  type.textContent = abilitySectionLabel(ability.section);
+  const name = Object.assign(document.createElement("strong"), {
+    textContent: ability.name,
+  });
+  const description = Object.assign(document.createElement("p"), {
+    textContent: ability.description || ability.damage || "Sem descrição.",
+  });
+  copy.append(type, name, description);
+
+  const actions = document.createElement("div");
+  actions.className = "grimoire-item-actions";
+
+  if (mode === "picker") {
+    const add = document.createElement("button");
+    add.className = "ability-card-action";
+    add.type = "button";
+    add.dataset.importMinervaAbility = ability.id;
+    add.textContent = "Adicionar";
+    actions.append(add);
+  } else {
+    const edit = document.createElement("button");
+    edit.className = "ability-card-action";
+    edit.type = "button";
+    edit.dataset.editMinervaAbility = ability.id;
+    edit.textContent = "Editar";
+
+    const remove = document.createElement("button");
+    remove.className = "ability-card-action is-delete";
+    remove.type = "button";
+    remove.dataset.deleteMinervaAbility = ability.id;
+    remove.textContent = "Excluir";
+    actions.append(edit, remove);
+  }
+
+  card.append(createAbilityMediaElement(ability, "grimoire-item-media"), copy, actions);
+  return card;
+}
+
+function renderGrimoireCollections() {
+  const query = normalizeSearchTerm(grimoireSearchInput.value);
+  const visible = grimoireAbilities
+    .filter((ability) => {
+      const searchable = normalizeSearchTerm(
+        `${ability.name} ${ability.description} ${ability.damage} ${abilitySectionLabel(ability.section)}`,
+      );
+      return !query || searchable.includes(query);
+    })
+    .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+
+  grimoirePickerList.replaceChildren(
+    ...visible.map((ability) => createGrimoireItem(ability, "picker")),
+  );
+  minervaList.replaceChildren(
+    ...grimoireAbilities
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }))
+      .map((ability) => createGrimoireItem(ability, "admin")),
+  );
+  grimoirePickerEmpty.hidden = visible.length !== 0;
+  minervaEmpty.hidden = grimoireAbilities.length !== 0;
+}
+
+async function refreshGrimoireFromCloud() {
+  if (!window.AbyssCloud?.loadGrimoire) {
+    throw new Error("O Firebase ainda não terminou de carregar.");
+  }
+
+  const loaded = await window.AbyssCloud.loadGrimoire();
+  grimoireAbilities = loaded.map(sanitizeAbility).filter(Boolean);
+  renderGrimoireCollections();
+}
+
+async function openGrimoirePicker() {
+  if (!window.AbyssCloud?.isSignedIn()) {
+    setAccountMenuOpen(true);
+    window.dispatchEvent(new CustomEvent("abyss:firebase-login"));
+    return;
+  }
+
+  grimoirePickerModal.hidden = false;
+  grimoirePickerList.setAttribute("aria-busy", "true");
+  syncModalLock();
+  grimoirePickerDialog.focus();
+
+  try {
+    await refreshGrimoireFromCloud();
+  } catch {
+    grimoirePickerList.replaceChildren();
+    grimoirePickerEmpty.textContent =
+      "Não foi possível abrir o Grimório. Confira as regras do Firestore e tente novamente.";
+    grimoirePickerEmpty.hidden = false;
+  } finally {
+    grimoirePickerList.removeAttribute("aria-busy");
+  }
+}
+
+function closeGrimoirePicker() {
+  grimoirePickerModal.hidden = true;
+  syncModalLock();
+  if (openGrimoirePickerButton.isConnected) openGrimoirePickerButton.focus();
+}
+
+function importMinervaAbility(abilityId) {
+  const source = grimoireAbilities.find((item) => item.id === abilityId);
+  if (!source) return;
+
+  abilities.push(
+    sanitizeAbility({
+      ...source,
+      id: createAbilityId("ability"),
+      section: activeAbilitySection,
+      sourceId: source.id,
+      mediaOwner: source.mediaStoragePath ? "minerva" : "link",
+    }),
+  );
+  renderAbilities();
+  closeGrimoirePicker();
+  notifySheetChanged("ability-imported");
+}
+
+async function openMinervaGrimoire() {
+  if (!window.AbyssCloud?.isMinervaAdmin()) return;
+
+  minervaModal.hidden = false;
+  minervaList.setAttribute("aria-busy", "true");
+  syncModalLock();
+  minervaDialog.focus();
+
+  try {
+    await refreshGrimoireFromCloud();
+  } catch {
+    minervaList.replaceChildren();
+    minervaEmpty.textContent =
+      "Não foi possível abrir o Grimório. Confira as regras do Firestore e tente novamente.";
+    minervaEmpty.hidden = false;
+  } finally {
+    minervaList.removeAttribute("aria-busy");
+  }
+}
+
+function closeMinervaGrimoire() {
+  minervaModal.hidden = true;
+  syncModalLock();
+  if (minervaButton.isConnected) minervaButton.focus();
+}
+
+function openSlotsManager() {
+  slotsModal.hidden = false;
+  syncModalLock();
+  slotsDialog.focus();
+  window.AbyssCloud?.renderSlots();
+}
+
+function closeSlotsManager() {
+  slotsModal.hidden = true;
+  syncModalLock();
+  if (slotsButton.isConnected) slotsButton.focus();
+}
+
 function syncModalLock() {
   const hasOpenModal = [
     rollModal,
@@ -5824,6 +8155,11 @@ function syncModalLock() {
     customSkillModal,
     deleteSkillModal,
     photoEditorModal,
+    abilityEditorModal,
+    grimoirePickerModal,
+    minervaModal,
+    slotsModal,
+    abilityRollModal,
   ]
     .some((modal) => !modal.hidden);
   document.body.classList.toggle("modal-open", hasOpenModal);
@@ -5889,23 +8225,10 @@ function createUseCard(use) {
 
 function loadSelectedFeatures() {
   selectedFeatureIds.clear();
-  try {
-    const stored = JSON.parse(window.localStorage.getItem(FEATURE_STORAGE_KEY) || "[]");
-    if (!Array.isArray(stored)) return;
-    stored.forEach((featureId) => {
-      if (FEATURE_BY_ID.has(featureId)) selectedFeatureIds.add(featureId);
-    });
-  } catch {
-    // A ficha continua funcional mesmo se o navegador bloquear armazenamento local.
-  }
 }
 
 function persistSelectedFeatures() {
-  try {
-    window.localStorage.setItem(FEATURE_STORAGE_KEY, JSON.stringify([...selectedFeatureIds]));
-  } catch {
-    // Mantém as escolhas durante a sessão quando o armazenamento não está disponível.
-  }
+  // Persistido junto ao Slot da conta Firebase.
 }
 
 function renderSelectedFeatures() {
@@ -6688,6 +9011,126 @@ viewButtons.forEach((button) => {
   button.addEventListener("click", () => changeView(button.dataset.viewTarget));
 });
 
+abilitySectionButtons.forEach((button) => {
+  button.addEventListener("click", () => selectAbilitySection(button.dataset.abilitySection));
+});
+
+createAbilityButton.addEventListener("click", () => {
+  if (!window.AbyssCloud?.hasActiveSlot()) {
+    setAccountMenuOpen(true);
+    if (!window.AbyssCloud?.isSignedIn()) {
+      window.dispatchEvent(new CustomEvent("abyss:firebase-login"));
+    }
+    return;
+  }
+  openAbilityEditor("sheet", null, createAbilityButton);
+});
+
+openGrimoirePickerButton.addEventListener("click", openGrimoirePicker);
+minervaButton.addEventListener("click", openMinervaGrimoire);
+slotsButton.addEventListener("click", openSlotsManager);
+abilityEditorForm.addEventListener("submit", submitAbilityEditor);
+grimoireSearchInput.addEventListener("input", renderGrimoireCollections);
+
+abilityMediaFileInput.addEventListener("change", () => {
+  const file = abilityMediaFileInput.files?.[0];
+  if (!file) return;
+  abilityMediaUrlInput.value = "";
+  abilityEditorForm.dataset.mediaCleared = "false";
+  abilityFileName.textContent = `${file.name} · ${Math.ceil(file.size / 1024)} KB`;
+  renderAbilityMediaPreview(URL.createObjectURL(file));
+});
+
+abilityMediaUrlInput.addEventListener("input", () => {
+  if (abilityMediaUrlInput.value.trim()) {
+    abilityMediaFileInput.value = "";
+    abilityFileName.textContent = "A imagem será carregada pelo link informado.";
+  }
+  abilityEditorForm.dataset.mediaCleared = "false";
+  renderAbilityMediaPreview(abilityMediaUrlInput.value.trim());
+});
+
+clearAbilityMediaButton.addEventListener("click", () => {
+  abilityMediaUrlInput.value = "";
+  abilityMediaFileInput.value = "";
+  abilityEditorForm.dataset.mediaCleared = "true";
+  abilityFileName.textContent = "A habilidade ficará sem imagem.";
+  renderAbilityMediaPreview("");
+});
+
+abilitiesList.addEventListener("click", (event) => {
+  const roll = event.target.closest("[data-roll-ability]");
+  const edit = event.target.closest("[data-edit-ability]");
+  const remove = event.target.closest("[data-delete-ability]");
+
+  if (roll) {
+    rollAbilityDamage(roll.dataset.rollAbility, roll);
+    return;
+  }
+  if (edit) {
+    const ability = abilities.find((item) => item.id === edit.dataset.editAbility);
+    if (ability) openAbilityEditor("sheet", ability, edit);
+    return;
+  }
+  if (remove) deleteSheetAbility(remove.dataset.deleteAbility);
+});
+
+grimoirePickerList.addEventListener("click", (event) => {
+  const add = event.target.closest("[data-import-minerva-ability]");
+  if (add) importMinervaAbility(add.dataset.importMinervaAbility);
+});
+
+document.querySelector("#create-minerva-ability").addEventListener("click", (event) => {
+  openAbilityEditor("minerva", null, event.currentTarget);
+});
+
+minervaList.addEventListener("click", async (event) => {
+  const edit = event.target.closest("[data-edit-minerva-ability]");
+  if (edit) {
+    const ability = grimoireAbilities.find(
+      (item) => item.id === edit.dataset.editMinervaAbility,
+    );
+    if (ability) openAbilityEditor("minerva", ability, edit);
+    return;
+  }
+
+  const remove = event.target.closest("[data-delete-minerva-ability]");
+  if (!remove) return;
+
+  const ability = grimoireAbilities.find(
+    (item) => item.id === remove.dataset.deleteMinervaAbility,
+  );
+  if (!ability || !window.confirm(`Excluir “${ability.name}” do Grimório de Minerva?`)) {
+    return;
+  }
+
+  remove.disabled = true;
+  try {
+    await window.AbyssCloud.deleteMinervaAbility(ability);
+    await refreshGrimoireFromCloud();
+  } catch (error) {
+    window.alert(error?.message || "Não foi possível excluir a Habilidade do Grimório.");
+  } finally {
+    remove.disabled = false;
+  }
+});
+
+document.querySelectorAll("[data-close-ability-editor]").forEach((button) => {
+  button.addEventListener("click", closeAbilityEditor);
+});
+document.querySelectorAll("[data-close-grimoire-picker]").forEach((button) => {
+  button.addEventListener("click", closeGrimoirePicker);
+});
+document.querySelectorAll("[data-close-minerva]").forEach((button) => {
+  button.addEventListener("click", closeMinervaGrimoire);
+});
+document.querySelectorAll("[data-close-slots]").forEach((button) => {
+  button.addEventListener("click", closeSlotsManager);
+});
+document.querySelectorAll("[data-close-ability-roll]").forEach((button) => {
+  button.addEventListener("click", closeAbilityRoll);
+});
+
 difficultyButtons.forEach((button) => {
   button.addEventListener("click", () => selectDifficulty(button.dataset.difficulty));
 });
@@ -6921,7 +9364,17 @@ window.addEventListener("resize", () => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !deleteSkillModal.hidden) {
+  if (event.key === "Escape" && !abilityEditorModal.hidden) {
+    closeAbilityEditor();
+  } else if (event.key === "Escape" && !abilityRollModal.hidden) {
+    closeAbilityRoll();
+  } else if (event.key === "Escape" && !grimoirePickerModal.hidden) {
+    closeGrimoirePicker();
+  } else if (event.key === "Escape" && !minervaModal.hidden) {
+    closeMinervaGrimoire();
+  } else if (event.key === "Escape" && !slotsModal.hidden) {
+    closeSlotsManager();
+  } else if (event.key === "Escape" && !deleteSkillModal.hidden) {
     closeDeleteSkill();
   } else if (event.key === "Escape" && !photoEditorModal.hidden) {
     closePhotoEditor();
@@ -6946,6 +9399,11 @@ document.addEventListener("keydown", (event) => {
   trapInteractiveModalFocus(event, customSkillModal, customSkillDialog);
   trapInteractiveModalFocus(event, deleteSkillModal, deleteSkillDialog);
   trapInteractiveModalFocus(event, photoEditorModal, photoEditorDialog);
+  trapInteractiveModalFocus(event, abilityEditorModal, abilityEditorDialog);
+  trapInteractiveModalFocus(event, grimoirePickerModal, grimoirePickerDialog);
+  trapInteractiveModalFocus(event, minervaModal, minervaDialog);
+  trapInteractiveModalFocus(event, slotsModal, slotsDialog);
+  trapInteractiveModalFocus(event, abilityRollModal, abilityRollDialog);
 });
 
 loadCustomSkills();
@@ -6955,24 +9413,20 @@ renderSkills();
 hydrateLegendDice();
 loadSelectedFeatures();
 renderSelectedFeatures();
-
-const cachedSheet = readLocalSheetCache();
-if (cachedSheet) {
-  localSheetOwnerUid = cachedSheet.ownerUid;
-  applyCompleteSheetState(cachedSheet.state, { ownerUid: cachedSheet.ownerUid, persistLocal: false });
-} else {
-  writeLocalSheetCache();
-}
+renderAbilities();
 
 window.AbyssSheet = Object.freeze({
   captureState: captureCompleteSheetState,
   applyState: applyCompleteSheetState,
   persistLocalNow: writeLocalSheetCache,
-  getLocalOwner: () => localSheetOwnerUid,
-  setLocalOwner: (ownerUid) => {
-    localSheetOwnerUid = ownerUid || null;
-    writeLocalSheetCache();
-  },
+  getLocalOwner: () => null,
+  setLocalOwner: () => {},
+  createCleanState: createCleanSheetState,
+  resetState: () => applyCompleteSheetState(createCleanSheetState(), { persistLocal: false }),
+});
+window.AbyssAbilities = Object.freeze({
+  refreshGrimoire: refreshGrimoireFromCloud,
+  renderGrimoire: renderGrimoireCollections,
 });
 window.dispatchEvent(new CustomEvent("abyss:sheet-ready"));
 
@@ -6998,6 +9452,12 @@ const FIREBASE_CONFIG = {
 
 const FIREBASE_SDK_VERSION = "12.18.0";
 const sheetBridge = window.AbyssSheet;
+const MINERVA_ADMIN_EMAILS = new Set([
+  "zkyokoo007@gmail.com",
+  "anthonysousabr002@gmail.com",
+  "annysousa314@gmail.com",
+]);
+
 const firebaseUi = {
   button: document.querySelector("#account-button"),
   label: document.querySelector("#account-label"),
@@ -7015,20 +9475,33 @@ const firebaseUi = {
   setupHint: document.querySelector("#firebase-setup-hint"),
   login: document.querySelector("#account-login"),
   syncNow: document.querySelector("#account-sync-now"),
+  reset: document.querySelector("#account-reset-sheet"),
   signOut: document.querySelector("#account-sign-out"),
+  slotCard: document.querySelector("#account-slot-card"),
+  slotName: document.querySelector("#account-slot-name"),
+  minervaButton: document.querySelector("#minerva-button"),
+  slotsList: document.querySelector("#slots-list"),
+  slotsLoginNote: document.querySelector("#slots-login-note"),
+  createSlotForm: document.querySelector("#create-slot-form"),
+  newSlotName: document.querySelector("#new-slot-name"),
 };
 
 let firebaseAuth = null;
 let firestoreDb = null;
+let firebaseStorage = null;
 let authApi = null;
 let firestoreApi = null;
+let storageApi = null;
 let currentFirebaseUser = null;
+let currentSlotId = null;
+let currentSlots = [];
 let authChangeSequence = 0;
 let cloudSaveTimer = null;
 let cloudSavePromise = null;
 let stateRevision = 0;
 let lastSavedRevision = 0;
 let isHydratingCloudState = false;
+let resetConfirmationTimer = null;
 
 function firebaseConfigIsReady() {
   const requiredFields = ["apiKey", "authDomain", "projectId", "appId"];
@@ -7067,6 +9540,11 @@ function setAvatar(image, fallback, photoUrl, displayName) {
   }
 }
 
+function isMinervaAdmin(user = currentFirebaseUser) {
+  const email = String(user?.email || "").trim().toLowerCase();
+  return Boolean(user?.emailVerified && email && MINERVA_ADMIN_EMAILS.has(email));
+}
+
 function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") {
   const signedIn = Boolean(user);
   const displayName = user?.displayName || "Conta Google";
@@ -7088,7 +9566,12 @@ function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") 
   firebaseUi.setupHint.hidden = state !== "missing";
   firebaseUi.login.hidden = signedIn || state === "missing" || state === "loading" || state === "signing-in";
   firebaseUi.syncNow.hidden = !signedIn;
+  firebaseUi.reset.hidden = !signedIn;
   firebaseUi.signOut.hidden = !signedIn;
+  firebaseUi.slotCard.hidden = !signedIn || !currentSlotId;
+  firebaseUi.minervaButton.hidden = !signedIn || !isMinervaAdmin(user);
+  firebaseUi.slotsLoginNote.hidden = signedIn;
+  firebaseUi.createSlotForm.hidden = !signedIn;
 }
 
 function describeFirebaseError(error) {
@@ -7098,10 +9581,20 @@ function describeFirebaseError(error) {
   }
   if (code.includes("popup-blocked")) return "O navegador bloqueou a janela do Google. Libere pop-ups para este site e tente novamente.";
   if (code.includes("popup-closed-by-user")) return "A entrada foi cancelada antes de escolher uma conta.";
-  if (code.includes("permission-denied")) return "O Firestore recusou o acesso. Publique as regras privadas fornecidas junto deste index.";
+  if (code.includes("permission-denied") || code.includes("storage/unauthorized")) {
+    return "O Firebase recusou o acesso. Publique as regras do Firestore e do Storage fornecidas junto deste index.";
+  }
   if (code.includes("not-found") || code.includes("failed-precondition")) return "Crie o banco Cloud Firestore no projeto e tente novamente.";
-  if (code.includes("invalid-api-key") || code.includes("invalid-app-id")) return "A configuração do aplicativo Web não é válida. Confira o bloco FIREBASE_CONFIG.";
-  if (code.includes("unavailable") || !navigator.onLine) return "Sem conexão com o Firebase. A ficha continua protegida neste dispositivo.";
+  if (code.includes("invalid-api-key") || code.includes("invalid-app-id")) {
+    return "A configuração do aplicativo Web não é válida. Confira o bloco FIREBASE_CONFIG.";
+  }
+  if (code.includes("storage/bucket-not-found") || code.includes("storage/no-default-bucket")) {
+    return "O Firebase Storage ainda não foi ativado. Use um link de imagem ou ative Storage no Console do Firebase.";
+  }
+  if (code.includes("storage/quota-exceeded")) return "O limite do Firebase Storage foi atingido.";
+  if (code.includes("unavailable") || !navigator.onLine) {
+    return "Sem conexão com o Firebase. Alterações feitas agora ainda não foram salvas.";
+  }
   if (code === "abyss/bridge-missing") return "A ficha não terminou de carregar. Atualize a página e tente novamente.";
   return "Não foi possível concluir a sincronização. Confira a configuração, o login e as regras do Firestore.";
 }
@@ -7131,55 +9624,71 @@ async function compactPortraitForFirestore(source) {
   });
 }
 
-function getCloudDocumentRefs(uid) {
+function normalizeSlotName(value, fallback = "Personagem") {
+  return String(value || "").trim().replace(/\s+/g, " ").slice(0, 60) || fallback;
+}
+
+function getCloudDocumentRefs(uid, slotId) {
   const { doc } = firestoreApi;
   return {
     user: doc(firestoreDb, "users", uid),
-    profile: doc(firestoreDb, "users", uid, "abyssRpg", "profile"),
-    sheet: doc(firestoreDb, "users", uid, "abyssRpg", "sheet"),
-    customSkills: doc(firestoreDb, "users", uid, "abyssRpg", "customSkills"),
+    slot: doc(firestoreDb, "users", uid, "slots", slotId),
+    profile: doc(firestoreDb, "users", uid, "slots", slotId, "data", "profile"),
+    sheet: doc(firestoreDb, "users", uid, "slots", slotId, "data", "sheet"),
+    customSkills: doc(
+      firestoreDb,
+      "users",
+      uid,
+      "slots",
+      slotId,
+      "data",
+      "customSkills",
+    ),
+    abilities: doc(firestoreDb, "users", uid, "slots", slotId, "data", "abilities"),
   };
 }
 
-async function readCloudSheet(user) {
-  const refs = getCloudDocumentRefs(user.uid);
-  const [profileSnapshot, sheetSnapshot, customSkillsSnapshot] = await Promise.all([
-    firestoreApi.getDoc(refs.profile),
-    firestoreApi.getDoc(refs.sheet),
-    firestoreApi.getDoc(refs.customSkills),
-  ]);
-  const exists = profileSnapshot.exists() || sheetSnapshot.exists() || customSkillsSnapshot.exists();
-  if (!exists) return { exists: false, state: null };
+async function readCloudSheet(user, slotId) {
+  const refs = getCloudDocumentRefs(user.uid, slotId);
+  const [profileSnapshot, sheetSnapshot, customSkillsSnapshot, abilitiesSnapshot] =
+    await Promise.all([
+      firestoreApi.getDoc(refs.profile),
+      firestoreApi.getDoc(refs.sheet),
+      firestoreApi.getDoc(refs.customSkills),
+      firestoreApi.getDoc(refs.abilities),
+    ]);
 
-  const localState = sheetBridge.captureState();
+  const clean = sheetBridge.createCleanState();
   const profileData = profileSnapshot.exists() ? profileSnapshot.data() : {};
   const sheetData = sheetSnapshot.exists() ? sheetSnapshot.data() : {};
   const customData = customSkillsSnapshot.exists() ? customSkillsSnapshot.data() : {};
+  const abilitiesData = abilitiesSnapshot.exists() ? abilitiesSnapshot.data() : {};
+
   return {
-    exists: true,
-    state: {
-      schemaVersion: 2,
-      profile: {
-        ...localState.profile,
-        ...profileData,
-        attributes: {
-          ...localState.profile.attributes,
-          ...(profileData.attributes || {}),
-        },
+    schemaVersion: 3,
+    profile: {
+      ...clean.profile,
+      ...profileData,
+      attributes: {
+        ...clean.profile.attributes,
+        ...(profileData.attributes || {}),
       },
-      sheet: {
-        ...localState.sheet,
-        ...sheetData,
-        skillRows: sheetData.skillRows || {},
-        selectedFeatureIds: sheetData.selectedFeatureIds || [],
-      },
-      customSkills: Array.isArray(customData.items) ? customData.items : [],
     },
+    sheet: {
+      ...clean.sheet,
+      ...sheetData,
+      skillRows: sheetData.skillRows || {},
+      selectedFeatureIds: sheetData.selectedFeatureIds || [],
+    },
+    customSkills: Array.isArray(customData.items) ? customData.items : [],
+    abilities: Array.isArray(abilitiesData.items) ? abilitiesData.items : [],
   };
 }
 
-async function writeCloudSheet(user, state) {
-  const refs = getCloudDocumentRefs(user.uid);
+async function writeCloudSheet(user, slotId, state, options = {}) {
+  if (!slotId) throw new Error("Nenhum Slot está ativo.");
+
+  const refs = getCloudDocumentRefs(user.uid, slotId);
   const timestamp = firestoreApi.serverTimestamp();
   const portrait = await compactPortraitForFirestore(String(state.profile?.portrait || ""));
   const attributes = {};
@@ -7188,14 +9697,31 @@ async function writeCloudSheet(user, state) {
   });
 
   const batch = firestoreApi.writeBatch(firestoreDb);
-  batch.set(refs.user, {
-    displayName: user.displayName || "",
-    email: user.email || "",
-    photoURL: user.photoURL || "",
-    lastActiveAt: timestamp,
-  }, { merge: true });
+  batch.set(
+    refs.user,
+    {
+      displayName: user.displayName || "",
+      email: user.email || "",
+      photoURL: user.photoURL || "",
+      activeSlotId: slotId,
+      lastActiveAt: timestamp,
+    },
+    { merge: true },
+  );
+  batch.set(
+    refs.slot,
+    {
+      name: normalizeSlotName(
+        options.slotName || currentSlots.find((slot) => slot.id === slotId)?.name,
+        "Personagem",
+      ),
+      updatedAt: timestamp,
+      ...(options.created ? { createdAt: timestamp } : {}),
+    },
+    { merge: true },
+  );
   batch.set(refs.profile, {
-    schemaVersion: 2,
+    schemaVersion: 3,
     name: String(state.profile?.name || "").slice(0, 120),
     background: String(state.profile?.background || "").slice(0, 240),
     portrait,
@@ -7203,90 +9729,625 @@ async function writeCloudSheet(user, state) {
     updatedAt: timestamp,
   });
   batch.set(refs.sheet, {
-    schemaVersion: 2,
-    difficulty: ["easy", "medium", "hard"].includes(state.sheet?.difficulty) ? state.sheet.difficulty : "medium",
+    schemaVersion: 3,
+    difficulty: ["easy", "medium", "hard"].includes(state.sheet?.difficulty)
+      ? state.sheet.difficulty
+      : "medium",
     skillRows: state.sheet?.skillRows || {},
-    selectedFeatureIds: Array.isArray(state.sheet?.selectedFeatureIds) ? state.sheet.selectedFeatureIds : [],
+    selectedFeatureIds: Array.isArray(state.sheet?.selectedFeatureIds)
+      ? state.sheet.selectedFeatureIds
+      : [],
     updatedAt: timestamp,
   });
   batch.set(refs.customSkills, {
-    schemaVersion: 2,
+    schemaVersion: 3,
     items: Array.isArray(state.customSkills) ? state.customSkills : [],
+    updatedAt: timestamp,
+  });
+  batch.set(refs.abilities, {
+    schemaVersion: 3,
+    items: Array.isArray(state.abilities) ? state.abilities : [],
     updatedAt: timestamp,
   });
   await batch.commit();
 }
 
+function slotTimestampValue(value) {
+  if (value?.toMillis) return value.toMillis();
+  return typeof value === "number" ? value : 0;
+}
+
+function updateActiveSlotDisplay() {
+  const active = currentSlots.find((slot) => slot.id === currentSlotId);
+  firebaseUi.slotName.textContent = active?.name || "Nenhum Slot";
+  firebaseUi.slotCard.hidden = !currentFirebaseUser || !active;
+
+  document.querySelector("#slots-button")?.setAttribute(
+    "title",
+    active ? `Slot atual: ${active.name}` : "Organizar Slots",
+  );
+}
+
+function renderSlots() {
+  firebaseUi.slotsList.replaceChildren();
+  firebaseUi.slotsLoginNote.hidden = Boolean(currentFirebaseUser);
+  firebaseUi.createSlotForm.hidden = !currentFirebaseUser;
+
+  if (!currentFirebaseUser) {
+    updateActiveSlotDisplay();
+    return;
+  }
+
+  currentSlots.forEach((slot, index) => {
+    const row = document.createElement("article");
+    row.className = "slot-item";
+    row.classList.toggle("is-active", slot.id === currentSlotId);
+    row.dataset.slotId = slot.id;
+
+    const marker = document.createElement("span");
+    marker.className = "slot-marker";
+    marker.setAttribute("aria-hidden", "true");
+    marker.textContent = slot.id === currentSlotId ? "✦" : "◇";
+
+    const copy = document.createElement("div");
+    copy.className = "slot-name-editor";
+    const name = Object.assign(document.createElement("strong"), {
+      textContent: slot.name,
+    });
+    const detail = Object.assign(document.createElement("small"), {
+      textContent: slot.id === currentSlotId ? "Slot atual" : `Slot ${index + 1}`,
+    });
+    copy.append(name, detail);
+
+    const actions = document.createElement("div");
+    actions.className = "slot-actions";
+
+    if (slot.id !== currentSlotId) {
+      const open = document.createElement("button");
+      open.type = "button";
+      open.dataset.openSlot = slot.id;
+      open.textContent = "Abrir";
+      actions.append(open);
+    }
+
+    const rename = document.createElement("button");
+    rename.type = "button";
+    rename.dataset.renameSlot = slot.id;
+    rename.textContent = "Renomear";
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "slot-delete";
+    remove.dataset.deleteSlot = slot.id;
+    remove.textContent = "Excluir";
+    actions.append(rename, remove);
+
+    row.append(marker, copy, actions);
+    firebaseUi.slotsList.append(row);
+  });
+
+  updateActiveSlotDisplay();
+}
+
+async function loadSlotDirectory(user) {
+  const [userSnapshot, slotsSnapshot] = await Promise.all([
+    firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "users", user.uid)),
+    firestoreApi.getDocs(firestoreApi.collection(firestoreDb, "users", user.uid, "slots")),
+  ]);
+
+  currentSlots = slotsSnapshot.docs
+    .map((snapshot) => {
+      const data = snapshot.data();
+      return {
+        id: snapshot.id,
+        name: normalizeSlotName(data.name, "Personagem"),
+        createdAt: slotTimestampValue(data.createdAt),
+        updatedAt: slotTimestampValue(data.updatedAt),
+      };
+    })
+    .sort(
+      (a, b) =>
+        (a.createdAt || a.updatedAt) - (b.createdAt || b.updatedAt) ||
+        a.name.localeCompare(b.name, "pt-BR"),
+    );
+
+  return {
+    activeSlotId: userSnapshot.exists()
+      ? String(userSnapshot.data().activeSlotId || "")
+      : "",
+  };
+}
+
+async function createCloudSlot(name, { announce = true } = {}) {
+  if (!currentFirebaseUser) throw new Error("Entre com o Google para criar um Slot.");
+
+  const previousSlotId = currentSlotId;
+  const previousState = sheetBridge.captureState();
+  const slotRef = firestoreApi.doc(
+    firestoreApi.collection(firestoreDb, "users", currentFirebaseUser.uid, "slots"),
+  );
+  const slot = {
+    id: slotRef.id,
+    name: normalizeSlotName(name, `Personagem ${currentSlots.length + 1}`),
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  };
+
+  currentSlots.push(slot);
+  currentSlotId = slot.id;
+  isHydratingCloudState = true;
+
+  try {
+    const clean = sheetBridge.createCleanState();
+    sheetBridge.applyState(clean, { persistLocal: false });
+    await writeCloudSheet(currentFirebaseUser, slot.id, clean, {
+      slotName: slot.name,
+      created: true,
+    });
+    lastSavedRevision = stateRevision;
+    renderSlots();
+
+    if (announce) {
+      setSyncStatus(
+        "saved",
+        "Salvo na conta",
+        "Novo Slot criado",
+        `“${slot.name}” está pronto e vazio.`,
+      );
+    }
+    return slot;
+  } catch (error) {
+    currentSlots = currentSlots.filter((item) => item.id !== slot.id);
+    currentSlotId = previousSlotId;
+    sheetBridge.applyState(previousState, { persistLocal: false });
+    renderSlots();
+    throw error;
+  } finally {
+    isHydratingCloudState = false;
+  }
+}
+
+async function hydrateSlot(user, slotId, { announce = true } = {}) {
+  if (!slotId || !currentSlots.some((slot) => slot.id === slotId)) return;
+
+  const sequence = ++authChangeSequence;
+  isHydratingCloudState = true;
+  setSyncStatus(
+    "saving",
+    "Carregando Slot…",
+    "Abrindo ficha",
+    "Buscando somente os dados deste Slot.",
+  );
+
+  try {
+    const state = await readCloudSheet(user, slotId);
+    if (sequence !== authChangeSequence || currentFirebaseUser?.uid !== user.uid) return;
+
+    currentSlotId = slotId;
+    sheetBridge.applyState(state, { persistLocal: false });
+    await firestoreApi.setDoc(
+      firestoreApi.doc(firestoreDb, "users", user.uid),
+      {
+        activeSlotId: slotId,
+        displayName: user.displayName || "",
+        email: user.email || "",
+        photoURL: user.photoURL || "",
+        lastActiveAt: firestoreApi.serverTimestamp(),
+      },
+      { merge: true },
+    );
+
+    lastSavedRevision = stateRevision;
+    renderSlots();
+
+    if (announce) {
+      const slotName =
+        currentSlots.find((item) => item.id === slotId)?.name || "Personagem";
+      setSyncStatus("saved", "Salvo na conta", "Slot carregado", `“${slotName}” está ativo.`);
+    }
+  } finally {
+    if (sequence === authChangeSequence) isHydratingCloudState = false;
+  }
+}
+
+async function initializeUserSlots(user) {
+  const directory = await loadSlotDirectory(user);
+
+  if (!currentSlots.length) {
+    await createCloudSlot("Personagem 1", { announce: true });
+    return;
+  }
+
+  const preferred = currentSlots.some((slot) => slot.id === directory.activeSlotId)
+    ? directory.activeSlotId
+    : currentSlots[0].id;
+  await hydrateSlot(user, preferred);
+}
+
+async function switchCloudSlot(slotId) {
+  if (!currentFirebaseUser || slotId === currentSlotId) return;
+
+  if (cloudSavePromise && !(await cloudSavePromise)) return;
+  if (stateRevision > lastSavedRevision && !(await flushCloudSave())) return;
+  await hydrateSlot(currentFirebaseUser, slotId);
+}
+
+async function renameCloudSlot(slotId, proposedName) {
+  if (!currentFirebaseUser) return;
+
+  const slot = currentSlots.find((item) => item.id === slotId);
+  if (!slot) return;
+
+  const name = normalizeSlotName(proposedName, slot.name);
+  await firestoreApi.setDoc(
+    firestoreApi.doc(firestoreDb, "users", currentFirebaseUser.uid, "slots", slotId),
+    { name, updatedAt: firestoreApi.serverTimestamp() },
+    { merge: true },
+  );
+  slot.name = name;
+  slot.updatedAt = Date.now();
+  renderSlots();
+
+  if (slotId === currentSlotId) {
+    setSyncStatus("saved", "Salvo na conta", "Slot renomeado", `A ficha agora se chama “${name}”.`);
+  }
+}
+
+function beginSlotRename(slotId) {
+  const slot = currentSlots.find((item) => item.id === slotId);
+  const row = firebaseUi.slotsList.querySelector(
+    `[data-slot-id="${CSS.escape(slotId)}"]`,
+  );
+  if (!slot || !row) return;
+
+  const copy = row.querySelector(".slot-name-editor");
+  const actions = row.querySelector(".slot-actions");
+  const form = document.createElement("form");
+  form.className = "slot-rename-row";
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.maxLength = 60;
+  input.value = slot.name;
+  input.setAttribute("aria-label", "Novo nome do Slot");
+
+  const save = document.createElement("button");
+  save.type = "submit";
+  save.textContent = "Salvar";
+
+  const cancel = document.createElement("button");
+  cancel.type = "button";
+  cancel.textContent = "Cancelar";
+
+  form.append(input, save, cancel);
+  copy.replaceChildren(form);
+  actions.hidden = true;
+  input.focus();
+  input.select();
+
+  cancel.addEventListener("click", renderSlots);
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    save.disabled = true;
+    try {
+      await renameCloudSlot(slotId, input.value);
+    } catch (error) {
+      setSyncStatus(
+        "error",
+        "Erro no Slot",
+        "Não foi possível renomear",
+        describeFirebaseError(error),
+      );
+      renderSlots();
+    }
+  });
+}
+
+async function deleteKnownSlotDocuments(user, slotId) {
+  const refs = getCloudDocumentRefs(user.uid, slotId);
+  const batch = firestoreApi.writeBatch(firestoreDb);
+  batch.delete(refs.profile);
+  batch.delete(refs.sheet);
+  batch.delete(refs.customSkills);
+  batch.delete(refs.abilities);
+  batch.delete(refs.slot);
+  await batch.commit();
+}
+
+async function deleteCloudSlot(slotId) {
+  if (!currentFirebaseUser) return;
+
+  const slot = currentSlots.find((item) => item.id === slotId);
+  const confirmed = slot && window.confirm(
+    `Excluir definitivamente o Slot “${slot.name}”? Esta ação não pode ser desfeita.`,
+  );
+  if (!confirmed) return;
+
+  if (slotId === currentSlotId) {
+    window.clearTimeout(cloudSaveTimer);
+    if (cloudSavePromise) await cloudSavePromise;
+    lastSavedRevision = stateRevision;
+  }
+
+  const state =
+    slotId === currentSlotId
+      ? sheetBridge.captureState()
+      : await readCloudSheet(currentFirebaseUser, slotId);
+  const paths = (state.abilities || [])
+    .filter((ability) => ability.mediaOwner === "slot" && ability.mediaStoragePath)
+    .map((ability) => ability.mediaStoragePath);
+
+  await deleteKnownSlotDocuments(currentFirebaseUser, slotId);
+  await Promise.allSettled(paths.map((path) => deleteMedia(path)));
+  currentSlots = currentSlots.filter((item) => item.id !== slotId);
+
+  if (!currentSlots.length) {
+    currentSlotId = null;
+    sheetBridge.resetState();
+    await createCloudSlot("Personagem 1", { announce: true });
+  } else if (slotId === currentSlotId) {
+    await hydrateSlot(currentFirebaseUser, currentSlots[0].id);
+  } else {
+    renderSlots();
+  }
+}
+
+async function resetCurrentSlot() {
+  if (!currentFirebaseUser || !currentSlotId) return;
+
+  window.clearTimeout(cloudSaveTimer);
+  if (cloudSavePromise) await cloudSavePromise;
+
+  const slot = currentSlots.find((item) => item.id === currentSlotId);
+  const currentState = sheetBridge.captureState();
+  const paths = (currentState.abilities || [])
+    .filter((ability) => ability.mediaOwner === "slot" && ability.mediaStoragePath)
+    .map((ability) => ability.mediaStoragePath);
+
+  isHydratingCloudState = true;
+  try {
+    const clean = sheetBridge.createCleanState();
+    sheetBridge.applyState(clean, { persistLocal: false });
+    stateRevision += 1;
+    await writeCloudSheet(currentFirebaseUser, currentSlotId, clean, {
+      slotName: slot?.name,
+    });
+    lastSavedRevision = stateRevision;
+    setSyncStatus(
+      "saved",
+      "Ficha limpa",
+      "Slot resetado",
+      `“${slot?.name || "Personagem"}” voltou ao estado inicial.`,
+    );
+    closeAccountMenu();
+    await Promise.allSettled(paths.map((path) => deleteMedia(path)));
+  } catch (error) {
+    sheetBridge.applyState(currentState, { persistLocal: false });
+    throw error;
+  } finally {
+    isHydratingCloudState = false;
+  }
+}
+
+function requestResetConfirmation() {
+  if (firebaseUi.reset.dataset.confirming !== "true") {
+    firebaseUi.reset.dataset.confirming = "true";
+    firebaseUi.reset.textContent = "Confirmar reset";
+    window.clearTimeout(resetConfirmationTimer);
+    resetConfirmationTimer = window.setTimeout(() => {
+      firebaseUi.reset.dataset.confirming = "false";
+      firebaseUi.reset.textContent = "Resetar ficha";
+    }, 5000);
+    return;
+  }
+
+  window.clearTimeout(resetConfirmationTimer);
+  firebaseUi.reset.dataset.confirming = "false";
+  firebaseUi.reset.textContent = "Resetando…";
+  firebaseUi.reset.disabled = true;
+  resetCurrentSlot()
+    .catch((error) => {
+      setSyncStatus("error", "Erro ao resetar", "Reset incompleto", describeFirebaseError(error));
+      openAccountMenu();
+    })
+    .finally(() => {
+      firebaseUi.reset.disabled = false;
+      firebaseUi.reset.textContent = "Resetar ficha";
+    });
+}
+
+async function uploadAbilityMedia({ scope, abilityId, file }) {
+  if (!currentFirebaseUser || !firebaseStorage || !storageApi) {
+    throw new Error("Entre com o Google antes de enviar um arquivo.");
+  }
+  const allowedImageTypes = new Set([
+    "image/png",
+    "image/jpeg",
+    "image/webp",
+    "image/gif",
+  ]);
+  if (!allowedImageTypes.has(file?.type) || file.size > 8 * 1024 * 1024) {
+    throw new Error("Escolha uma imagem ou GIF de até 8 MB.");
+  }
+  if (scope !== "minerva" && !currentSlotId) {
+    throw new Error("Nenhum Slot está ativo.");
+  }
+  if (scope === "minerva" && !isMinervaAdmin()) {
+    throw new Error("Esta conta não possui acesso ao Grimório de Minerva.");
+  }
+
+  const extension = String(file.name || "imagem")
+    .split(".")
+    .pop()
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, "")
+    .slice(0, 8) || "img";
+  const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${extension}`;
+  const path =
+    scope === "minerva"
+      ? `minerva/${abilityId}/${fileName}`
+      : `users/${currentFirebaseUser.uid}/slots/${currentSlotId}/abilities/${abilityId}/${fileName}`;
+  const objectRef = storageApi.ref(firebaseStorage, path);
+
+  await storageApi.uploadBytes(objectRef, file, {
+    contentType: file.type,
+    customMetadata: { abilityId },
+  });
+  return { path, url: await storageApi.getDownloadURL(objectRef) };
+}
+
+async function deleteMedia(path) {
+  if (!path || !firebaseStorage || !storageApi) return;
+  await storageApi.deleteObject(storageApi.ref(firebaseStorage, path));
+}
+
+async function loadGrimoire() {
+  if (!currentFirebaseUser) return [];
+  const snapshot = await firestoreApi.getDocs(
+    firestoreApi.collection(firestoreDb, "minervaAbilities"),
+  );
+  return snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+}
+
+async function saveMinervaAbility(ability) {
+  if (!isMinervaAdmin()) {
+    throw new Error("Esta conta não possui acesso ao Grimório de Minerva.");
+  }
+
+  await firestoreApi.setDoc(
+    firestoreApi.doc(firestoreDb, "minervaAbilities", ability.id),
+    {
+      ...ability,
+      updatedBy: currentFirebaseUser.email || "",
+      updatedAt: firestoreApi.serverTimestamp(),
+    },
+  );
+}
+
+async function deleteMinervaAbility(ability) {
+  if (!isMinervaAdmin()) {
+    throw new Error("Esta conta não possui acesso ao Grimório de Minerva.");
+  }
+
+  await firestoreApi.deleteDoc(
+    firestoreApi.doc(firestoreDb, "minervaAbilities", ability.id),
+  );
+  if (ability.mediaOwner === "minerva" && ability.mediaStoragePath) {
+    await deleteMedia(ability.mediaStoragePath).catch(() => {});
+  }
+}
+
+window.AbyssCloud = Object.freeze({
+  isSignedIn: () => Boolean(currentFirebaseUser),
+  hasActiveSlot: () => Boolean(currentFirebaseUser && currentSlotId),
+  isMinervaAdmin,
+  uploadAbilityMedia,
+  deleteMedia,
+  loadGrimoire,
+  saveMinervaAbility,
+  deleteMinervaAbility,
+  renderSlots,
+  describeError: describeFirebaseError,
+});
+
 function scheduleCloudSave() {
   if (!currentFirebaseUser || isHydratingCloudState) return;
   window.clearTimeout(cloudSaveTimer);
-  setSyncStatus("saving", "Alterações pendentes", "Aguardando sincronização", "As mudanças serão enviadas automaticamente em instantes.");
+  setSyncStatus(
+    "saving",
+    "Alterações pendentes",
+    "Aguardando sincronização",
+    "As mudanças serão enviadas automaticamente em instantes.",
+  );
   cloudSaveTimer = window.setTimeout(() => flushCloudSave(), 850);
 }
 
 async function flushCloudSave() {
   window.clearTimeout(cloudSaveTimer);
   const user = currentFirebaseUser;
-  if (!user || !sheetBridge) return false;
+  const slotId = currentSlotId;
+  if (!user || !slotId || !sheetBridge) return false;
   if (!navigator.onLine) {
-    setSyncStatus("offline", "Offline", "Salvo neste dispositivo", "Quando a conexão voltar, as mudanças serão enviadas para a sua conta.");
+    setSyncStatus(
+      "offline",
+      "Não salvo",
+      "Sem conexão",
+      "As alterações atuais ainda não foram salvas. Mantenha esta página aberta e reconecte-se.",
+    );
     return false;
   }
   if (cloudSavePromise) return cloudSavePromise;
 
   const revisionBeingSaved = stateRevision;
   const state = sheetBridge.captureState();
-  setSyncStatus("saving", "Salvando…", "Sincronizando ficha", "Enviando as alterações para a sua conta Google.");
+  setSyncStatus(
+    "saving",
+    "Salvando…",
+    "Sincronizando ficha",
+    "Enviando as alterações para a sua conta Google.",
+  );
   firebaseUi.syncNow.disabled = true;
   cloudSavePromise = (async () => {
     try {
-      await writeCloudSheet(user, state);
-      if (currentFirebaseUser?.uid !== user.uid) return false;
+      await writeCloudSheet(user, slotId, state);
+      if (currentFirebaseUser?.uid !== user.uid || currentSlotId !== slotId) return false;
       lastSavedRevision = Math.max(lastSavedRevision, revisionBeingSaved);
-      sheetBridge.setLocalOwner(user.uid);
-      setSyncStatus("saved", "Salvo na conta", "Ficha sincronizada", "Todas as alterações estão salvas nesta conta Google.");
+      setSyncStatus(
+        "saved",
+        "Salvo na conta",
+        "Ficha sincronizada",
+        "Todas as alterações estão salvas nesta conta Google.",
+      );
       return true;
     } catch (error) {
-      setSyncStatus(navigator.onLine ? "error" : "offline", navigator.onLine ? "Erro ao salvar" : "Offline", "Sincronização interrompida", describeFirebaseError(error));
+      setSyncStatus(
+        navigator.onLine ? "error" : "offline",
+        navigator.onLine ? "Erro ao salvar" : "Offline",
+        "Sincronização interrompida",
+        describeFirebaseError(error),
+      );
       openAccountMenu();
       return false;
     } finally {
       cloudSavePromise = null;
       firebaseUi.syncNow.disabled = false;
-      if (currentFirebaseUser?.uid === user.uid && stateRevision > revisionBeingSaved) scheduleCloudSave();
+      if (
+        currentFirebaseUser?.uid === user.uid &&
+        currentSlotId === slotId &&
+        stateRevision > revisionBeingSaved
+      ) {
+        scheduleCloudSave();
+      }
     }
   })();
   return cloudSavePromise;
 }
 
 async function hydrateUserSheet(user) {
-  const sequence = ++authChangeSequence;
-  const hydrationRevision = stateRevision;
+  ++authChangeSequence;
   isHydratingCloudState = true;
-  setSyncStatus("saving", "Carregando ficha…", "Abrindo sua ficha", "Buscando os dados vinculados a esta conta.");
+  setSyncStatus(
+    "saving",
+    "Carregando Slots…",
+    "Abrindo sua conta",
+    "Buscando as fichas vinculadas a esta conta.",
+  );
   try {
-    const cloud = await readCloudSheet(user);
-    if (sequence !== authChangeSequence || currentFirebaseUser?.uid !== user.uid) return;
-    if (cloud.exists) {
-      sheetBridge.applyState(cloud.state, { ownerUid: user.uid });
-      setSyncStatus("saved", "Salvo na conta", "Ficha carregada", "Os dados desta conta foram aplicados ao personagem.");
-    } else {
-      await writeCloudSheet(user, sheetBridge.captureState());
-      if (sequence !== authChangeSequence || currentFirebaseUser?.uid !== user.uid) return;
-      sheetBridge.setLocalOwner(user.uid);
-      setSyncStatus("saved", "Salvo na conta", "Ficha transferida", "Os dados que estavam neste navegador agora pertencem a esta conta.");
-    }
-    lastSavedRevision = hydrationRevision;
+    await initializeUserSlots(user);
+    if (currentFirebaseUser?.uid !== user.uid) return;
+    renderSlots();
     closeAccountMenu();
   } catch (error) {
-    if (sequence !== authChangeSequence) return;
-    setSyncStatus(navigator.onLine ? "error" : "offline", navigator.onLine ? "Erro de acesso" : "Offline", "Não foi possível abrir a nuvem", describeFirebaseError(error));
+    if (currentFirebaseUser?.uid !== user.uid) return;
+    setSyncStatus(
+      navigator.onLine ? "error" : "offline",
+      navigator.onLine ? "Erro de acesso" : "Offline",
+      "Não foi possível abrir a nuvem",
+      describeFirebaseError(error),
+    );
     openAccountMenu();
   } finally {
-    if (sequence === authChangeSequence) {
-      isHydratingCloudState = false;
-      if (stateRevision > lastSavedRevision) scheduleCloudSave();
-    }
+    if (currentFirebaseUser?.uid === user.uid) isHydratingCloudState = false;
   }
 }
 
@@ -7300,14 +10361,24 @@ async function requestFirebaseLogin() {
     return;
   }
   renderAccountIdentity(null, "signing-in");
-  setSyncStatus("saving", "Abrindo Google…", "Entrar com o Google", "Escolha a conta que guardará esta ficha.");
+  setSyncStatus(
+    "saving",
+    "Abrindo Google…",
+    "Entrar com o Google",
+    "Escolha a conta que guardará esta ficha.",
+  );
   try {
     const provider = new authApi.GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
     await authApi.signInWithPopup(firebaseAuth, provider);
   } catch (error) {
     renderAccountIdentity(null, "error");
-    setSyncStatus("error", "Login não concluído", "Não foi possível entrar", describeFirebaseError(error));
+    setSyncStatus(
+      "error",
+      "Login não concluído",
+      "Não foi possível entrar",
+      describeFirebaseError(error),
+    );
     openAccountMenu();
   }
 }
@@ -7316,14 +10387,74 @@ async function requestFirebaseSignOut() {
   if (!firebaseAuth || !authApi || !currentFirebaseUser) return;
   firebaseUi.signOut.disabled = true;
   try {
-    if (stateRevision > lastSavedRevision) await flushCloudSave();
+    if (cloudSavePromise && !(await cloudSavePromise)) return;
+    if (stateRevision > lastSavedRevision && !(await flushCloudSave())) return;
     await authApi.signOut(firebaseAuth);
   } catch (error) {
-    setSyncStatus("error", "Erro ao sair", "Não foi possível desconectar", describeFirebaseError(error));
+    setSyncStatus(
+      "error",
+      "Erro ao sair",
+      "Não foi possível desconectar",
+      describeFirebaseError(error),
+    );
   } finally {
     firebaseUi.signOut.disabled = false;
   }
 }
+
+firebaseUi.reset.addEventListener("click", requestResetConfirmation);
+
+firebaseUi.createSlotForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const name = normalizeSlotName(
+    firebaseUi.newSlotName.value,
+    `Personagem ${currentSlots.length + 1}`,
+  );
+  const submit = firebaseUi.createSlotForm.querySelector('button[type="submit"]');
+  submit.disabled = true;
+
+  try {
+    if (cloudSavePromise && !(await cloudSavePromise)) return;
+    if (stateRevision > lastSavedRevision && !(await flushCloudSave())) return;
+    await createCloudSlot(name);
+    firebaseUi.newSlotName.value = "";
+  } catch (error) {
+    setSyncStatus(
+      "error",
+      "Erro no Slot",
+      "Não foi possível criar",
+      describeFirebaseError(error),
+    );
+    openAccountMenu();
+  } finally {
+    submit.disabled = false;
+  }
+});
+
+firebaseUi.slotsList.addEventListener("click", async (event) => {
+  const open = event.target.closest("[data-open-slot]");
+  const rename = event.target.closest("[data-rename-slot]");
+  const remove = event.target.closest("[data-delete-slot]");
+  const action = open || rename || remove;
+  if (!action) return;
+
+  action.disabled = true;
+  try {
+    if (open) await switchCloudSlot(open.dataset.openSlot);
+    else if (rename) beginSlotRename(rename.dataset.renameSlot);
+    else await deleteCloudSlot(remove.dataset.deleteSlot);
+  } catch (error) {
+    setSyncStatus(
+      "error",
+      "Erro no Slot",
+      "Operação não concluída",
+      describeFirebaseError(error),
+    );
+    openAccountMenu();
+  } finally {
+    if (action.isConnected) action.disabled = false;
+  }
+});
 
 window.addEventListener("abyss:sheet-changed", () => {
   stateRevision += 1;
@@ -7333,37 +10464,56 @@ window.addEventListener("abyss:firebase-login", requestFirebaseLogin);
 window.addEventListener("abyss:firebase-sync-now", () => flushCloudSave());
 window.addEventListener("abyss:firebase-sign-out", requestFirebaseSignOut);
 window.addEventListener("offline", () => {
-  if (currentFirebaseUser) setSyncStatus("offline", "Offline", "Salvo neste dispositivo", "A sincronização continuará quando a conexão voltar.");
+  if (currentFirebaseUser) {
+    setSyncStatus(
+      "offline",
+      "Não salvo",
+      "Sem conexão",
+      "As alterações atuais ainda não foram salvas. Mantenha esta página aberta e reconecte-se.",
+    );
+  }
 });
 window.addEventListener("online", () => {
   if (currentFirebaseUser && stateRevision > lastSavedRevision) flushCloudSave();
 });
-window.addEventListener("beforeunload", () => sheetBridge?.persistLocalNow());
 
 async function initializeFirebaseSync() {
   if (!sheetBridge) {
     renderAccountIdentity(null, "error");
-    setSyncStatus("error", "Ficha indisponível", "Falha ao preparar a ficha", describeFirebaseError({ code: "abyss/bridge-missing" }));
+    setSyncStatus(
+      "error",
+      "Ficha indisponível",
+      "Falha ao preparar a ficha",
+      describeFirebaseError({ code: "abyss/bridge-missing" }),
+    );
     return;
   }
   if (!firebaseConfigIsReady()) {
     renderAccountIdentity(null, "missing");
-    setSyncStatus("idle", "Firebase pendente", "Configuração necessária", "A ficha segue salva neste dispositivo até você colar a configuração do seu projeto.");
+    setSyncStatus(
+      "idle",
+      "Firebase pendente",
+      "Configuração necessária",
+      "Cole a configuração do seu projeto. Sem login, a ficha atual é apenas temporária.",
+    );
     return;
   }
 
   try {
     const sdkBase = `https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}`;
-    const [appModule, loadedAuthApi, loadedFirestoreApi] = await Promise.all([
+    const [appModule, loadedAuthApi, loadedFirestoreApi, loadedStorageApi] = await Promise.all([
       import(`${sdkBase}/firebase-app.js`),
       import(`${sdkBase}/firebase-auth.js`),
       import(`${sdkBase}/firebase-firestore.js`),
+      import(`${sdkBase}/firebase-storage.js`),
     ]);
     authApi = loadedAuthApi;
     firestoreApi = loadedFirestoreApi;
+    storageApi = loadedStorageApi;
     const app = appModule.initializeApp(FIREBASE_CONFIG);
     firebaseAuth = authApi.getAuth(app);
     firestoreDb = firestoreApi.getFirestore(app);
+    firebaseStorage = storageApi.getStorage(app);
     firebaseAuth.useDeviceLanguage();
     await authApi.setPersistence(firebaseAuth, authApi.browserLocalPersistence).catch(() => {});
 
@@ -7373,17 +10523,36 @@ async function initializeFirebaseSync() {
         authChangeSequence += 1;
         isHydratingCloudState = false;
         window.clearTimeout(cloudSaveTimer);
+        currentSlotId = null;
+        currentSlots = [];
+        stateRevision = 0;
+        lastSavedRevision = 0;
+        sheetBridge.resetState();
         renderAccountIdentity(null, "signed-out");
-        setSyncStatus("idle", "Salvar na conta", "Somente neste dispositivo", "Entre com o Google para transferir e sincronizar todos os dados desta ficha.");
+        renderSlots();
+        setSyncStatus(
+          "idle",
+          "Entrar para salvar",
+          "Ficha temporária",
+          "Entre com o Google para abrir seus Slots. Nenhum dado desta tela é salvo localmente.",
+        );
         return;
       }
 
+      currentSlotId = null;
+      currentSlots = [];
+      sheetBridge.resetState();
       renderAccountIdentity(user, "signed-in");
       await hydrateUserSheet(user);
     });
   } catch (error) {
     renderAccountIdentity(null, "error");
-    setSyncStatus("error", "Firebase indisponível", "Não foi possível iniciar o Firebase", describeFirebaseError(error));
+    setSyncStatus(
+      "error",
+      "Firebase indisponível",
+      "Não foi possível iniciar o Firebase",
+      describeFirebaseError(error),
+    );
     openAccountMenu();
   }
 }
