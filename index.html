@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Abyss RPG — Index local com informações e constelações — revisão 2026-09-05 -->
+<!-- Abyss RPG — Index local com informações, constelações e Perícias personalizadas — revisão 2026-09-07 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -1888,12 +1888,436 @@ h2 { color: #ece6d8; }
 .feature-detail-ability { border-color: rgba(207, 173, 98, 0.18); border-left-color: #c49b46; border-radius: 3px; background: linear-gradient(90deg, rgba(215, 186, 98, 0.075), rgba(215, 186, 98, 0.018)); }
 .feature-detail-ability h3 { color: #edcf77; }
 
+/* Perícias personalizadas e editor de retrato */
+
+.legend-die[data-static-die="8"],
+.training-die { color: #b8bdc6; }
+.skill-row.is-leigo .training-die { color: #b8bdc6; filter: drop-shadow(0 0 6px rgba(184, 189, 198, 0.1)); }
+
+.hex-shell input:focus,
+.hex-shell input:focus-visible {
+  outline: 0;
+  box-shadow: none;
+}
+
+.portrait-frame { aspect-ratio: 1; }
+
+.skills-panel-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 20px;
+}
+
+.create-skill-button,
+.builder-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid rgba(215, 186, 98, 0.58);
+  border-radius: 3px;
+  color: #efd27f;
+  background: linear-gradient(145deg, rgba(215, 186, 98, 0.11), rgba(215, 186, 98, 0.035));
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.create-skill-button svg,
+.builder-submit svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 1.7;
+}
+
+.create-skill-button:hover,
+.builder-submit:hover {
+  border-color: var(--accent-bright);
+  color: #ffe39a;
+  background: rgba(215, 186, 98, 0.14);
+  box-shadow: 0 0 24px rgba(215, 186, 98, 0.13);
+  transform: translateY(-1px);
+}
+
+.skill-info-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.skill-info-title strong { min-width: 0; flex: 1; }
+
+.delete-custom-skill {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #756d6d;
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.72;
+  transition: color 140ms ease, border-color 140ms ease, background 140ms ease, opacity 140ms ease;
+}
+
+.delete-custom-skill svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.45;
+}
+
+.delete-custom-skill:hover {
+  border-color: rgba(181, 83, 96, 0.45);
+  color: #ed8f9b;
+  background: rgba(117, 33, 47, 0.12);
+  opacity: 1;
+}
+
+.skill-row.is-new { animation: custom-skill-arrival 780ms ease both; }
+@keyframes custom-skill-arrival {
+  0% { background: rgba(240, 207, 112, 0.22); box-shadow: inset 4px 0 var(--accent-bright), 0 0 28px rgba(207, 173, 98, 0.12); }
+  100% { background: rgba(255, 255, 255, 0.004); box-shadow: none; }
+}
+
+.custom-skill-modal,
+.delete-skill-modal,
+.photo-editor-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.custom-skill-modal { z-index: 100; }
+.photo-editor-modal { z-index: 102; }
+.delete-skill-modal { z-index: 104; }
+
+.custom-skill-dialog,
+.delete-skill-dialog,
+.photo-editor-dialog {
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.38);
+  border-radius: 5px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(207, 173, 98, 0.085), transparent 20rem),
+    linear-gradient(150deg, #191a20, #0b0c0f 78%);
+  box-shadow: 0 46px 150px rgba(0, 0, 0, 0.84), 0 0 0 1px rgba(0, 0, 0, 0.42);
+  animation: dialog-in 230ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.custom-skill-dialog {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  width: min(940px, 100%);
+  max-height: calc(100vh - 48px);
+}
+
+.custom-skill-dialog-head,
+.photo-editor-dialog-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 25px 30px 21px;
+  border-bottom: 1px solid rgba(207, 173, 98, 0.18);
+  background: linear-gradient(90deg, rgba(207, 173, 98, 0.055), rgba(255, 255, 255, 0.005));
+}
+
+.custom-skill-dialog-head h2,
+.photo-editor-dialog-head h2 { margin: 0 0 5px; font-size: clamp(1.65rem, 4vw, 2.15rem); }
+.custom-skill-dialog-head > div > p:last-child,
+.photo-editor-dialog-head > div > p:last-child { margin: 0; color: var(--muted); font-size: 0.82rem; }
+
+.custom-skill-form {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  min-height: 0;
+}
+
+.custom-skill-content {
+  display: grid;
+  gap: 18px;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 22px 26px 30px;
+}
+
+.builder-section {
+  border: 1px solid rgba(207, 173, 98, 0.16);
+  border-radius: 4px;
+  background: linear-gradient(145deg, rgba(18, 19, 24, 0.88), rgba(8, 9, 12, 0.78));
+}
+
+.builder-section-head {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr);
+  align-items: center;
+  gap: 13px;
+  min-height: 76px;
+  padding: 15px 18px;
+  border-bottom: 1px solid #292a2f;
+}
+
+.builder-section-head-action { grid-template-columns: 38px minmax(0, 1fr) auto; }
+.builder-section-head > span { color: #9d8249; font: 0.76rem Georgia, "Times New Roman", serif; }
+.builder-section-head h3 { margin: 0 0 3px; color: #ece5d6; font: 600 1.08rem Georgia, "Times New Roman", serif; }
+.builder-section-head p { margin: 0; color: #7f7c75; font-size: 0.78rem; }
+
+.builder-add-button,
+.builder-mini-add,
+.builder-remove-button {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid rgba(207, 173, 98, 0.24);
+  border-radius: 3px;
+  color: #bca467;
+  background: rgba(207, 173, 98, 0.045);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 750;
+  transition: border-color 140ms ease, color 140ms ease, background 140ms ease;
+}
+.builder-add-button:hover,
+.builder-mini-add:hover { border-color: var(--accent); color: #f0d58f; background: rgba(207, 173, 98, 0.1); }
+.builder-remove-button { border-color: transparent; color: #8e7276; background: transparent; }
+.builder-remove-button:hover { border-color: rgba(181, 83, 96, 0.42); color: #ed8f9b; background: rgba(117, 33, 47, 0.1); }
+
+.builder-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) minmax(180px, 0.55fr);
+  gap: 15px;
+  padding: 18px;
+}
+
+.builder-field { display: grid; gap: 7px; min-width: 0; }
+.builder-field-wide { grid-column: 1 / -1; }
+.builder-field > span,
+.builder-subgroup-head strong {
+  color: #9a8c70;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.builder-field input,
+.builder-field select,
+.builder-field textarea {
+  width: 100%;
+  border: 1px solid #323339;
+  border-radius: 3px;
+  color: #e8e4dc;
+  background: rgba(8, 9, 12, 0.88);
+  box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.32);
+  font-size: 0.86rem;
+  transition: border-color 140ms ease, background 140ms ease;
+}
+
+.builder-field input,
+.builder-field select { min-height: 42px; padding: 0 12px; }
+.builder-field textarea { min-height: 92px; padding: 11px 12px; line-height: 1.55; resize: vertical; }
+.builder-field input::placeholder,
+.builder-field textarea::placeholder { color: #5e5d59; }
+.builder-field input:hover,
+.builder-field select:hover,
+.builder-field textarea:hover { border-color: rgba(207, 173, 98, 0.42); }
+.builder-field input:focus,
+.builder-field select:focus,
+.builder-field textarea:focus { border-color: var(--accent); background: #0d0e12; }
+.builder-field input.is-invalid,
+.builder-field textarea.is-invalid { border-color: #b65c69; background: rgba(117, 33, 47, 0.08); }
+
+.builder-repeat-list,
+.builder-competencies-list { display: grid; gap: 12px; padding: 16px 18px 18px; }
+
+.builder-repeat-item {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.42fr) minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #2c2d32;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.builder-repeat-item .builder-field textarea { min-height: 70px; }
+.builder-repeat-item .builder-remove-button { margin-top: 24px; }
+.builder-specialization-item { grid-template-columns: minmax(125px, 0.34fr) minmax(125px, 0.34fr) minmax(210px, 1fr) auto; }
+.builder-specialization-item .builder-remove-button { align-self: start; }
+
+.builder-empty {
+  margin: 0;
+  padding: 24px 18px 27px;
+  color: #706e68;
+  font: italic 0.9rem/1.5 Georgia, "Times New Roman", serif;
+  text-align: center;
+}
+
+.builder-competency-card {
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.2);
+  border-radius: 4px;
+  background: rgba(5, 6, 8, 0.42);
+}
+
+.builder-competency-head,
+.builder-subgroup-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.builder-competency-head {
+  min-height: 54px;
+  padding: 10px 13px 10px 16px;
+  border-bottom: 1px solid #292a2f;
+  background: rgba(207, 173, 98, 0.035);
+}
+.builder-competency-head strong { color: #d5c69f; font: 600 0.95rem Georgia, "Times New Roman", serif; }
+.builder-competency-fields { padding-bottom: 4px; }
+.builder-subgroup { margin: 0 18px 15px; border-top: 1px solid #292a2f; }
+.builder-subgroup-head { padding: 13px 0 10px; }
+.builder-subgroup-list { display: grid; gap: 9px; }
+.builder-subgroup-list:empty::after { content: "Nenhum item adicionado."; padding: 4px 0 7px; color: #65635e; font-size: 0.76rem; }
+
+.builder-error {
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid rgba(182, 92, 105, 0.5);
+  border-left: 3px solid #cf6b79;
+  border-radius: 3px;
+  color: #efb4bc;
+  background: rgba(45, 15, 21, 0.96);
+  font-size: 0.82rem;
+}
+
+.custom-skill-dialog-footer,
+.photo-editor-dialog-footer,
+.delete-skill-dialog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 16px 26px 20px;
+  border-top: 1px solid rgba(207, 173, 98, 0.15);
+  background: rgba(7, 8, 10, 0.76);
+}
+
+.delete-skill-dialog { width: min(500px, 100%); }
+.delete-skill-content { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; padding: 28px 28px 24px; }
+.delete-skill-content h2 { margin: 0 0 7px; font-size: 1.65rem; }
+.delete-skill-content > div > p:last-child { margin: 0; color: var(--muted); font-size: 0.86rem; line-height: 1.55; }
+.delete-skill-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(181, 83, 96, 0.45);
+  border-radius: 50%;
+  color: #e78591;
+  background: rgba(117, 33, 47, 0.1);
+}
+.delete-skill-icon svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.5; }
+.delete-skill-confirm {
+  min-width: 96px;
+  min-height: 42px;
+  border: 1px solid rgba(181, 83, 96, 0.68);
+  border-radius: 3px;
+  color: #f0a4ae;
+  background: rgba(117, 33, 47, 0.16);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+.delete-skill-confirm:hover { border-color: #db7180; color: #ffd1d7; background: rgba(117, 33, 47, 0.28); }
+
+.photo-editor-dialog {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: min(610px, 100%);
+  max-height: calc(100vh - 48px);
+}
+.photo-editor-content { display: grid; grid-template-columns: minmax(260px, 360px) minmax(150px, 1fr); align-items: center; gap: 24px; overflow: auto; padding: 26px 30px 30px; }
+.photo-editor-viewport {
+  position: relative;
+  width: min(360px, 100%);
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.58);
+  color: var(--accent-bright);
+  background: #07080a;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.42), inset 0 0 35px rgba(207, 173, 98, 0.04);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.photo-editor-viewport.is-dragging { cursor: grabbing; }
+.photo-editor-viewport:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
+.photo-editor-image { position: absolute; top: 50%; left: 50%; max-width: none; transform-origin: center; pointer-events: none; user-select: none; }
+.photo-editor-grid {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background:
+    linear-gradient(90deg, transparent 33.1%, rgba(255, 255, 255, 0.14) 33.2%, rgba(255, 255, 255, 0.14) 33.5%, transparent 33.6%, transparent 66.4%, rgba(255, 255, 255, 0.14) 66.5%, rgba(255, 255, 255, 0.14) 66.8%, transparent 66.9%),
+    linear-gradient(transparent 33.1%, rgba(255, 255, 255, 0.14) 33.2%, rgba(255, 255, 255, 0.14) 33.5%, transparent 33.6%, transparent 66.4%, rgba(255, 255, 255, 0.14) 66.5%, rgba(255, 255, 255, 0.14) 66.8%, transparent 66.9%);
+  pointer-events: none;
+}
+.photo-editor-controls { display: grid; align-content: center; gap: 13px; }
+.photo-editor-controls > label { color: #9a8c70; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.photo-zoom-row { display: grid; grid-template-columns: 34px minmax(90px, 1fr) 34px; align-items: center; gap: 9px; }
+.photo-zoom-row button,
+.photo-center-button {
+  min-height: 34px;
+  border: 1px solid rgba(207, 173, 98, 0.26);
+  border-radius: 3px;
+  color: #c3a764;
+  background: rgba(207, 173, 98, 0.045);
+  cursor: pointer;
+}
+.photo-zoom-row button { padding: 0; font-size: 1.2rem; }
+.photo-center-button { width: 100%; padding: 0 10px; font-size: 0.75rem; font-weight: 750; }
+.photo-zoom-row button:hover,
+.photo-center-button:hover { border-color: var(--accent); color: #f0d58f; background: rgba(207, 173, 98, 0.1); }
+#photo-zoom { width: 100%; accent-color: #caa858; cursor: pointer; }
+
 @media (max-width: 900px) {
   body { background-size: auto, auto, 42px 42px, 42px 42px, auto; }
   .sidebar::after,
   .attributes-row::before { display: none; }
   .topbar::after { background: linear-gradient(90deg, rgba(232, 200, 125, 0.65), rgba(207, 173, 98, 0.08) 55%, transparent); }
   .view { width: min(100% - 32px, 700px); }
+  .custom-skill-modal,
+  .delete-skill-modal,
+  .photo-editor-modal { padding: 12px; }
+  .custom-skill-dialog,
+  .photo-editor-dialog { max-height: calc(100vh - 24px); }
+  .photo-editor-content { grid-template-columns: minmax(240px, 340px) minmax(140px, 1fr); }
 }
 
 @media (max-width: 560px) {
@@ -1905,6 +2329,36 @@ h2 { color: #ece6d8; }
   .identity-panel { min-height: 0; }
   .portrait-field { justify-items: start; }
   .constellation-branch { padding-inline: 14px; }
+  .skills-panel-actions,
+  .create-skill-button { width: 100%; }
+  .skills-panel-head { flex-direction: column; }
+  .skills-panel-actions { justify-content: stretch; }
+  .create-skill-button { flex: 1; }
+  .custom-skill-dialog-head,
+  .photo-editor-dialog-head { padding: 21px 20px 18px; }
+  .custom-skill-content { padding: 15px; }
+  .builder-section-head,
+  .builder-section-head-action { grid-template-columns: 30px minmax(0, 1fr); }
+  .builder-section-head-action .builder-add-button { grid-column: 2; justify-self: start; }
+  .builder-grid { grid-template-columns: 1fr; padding: 15px; }
+  .builder-field-wide { grid-column: auto; }
+  .builder-repeat-list,
+  .builder-competencies-list { padding: 13px; }
+  .builder-repeat-item { grid-template-columns: 1fr; }
+  .builder-repeat-item .builder-remove-button { justify-self: start; margin-top: 0; }
+  .builder-subgroup { margin-inline: 14px; }
+  .custom-skill-dialog-footer,
+  .photo-editor-dialog-footer,
+  .delete-skill-dialog-footer { display: grid; grid-template-columns: 1fr; padding: 14px 18px 18px; }
+  .custom-skill-dialog-footer .dialog-button,
+  .custom-skill-dialog-footer .builder-submit,
+  .photo-editor-dialog-footer .dialog-button,
+  .photo-editor-dialog-footer .builder-submit,
+  .delete-skill-dialog-footer .dialog-button,
+  .delete-skill-dialog-footer .delete-skill-confirm { width: 100%; }
+  .photo-editor-content { grid-template-columns: 1fr; justify-items: center; padding: 20px; }
+  .photo-editor-controls { width: 100%; }
+  .delete-skill-content { grid-template-columns: 1fr; padding: 24px 20px 20px; }
 }
 
 @media (max-width: 1040px) {
@@ -2159,7 +2613,7 @@ h2 { color: #ece6d8; }
 
           <div class="portrait-field">
             <span class="field-label">Foto</span>
-            <label class="portrait-frame" for="portrait-input">
+            <label class="portrait-frame" for="portrait-input" tabindex="0">
               <img id="portrait-preview" alt="Foto do personagem" hidden />
               <span class="portrait-empty" id="portrait-empty">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -2262,12 +2716,20 @@ h2 { color: #ece6d8; }
               <h2>Lista de perícias</h2>
               <p>Nos dados principais, fica o maior resultado. Em extras, use formatos como 1d6 ou 2d4.</p>
             </div>
-            <div class="roll-formula" aria-label="Fórmula da rolagem">
-              <span>Melhor dado</span>
-              <b>+</b>
-              <span>Atributo</span>
-              <b>+</b>
-              <span>Modificadores</span>
+            <div class="skills-panel-actions">
+              <div class="roll-formula" aria-label="Fórmula da rolagem">
+                <span>Melhor dado</span>
+                <b>+</b>
+                <span>Atributo</span>
+                <b>+</b>
+                <span>Modificadores</span>
+              </div>
+              <button id="open-custom-skill" class="create-skill-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M12 5v14M5 12h14"></path>
+                </svg>
+                <span>Criar Perícia</span>
+              </button>
             </div>
           </div>
 
@@ -2335,13 +2797,199 @@ h2 { color: #ece6d8; }
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="m12 3 2.2 5.3L20 9l-4.3 3.8 1.3 5.7-5-3-5 3 1.3-5.7L4 9l5.8-.7L12 3Z"></path>
             </svg>
-            <strong>Nenhuma estrela acesa</strong>
+            <strong>Você não tem nenhuma competência ou especialização</strong>
             <span>Abra as Informações de uma perícia e acesse suas Competências.</span>
           </div>
           <div id="selected-features-list" class="selected-features-list"></div>
         </section>
       </section>
     </main>
+
+    <div id="custom-skill-modal" class="custom-skill-modal" hidden>
+      <div class="roll-backdrop" data-close-custom-skill aria-hidden="true"></div>
+      <section
+        id="custom-skill-dialog"
+        class="custom-skill-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="custom-skill-title"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="custom-skill-dialog-head">
+          <div>
+            <p class="eyebrow">Criação personalizada</p>
+            <h2 id="custom-skill-title">Criar Perícia</h2>
+            <p>Monte as Informações e a constelação da nova Perícia.</p>
+          </div>
+          <button class="result-close" type="button" data-close-custom-skill aria-label="Fechar criação de Perícia">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <form id="custom-skill-form" class="custom-skill-form" novalidate>
+          <div class="custom-skill-content">
+            <section class="builder-section" aria-labelledby="builder-general-title">
+              <header class="builder-section-head">
+                <span aria-hidden="true">01</span>
+                <div>
+                  <h3 id="builder-general-title">Informações gerais</h3>
+                  <p>Defina a identidade e o atributo natural da Perícia.</p>
+                </div>
+              </header>
+
+              <div class="builder-grid">
+                <label class="builder-field">
+                  <span>Nome da Perícia</span>
+                  <input id="custom-skill-name" type="text" maxlength="60" autocomplete="off" placeholder="Ex.: Navegação" required />
+                </label>
+
+                <label class="builder-field">
+                  <span>Atributo padrão</span>
+                  <select id="custom-skill-attribute" required>
+                    <option value="FOR">FOR · Força</option>
+                    <option value="AGI">AGI · Agilidade</option>
+                    <option value="INT" selected>INT · Intelecto</option>
+                    <option value="CON">CON · Constituição</option>
+                    <option value="POD">POD · Poder</option>
+                  </select>
+                </label>
+
+                <label class="builder-field builder-field-wide">
+                  <span>Descrição</span>
+                  <textarea id="custom-skill-description" rows="4" maxlength="1200" placeholder="O que esta Perícia representa?" required></textarea>
+                </label>
+              </div>
+            </section>
+
+            <section class="builder-section" aria-labelledby="builder-uses-title">
+              <header class="builder-section-head builder-section-head-action">
+                <span aria-hidden="true">02</span>
+                <div>
+                  <h3 id="builder-uses-title">Usos Gerais</h3>
+                  <p>Adicione quantos usos forem necessários.</p>
+                </div>
+                <button id="add-custom-use" class="builder-add-button" type="button">+ Adicionar uso</button>
+              </header>
+              <div id="custom-uses-list" class="builder-repeat-list"></div>
+            </section>
+
+            <section class="builder-section" aria-labelledby="builder-competencies-title">
+              <header class="builder-section-head builder-section-head-action">
+                <span aria-hidden="true">03</span>
+                <div>
+                  <h3 id="builder-competencies-title">Competências e Especializações</h3>
+                  <p>Crie os ramos que aparecerão na constelação da Perícia.</p>
+                </div>
+                <button id="add-custom-competency" class="builder-add-button" type="button">+ Adicionar Competência</button>
+              </header>
+              <div id="custom-competencies-list" class="builder-competencies-list"></div>
+              <p id="custom-competencies-empty" class="builder-empty">Nenhuma Competência adicionada. Esta etapa é opcional.</p>
+            </section>
+
+            <p id="custom-skill-error" class="builder-error" role="alert" hidden></p>
+          </div>
+
+          <footer class="custom-skill-dialog-footer">
+            <button class="dialog-button" type="button" data-close-custom-skill>Cancelar</button>
+            <button class="builder-submit" type="submit">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 5v14M5 12h14"></path>
+              </svg>
+              Criar Perícia
+            </button>
+          </footer>
+        </form>
+      </section>
+    </div>
+
+    <div id="delete-skill-modal" class="delete-skill-modal" hidden>
+      <div class="roll-backdrop" data-close-delete-skill aria-hidden="true"></div>
+      <section
+        id="delete-skill-dialog"
+        class="delete-skill-dialog"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="delete-skill-title"
+        aria-describedby="delete-skill-description"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+        <div class="delete-skill-content">
+          <span class="delete-skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path>
+            </svg>
+          </span>
+          <div>
+            <p class="eyebrow">Perícia personalizada</p>
+            <h2 id="delete-skill-title">Excluir Perícia?</h2>
+            <p id="delete-skill-description">A Perícia e toda a sua constelação serão removidas desta ficha.</p>
+          </div>
+        </div>
+        <footer class="delete-skill-dialog-footer">
+          <button class="dialog-button" type="button" data-close-delete-skill>Cancelar</button>
+          <button id="confirm-delete-skill" class="delete-skill-confirm" type="button">Excluir</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="photo-editor-modal" class="photo-editor-modal" hidden>
+      <div class="roll-backdrop" data-close-photo-editor aria-hidden="true"></div>
+      <section
+        id="photo-editor-dialog"
+        class="photo-editor-dialog"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="photo-editor-title"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+
+        <header class="photo-editor-dialog-head">
+          <div>
+            <p class="eyebrow">Retrato do personagem</p>
+            <h2 id="photo-editor-title">Ajustar foto</h2>
+            <p>Arraste para posicionar e use o controle para aproximar.</p>
+          </div>
+          <button class="result-close" type="button" data-close-photo-editor aria-label="Cancelar ajuste da foto">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m7 7 10 10M17 7 7 17"></path>
+            </svg>
+          </button>
+        </header>
+
+        <div class="photo-editor-content">
+          <div id="photo-editor-viewport" class="photo-editor-viewport" tabindex="0" aria-label="Área de enquadramento; arraste a foto ou use as setas do teclado">
+            <img id="photo-editor-image" alt="Prévia do enquadramento da foto" draggable="false" />
+            <span class="photo-editor-grid" aria-hidden="true"></span>
+            <span class="portrait-corner portrait-corner-top" aria-hidden="true"></span>
+            <span class="portrait-corner portrait-corner-bottom" aria-hidden="true"></span>
+          </div>
+
+          <div class="photo-editor-controls">
+            <label for="photo-zoom">Zoom</label>
+            <div class="photo-zoom-row">
+              <button id="photo-zoom-out" type="button" aria-label="Diminuir zoom">−</button>
+              <input id="photo-zoom" type="range" min="1" max="3" step="0.01" value="1" />
+              <button id="photo-zoom-in" type="button" aria-label="Aumentar zoom">+</button>
+            </div>
+            <button id="photo-center" class="photo-center-button" type="button">Centralizar imagem</button>
+          </div>
+        </div>
+
+        <footer class="photo-editor-dialog-footer">
+          <button class="dialog-button" type="button" data-close-photo-editor>Cancelar</button>
+          <button id="apply-photo-crop" class="builder-submit" type="button">Usar esta foto</button>
+        </footer>
+      </section>
+    </div>
 
     <div id="skill-info-modal" class="skill-info-modal" hidden>
       <div class="roll-backdrop" data-close-skill-info aria-hidden="true"></div>
@@ -3861,33 +4509,9 @@ const COMPETENCY_TREES = {
 };
 
 const FEATURE_STORAGE_KEY = "abyss-rpg-selected-features-v1";
-const FEATURE_CATALOG = Object.entries(COMPETENCY_TREES).flatMap(([skillName, competencies]) =>
-  competencies.flatMap((competency) => {
-    const competencyId = makeFeatureId("competency", skillName, competency.name);
-    const competencyFeature = {
-      id: competencyId,
-      type: "competency",
-      skillName,
-      name: competency.name,
-      description: competency.description,
-      uses: competency.uses,
-      specializationCount: competency.specializations.length,
-    };
-
-    const specializationFeatures = competency.specializations.map((specialization) => ({
-      id: makeFeatureId("specialization", skillName, competency.name, specialization.name, specialization.ability),
-      type: "specialization",
-      skillName,
-      competencyName: competency.name,
-      name: specialization.name,
-      ability: specialization.ability,
-      description: specialization.text,
-    }));
-
-    return [competencyFeature, ...specializationFeatures];
-  }),
-);
-const FEATURE_BY_ID = new Map(FEATURE_CATALOG.map((feature) => [feature.id, feature]));
+const CUSTOM_SKILL_STORAGE_KEY = "abyss-rpg-custom-skills-v1";
+let FEATURE_CATALOG = [];
+const FEATURE_BY_ID = new Map();
 
 const TRAINING = {
   leigo: { label: "Leigo", die: 8 },
@@ -3984,6 +4608,30 @@ const featureToggleButton = document.querySelector("#feature-toggle");
 const selectedFeaturesCount = document.querySelector("#selected-features-count");
 const selectedFeaturesEmpty = document.querySelector("#selected-features-empty");
 const selectedFeaturesList = document.querySelector("#selected-features-list");
+const openCustomSkillButton = document.querySelector("#open-custom-skill");
+const customSkillModal = document.querySelector("#custom-skill-modal");
+const customSkillDialog = document.querySelector("#custom-skill-dialog");
+const customSkillForm = document.querySelector("#custom-skill-form");
+const customSkillNameInput = document.querySelector("#custom-skill-name");
+const customSkillAttributeSelect = document.querySelector("#custom-skill-attribute");
+const customSkillDescriptionInput = document.querySelector("#custom-skill-description");
+const customUsesList = document.querySelector("#custom-uses-list");
+const customCompetenciesList = document.querySelector("#custom-competencies-list");
+const customCompetenciesEmpty = document.querySelector("#custom-competencies-empty");
+const customSkillError = document.querySelector("#custom-skill-error");
+const deleteSkillModal = document.querySelector("#delete-skill-modal");
+const deleteSkillDialog = document.querySelector("#delete-skill-dialog");
+const deleteSkillDescription = document.querySelector("#delete-skill-description");
+const confirmDeleteSkillButton = document.querySelector("#confirm-delete-skill");
+const photoEditorModal = document.querySelector("#photo-editor-modal");
+const photoEditorDialog = document.querySelector("#photo-editor-dialog");
+const photoEditorViewport = document.querySelector("#photo-editor-viewport");
+const photoEditorImage = document.querySelector("#photo-editor-image");
+const photoZoomInput = document.querySelector("#photo-zoom");
+const photoZoomOutButton = document.querySelector("#photo-zoom-out");
+const photoZoomInButton = document.querySelector("#photo-zoom-in");
+const photoCenterButton = document.querySelector("#photo-center");
+const applyPhotoCropButton = document.querySelector("#apply-photo-crop");
 const selectedFeatureIds = new Set();
 let rollInterval;
 let rollTimeout;
@@ -3995,6 +4643,22 @@ let activeFeatureTrigger;
 let activeFeatureId = null;
 let constellationDrawFrame;
 let selectedDifficulty = "medium";
+let activeCustomSkillTrigger;
+let pendingDeleteSkillId = null;
+let pendingDeleteTrigger;
+let activePhotoTrigger;
+const photoEditorState = {
+  source: "",
+  image: null,
+  zoom: 1,
+  x: 0,
+  y: 0,
+  pointerId: null,
+  dragStartX: 0,
+  dragStartY: 0,
+  originX: 0,
+  originY: 0,
+};
 
 function dieSvg(faces, value = faces) {
   const geometry = DICE_GEOMETRY[faces] || DICE_GEOMETRY[20];
@@ -4008,16 +4672,63 @@ function dieSvg(faces, value = faces) {
     </svg>`;
 }
 
-function renderSkills() {
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function getSkillKey(skill) {
+  return skill.id || `core:${normalizeSearchTerm(skill.name)}`;
+}
+
+function sortSkillsAlphabetically() {
+  SKILLS.sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+}
+
+function captureSkillRowState() {
+  const state = new Map();
+  skillsList.querySelectorAll(".skill-row").forEach((row) => {
+    const skillIndex = Number.parseInt(row.dataset.skillIndex, 10);
+    const skill = SKILLS[skillIndex];
+    if (!skill) return;
+    state.set(getSkillKey(skill), {
+      attribute: row.querySelector("[data-skill-attribute]")?.value,
+      training: row.querySelector("[data-training-index]")?.value,
+      mainDiceCount: row.querySelector("[data-main-dice-count]")?.value,
+      diceModifier: row.querySelector("[data-dice-modifier]")?.value,
+      fixedModifier: row.querySelector("[data-fixed-modifier]")?.value,
+    });
+  });
+  return state;
+}
+
+function renderSkills(rowStates = captureSkillRowState()) {
   const attributeOptions = Object.entries(ATTRIBUTES)
     .map(([code, name]) => `<option value="${code}">${code} · ${name}</option>`)
     .join("");
 
   skillsList.innerHTML = SKILLS.map(
-    (skill, index) => `
-      <article class="skill-row" data-skill-index="${index}" data-training="leigo">
+    (skill, index) => {
+      const safeName = escapeHtml(skill.name);
+      const deleteButton = skill.isCustom
+        ? `<button class="delete-custom-skill" type="button" data-delete-custom-skill="${escapeHtml(skill.id)}" aria-label="Excluir Perícia ${safeName}" title="Excluir Perícia personalizada">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13M10 11v5M14 11v5"></path>
+            </svg>
+          </button>`
+        : "";
+
+      return `
+      <article class="skill-row${skill.isCustom ? " is-custom" : ""}" data-skill-index="${index}" data-skill-key="${escapeHtml(getSkillKey(skill))}" data-training="leigo">
         <div class="skill-info">
-          <strong>${skill.name}</strong>
+          <div class="skill-info-title">
+            <strong>${safeName}</strong>
+            ${deleteButton}
+          </div>
         </div>
 
         <div class="attribute-control">
@@ -4025,8 +4736,8 @@ function renderSkills() {
             class="skill-info-button"
             type="button"
             data-skill-info="${index}"
-            aria-label="Ver informações de ${skill.name}"
-            title="Informações de ${skill.name}"
+            aria-label="Ver informações de ${safeName}"
+            title="Informações de ${safeName}"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 5.2C11.4 3.8 10.2 3 8.8 3A3.3 3.3 0 0 0 5.5 6.3v.3A3.7 3.7 0 0 0 4 13.4a3.5 3.5 0 0 0 2.3 3.3A3.3 3.3 0 0 0 9.5 21c1 0 1.9-.5 2.5-1.2"></path>
@@ -4037,7 +4748,7 @@ function renderSkills() {
 
           <label class="skill-select-wrap">
             <span class="control-caption">Atributo</span>
-            <select class="attribute-select" data-skill-attribute="${index}" aria-label="Atributo usado em ${skill.name}">
+            <select class="attribute-select" data-skill-attribute="${index}" aria-label="Atributo usado em ${safeName}">
               ${attributeOptions}
             </select>
           </label>
@@ -4047,8 +4758,8 @@ function renderSkills() {
           <span class="control-caption">Treinamento</span>
           <span class="training-die" aria-hidden="true">${dieSvg(8)}</span>
           <label>
-            <span class="sr-only">Treinamento em ${skill.name}</span>
-            <select class="training-select" data-training-index="${index}" aria-label="Treinamento em ${skill.name}">
+            <span class="sr-only">Treinamento em ${safeName}</span>
+            <select class="training-select" data-training-index="${index}" aria-label="Treinamento em ${safeName}">
               <option value="leigo">Leigo</option>
               <option value="adepto">Adepto</option>
               <option value="treinado">Treinado</option>
@@ -4067,7 +4778,7 @@ function renderSkills() {
             step="1"
             value="1"
             data-main-dice-count="${index}"
-            aria-label="Quantidade de dados principais em ${skill.name}; o maior resultado será usado"
+            aria-label="Quantidade de dados principais em ${safeName}; o maior resultado será usado"
             title="Role de 1 a 20 dados e use o maior resultado"
           />
         </label>
@@ -4082,7 +4793,7 @@ function renderSkills() {
             spellcheck="false"
             placeholder="ex.: 1d6"
             data-dice-modifier="${index}"
-            aria-label="Dados extras em ${skill.name}"
+            aria-label="Dados extras em ${safeName}"
           />
         </label>
 
@@ -4095,18 +4806,35 @@ function renderSkills() {
             step="1"
             placeholder="0"
             data-fixed-modifier="${index}"
-            aria-label="Modificador fixo em ${skill.name}"
+            aria-label="Modificador fixo em ${safeName}"
           />
         </label>
 
-        <button class="roll-button" type="button" data-roll-index="${index}" aria-label="Rolar ${skill.name}" title="Rolar ${skill.name}">
+        <button class="roll-button" type="button" data-roll-index="${index}" aria-label="Rolar ${safeName}" title="Rolar ${safeName}">
           ${dieSvg(20, null)}
         </button>
-      </article>`,
+      </article>`;
+    },
   ).join("");
 
   SKILLS.forEach((skill, index) => {
-    document.querySelector(`[data-skill-attribute="${index}"]`).value = skill.attribute;
+    const row = skillsList.querySelector(`[data-skill-index="${index}"]`);
+    const state = rowStates.get(getSkillKey(skill)) || {};
+    const attributeSelect = row.querySelector("[data-skill-attribute]");
+    const trainingSelect = row.querySelector("[data-training-index]");
+    const mainDiceInput = row.querySelector("[data-main-dice-count]");
+    const diceInput = row.querySelector("[data-dice-modifier]");
+    const fixedInput = row.querySelector("[data-fixed-modifier]");
+    const attribute = ATTRIBUTES[state.attribute] ? state.attribute : skill.attribute;
+    const training = TRAINING[state.training] ? state.training : "leigo";
+
+    attributeSelect.value = attribute;
+    trainingSelect.value = training;
+    mainDiceInput.value = state.mainDiceCount || "1";
+    diceInput.value = state.diceModifier || "";
+    fixedInput.value = state.fixedModifier || "";
+    row.querySelector(".training-die").innerHTML = dieSvg(TRAINING[training].die);
+    updateTrainingIndicator(row, training);
   });
 }
 
@@ -4130,14 +4858,443 @@ function makeFeatureId(...parts) {
     .join("--");
 }
 
+function rebuildFeatureCatalog() {
+  FEATURE_CATALOG = Object.entries(COMPETENCY_TREES).flatMap(([skillName, competencies]) =>
+    competencies.flatMap((competency) => {
+      const specializations = competency.specializations || [];
+      const competencyId = makeFeatureId("competency", skillName, competency.name);
+      const competencyFeature = {
+        id: competencyId,
+        type: "competency",
+        skillName,
+        name: competency.name,
+        description: competency.description,
+        uses: competency.uses || [],
+        specializationCount: specializations.length,
+      };
+
+      const specializationFeatures = specializations.map((specialization) => ({
+        id: makeFeatureId("specialization", skillName, competency.name, specialization.name, specialization.ability),
+        type: "specialization",
+        skillName,
+        competencyName: competency.name,
+        name: specialization.name,
+        ability: specialization.ability,
+        description: specialization.text,
+      }));
+
+      return [competencyFeature, ...specializationFeatures];
+    }),
+  );
+
+  FEATURE_BY_ID.clear();
+  FEATURE_CATALOG.forEach((feature) => FEATURE_BY_ID.set(feature.id, feature));
+}
+
+function createCustomSkillId() {
+  return `custom-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
+}
+
+function sanitizeUse(rawUse) {
+  if (!rawUse || typeof rawUse !== "object") return null;
+  const name = String(rawUse.name || "").trim().slice(0, 80);
+  const text = String(rawUse.text || "").trim().slice(0, 1800);
+  return name && text ? { name, text } : null;
+}
+
+function sanitizeCompetency(rawCompetency) {
+  if (!rawCompetency || typeof rawCompetency !== "object") return null;
+  const name = String(rawCompetency.name || "").trim().slice(0, 80);
+  const description = String(rawCompetency.description || "").trim().slice(0, 1800);
+  if (!name || !description) return null;
+
+  const uses = Array.isArray(rawCompetency.uses)
+    ? rawCompetency.uses.map(sanitizeUse).filter(Boolean).slice(0, 30)
+    : [];
+  const specializations = Array.isArray(rawCompetency.specializations)
+    ? rawCompetency.specializations.map((rawSpecialization) => {
+        if (!rawSpecialization || typeof rawSpecialization !== "object") return null;
+        const specializationName = String(rawSpecialization.name || "").trim().slice(0, 80);
+        const ability = String(rawSpecialization.ability || "").trim().slice(0, 100);
+        const text = String(rawSpecialization.text || "").trim().slice(0, 1800);
+        return specializationName && ability && text
+          ? { name: specializationName, ability, text }
+          : null;
+      }).filter(Boolean).slice(0, 40)
+    : [];
+
+  return { name, description, uses, specializations };
+}
+
+function sanitizeCustomSkill(rawSkill) {
+  if (!rawSkill || typeof rawSkill !== "object") return null;
+  const name = String(rawSkill.name || "").trim().slice(0, 60);
+  const attribute = ATTRIBUTES[rawSkill.attribute] ? rawSkill.attribute : "INT";
+  const description = String(rawSkill.description || "").trim().slice(0, 1200);
+  if (!name || !description) return null;
+
+  const uses = Array.isArray(rawSkill.uses)
+    ? rawSkill.uses.map(sanitizeUse).filter(Boolean).slice(0, 40)
+    : [];
+  const competencies = Array.isArray(rawSkill.competencies)
+    ? rawSkill.competencies.map(sanitizeCompetency).filter(Boolean).slice(0, 20)
+    : [];
+
+  return {
+    id: String(rawSkill.id || createCustomSkillId()).slice(0, 100),
+    name,
+    attribute,
+    description,
+    uses,
+    competencies,
+  };
+}
+
+function registerCustomSkill(customSkill) {
+  SKILLS.push({
+    id: customSkill.id,
+    name: customSkill.name,
+    attribute: customSkill.attribute,
+    isCustom: true,
+  });
+  Object.defineProperty(SKILL_DETAILS, customSkill.name, {
+    value: { description: customSkill.description, uses: customSkill.uses },
+    configurable: true,
+    enumerable: true,
+    writable: true,
+  });
+  Object.defineProperty(COMPETENCY_TREES, customSkill.name, {
+    value: customSkill.competencies,
+    configurable: true,
+    enumerable: true,
+    writable: true,
+  });
+}
+
+function getCustomSkillsForStorage() {
+  return SKILLS.filter((skill) => skill.isCustom).map((skill) => ({
+    id: skill.id,
+    name: skill.name,
+    attribute: skill.attribute,
+    description: SKILL_DETAILS[skill.name]?.description || "",
+    uses: SKILL_DETAILS[skill.name]?.uses || [],
+    competencies: COMPETENCY_TREES[skill.name] || [],
+  }));
+}
+
+function persistCustomSkills() {
+  try {
+    window.localStorage.setItem(CUSTOM_SKILL_STORAGE_KEY, JSON.stringify(getCustomSkillsForStorage()));
+  } catch {
+    // A Perícia continua disponível durante a sessão se o armazenamento local falhar.
+  }
+}
+
+function loadCustomSkills() {
+  try {
+    const stored = JSON.parse(window.localStorage.getItem(CUSTOM_SKILL_STORAGE_KEY) || "[]");
+    if (!Array.isArray(stored)) return;
+    const usedNames = new Set(SKILLS.map((skill) => normalizeSearchTerm(skill.name)));
+    const usedIds = new Set();
+
+    stored.forEach((rawSkill) => {
+      const customSkill = sanitizeCustomSkill(rawSkill);
+      if (!customSkill) return;
+      const normalizedName = normalizeSearchTerm(customSkill.name);
+      if (!normalizedName || usedNames.has(normalizedName) || usedIds.has(customSkill.id)) return;
+      usedNames.add(normalizedName);
+      usedIds.add(customSkill.id);
+      registerCustomSkill(customSkill);
+    });
+  } catch {
+    // Dados inválidos são ignorados sem impedir o funcionamento da ficha.
+  }
+}
+
+function createBuilderUseItem(kind = "skill") {
+  const item = document.createElement("article");
+  item.className = "builder-repeat-item";
+  item.dataset.builderUse = kind;
+  item.innerHTML = `
+    <label class="builder-field">
+      <span>Nome do uso</span>
+      <input class="builder-use-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Orientar" />
+    </label>
+    <label class="builder-field">
+      <span>Descrição do uso</span>
+      <textarea class="builder-use-text" rows="2" maxlength="1800" placeholder="Explique quando e como este uso funciona."></textarea>
+    </label>
+    <button class="builder-remove-button" type="button" data-remove-builder-use>Remover</button>`;
+  return item;
+}
+
+function createBuilderSpecializationItem() {
+  const item = document.createElement("article");
+  item.className = "builder-repeat-item builder-specialization-item";
+  item.dataset.builderSpecialization = "";
+  item.innerHTML = `
+    <label class="builder-field">
+      <span>Especialização</span>
+      <input class="builder-specialization-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Cartografia" />
+    </label>
+    <label class="builder-field">
+      <span>Nome do uso</span>
+      <input class="builder-specialization-ability" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: Ler Mapas" />
+    </label>
+    <label class="builder-field builder-specialization-description">
+      <span>Descrição</span>
+      <textarea class="builder-specialization-text" rows="2" maxlength="1800" placeholder="Descreva o benefício ou uso da Especialização."></textarea>
+    </label>
+    <button class="builder-remove-button" type="button" data-remove-builder-specialization>Remover</button>`;
+  return item;
+}
+
+function renumberBuilderCompetencies() {
+  const cards = [...customCompetenciesList.querySelectorAll(".builder-competency-card")];
+  cards.forEach((card, index) => {
+    card.querySelector("[data-competency-number]").textContent = `Competência ${index + 1}`;
+  });
+  customCompetenciesEmpty.hidden = cards.length !== 0;
+}
+
+function createBuilderCompetencyCard() {
+  const card = document.createElement("article");
+  card.className = "builder-competency-card";
+  card.innerHTML = `
+    <header class="builder-competency-head">
+      <strong data-competency-number>Competência</strong>
+      <button class="builder-remove-button" type="button" data-remove-builder-competency>Remover Competência</button>
+    </header>
+    <div class="builder-grid builder-competency-fields">
+      <label class="builder-field">
+        <span>Nome da Competência</span>
+        <input class="builder-competency-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Domínio Náutico" />
+      </label>
+      <label class="builder-field builder-field-wide">
+        <span>Descrição</span>
+        <textarea class="builder-competency-description" rows="3" maxlength="1800" placeholder="O que este conhecimento representa?"></textarea>
+      </label>
+    </div>
+    <section class="builder-subgroup">
+      <header class="builder-subgroup-head">
+        <strong>Usos da Competência</strong>
+        <button class="builder-mini-add" type="button" data-add-competency-use>+ Adicionar uso</button>
+      </header>
+      <div class="builder-subgroup-list" data-competency-uses></div>
+    </section>
+    <section class="builder-subgroup">
+      <header class="builder-subgroup-head">
+        <strong>Especializações</strong>
+        <button class="builder-mini-add" type="button" data-add-specialization>+ Adicionar Especialização</button>
+      </header>
+      <div class="builder-subgroup-list" data-competency-specializations></div>
+    </section>`;
+  return card;
+}
+
+function setBuilderError(message, field) {
+  customSkillError.textContent = message;
+  customSkillError.hidden = !message;
+  if (field) {
+    field.classList.add("is-invalid");
+    field.focus();
+    field.scrollIntoView({ block: "center", behavior: "smooth" });
+  }
+}
+
+function readBuilderUses(container, label) {
+  const uses = [];
+  container.querySelectorAll(":scope > [data-builder-use]").forEach((item) => {
+    const nameInput = item.querySelector(".builder-use-name");
+    const textInput = item.querySelector(".builder-use-text");
+    const name = nameInput.value.trim();
+    const text = textInput.value.trim();
+    if (!name && !text) return;
+    if (!name) throw { message: `Dê um nome ao ${label}.`, field: nameInput };
+    if (!text) throw { message: `Escreva a descrição de “${name}”.`, field: textInput };
+    uses.push({ name, text });
+  });
+  return uses;
+}
+
+function assertUniqueNames(items, label) {
+  const seen = new Set();
+  items.forEach((item) => {
+    const normalized = normalizeSearchTerm(item.name);
+    if (seen.has(normalized)) throw { message: `${label} não podem repetir o mesmo nome.` };
+    seen.add(normalized);
+  });
+}
+
+function readCustomSkillForm() {
+  customSkillForm.querySelectorAll(".is-invalid").forEach((field) => field.classList.remove("is-invalid"));
+  setBuilderError("");
+
+  const name = customSkillNameInput.value.trim();
+  const description = customSkillDescriptionInput.value.trim();
+  if (!name) throw { message: "Dê um nome à nova Perícia.", field: customSkillNameInput };
+  if (SKILLS.some((skill) => normalizeSearchTerm(skill.name) === normalizeSearchTerm(name))) {
+    throw { message: `Já existe uma Perícia chamada “${name}”.`, field: customSkillNameInput };
+  }
+  if (!description) throw { message: "Escreva o que esta Perícia representa.", field: customSkillDescriptionInput };
+
+  const uses = readBuilderUses(customUsesList, "Uso Geral");
+  assertUniqueNames(uses, "Os Usos Gerais");
+
+  const competencies = [...customCompetenciesList.querySelectorAll(":scope > .builder-competency-card")].map((card) => {
+    const nameInput = card.querySelector(".builder-competency-name");
+    const descriptionInput = card.querySelector(".builder-competency-description");
+    const competencyName = nameInput.value.trim();
+    const competencyDescription = descriptionInput.value.trim();
+    if (!competencyName) throw { message: "Dê um nome à Competência.", field: nameInput };
+    if (!competencyDescription) throw { message: `Escreva a descrição de “${competencyName}”.`, field: descriptionInput };
+
+    const competencyUses = readBuilderUses(card.querySelector("[data-competency-uses]"), "uso da Competência");
+    assertUniqueNames(competencyUses, `Os usos de “${competencyName}”`);
+    const specializations = [...card.querySelectorAll("[data-builder-specialization]")].map((item) => {
+      const specializationNameInput = item.querySelector(".builder-specialization-name");
+      const abilityInput = item.querySelector(".builder-specialization-ability");
+      const textInput = item.querySelector(".builder-specialization-text");
+      const specializationName = specializationNameInput.value.trim();
+      const ability = abilityInput.value.trim();
+      const text = textInput.value.trim();
+      if (!specializationName) throw { message: `Dê um nome a uma Especialização de “${competencyName}”.`, field: specializationNameInput };
+      if (!ability) throw { message: `Dê um nome ao uso de “${specializationName}”.`, field: abilityInput };
+      if (!text) throw { message: `Escreva a descrição de “${specializationName}”.`, field: textInput };
+      return { name: specializationName, ability, text };
+    });
+    assertUniqueNames(specializations, `As Especializações de “${competencyName}”`);
+
+    return {
+      name: competencyName,
+      description: competencyDescription,
+      uses: competencyUses,
+      specializations,
+    };
+  });
+  assertUniqueNames(competencies, "As Competências");
+
+  return {
+    id: createCustomSkillId(),
+    name,
+    attribute: customSkillAttributeSelect.value,
+    description,
+    uses,
+    competencies,
+  };
+}
+
+function resetCustomSkillForm() {
+  customSkillForm.reset();
+  customUsesList.replaceChildren(createBuilderUseItem("skill"));
+  customCompetenciesList.replaceChildren();
+  renumberBuilderCompetencies();
+  setBuilderError("");
+}
+
+function openCustomSkill(triggerButton) {
+  activeCustomSkillTrigger = triggerButton;
+  resetCustomSkillForm();
+  customSkillModal.hidden = false;
+  syncModalLock();
+  customSkillDialog.focus();
+  requestAnimationFrame(() => customSkillNameInput.focus());
+}
+
+function closeCustomSkill() {
+  customSkillModal.hidden = true;
+  syncModalLock();
+  if (activeCustomSkillTrigger?.isConnected) activeCustomSkillTrigger.focus();
+}
+
+function submitCustomSkill(event) {
+  event.preventDefault();
+  try {
+    const rowStates = captureSkillRowState();
+    const customSkill = readCustomSkillForm();
+    registerCustomSkill(customSkill);
+    sortSkillsAlphabetically();
+    persistCustomSkills();
+    rebuildFeatureCatalog();
+    renderSkills(rowStates);
+    skillSearchInput.value = customSkill.name;
+    attributeFilter.value = "all";
+    trainingFilter.value = "all";
+    filterSkills();
+    closeCustomSkill();
+
+    const newRow = [...skillsList.querySelectorAll("[data-skill-key]")]
+      .find((row) => row.dataset.skillKey === customSkill.id);
+    if (newRow) {
+      newRow.classList.add("is-new");
+      newRow.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+  } catch (error) {
+    setBuilderError(error?.message || "Não foi possível criar a Perícia. Revise os campos.", error?.field);
+  }
+}
+
+function openDeleteSkill(skillId, triggerButton) {
+  const skill = SKILLS.find((item) => item.id === skillId && item.isCustom);
+  if (!skill) return;
+  pendingDeleteSkillId = skillId;
+  pendingDeleteTrigger = triggerButton;
+  deleteSkillDescription.textContent = `“${skill.name}” e toda a sua constelação serão removidas desta ficha.`;
+  deleteSkillModal.hidden = false;
+  syncModalLock();
+  deleteSkillDialog.focus();
+  requestAnimationFrame(() => confirmDeleteSkillButton.focus());
+}
+
+function closeDeleteSkill() {
+  deleteSkillModal.hidden = true;
+  syncModalLock();
+  if (pendingDeleteTrigger?.isConnected) pendingDeleteTrigger.focus();
+  pendingDeleteSkillId = null;
+  pendingDeleteTrigger = null;
+}
+
+function deletePendingCustomSkill() {
+  const skillIndex = SKILLS.findIndex((skill) => skill.id === pendingDeleteSkillId && skill.isCustom);
+  if (skillIndex < 0) return closeDeleteSkill();
+  const rowStates = captureSkillRowState();
+  const [skill] = SKILLS.splice(skillIndex, 1);
+
+  [...selectedFeatureIds].forEach((featureId) => {
+    if (FEATURE_BY_ID.get(featureId)?.skillName === skill.name) selectedFeatureIds.delete(featureId);
+  });
+  delete SKILL_DETAILS[skill.name];
+  delete COMPETENCY_TREES[skill.name];
+  if (normalizeSearchTerm(skillSearchInput.value) === normalizeSearchTerm(skill.name)) {
+    skillSearchInput.value = "";
+  }
+  persistCustomSkills();
+  rebuildFeatureCatalog();
+  persistSelectedFeatures();
+  renderSelectedFeatures();
+  renderSkills(rowStates);
+  filterSkills();
+  closeDeleteSkill();
+  openCustomSkillButton.focus();
+}
+
 function syncModalLock() {
-  const hasOpenModal = [rollModal, skillInfoModal, constellationModal, featureDetailModal]
+  const hasOpenModal = [
+    rollModal,
+    skillInfoModal,
+    constellationModal,
+    featureDetailModal,
+    customSkillModal,
+    deleteSkillModal,
+    photoEditorModal,
+  ]
     .some((modal) => !modal.hidden);
   document.body.classList.toggle("modal-open", hasOpenModal);
 }
 
 function updateTrainingIndicator(row, trainingKey) {
   row.dataset.training = trainingKey;
+  row.classList.toggle("is-leigo", trainingKey === "leigo");
   row.classList.toggle("is-adepto", trainingKey === "adepto");
   row.classList.toggle("is-treinado", trainingKey === "treinado");
 }
@@ -4761,17 +5918,120 @@ function rollSkill(skillIndex, triggerButton) {
   }, reducedMotion ? 120 : 920);
 }
 
-function loadPortrait(file) {
-  if (!file || !file.type.startsWith("image/")) return;
+function clamp(value, minimum, maximum) {
+  return Math.min(maximum, Math.max(minimum, value));
+}
 
+function getPhotoEditorScale() {
+  if (!photoEditorState.image) return 1;
+  const viewportSize = photoEditorViewport.clientWidth || 1;
+  const coverScale = Math.max(
+    viewportSize / photoEditorState.image.naturalWidth,
+    viewportSize / photoEditorState.image.naturalHeight,
+  );
+  return coverScale * photoEditorState.zoom;
+}
+
+function clampPhotoEditorPosition() {
+  if (!photoEditorState.image) return;
+  const viewportSize = photoEditorViewport.clientWidth || 1;
+  const scale = getPhotoEditorScale();
+  const maximumX = Math.max(0, (photoEditorState.image.naturalWidth * scale - viewportSize) / 2);
+  const maximumY = Math.max(0, (photoEditorState.image.naturalHeight * scale - viewportSize) / 2);
+  photoEditorState.x = clamp(photoEditorState.x, -maximumX, maximumX);
+  photoEditorState.y = clamp(photoEditorState.y, -maximumY, maximumY);
+}
+
+function renderPhotoEditor() {
+  if (!photoEditorState.image) return;
+  clampPhotoEditorPosition();
+  const scale = getPhotoEditorScale();
+  photoEditorImage.style.width = `${photoEditorState.image.naturalWidth}px`;
+  photoEditorImage.style.height = `${photoEditorState.image.naturalHeight}px`;
+  photoEditorImage.style.left = `calc(50% + ${photoEditorState.x}px)`;
+  photoEditorImage.style.top = `calc(50% + ${photoEditorState.y}px)`;
+  photoEditorImage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  photoZoomInput.value = String(photoEditorState.zoom);
+}
+
+function setPhotoZoom(nextZoom) {
+  photoEditorState.zoom = clamp(Number(nextZoom) || 1, 1, 3);
+  renderPhotoEditor();
+}
+
+function centerPhotoEditor() {
+  photoEditorState.zoom = 1;
+  photoEditorState.x = 0;
+  photoEditorState.y = 0;
+  renderPhotoEditor();
+}
+
+function openPhotoEditor(file) {
+  if (!file || !file.type.startsWith("image/")) return;
   const reader = new FileReader();
   reader.addEventListener("load", () => {
-    const preview = document.querySelector("#portrait-preview");
-    preview.src = reader.result;
-    preview.hidden = false;
-    document.querySelector("#portrait-empty").hidden = true;
+    const image = new Image();
+    image.addEventListener("load", () => {
+      photoEditorState.source = String(reader.result);
+      photoEditorState.image = image;
+      photoEditorState.zoom = 1;
+      photoEditorState.x = 0;
+      photoEditorState.y = 0;
+      photoEditorImage.src = photoEditorState.source;
+      activePhotoTrigger = document.querySelector(".portrait-frame");
+      photoEditorModal.hidden = false;
+      syncModalLock();
+      photoEditorDialog.focus();
+      requestAnimationFrame(() => {
+        renderPhotoEditor();
+        photoEditorViewport.focus();
+      });
+    });
+    image.src = String(reader.result);
   });
   reader.readAsDataURL(file);
+}
+
+function closePhotoEditor() {
+  photoEditorModal.hidden = true;
+  photoEditorState.pointerId = null;
+  photoEditorViewport.classList.remove("is-dragging");
+  document.querySelector("#portrait-input").value = "";
+  syncModalLock();
+  if (activePhotoTrigger?.isConnected) activePhotoTrigger.focus();
+}
+
+function applyPhotoCrop() {
+  if (!photoEditorState.image) return;
+  const viewportSize = photoEditorViewport.clientWidth || 1;
+  const scale = getPhotoEditorScale();
+  const sourceSize = viewportSize / scale;
+  const sourceX = photoEditorState.image.naturalWidth / 2 - photoEditorState.x / scale - sourceSize / 2;
+  const sourceY = photoEditorState.image.naturalHeight / 2 - photoEditorState.y / scale - sourceSize / 2;
+  const outputSize = 720;
+  const canvas = document.createElement("canvas");
+  canvas.width = outputSize;
+  canvas.height = outputSize;
+  const context = canvas.getContext("2d");
+  context.fillStyle = "#0b0c0f";
+  context.fillRect(0, 0, outputSize, outputSize);
+  context.drawImage(
+    photoEditorState.image,
+    sourceX,
+    sourceY,
+    sourceSize,
+    sourceSize,
+    0,
+    0,
+    outputSize,
+    outputSize,
+  );
+
+  const preview = document.querySelector("#portrait-preview");
+  preview.src = canvas.toDataURL("image/jpeg", 0.9);
+  preview.hidden = false;
+  document.querySelector("#portrait-empty").hidden = true;
+  closePhotoEditor();
 }
 
 function trapDialogFocus(event) {
@@ -4834,6 +6094,24 @@ function trapFeatureDetailFocus(event) {
   }
 }
 
+function trapInteractiveModalFocus(event, modal, dialog) {
+  if (event.key !== "Tab" || modal.hidden) return;
+  const focusable = [...dialog.querySelectorAll(
+    'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+  )].filter((element) => !element.hidden);
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  if (!first || !last) return;
+
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog)) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
 viewButtons.forEach((button) => {
   button.addEventListener("click", () => changeView(button.dataset.viewTarget));
 });
@@ -4848,6 +6126,49 @@ trainingFilter.addEventListener("change", filterSkills);
 clearSkillFiltersButton.addEventListener("click", clearSkillFilters);
 openConstellationButton.addEventListener("click", () => openConstellation(openConstellationButton));
 featureToggleButton.addEventListener("click", () => toggleFeatureSelection(activeFeatureId));
+openCustomSkillButton.addEventListener("click", () => openCustomSkill(openCustomSkillButton));
+customSkillForm.addEventListener("submit", submitCustomSkill);
+document.querySelector("#add-custom-use").addEventListener("click", () => {
+  customUsesList.append(createBuilderUseItem("skill"));
+  customUsesList.lastElementChild.querySelector("input").focus();
+});
+document.querySelector("#add-custom-competency").addEventListener("click", () => {
+  const card = createBuilderCompetencyCard();
+  customCompetenciesList.append(card);
+  renumberBuilderCompetencies();
+  card.querySelector("input").focus();
+});
+
+customSkillDialog.addEventListener("click", (event) => {
+  const removeUseButton = event.target.closest("[data-remove-builder-use]");
+  if (removeUseButton) {
+    removeUseButton.closest(".builder-repeat-item")?.remove();
+    return;
+  }
+
+  const competencyCard = event.target.closest(".builder-competency-card");
+  if (!competencyCard) return;
+
+  if (event.target.closest("[data-remove-builder-competency]")) {
+    competencyCard.remove();
+    renumberBuilderCompetencies();
+    return;
+  }
+  if (event.target.closest("[data-add-competency-use]")) {
+    const list = competencyCard.querySelector("[data-competency-uses]");
+    list.append(createBuilderUseItem("competency"));
+    list.lastElementChild.querySelector("input").focus();
+    return;
+  }
+  if (event.target.closest("[data-add-specialization]")) {
+    const list = competencyCard.querySelector("[data-competency-specializations]");
+    list.append(createBuilderSpecializationItem());
+    list.lastElementChild.querySelector("input").focus();
+    return;
+  }
+  const removeSpecializationButton = event.target.closest("[data-remove-builder-specialization]");
+  if (removeSpecializationButton) removeSpecializationButton.closest(".builder-repeat-item")?.remove();
+});
 
 constellationTree.addEventListener("click", (event) => {
   const featureButton = event.target.closest("[data-open-feature]");
@@ -4867,6 +6188,12 @@ selectedFeaturesList.addEventListener("click", (event) => {
 });
 
 skillsList.addEventListener("click", (event) => {
+  const deleteButton = event.target.closest("[data-delete-custom-skill]");
+  if (deleteButton) {
+    openDeleteSkill(deleteButton.dataset.deleteCustomSkill, deleteButton);
+    return;
+  }
+
   const infoButton = event.target.closest("[data-skill-info]");
   if (infoButton) {
     openSkillInfo(Number.parseInt(infoButton.dataset.skillInfo, 10), infoButton);
@@ -4905,7 +6232,77 @@ skillsList.addEventListener("input", (event) => {
 });
 
 document.querySelector("#portrait-input").addEventListener("change", (event) => {
-  loadPortrait(event.target.files?.[0]);
+  openPhotoEditor(event.target.files?.[0]);
+});
+
+document.querySelector(".portrait-frame").addEventListener("keydown", (event) => {
+  if (event.key !== "Enter" && event.key !== " ") return;
+  event.preventDefault();
+  document.querySelector("#portrait-input").click();
+});
+
+document.querySelectorAll("[data-close-custom-skill]").forEach((button) => {
+  button.addEventListener("click", closeCustomSkill);
+});
+
+document.querySelectorAll("[data-close-delete-skill]").forEach((button) => {
+  button.addEventListener("click", closeDeleteSkill);
+});
+confirmDeleteSkillButton.addEventListener("click", deletePendingCustomSkill);
+
+document.querySelectorAll("[data-close-photo-editor]").forEach((button) => {
+  button.addEventListener("click", closePhotoEditor);
+});
+applyPhotoCropButton.addEventListener("click", applyPhotoCrop);
+photoCenterButton.addEventListener("click", centerPhotoEditor);
+photoZoomInput.addEventListener("input", () => setPhotoZoom(photoZoomInput.value));
+photoZoomOutButton.addEventListener("click", () => setPhotoZoom(photoEditorState.zoom - 0.1));
+photoZoomInButton.addEventListener("click", () => setPhotoZoom(photoEditorState.zoom + 0.1));
+
+photoEditorViewport.addEventListener("pointerdown", (event) => {
+  if (!photoEditorState.image) return;
+  photoEditorState.pointerId = event.pointerId;
+  photoEditorState.dragStartX = event.clientX;
+  photoEditorState.dragStartY = event.clientY;
+  photoEditorState.originX = photoEditorState.x;
+  photoEditorState.originY = photoEditorState.y;
+  photoEditorViewport.classList.add("is-dragging");
+  photoEditorViewport.setPointerCapture(event.pointerId);
+});
+
+photoEditorViewport.addEventListener("pointermove", (event) => {
+  if (photoEditorState.pointerId !== event.pointerId) return;
+  photoEditorState.x = photoEditorState.originX + event.clientX - photoEditorState.dragStartX;
+  photoEditorState.y = photoEditorState.originY + event.clientY - photoEditorState.dragStartY;
+  renderPhotoEditor();
+});
+
+function finishPhotoDrag(event) {
+  if (photoEditorState.pointerId !== event.pointerId) return;
+  photoEditorState.pointerId = null;
+  photoEditorViewport.classList.remove("is-dragging");
+}
+
+photoEditorViewport.addEventListener("pointerup", finishPhotoDrag);
+photoEditorViewport.addEventListener("pointercancel", finishPhotoDrag);
+photoEditorViewport.addEventListener("wheel", (event) => {
+  event.preventDefault();
+  setPhotoZoom(photoEditorState.zoom + (event.deltaY < 0 ? 0.08 : -0.08));
+}, { passive: false });
+photoEditorViewport.addEventListener("keydown", (event) => {
+  const movement = event.shiftKey ? 18 : 7;
+  const directions = {
+    ArrowLeft: [-movement, 0],
+    ArrowRight: [movement, 0],
+    ArrowUp: [0, -movement],
+    ArrowDown: [0, movement],
+  };
+  const direction = directions[event.key];
+  if (!direction) return;
+  event.preventDefault();
+  photoEditorState.x += direction[0];
+  photoEditorState.y += direction[1];
+  renderPhotoEditor();
 });
 
 document.querySelectorAll("[data-close-roll]").forEach((button) => {
@@ -4926,10 +6323,17 @@ document.querySelectorAll("[data-close-feature-detail]").forEach((button) => {
 
 window.addEventListener("resize", () => {
   if (!constellationModal.hidden) scheduleConstellationDraw();
+  if (!photoEditorModal.hidden) renderPhotoEditor();
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !featureDetailModal.hidden) {
+  if (event.key === "Escape" && !deleteSkillModal.hidden) {
+    closeDeleteSkill();
+  } else if (event.key === "Escape" && !photoEditorModal.hidden) {
+    closePhotoEditor();
+  } else if (event.key === "Escape" && !customSkillModal.hidden) {
+    closeCustomSkill();
+  } else if (event.key === "Escape" && !featureDetailModal.hidden) {
     closeFeatureDetail();
   } else if (event.key === "Escape" && !constellationModal.hidden) {
     closeConstellation();
@@ -4942,8 +6346,14 @@ document.addEventListener("keydown", (event) => {
   trapSkillInfoFocus(event);
   trapConstellationFocus(event);
   trapFeatureDetailFocus(event);
+  trapInteractiveModalFocus(event, customSkillModal, customSkillDialog);
+  trapInteractiveModalFocus(event, deleteSkillModal, deleteSkillDialog);
+  trapInteractiveModalFocus(event, photoEditorModal, photoEditorDialog);
 });
 
+loadCustomSkills();
+sortSkillsAlphabetically();
+rebuildFeatureCatalog();
 renderSkills();
 hydrateLegendDice();
 loadSelectedFeatures();
