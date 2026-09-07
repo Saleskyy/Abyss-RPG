@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Abyss RPG — Index local com informações, constelações e Perícias personalizadas — revisão 2026-09-07 -->
+<!-- Abyss RPG — Index com ficha, constelações e sincronização Firebase — revisão 2026-09-07 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -2306,6 +2306,264 @@ h2 { color: #ece6d8; }
 .photo-center-button:hover { border-color: var(--accent); color: #f0d58f; background: rgba(207, 173, 98, 0.1); }
 #photo-zoom { width: 100%; accent-color: #caa858; cursor: pointer; }
 
+/* ─────────────────────────────────────────────────────────────
+   Conta Google e estado de sincronização
+   ───────────────────────────────────────────────────────────── */
+
+.account-shell {
+  position: relative;
+  z-index: 2;
+  margin-right: 24px;
+  margin-left: auto;
+}
+
+.account-button {
+  display: grid;
+  grid-template-columns: 34px minmax(0, auto) 14px;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 6px 11px 6px 7px;
+  border: 1px solid rgba(207, 173, 98, 0.2);
+  border-radius: 4px;
+  color: #d8d1c1;
+  background:
+    linear-gradient(135deg, rgba(207, 173, 98, 0.075), transparent 55%),
+    rgba(15, 16, 20, 0.86);
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.025), 0 10px 30px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: border-color 150ms ease, background 150ms ease, color 150ms ease;
+}
+
+.account-button:hover,
+.account-button[aria-expanded="true"] {
+  border-color: rgba(207, 173, 98, 0.52);
+  color: #f0d58f;
+  background: rgba(207, 173, 98, 0.09);
+}
+
+.account-button:disabled { cursor: wait; opacity: 0.72; }
+
+.account-icon,
+.account-avatar {
+  grid-column: 1;
+  grid-row: 1;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(207, 173, 98, 0.28);
+  border-radius: 50%;
+  background: #0a0b0e;
+}
+
+.account-icon {
+  display: grid;
+  place-items: center;
+  color: #bda66f;
+}
+
+.account-icon svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.55;
+}
+
+.account-avatar { object-fit: cover; }
+
+.account-button-copy {
+  display: grid;
+  justify-items: start;
+  min-width: 112px;
+  text-align: left;
+}
+
+.account-button-copy strong {
+  overflow: hidden;
+  max-width: 155px;
+  color: currentColor;
+  font-size: 0.75rem;
+  font-weight: 780;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-button-copy small {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+  color: #77746d;
+  font-size: 0.62rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.account-status-dot {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #77746d;
+  box-shadow: 0 0 0 3px rgba(119, 116, 109, 0.08);
+}
+
+.account-button[data-sync-state="saved"] .account-status-dot { background: #83bd79; box-shadow: 0 0 8px rgba(131, 189, 121, 0.46); }
+.account-button[data-sync-state="saving"] .account-status-dot { background: #d8b75e; box-shadow: 0 0 8px rgba(216, 183, 94, 0.42); animation: sync-pulse 1s ease-in-out infinite; }
+.account-button[data-sync-state="offline"] .account-status-dot,
+.account-button[data-sync-state="error"] .account-status-dot { background: #bb6871; box-shadow: 0 0 8px rgba(187, 104, 113, 0.4); }
+
+@keyframes sync-pulse { 50% { opacity: 0.42; transform: scale(0.82); } }
+
+.account-chevron {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  transition: transform 150ms ease;
+}
+
+.account-button[aria-expanded="true"] .account-chevron { transform: rotate(180deg); }
+
+.account-menu {
+  position: absolute;
+  top: calc(100% + 11px);
+  right: 0;
+  width: min(370px, calc(100vw - 24px));
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.3);
+  border-radius: 5px;
+  background:
+    radial-gradient(circle at 95% 0, rgba(207, 173, 98, 0.11), transparent 13rem),
+    rgba(12, 13, 17, 0.985);
+  box-shadow: 0 28px 75px rgba(0, 0, 0, 0.58), inset 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.account-menu::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 1px;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgba(240, 213, 143, 0.74), transparent);
+}
+
+.account-menu-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 19px 19px 16px;
+  border-bottom: 1px solid rgba(207, 173, 98, 0.13);
+}
+
+.account-menu-head h2 { margin: 2px 0 3px; font-size: 1.12rem; }
+.account-menu-head p { margin: 0; color: #77746d; font-size: 0.72rem; }
+
+.account-menu-close {
+  display: grid;
+  place-items: center;
+  width: 31px;
+  height: 31px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  color: #858078;
+  background: transparent;
+  cursor: pointer;
+}
+
+.account-menu-close:hover { border-color: #3a3730; color: #ece3d0; background: rgba(255, 255, 255, 0.03); }
+.account-menu-close svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.6; }
+
+.account-person {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  padding: 17px 19px 8px;
+}
+
+.account-person-avatar,
+.account-person-placeholder {
+  grid-column: 1;
+  grid-row: 1;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(207, 173, 98, 0.28);
+  border-radius: 50%;
+  background: #090a0d;
+}
+
+.account-person-avatar { object-fit: cover; }
+.account-person-placeholder { display: grid; place-items: center; color: #baa367; font: 600 1.05rem Georgia, "Times New Roman", serif; }
+.account-person-copy { min-width: 0; }
+.account-person-copy strong,
+.account-person-copy span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.account-person-copy strong { color: #e9e2d3; font-size: 0.86rem; }
+.account-person-copy span { margin-top: 3px; color: #77746d; font-size: 0.7rem; }
+
+.account-sync-card {
+  display: grid;
+  grid-template-columns: 9px minmax(0, 1fr);
+  gap: 10px;
+  margin: 10px 19px 0;
+  padding: 12px 13px;
+  border: 1px solid #2d2e33;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.018);
+}
+
+.account-sync-card .account-status-dot { margin-top: 5px; }
+.account-sync-card[data-sync-state="saved"] .account-status-dot { background: #83bd79; box-shadow: 0 0 8px rgba(131, 189, 121, 0.46); }
+.account-sync-card[data-sync-state="saving"] .account-status-dot { background: #d8b75e; box-shadow: 0 0 8px rgba(216, 183, 94, 0.42); animation: sync-pulse 1s ease-in-out infinite; }
+.account-sync-card[data-sync-state="offline"] .account-status-dot,
+.account-sync-card[data-sync-state="error"] .account-status-dot { background: #bb6871; box-shadow: 0 0 8px rgba(187, 104, 113, 0.4); }
+.account-sync-card strong { display: block; color: #cfc7b7; font-size: 0.77rem; }
+.account-sync-card p { margin: 3px 0 0; color: #74736e; font-size: 0.7rem; line-height: 1.45; }
+
+.firebase-setup-hint {
+  margin: 13px 19px 0;
+  padding: 13px 14px;
+  border-left: 2px solid #c5a052;
+  color: #9c9587;
+  background: rgba(207, 173, 98, 0.055);
+  font-size: 0.72rem;
+  line-height: 1.55;
+}
+
+.firebase-setup-hint strong { color: #dac584; }
+.firebase-setup-hint code { color: #e8d59e; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+.account-menu-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  padding: 16px 19px 19px;
+}
+
+.account-action {
+  min-height: 38px;
+  padding: 0 13px;
+  border: 1px solid #35363b;
+  border-radius: 3px;
+  color: #aaa69d;
+  background: rgba(255, 255, 255, 0.025);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 760;
+}
+
+.account-action:hover { border-color: rgba(207, 173, 98, 0.5); color: #f0d58f; background: rgba(207, 173, 98, 0.08); }
+.account-action.is-primary { border-color: rgba(207, 173, 98, 0.42); color: #ddc683; }
+.account-action:disabled { cursor: wait; opacity: 0.55; }
+
 @media (max-width: 900px) {
   body { background-size: auto, auto, 42px 42px, 42px 42px, auto; }
   .sidebar::after,
@@ -2318,9 +2576,16 @@ h2 { color: #ece6d8; }
   .custom-skill-dialog,
   .photo-editor-dialog { max-height: calc(100vh - 24px); }
   .photo-editor-content { grid-template-columns: minmax(240px, 340px) minmax(140px, 1fr); }
+  .account-shell { margin-right: 0; }
 }
 
 @media (max-width: 560px) {
+  .brand-copy { padding-left: 2px; }
+  .brand-copy strong { font-size: 0.82rem; letter-spacing: 0.1em; }
+  .account-button { grid-template-columns: 34px; min-width: 44px; padding: 5px; }
+  .account-button-copy,
+  .account-chevron { display: none; }
+  .account-menu { right: -1px; }
   .page-heading { margin-bottom: 24px; padding-bottom: 17px; }
   .identity-panel,
   .attributes-panel,
@@ -2529,6 +2794,75 @@ h2 { color: #ece6d8; }
         <span>Ficha de personagem</span>
       </div>
       <div class="topbar-rule" aria-hidden="true"></div>
+
+      <div class="account-shell">
+        <button
+          id="account-button"
+          class="account-button"
+          type="button"
+          data-account-state="loading"
+          data-sync-state="idle"
+          aria-expanded="false"
+          aria-controls="account-menu"
+          aria-label="Abrir login e sincronização da ficha"
+        >
+          <span id="account-icon" class="account-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <circle cx="9" cy="8" r="3.2"></circle>
+              <path d="M3.8 19c.4-3.8 2.1-5.7 5.2-5.7 1.7 0 3 .6 3.9 1.8M16.5 11.5v7M13 15h7"></path>
+            </svg>
+          </span>
+          <img id="account-avatar" class="account-avatar" alt="" referrerpolicy="no-referrer" hidden />
+          <span class="account-button-copy">
+            <strong id="account-label">Conta</strong>
+            <small><i class="account-status-dot" aria-hidden="true"></i><span id="account-status">Carregando Firebase…</span></small>
+          </span>
+          <svg class="account-chevron" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m7 10 5 5 5-5"></path>
+          </svg>
+        </button>
+
+        <section id="account-menu" class="account-menu" aria-labelledby="account-menu-title" hidden>
+          <header class="account-menu-head">
+            <div>
+              <p class="eyebrow">Salvamento da ficha</p>
+              <h2 id="account-menu-title">Conta Google</h2>
+              <p>Seus dados acompanham a conta conectada.</p>
+            </div>
+            <button id="close-account-menu" class="account-menu-close" type="button" aria-label="Fechar menu da conta">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
+            </button>
+          </header>
+
+          <div class="account-person">
+            <span id="account-person-placeholder" class="account-person-placeholder" aria-hidden="true">G</span>
+            <img id="account-menu-avatar" class="account-person-avatar" alt="" referrerpolicy="no-referrer" hidden />
+            <div class="account-person-copy">
+              <strong id="account-menu-name">Nenhuma conta conectada</strong>
+              <span id="account-menu-email">Entre para sincronizar esta ficha.</span>
+            </div>
+          </div>
+
+          <div id="account-sync-card" class="account-sync-card">
+            <i class="account-status-dot" aria-hidden="true"></i>
+            <div>
+              <strong id="account-sync-title">Preparando salvamento</strong>
+              <p id="account-sync-message" aria-live="polite">A ficha continua salva neste dispositivo enquanto o Firebase carrega.</p>
+            </div>
+          </div>
+
+          <div id="firebase-setup-hint" class="firebase-setup-hint" hidden>
+            <strong>Falta conectar o seu projeto.</strong><br />
+            Procure por <code>FIREBASE_CONFIG</code> no fim deste index e substitua os valores marcados por aqueles do seu aplicativo Web no Firebase.
+          </div>
+
+          <footer class="account-menu-actions">
+            <button id="account-login" class="account-action is-primary" type="button" hidden>Entrar com Google</button>
+            <button id="account-sync-now" class="account-action is-primary" type="button" hidden>Sincronizar agora</button>
+            <button id="account-sign-out" class="account-action" type="button" hidden>Sair</button>
+          </footer>
+        </section>
+      </div>
     </header>
 
     <aside class="sidebar" aria-label="Navegação da ficha">
@@ -4510,6 +4844,7 @@ const COMPETENCY_TREES = {
 
 const FEATURE_STORAGE_KEY = "abyss-rpg-selected-features-v1";
 const CUSTOM_SKILL_STORAGE_KEY = "abyss-rpg-custom-skills-v1";
+const SHEET_CACHE_STORAGE_KEY = "abyss-rpg-sheet-cache-v2";
 let FEATURE_CATALOG = [];
 const FEATURE_BY_ID = new Map();
 
@@ -4632,6 +4967,12 @@ const photoZoomOutButton = document.querySelector("#photo-zoom-out");
 const photoZoomInButton = document.querySelector("#photo-zoom-in");
 const photoCenterButton = document.querySelector("#photo-center");
 const applyPhotoCropButton = document.querySelector("#apply-photo-crop");
+const accountShell = document.querySelector(".account-shell");
+const accountButton = document.querySelector("#account-button");
+const accountMenu = document.querySelector("#account-menu");
+const accountLoginButton = document.querySelector("#account-login");
+const accountSyncNowButton = document.querySelector("#account-sync-now");
+const accountSignOutButton = document.querySelector("#account-sign-out");
 const selectedFeatureIds = new Set();
 let rollInterval;
 let rollTimeout;
@@ -4647,6 +4988,9 @@ let activeCustomSkillTrigger;
 let pendingDeleteSkillId = null;
 let pendingDeleteTrigger;
 let activePhotoTrigger;
+let sheetCacheTimer;
+let isApplyingExternalState = false;
+let localSheetOwnerUid = null;
 const photoEditorState = {
   source: "",
   image: null,
@@ -4704,6 +5048,166 @@ function captureSkillRowState() {
     });
   });
   return state;
+}
+
+function captureCompleteSheetState() {
+  const attributes = {};
+  document.querySelectorAll("[data-attribute]").forEach((input) => {
+    const parsed = Number.parseInt(input.value, 10);
+    attributes[input.dataset.attribute] = Number.isFinite(parsed)
+      ? Math.min(99, Math.max(-99, parsed))
+      : 1;
+  });
+
+  const skillRows = {};
+  captureSkillRowState().forEach((value, key) => {
+    skillRows[key] = {
+      attribute: ATTRIBUTES[value.attribute] ? value.attribute : "INT",
+      training: TRAINING[value.training] ? value.training : "leigo",
+      mainDiceCount: String(Math.min(20, Math.max(1, Number.parseInt(value.mainDiceCount, 10) || 1))),
+      diceModifier: String(value.diceModifier || "").trim().slice(0, 24),
+      fixedModifier: String(value.fixedModifier || "").trim().slice(0, 12),
+    };
+  });
+
+  const portraitPreview = document.querySelector("#portrait-preview");
+  return {
+    schemaVersion: 2,
+    profile: {
+      name: document.querySelector("#character-name").value.trim().slice(0, 120),
+      background: document.querySelector("#character-background").value.trim().slice(0, 240),
+      portrait: portraitPreview.hidden ? "" : String(portraitPreview.src || ""),
+      attributes,
+    },
+    sheet: {
+      difficulty: DIFFICULTIES[selectedDifficulty] ? selectedDifficulty : "medium",
+      skillRows,
+      selectedFeatureIds: [...selectedFeatureIds],
+    },
+    customSkills: getCustomSkillsForStorage(),
+  };
+}
+
+function writeLocalSheetCache() {
+  window.clearTimeout(sheetCacheTimer);
+  try {
+    window.localStorage.setItem(SHEET_CACHE_STORAGE_KEY, JSON.stringify({
+      ownerUid: localSheetOwnerUid,
+      savedAt: new Date().toISOString(),
+      state: captureCompleteSheetState(),
+    }));
+  } catch {
+    // O estado da sessão continua funcionando se o navegador bloquear o armazenamento.
+  }
+}
+
+function readLocalSheetCache() {
+  try {
+    const cached = JSON.parse(window.localStorage.getItem(SHEET_CACHE_STORAGE_KEY) || "null");
+    if (!cached || typeof cached !== "object" || !cached.state) return null;
+    return {
+      ownerUid: typeof cached.ownerUid === "string" && cached.ownerUid ? cached.ownerUid : null,
+      state: cached.state,
+    };
+  } catch {
+    return null;
+  }
+}
+
+function notifySheetChanged(reason = "sheet") {
+  if (isApplyingExternalState) return;
+  window.clearTimeout(sheetCacheTimer);
+  sheetCacheTimer = window.setTimeout(writeLocalSheetCache, 180);
+  window.dispatchEvent(new CustomEvent("abyss:sheet-changed", { detail: { reason } }));
+}
+
+function replaceCustomSkills(rawCustomSkills) {
+  for (let index = SKILLS.length - 1; index >= 0; index -= 1) {
+    const skill = SKILLS[index];
+    if (!skill.isCustom) continue;
+    delete SKILL_DETAILS[skill.name];
+    delete COMPETENCY_TREES[skill.name];
+    SKILLS.splice(index, 1);
+  }
+
+  const usedNames = new Set(SKILLS.map((skill) => normalizeSearchTerm(skill.name)));
+  const usedIds = new Set();
+  (Array.isArray(rawCustomSkills) ? rawCustomSkills : []).forEach((rawSkill) => {
+    const customSkill = sanitizeCustomSkill(rawSkill);
+    if (!customSkill) return;
+    const normalizedName = normalizeSearchTerm(customSkill.name);
+    if (!normalizedName || usedNames.has(normalizedName) || usedIds.has(customSkill.id)) return;
+    usedNames.add(normalizedName);
+    usedIds.add(customSkill.id);
+    registerCustomSkill(customSkill);
+  });
+}
+
+function sanitizeStoredRowState(rawState) {
+  const state = rawState && typeof rawState === "object" ? rawState : {};
+  const parsedDiceCount = Number.parseInt(state.mainDiceCount, 10);
+  const fixedModifier = String(state.fixedModifier ?? "").trim();
+  return {
+    attribute: ATTRIBUTES[state.attribute] ? state.attribute : undefined,
+    training: TRAINING[state.training] ? state.training : "leigo",
+    mainDiceCount: String(Number.isFinite(parsedDiceCount) ? Math.min(20, Math.max(1, parsedDiceCount)) : 1),
+    diceModifier: String(state.diceModifier || "").trim().slice(0, 24),
+    fixedModifier: /^[-+]?\d{1,7}$/.test(fixedModifier) ? fixedModifier : "",
+  };
+}
+
+function applyCompleteSheetState(rawState, options = {}) {
+  if (!rawState || typeof rawState !== "object") return false;
+  const profile = rawState.profile && typeof rawState.profile === "object" ? rawState.profile : {};
+  const sheet = rawState.sheet && typeof rawState.sheet === "object" ? rawState.sheet : {};
+  isApplyingExternalState = true;
+
+  try {
+    replaceCustomSkills(rawState.customSkills);
+    sortSkillsAlphabetically();
+    rebuildFeatureCatalog();
+
+    const rowStates = new Map();
+    const storedRows = sheet.skillRows && typeof sheet.skillRows === "object" ? sheet.skillRows : {};
+    Object.entries(storedRows).forEach(([key, value]) => {
+      rowStates.set(key, sanitizeStoredRowState(value));
+    });
+    renderSkills(rowStates);
+
+    document.querySelector("#character-name").value = String(profile.name || "").slice(0, 120);
+    document.querySelector("#character-background").value = String(profile.background || "").slice(0, 240);
+    document.querySelectorAll("[data-attribute]").forEach((input) => {
+      const parsed = Number.parseInt(profile.attributes?.[input.dataset.attribute], 10);
+      input.value = String(Number.isFinite(parsed) ? Math.min(99, Math.max(-99, parsed)) : 1);
+    });
+
+    const portraitPreview = document.querySelector("#portrait-preview");
+    const portraitEmpty = document.querySelector("#portrait-empty");
+    const portrait = String(profile.portrait || "");
+    const hasSafePortrait = /^data:image\/(?:png|jpe?g|webp);base64,/i.test(portrait);
+    portraitPreview.src = hasSafePortrait ? portrait : "";
+    portraitPreview.hidden = !hasSafePortrait;
+    portraitEmpty.hidden = hasSafePortrait;
+
+    selectDifficulty(DIFFICULTIES[sheet.difficulty] ? sheet.difficulty : "medium");
+    selectedFeatureIds.clear();
+    (Array.isArray(sheet.selectedFeatureIds) ? sheet.selectedFeatureIds : []).forEach((featureId) => {
+      if (FEATURE_BY_ID.has(featureId)) selectedFeatureIds.add(featureId);
+    });
+
+    persistCustomSkills();
+    persistSelectedFeatures();
+    renderSelectedFeatures();
+    filterSkills();
+
+    if (Object.prototype.hasOwnProperty.call(options, "ownerUid")) {
+      localSheetOwnerUid = options.ownerUid || null;
+    }
+    if (options.persistLocal !== false) writeLocalSheetCache();
+    return true;
+  } finally {
+    isApplyingExternalState = false;
+  }
 }
 
 function renderSkills(rowStates = captureSkillRowState()) {
@@ -5229,6 +5733,7 @@ function submitCustomSkill(event) {
       newRow.classList.add("is-new");
       newRow.scrollIntoView({ block: "center", behavior: "smooth" });
     }
+    notifySheetChanged("custom-skill-created");
   } catch (error) {
     setBuilderError(error?.message || "Não foi possível criar a Perícia. Revise os campos.", error?.field);
   }
@@ -5276,6 +5781,7 @@ function deletePendingCustomSkill() {
   filterSkills();
   closeDeleteSkill();
   openCustomSkillButton.focus();
+  notifySheetChanged("custom-skill-deleted");
 }
 
 function syncModalLock() {
@@ -5459,6 +5965,7 @@ function toggleFeatureSelection(featureId) {
   renderSelectedFeatures();
   refreshConstellationSelectionStates();
   syncFeatureDetailState();
+  notifySheetChanged("feature-selection");
 }
 
 function createConstellationNode(feature, type) {
@@ -5793,6 +6300,7 @@ function selectDifficulty(difficultyKey) {
     button.classList.toggle("is-active", isSelected);
     button.setAttribute("aria-pressed", String(isSelected));
   });
+  notifySheetChanged("difficulty");
 }
 
 function clearOutcomeStyle() {
@@ -6032,6 +6540,7 @@ function applyPhotoCrop() {
   preview.hidden = false;
   document.querySelector("#portrait-empty").hidden = true;
   closePhotoEditor();
+  notifySheetChanged("portrait");
 }
 
 function trapDialogFocus(event) {
@@ -6111,6 +6620,39 @@ function trapInteractiveModalFocus(event, modal, dialog) {
     first.focus();
   }
 }
+
+function setAccountMenuOpen(isOpen) {
+  accountMenu.hidden = !isOpen;
+  accountButton.setAttribute("aria-expanded", String(isOpen));
+}
+
+function requestGoogleLogin() {
+  window.dispatchEvent(new CustomEvent("abyss:firebase-login"));
+}
+
+accountButton.addEventListener("click", () => {
+  const state = accountButton.dataset.accountState;
+  if (state === "signed-out") {
+    requestGoogleLogin();
+    return;
+  }
+  setAccountMenuOpen(accountMenu.hidden);
+});
+
+accountLoginButton.addEventListener("click", requestGoogleLogin);
+accountSyncNowButton.addEventListener("click", () => {
+  window.dispatchEvent(new CustomEvent("abyss:firebase-sync-now"));
+});
+accountSignOutButton.addEventListener("click", () => {
+  window.dispatchEvent(new CustomEvent("abyss:firebase-sign-out"));
+});
+document.querySelector("#close-account-menu").addEventListener("click", () => {
+  setAccountMenuOpen(false);
+  accountButton.focus();
+});
+document.addEventListener("pointerdown", (event) => {
+  if (!accountMenu.hidden && !accountShell.contains(event.target)) setAccountMenuOpen(false);
+});
 
 viewButtons.forEach((button) => {
   button.addEventListener("click", () => changeView(button.dataset.viewTarget));
@@ -6222,13 +6764,26 @@ skillsList.addEventListener("change", (event) => {
   if (event.target.matches("[data-main-dice-count]")) {
     normalizeMainDiceCount(event.target);
   }
+
+  if (event.target.matches("[data-training-index], [data-skill-attribute], [data-main-dice-count], [data-fixed-modifier]")) {
+    notifySheetChanged("skill-settings");
+  }
 });
 
 skillsList.addEventListener("input", (event) => {
-  if (!event.target.matches("[data-dice-modifier]")) return;
-  event.target.setCustomValidity("");
-  event.target.classList.remove("is-invalid");
-  event.target.removeAttribute("aria-invalid");
+  if (event.target.matches("[data-dice-modifier]")) {
+    event.target.setCustomValidity("");
+    event.target.classList.remove("is-invalid");
+    event.target.removeAttribute("aria-invalid");
+  }
+  if (event.target.matches("[data-main-dice-count], [data-dice-modifier], [data-fixed-modifier]")) {
+    notifySheetChanged("skill-settings");
+  }
+});
+
+document.querySelectorAll("#character-name, #character-background, [data-attribute]").forEach((input) => {
+  input.addEventListener("input", () => notifySheetChanged("profile"));
+  input.addEventListener("change", () => notifySheetChanged("profile"));
 });
 
 document.querySelector("#portrait-input").addEventListener("change", (event) => {
@@ -6341,6 +6896,9 @@ document.addEventListener("keydown", (event) => {
     closeSkillInfo();
   } else if (event.key === "Escape" && !rollModal.hidden) {
     closeRollModal();
+  } else if (event.key === "Escape" && !accountMenu.hidden) {
+    setAccountMenuOpen(false);
+    accountButton.focus();
   }
   trapDialogFocus(event);
   trapSkillInfoFocus(event);
@@ -6359,6 +6917,436 @@ hydrateLegendDice();
 loadSelectedFeatures();
 renderSelectedFeatures();
 
+const cachedSheet = readLocalSheetCache();
+if (cachedSheet) {
+  localSheetOwnerUid = cachedSheet.ownerUid;
+  applyCompleteSheetState(cachedSheet.state, { ownerUid: cachedSheet.ownerUid, persistLocal: false });
+} else {
+  writeLocalSheetCache();
+}
+
+window.AbyssSheet = Object.freeze({
+  captureState: captureCompleteSheetState,
+  applyState: applyCompleteSheetState,
+  persistLocalNow: writeLocalSheetCache,
+  getLocalOwner: () => localSheetOwnerUid,
+  setLocalOwner: (ownerUid) => {
+    localSheetOwnerUid = ownerUid || null;
+    writeLocalSheetCache();
+  },
+});
+window.dispatchEvent(new CustomEvent("abyss:sheet-ready"));
+
+    </script>
+
+    <script type="module">
+/*
+ * FIREBASE — CONFIGURAÇÃO DO SEU APLICATIVO WEB
+ * No Console do Firebase, abra Configurações do projeto > Geral > Seus apps.
+ * Copie o objeto firebaseConfig do seu app Web e substitua o bloco abaixo.
+ * Estes identificadores pertencem ao front-end; a proteção dos dados é feita
+ * pelas Regras do Firestore vinculadas ao UID de cada usuário.
+ */
+const FIREBASE_CONFIG = {
+  apiKey: "COLE_SUA_API_KEY_AQUI",
+  authDomain: "COLE_SEU_PROJECT_ID.firebaseapp.com",
+  projectId: "COLE_SEU_PROJECT_ID_AQUI",
+  appId: "COLE_SEU_APP_ID_AQUI",
+};
+
+const FIREBASE_SDK_VERSION = "12.18.0";
+const sheetBridge = window.AbyssSheet;
+const firebaseUi = {
+  button: document.querySelector("#account-button"),
+  label: document.querySelector("#account-label"),
+  shortStatus: document.querySelector("#account-status"),
+  icon: document.querySelector("#account-icon"),
+  avatar: document.querySelector("#account-avatar"),
+  menu: document.querySelector("#account-menu"),
+  menuAvatar: document.querySelector("#account-menu-avatar"),
+  placeholder: document.querySelector("#account-person-placeholder"),
+  name: document.querySelector("#account-menu-name"),
+  email: document.querySelector("#account-menu-email"),
+  syncCard: document.querySelector("#account-sync-card"),
+  syncTitle: document.querySelector("#account-sync-title"),
+  syncMessage: document.querySelector("#account-sync-message"),
+  setupHint: document.querySelector("#firebase-setup-hint"),
+  login: document.querySelector("#account-login"),
+  syncNow: document.querySelector("#account-sync-now"),
+  signOut: document.querySelector("#account-sign-out"),
+};
+
+let firebaseAuth = null;
+let firestoreDb = null;
+let authApi = null;
+let firestoreApi = null;
+let currentFirebaseUser = null;
+let authChangeSequence = 0;
+let cloudSaveTimer = null;
+let cloudSavePromise = null;
+let stateRevision = 0;
+let lastSavedRevision = 0;
+let isHydratingCloudState = false;
+
+function firebaseConfigIsReady() {
+  const requiredFields = ["apiKey", "authDomain", "projectId", "appId"];
+  return requiredFields.every((field) => {
+    const value = String(FIREBASE_CONFIG[field] || "").trim();
+    return value && !value.includes("COLE_");
+  });
+}
+
+function openAccountMenu() {
+  firebaseUi.menu.hidden = false;
+  firebaseUi.button.setAttribute("aria-expanded", "true");
+}
+
+function closeAccountMenu() {
+  firebaseUi.menu.hidden = true;
+  firebaseUi.button.setAttribute("aria-expanded", "false");
+}
+
+function setSyncStatus(state, shortText, title, message) {
+  firebaseUi.button.dataset.syncState = state;
+  firebaseUi.syncCard.dataset.syncState = state;
+  firebaseUi.shortStatus.textContent = shortText;
+  firebaseUi.syncTitle.textContent = title;
+  firebaseUi.syncMessage.textContent = message;
+}
+
+function setAvatar(image, fallback, photoUrl, displayName) {
+  const hasPhoto = Boolean(photoUrl);
+  image.hidden = !hasPhoto;
+  if (hasPhoto) image.src = photoUrl;
+  else image.removeAttribute("src");
+  if (fallback) {
+    fallback.hidden = hasPhoto;
+    fallback.textContent = String(displayName || "G").trim().charAt(0).toUpperCase() || "G";
+  }
+}
+
+function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") {
+  const signedIn = Boolean(user);
+  const displayName = user?.displayName || "Conta Google";
+  const firstName = displayName.trim().split(/\s+/)[0] || "Minha conta";
+
+  firebaseUi.button.dataset.accountState = state;
+  firebaseUi.button.disabled = state === "signing-in";
+  firebaseUi.label.textContent = signedIn ? firstName : state === "missing" ? "Configurar" : "Entrar";
+  firebaseUi.button.setAttribute(
+    "aria-label",
+    signedIn ? `Abrir conta de ${displayName}` : "Entrar com o Google e sincronizar a ficha",
+  );
+
+  firebaseUi.icon.hidden = signedIn;
+  setAvatar(firebaseUi.avatar, null, user?.photoURL || "", displayName);
+  setAvatar(firebaseUi.menuAvatar, firebaseUi.placeholder, user?.photoURL || "", displayName);
+  firebaseUi.name.textContent = signedIn ? displayName : "Nenhuma conta conectada";
+  firebaseUi.email.textContent = signedIn ? (user.email || "Conta Google") : "Entre para sincronizar esta ficha.";
+  firebaseUi.setupHint.hidden = state !== "missing";
+  firebaseUi.login.hidden = signedIn || state === "missing" || state === "loading" || state === "signing-in";
+  firebaseUi.syncNow.hidden = !signedIn;
+  firebaseUi.signOut.hidden = !signedIn;
+}
+
+function describeFirebaseError(error) {
+  const code = String(error?.code || "");
+  if (code.includes("unauthorized-domain")) {
+    return "Este domínio não está autorizado. Adicione o domínio do GitHub Pages em Authentication > Settings > Authorized domains.";
+  }
+  if (code.includes("popup-blocked")) return "O navegador bloqueou a janela do Google. Libere pop-ups para este site e tente novamente.";
+  if (code.includes("popup-closed-by-user")) return "A entrada foi cancelada antes de escolher uma conta.";
+  if (code.includes("permission-denied")) return "O Firestore recusou o acesso. Publique as regras privadas fornecidas junto deste index.";
+  if (code.includes("not-found") || code.includes("failed-precondition")) return "Crie o banco Cloud Firestore no projeto e tente novamente.";
+  if (code.includes("invalid-api-key") || code.includes("invalid-app-id")) return "A configuração do aplicativo Web não é válida. Confira o bloco FIREBASE_CONFIG.";
+  if (code.includes("unavailable") || !navigator.onLine) return "Sem conexão com o Firebase. A ficha continua protegida neste dispositivo.";
+  if (code === "abyss/bridge-missing") return "A ficha não terminou de carregar. Atualize a página e tente novamente.";
+  return "Não foi possível concluir a sincronização. Confira a configuração, o login e as regras do Firestore.";
+}
+
+function finiteAttributeValue(value) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? Math.min(99, Math.max(-99, parsed)) : 1;
+}
+
+async function compactPortraitForFirestore(source) {
+  if (!source || source.length < 700000 || !source.startsWith("data:image/")) return source || "";
+  return new Promise((resolve) => {
+    const image = new Image();
+    image.addEventListener("load", () => {
+      const canvas = document.createElement("canvas");
+      const targetSize = 560;
+      canvas.width = targetSize;
+      canvas.height = targetSize;
+      const context = canvas.getContext("2d");
+      context.fillStyle = "#0b0c0f";
+      context.fillRect(0, 0, targetSize, targetSize);
+      context.drawImage(image, 0, 0, targetSize, targetSize);
+      resolve(canvas.toDataURL("image/jpeg", 0.78));
+    }, { once: true });
+    image.addEventListener("error", () => resolve(""), { once: true });
+    image.src = source;
+  });
+}
+
+function getCloudDocumentRefs(uid) {
+  const { doc } = firestoreApi;
+  return {
+    user: doc(firestoreDb, "users", uid),
+    profile: doc(firestoreDb, "users", uid, "abyssRpg", "profile"),
+    sheet: doc(firestoreDb, "users", uid, "abyssRpg", "sheet"),
+    customSkills: doc(firestoreDb, "users", uid, "abyssRpg", "customSkills"),
+  };
+}
+
+async function readCloudSheet(user) {
+  const refs = getCloudDocumentRefs(user.uid);
+  const [profileSnapshot, sheetSnapshot, customSkillsSnapshot] = await Promise.all([
+    firestoreApi.getDoc(refs.profile),
+    firestoreApi.getDoc(refs.sheet),
+    firestoreApi.getDoc(refs.customSkills),
+  ]);
+  const exists = profileSnapshot.exists() || sheetSnapshot.exists() || customSkillsSnapshot.exists();
+  if (!exists) return { exists: false, state: null };
+
+  const localState = sheetBridge.captureState();
+  const profileData = profileSnapshot.exists() ? profileSnapshot.data() : {};
+  const sheetData = sheetSnapshot.exists() ? sheetSnapshot.data() : {};
+  const customData = customSkillsSnapshot.exists() ? customSkillsSnapshot.data() : {};
+  return {
+    exists: true,
+    state: {
+      schemaVersion: 2,
+      profile: {
+        ...localState.profile,
+        ...profileData,
+        attributes: {
+          ...localState.profile.attributes,
+          ...(profileData.attributes || {}),
+        },
+      },
+      sheet: {
+        ...localState.sheet,
+        ...sheetData,
+        skillRows: sheetData.skillRows || {},
+        selectedFeatureIds: sheetData.selectedFeatureIds || [],
+      },
+      customSkills: Array.isArray(customData.items) ? customData.items : [],
+    },
+  };
+}
+
+async function writeCloudSheet(user, state) {
+  const refs = getCloudDocumentRefs(user.uid);
+  const timestamp = firestoreApi.serverTimestamp();
+  const portrait = await compactPortraitForFirestore(String(state.profile?.portrait || ""));
+  const attributes = {};
+  ["FOR", "AGI", "INT", "CON", "POD"].forEach((attribute) => {
+    attributes[attribute] = finiteAttributeValue(state.profile?.attributes?.[attribute]);
+  });
+
+  const batch = firestoreApi.writeBatch(firestoreDb);
+  batch.set(refs.user, {
+    displayName: user.displayName || "",
+    email: user.email || "",
+    photoURL: user.photoURL || "",
+    lastActiveAt: timestamp,
+  }, { merge: true });
+  batch.set(refs.profile, {
+    schemaVersion: 2,
+    name: String(state.profile?.name || "").slice(0, 120),
+    background: String(state.profile?.background || "").slice(0, 240),
+    portrait,
+    attributes,
+    updatedAt: timestamp,
+  });
+  batch.set(refs.sheet, {
+    schemaVersion: 2,
+    difficulty: ["easy", "medium", "hard"].includes(state.sheet?.difficulty) ? state.sheet.difficulty : "medium",
+    skillRows: state.sheet?.skillRows || {},
+    selectedFeatureIds: Array.isArray(state.sheet?.selectedFeatureIds) ? state.sheet.selectedFeatureIds : [],
+    updatedAt: timestamp,
+  });
+  batch.set(refs.customSkills, {
+    schemaVersion: 2,
+    items: Array.isArray(state.customSkills) ? state.customSkills : [],
+    updatedAt: timestamp,
+  });
+  await batch.commit();
+}
+
+function scheduleCloudSave() {
+  if (!currentFirebaseUser || isHydratingCloudState) return;
+  window.clearTimeout(cloudSaveTimer);
+  setSyncStatus("saving", "Alterações pendentes", "Aguardando sincronização", "As mudanças serão enviadas automaticamente em instantes.");
+  cloudSaveTimer = window.setTimeout(() => flushCloudSave(), 850);
+}
+
+async function flushCloudSave() {
+  window.clearTimeout(cloudSaveTimer);
+  const user = currentFirebaseUser;
+  if (!user || !sheetBridge) return false;
+  if (!navigator.onLine) {
+    setSyncStatus("offline", "Offline", "Salvo neste dispositivo", "Quando a conexão voltar, as mudanças serão enviadas para a sua conta.");
+    return false;
+  }
+  if (cloudSavePromise) return cloudSavePromise;
+
+  const revisionBeingSaved = stateRevision;
+  const state = sheetBridge.captureState();
+  setSyncStatus("saving", "Salvando…", "Sincronizando ficha", "Enviando as alterações para a sua conta Google.");
+  firebaseUi.syncNow.disabled = true;
+  cloudSavePromise = (async () => {
+    try {
+      await writeCloudSheet(user, state);
+      if (currentFirebaseUser?.uid !== user.uid) return false;
+      lastSavedRevision = Math.max(lastSavedRevision, revisionBeingSaved);
+      sheetBridge.setLocalOwner(user.uid);
+      setSyncStatus("saved", "Salvo na conta", "Ficha sincronizada", "Todas as alterações estão salvas nesta conta Google.");
+      return true;
+    } catch (error) {
+      setSyncStatus(navigator.onLine ? "error" : "offline", navigator.onLine ? "Erro ao salvar" : "Offline", "Sincronização interrompida", describeFirebaseError(error));
+      openAccountMenu();
+      return false;
+    } finally {
+      cloudSavePromise = null;
+      firebaseUi.syncNow.disabled = false;
+      if (currentFirebaseUser?.uid === user.uid && stateRevision > revisionBeingSaved) scheduleCloudSave();
+    }
+  })();
+  return cloudSavePromise;
+}
+
+async function hydrateUserSheet(user) {
+  const sequence = ++authChangeSequence;
+  const hydrationRevision = stateRevision;
+  isHydratingCloudState = true;
+  setSyncStatus("saving", "Carregando ficha…", "Abrindo sua ficha", "Buscando os dados vinculados a esta conta.");
+  try {
+    const cloud = await readCloudSheet(user);
+    if (sequence !== authChangeSequence || currentFirebaseUser?.uid !== user.uid) return;
+    if (cloud.exists) {
+      sheetBridge.applyState(cloud.state, { ownerUid: user.uid });
+      setSyncStatus("saved", "Salvo na conta", "Ficha carregada", "Os dados desta conta foram aplicados ao personagem.");
+    } else {
+      await writeCloudSheet(user, sheetBridge.captureState());
+      if (sequence !== authChangeSequence || currentFirebaseUser?.uid !== user.uid) return;
+      sheetBridge.setLocalOwner(user.uid);
+      setSyncStatus("saved", "Salvo na conta", "Ficha transferida", "Os dados que estavam neste navegador agora pertencem a esta conta.");
+    }
+    lastSavedRevision = hydrationRevision;
+    closeAccountMenu();
+  } catch (error) {
+    if (sequence !== authChangeSequence) return;
+    setSyncStatus(navigator.onLine ? "error" : "offline", navigator.onLine ? "Erro de acesso" : "Offline", "Não foi possível abrir a nuvem", describeFirebaseError(error));
+    openAccountMenu();
+  } finally {
+    if (sequence === authChangeSequence) {
+      isHydratingCloudState = false;
+      if (stateRevision > lastSavedRevision) scheduleCloudSave();
+    }
+  }
+}
+
+async function requestFirebaseLogin() {
+  if (!firebaseAuth || !authApi) {
+    if (firebaseConfigIsReady()) {
+      await initializeFirebaseSync();
+      if (firebaseAuth && authApi) return requestFirebaseLogin();
+    }
+    openAccountMenu();
+    return;
+  }
+  renderAccountIdentity(null, "signing-in");
+  setSyncStatus("saving", "Abrindo Google…", "Entrar com o Google", "Escolha a conta que guardará esta ficha.");
+  try {
+    const provider = new authApi.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: "select_account" });
+    await authApi.signInWithPopup(firebaseAuth, provider);
+  } catch (error) {
+    renderAccountIdentity(null, "error");
+    setSyncStatus("error", "Login não concluído", "Não foi possível entrar", describeFirebaseError(error));
+    openAccountMenu();
+  }
+}
+
+async function requestFirebaseSignOut() {
+  if (!firebaseAuth || !authApi || !currentFirebaseUser) return;
+  firebaseUi.signOut.disabled = true;
+  try {
+    if (stateRevision > lastSavedRevision) await flushCloudSave();
+    await authApi.signOut(firebaseAuth);
+  } catch (error) {
+    setSyncStatus("error", "Erro ao sair", "Não foi possível desconectar", describeFirebaseError(error));
+  } finally {
+    firebaseUi.signOut.disabled = false;
+  }
+}
+
+window.addEventListener("abyss:sheet-changed", () => {
+  stateRevision += 1;
+  if (currentFirebaseUser) scheduleCloudSave();
+});
+window.addEventListener("abyss:firebase-login", requestFirebaseLogin);
+window.addEventListener("abyss:firebase-sync-now", () => flushCloudSave());
+window.addEventListener("abyss:firebase-sign-out", requestFirebaseSignOut);
+window.addEventListener("offline", () => {
+  if (currentFirebaseUser) setSyncStatus("offline", "Offline", "Salvo neste dispositivo", "A sincronização continuará quando a conexão voltar.");
+});
+window.addEventListener("online", () => {
+  if (currentFirebaseUser && stateRevision > lastSavedRevision) flushCloudSave();
+});
+window.addEventListener("beforeunload", () => sheetBridge?.persistLocalNow());
+
+async function initializeFirebaseSync() {
+  if (!sheetBridge) {
+    renderAccountIdentity(null, "error");
+    setSyncStatus("error", "Ficha indisponível", "Falha ao preparar a ficha", describeFirebaseError({ code: "abyss/bridge-missing" }));
+    return;
+  }
+  if (!firebaseConfigIsReady()) {
+    renderAccountIdentity(null, "missing");
+    setSyncStatus("idle", "Firebase pendente", "Configuração necessária", "A ficha segue salva neste dispositivo até você colar a configuração do seu projeto.");
+    return;
+  }
+
+  try {
+    const sdkBase = `https://www.gstatic.com/firebasejs/${FIREBASE_SDK_VERSION}`;
+    const [appModule, loadedAuthApi, loadedFirestoreApi] = await Promise.all([
+      import(`${sdkBase}/firebase-app.js`),
+      import(`${sdkBase}/firebase-auth.js`),
+      import(`${sdkBase}/firebase-firestore.js`),
+    ]);
+    authApi = loadedAuthApi;
+    firestoreApi = loadedFirestoreApi;
+    const app = appModule.initializeApp(FIREBASE_CONFIG);
+    firebaseAuth = authApi.getAuth(app);
+    firestoreDb = firestoreApi.getFirestore(app);
+    firebaseAuth.useDeviceLanguage();
+    await authApi.setPersistence(firebaseAuth, authApi.browserLocalPersistence).catch(() => {});
+
+    authApi.onAuthStateChanged(firebaseAuth, async (user) => {
+      currentFirebaseUser = user;
+      if (!user) {
+        authChangeSequence += 1;
+        isHydratingCloudState = false;
+        window.clearTimeout(cloudSaveTimer);
+        renderAccountIdentity(null, "signed-out");
+        setSyncStatus("idle", "Salvar na conta", "Somente neste dispositivo", "Entre com o Google para transferir e sincronizar todos os dados desta ficha.");
+        return;
+      }
+
+      renderAccountIdentity(user, "signed-in");
+      await hydrateUserSheet(user);
+    });
+  } catch (error) {
+    renderAccountIdentity(null, "error");
+    setSyncStatus("error", "Firebase indisponível", "Não foi possível iniciar o Firebase", describeFirebaseError(error));
+    openAccountMenu();
+  }
+}
+
+initializeFirebaseSync();
     </script>
   </body>
 </html>
