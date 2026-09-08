@@ -706,6 +706,7 @@ body.modal-open { overflow: hidden; }
 .roll-dialog.outcome-failure { --outcome-color: #ef646b; --outcome-tint: rgba(239, 100, 107, 0.1); }
 .roll-dialog.outcome-partial { --outcome-color: #b8953f; --outcome-tint: rgba(184, 149, 63, 0.13); }
 .roll-dialog.outcome-normal { --outcome-color: #b8f05a; --outcome-tint: rgba(184, 240, 90, 0.12); }
+.roll-dialog.outcome-good { --outcome-color: #62e6a5; --outcome-tint: rgba(98, 230, 165, 0.13); }
 .roll-dialog.outcome-extreme { --outcome-color: #e4c362; --outcome-tint: rgba(228, 195, 98, 0.12); }
 .roll-dialog.outcome-extreme-critical {
   --outcome-color: #ffd66b;
@@ -4632,7 +4633,7 @@ h2 { color: #ece6d8; }
 
         <div class="photo-editor-content">
           <div id="photo-editor-viewport" class="photo-editor-viewport" tabindex="0" aria-label="Área de enquadramento; arraste a foto ou use as setas do teclado">
-            <img id="photo-editor-image" alt="Prévia do enquadramento da foto" draggable="false" />
+            <img id="photo-editor-image" class="photo-editor-image" alt="Prévia do enquadramento da foto" draggable="false" />
             <span class="photo-editor-grid" aria-hidden="true"></span>
             <span class="photo-editor-drag-hint" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -7192,16 +7193,19 @@ const DIFFICULTIES = {
     label: "Fácil",
     failureMax: { 8: 4, 12: 4, 20: 5 },
     partialMax: { 12: 6, 20: 8 },
+    normalMax: { 12: 9, 20: 13 },
   },
   medium: {
     label: "Média",
     failureMax: { 8: 6, 12: 6, 20: 8 },
     partialMax: { 12: 8, 20: 11 },
+    normalMax: { 12: 11, 20: 16 },
   },
   hard: {
     label: "Difícil",
     failureMax: { 8: 8, 12: 8, 20: 11 },
     partialMax: { 12: 10, 20: 14 },
+    normalMax: { 12: 13, 20: 18 },
   },
 };
 
@@ -7210,6 +7214,7 @@ const OUTCOMES = {
   failure: { key: "failure", label: "Falha" },
   partial: { key: "partial", label: "Sucesso Parcial" },
   normal: { key: "normal", label: "Sucesso Normal" },
+  good: { key: "good", label: "Sucesso Bom" },
   extreme: { key: "extreme", label: "Sucesso Extremo" },
   extremeCritical: { key: "extreme-critical", label: "Sucesso Extremo (Crítico)" },
 };
@@ -9325,8 +9330,10 @@ function evaluateOutcome(faces, naturalResult, total, difficultyKey) {
     outcome = OUTCOMES.failure;
   } else if (faces === 8 || total <= difficulty.partialMax[faces]) {
     outcome = OUTCOMES.partial;
-  } else {
+  } else if (total <= difficulty.normalMax[faces]) {
     outcome = OUTCOMES.normal;
+  } else {
+    outcome = OUTCOMES.good;
   }
 
   const isSuccessful = outcome !== OUTCOMES.failure;
