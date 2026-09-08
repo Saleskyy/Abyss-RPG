@@ -2279,7 +2279,7 @@ h2 { color: #ece6d8; }
 }
 .photo-editor-viewport.is-dragging { cursor: grabbing; }
 .photo-editor-viewport:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
-.photo-editor-image { position: absolute; top: 50%; left: 50%; max-width: none; transform-origin: center; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+.photo-editor-image { position: absolute; top: 50%; left: 50%; max-width: none; transform-origin: center; pointer-events: none; user-select: none; -webkit-user-drag: none; will-change: left, top, transform; }
 .photo-editor-drag-hint {
   position: absolute;
   right: 12px;
@@ -9473,20 +9473,28 @@ function clamp(value, minimum, maximum) {
 
 function getPhotoEditorScale() {
   if (!photoEditorState.image) return 1;
-  const viewportSize = photoEditorViewport.clientWidth || 1;
+  const viewportWidth = photoEditorViewport.clientWidth || 1;
+  const viewportHeight = photoEditorViewport.clientHeight || viewportWidth;
   const coverScale = Math.max(
-    viewportSize / photoEditorState.image.naturalWidth,
-    viewportSize / photoEditorState.image.naturalHeight,
+    viewportWidth / photoEditorState.image.naturalWidth,
+    viewportHeight / photoEditorState.image.naturalHeight,
   );
   return coverScale * photoEditorState.zoom;
 }
 
 function clampPhotoEditorPosition() {
   if (!photoEditorState.image) return;
-  const viewportSize = photoEditorViewport.clientWidth || 1;
+  const viewportWidth = photoEditorViewport.clientWidth || 1;
+  const viewportHeight = photoEditorViewport.clientHeight || viewportWidth;
   const scale = getPhotoEditorScale();
-  const maximumX = Math.max(0, (photoEditorState.image.naturalWidth * scale - viewportSize) / 2);
-  const maximumY = Math.max(0, (photoEditorState.image.naturalHeight * scale - viewportSize) / 2);
+  const maximumX = Math.max(
+    0,
+    (photoEditorState.image.naturalWidth * scale - viewportWidth) / 2,
+  );
+  const maximumY = Math.max(
+    0,
+    (photoEditorState.image.naturalHeight * scale - viewportHeight) / 2,
+  );
   photoEditorState.x = clamp(photoEditorState.x, -maximumX, maximumX);
   photoEditorState.y = clamp(photoEditorState.y, -maximumY, maximumY);
 }
@@ -9495,10 +9503,12 @@ function renderPhotoEditor() {
   if (!photoEditorState.image) return;
   clampPhotoEditorPosition();
   const scale = getPhotoEditorScale();
+  const viewportWidth = photoEditorViewport.clientWidth || 1;
+  const viewportHeight = photoEditorViewport.clientHeight || viewportWidth;
   photoEditorImage.style.width = `${photoEditorState.image.naturalWidth}px`;
   photoEditorImage.style.height = `${photoEditorState.image.naturalHeight}px`;
-  photoEditorImage.style.left = `calc(50% + ${photoEditorState.x}px)`;
-  photoEditorImage.style.top = `calc(50% + ${photoEditorState.y}px)`;
+  photoEditorImage.style.left = `${viewportWidth / 2 + photoEditorState.x}px`;
+  photoEditorImage.style.top = `${viewportHeight / 2 + photoEditorState.y}px`;
   photoEditorImage.style.transform = `translate(-50%, -50%) scale(${scale})`;
   photoZoomInput.value = String(photoEditorState.zoom);
 }
@@ -9541,6 +9551,13 @@ function openPhotoEditor(file) {
 }
 
 function closePhotoEditor() {
+  const activePointerId = photoEditorState.pointerId;
+  if (
+    activePointerId !== null &&
+    photoEditorViewport.hasPointerCapture?.(activePointerId)
+  ) {
+    photoEditorViewport.releasePointerCapture(activePointerId);
+  }
   photoEditorModal.hidden = true;
   photoEditorState.pointerId = null;
   photoEditorViewport.classList.remove("is-dragging");
@@ -9977,6 +9994,7 @@ photoZoomInButton.addEventListener("click", () => setPhotoZoom(photoEditorState.
 photoEditorViewport.addEventListener("pointerdown", (event) => {
   if (!photoEditorState.image) return;
   if (event.pointerType === "mouse" && event.button !== 0) return;
+  if (photoEditorState.pointerId !== null) return;
   event.preventDefault();
   photoEditorState.pointerId = event.pointerId;
   photoEditorState.dragStartX = event.clientX;
@@ -10001,8 +10019,12 @@ window.addEventListener("pointermove", (event) => {
 
 function finishPhotoDrag(event) {
   if (photoEditorState.pointerId !== event.pointerId) return;
+  const finishedPointerId = photoEditorState.pointerId;
   photoEditorState.pointerId = null;
   photoEditorViewport.classList.remove("is-dragging");
+  if (photoEditorViewport.hasPointerCapture?.(finishedPointerId)) {
+    photoEditorViewport.releasePointerCapture(finishedPointerId);
+  }
 }
 
 window.addEventListener("pointerup", finishPhotoDrag);
