@@ -2265,6 +2265,7 @@ h2 { color: #ece6d8; }
 .photo-editor-content { display: grid; grid-template-columns: minmax(260px, 360px) minmax(150px, 1fr); align-items: center; gap: 24px; overflow: auto; padding: 26px 30px 30px; }
 .photo-editor-viewport {
   position: relative;
+  isolation: isolate;
   width: min(360px, 100%);
   aspect-ratio: 1;
   overflow: hidden;
@@ -2279,7 +2280,7 @@ h2 { color: #ece6d8; }
 }
 .photo-editor-viewport.is-dragging { cursor: grabbing; }
 .photo-editor-viewport:focus-visible { outline: 2px solid var(--accent-bright); outline-offset: 3px; }
-.photo-editor-image { position: absolute; top: 50%; left: 50%; max-width: none; transform-origin: center; pointer-events: none; user-select: none; -webkit-user-drag: none; will-change: left, top, transform; }
+.photo-editor-image { position: absolute; top: 50%; left: 50%; z-index: 1; display: block; max-width: none; opacity: 1; visibility: visible; transform-origin: center; pointer-events: none; user-select: none; -webkit-user-drag: none; will-change: left, top, transform; }
 .photo-editor-drag-hint {
   position: absolute;
   right: 12px;
@@ -2305,12 +2306,14 @@ h2 { color: #ece6d8; }
 .photo-editor-grid {
   position: absolute;
   inset: 0;
+  z-index: 2;
   border: 1px solid rgba(255, 255, 255, 0.09);
   background:
     linear-gradient(90deg, transparent 33.1%, rgba(255, 255, 255, 0.14) 33.2%, rgba(255, 255, 255, 0.14) 33.5%, transparent 33.6%, transparent 66.4%, rgba(255, 255, 255, 0.14) 66.5%, rgba(255, 255, 255, 0.14) 66.8%, transparent 66.9%),
     linear-gradient(transparent 33.1%, rgba(255, 255, 255, 0.14) 33.2%, rgba(255, 255, 255, 0.14) 33.5%, transparent 33.6%, transparent 66.4%, rgba(255, 255, 255, 0.14) 66.5%, rgba(255, 255, 255, 0.14) 66.8%, transparent 66.9%);
   pointer-events: none;
 }
+.photo-editor-viewport .portrait-corner { z-index: 4; }
 .photo-editor-controls { display: grid; align-content: center; gap: 13px; }
 .photo-editor-controls > label { color: #9a8c70; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
 .photo-editor-help { margin: 0; color: #7d7970; font-size: 0.72rem; line-height: 1.5; }
