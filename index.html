@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Abyss RPG — ficha, constelações, habilidades, Grimório e Slots Firebase — revisão 2026-09-08 -->
+<!-- Abyss RPG — ficha, constelações, habilidades, Grimório e Slots Firebase — revisão 2026-09-10 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -3984,6 +3984,584 @@ h2 { color: #ece6d8; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
 
+/* Perfil expandido — Eco, Classe, recursos e combate */
+.identity-field-composite {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 12px;
+}
+
+.identity-choice-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding-bottom: 10px;
+}
+
+.identity-choice-wrap .identity-separator {
+  margin-right: 4px;
+  color: #77736b;
+  font: 1.1rem Georgia, "Times New Roman", serif;
+  opacity: 0;
+  transition: opacity 160ms ease;
+}
+
+.identity-choice-wrap.has-value .identity-separator { opacity: 1; }
+
+.identity-choice-select {
+  max-width: 190px;
+  min-height: 31px;
+  padding: 4px 27px 4px 10px;
+  border: 1px solid rgba(207, 173, 98, 0.08);
+  border-radius: 2px;
+  color: #686762;
+  background-color: rgba(255, 255, 255, 0.008);
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position: calc(100% - 12px) 13px, calc(100% - 8px) 13px;
+  background-repeat: no-repeat;
+  background-size: 4px 4px, 4px 4px;
+  appearance: none;
+  cursor: pointer;
+  font: 0.83rem Georgia, "Times New Roman", serif;
+  letter-spacing: 0.015em;
+  transition: color 160ms ease, border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+}
+
+.identity-choice-select:hover,
+.identity-choice-select:focus { border-color: rgba(207, 173, 98, 0.38); color: #b9b3a7; }
+.identity-choice-wrap.has-value .identity-choice-select { color: #f7f2e8; }
+.identity-choice-select option { color: #eee9df; background: #15161b; }
+
+.identity-choice-wrap[data-echo="determinado"] .identity-choice-select { border-color: rgba(244, 65, 76, 0.58); background-color: rgba(224, 33, 47, 0.23); box-shadow: inset 0 0 18px rgba(235, 39, 54, 0.11); }
+.identity-choice-wrap[data-echo="justo"] .identity-choice-select { border-color: rgba(245, 207, 73, 0.58); background-color: rgba(226, 184, 33, 0.2); color: #fff3b0; }
+.identity-choice-wrap[data-echo="bondoso"] .identity-choice-select { border-color: rgba(148, 238, 124, 0.54); background-color: rgba(100, 207, 84, 0.19); color: #d9ffd0; }
+.identity-choice-wrap[data-echo="paciente"] .identity-choice-select { border-color: rgba(120, 211, 244, 0.55); background-color: rgba(62, 169, 216, 0.19); color: #d3f4ff; }
+.identity-choice-wrap[data-echo="integro"] .identity-choice-select { border-color: rgba(61, 106, 211, 0.62); background-color: rgba(28, 58, 143, 0.31); color: #c7d7ff; }
+.identity-choice-wrap[data-echo="bravo"] .identity-choice-select { border-color: rgba(247, 139, 56, 0.62); background-color: rgba(221, 91, 25, 0.23); color: #ffe0c2; }
+.identity-choice-wrap[data-echo="perseverante"] .identity-choice-select { border-color: rgba(178, 104, 235, 0.58); background-color: rgba(120, 55, 183, 0.25); color: #ead3ff; }
+.identity-choice-wrap[data-echo="indiferente"] .identity-choice-select { border-color: rgba(240, 240, 236, 0.5); background-color: rgba(232, 232, 226, 0.12); color: #fff; }
+
+.identity-choice-wrap.is-class .identity-choice-select {
+  border-color: rgba(207, 173, 98, 0.16);
+}
+.identity-choice-wrap.is-class.has-value .identity-choice-select {
+  border-color: rgba(207, 173, 98, 0.52);
+  color: #f2d88f;
+  background-color: rgba(207, 173, 98, 0.12);
+  box-shadow: inset 0 0 19px rgba(207, 173, 98, 0.06);
+}
+
+.character-level-field {
+  display: grid;
+  grid-template-columns: auto 44px;
+  align-items: center;
+  gap: 7px;
+  margin-left: 8px;
+  color: #7f796d;
+  font-size: 0.64rem;
+  font-weight: 780;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.character-level-field input {
+  width: 44px;
+  height: 31px;
+  padding: 0 4px;
+  border: 1px solid rgba(207, 173, 98, 0.2);
+  border-radius: 2px;
+  color: #e8dfca;
+  background: rgba(5, 6, 8, 0.52);
+  text-align: center;
+  appearance: textfield;
+}
+.character-level-field input::-webkit-inner-spin-button,
+.character-level-field input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+
+.vitals-panel,
+.combat-panel {
+  position: relative;
+  margin-top: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(207, 173, 98, 0.18);
+  border-radius: 5px;
+  background:
+    radial-gradient(circle at 100% 0, rgba(207, 173, 98, 0.055), transparent 24rem),
+    linear-gradient(145deg, rgba(22, 24, 30, 0.96), rgba(11, 12, 16, 0.99));
+  box-shadow: 0 26px 72px rgba(0, 0, 0, 0.26), inset 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.vitals-panel::before,
+.combat-panel::before {
+  position: absolute;
+  inset: -1px auto auto -1px;
+  width: 86px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, var(--accent-bright), rgba(207, 173, 98, 0.08));
+  box-shadow: 0 0 14px rgba(207, 173, 98, 0.2);
+}
+
+.vitals-panel { padding: 27px 30px 30px; }
+.vitals-panel-head,
+.combat-panel-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+}
+.vitals-panel-head { margin-bottom: 17px; }
+.vitals-panel-head p:last-child,
+.combat-panel-head p:last-child { margin: 0; color: #77756f; font-size: 0.78rem; }
+
+.condition-alerts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 0;
+  margin-bottom: 15px;
+}
+.condition-alerts:empty { display: none; }
+
+.condition-alert {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 5px 11px;
+  border: 1px solid currentColor;
+  border-radius: 2px;
+  font-size: 0.73rem;
+  font-weight: 820;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.condition-alert::before { width: 6px; height: 6px; border-radius: 50%; background: currentColor; box-shadow: 0 0 9px currentColor; content: ""; }
+.condition-alert.is-pv { color: #e97981; background: rgba(139, 34, 44, 0.13); }
+.condition-alert.is-pa { color: #e6c257; background: rgba(145, 110, 20, 0.12); }
+.condition-alert.is-sa { color: #79cff1; background: rgba(35, 115, 151, 0.13); }
+.condition-alert.is-critical {
+  padding-inline: 14px;
+  color: #fff3e8;
+  background: rgba(132, 22, 35, 0.34);
+  box-shadow: 0 0 20px rgba(201, 47, 61, 0.18), inset 0 0 15px rgba(255, 255, 255, 0.025);
+  animation: condition-warning-pulse 1.05s ease-in-out infinite;
+}
+.condition-alert.is-critical.is-pa { background: rgba(138, 100, 17, 0.3); box-shadow: 0 0 20px rgba(226, 185, 50, 0.18); }
+.condition-alert.is-critical.is-sa { background: rgba(26, 100, 137, 0.31); box-shadow: 0 0 20px rgba(75, 185, 231, 0.2); }
+@keyframes condition-warning-pulse { 50% { opacity: 0.54; filter: brightness(1.3); transform: translateY(-1px); } }
+
+.resources-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 13px; }
+.resource-card {
+  --resource-color: #c45b64;
+  --resource-rgb: 196, 91, 100;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+  padding: 17px;
+  border: 1px solid rgba(var(--resource-rgb), 0.23);
+  border-radius: 4px;
+  background: linear-gradient(145deg, rgba(var(--resource-rgb), 0.075), rgba(5, 6, 8, 0.3));
+}
+.resource-card[data-resource="pv"] { --resource-color: #e1505c; --resource-rgb: 225, 80, 92; }
+.resource-card[data-resource="pa"] { --resource-color: #e4bd3e; --resource-rgb: 228, 189, 62; }
+.resource-card[data-resource="sa"] { --resource-color: #69c8ed; --resource-rgb: 105, 200, 237; }
+.resource-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+.resource-card-head h3 { margin: 0; color: #eee9df; font: 1rem Georgia, "Times New Roman", serif; }
+.resource-code { color: var(--resource-color); font-size: 0.67rem; font-weight: 850; letter-spacing: 0.13em; }
+.temporary-points {
+  min-height: 20px;
+  padding: 2px 7px;
+  border: 1px solid rgba(var(--resource-rgb), 0.36);
+  border-radius: 999px;
+  color: var(--resource-color);
+  background: rgba(var(--resource-rgb), 0.08);
+  font-size: 0.63rem;
+  font-weight: 780;
+  white-space: nowrap;
+}
+.resource-values { display: flex; align-items: baseline; justify-content: center; gap: 8px; }
+.resource-values input {
+  width: 72px;
+  padding: 2px 3px;
+  border: 0;
+  border-bottom: 1px solid rgba(var(--resource-rgb), 0.22);
+  border-radius: 0;
+  color: #f4f0e7;
+  background: transparent;
+  font: 1.65rem/1.15 Georgia, "Times New Roman", serif;
+  text-align: center;
+  appearance: textfield;
+}
+.resource-values input:last-child { color: #a4a097; font-size: 1.12rem; }
+.resource-values input:focus { border-bottom-color: var(--resource-color); outline-color: var(--resource-color); }
+.resource-values input::-webkit-inner-spin-button,
+.resource-values input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.resource-values span { color: #676660; font: 1rem Georgia, "Times New Roman", serif; }
+.resource-meter { position: relative; height: 8px; overflow: hidden; border: 1px solid rgba(var(--resource-rgb), 0.25); border-radius: 999px; background: #08090b; }
+.resource-meter-fill { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, rgba(var(--resource-rgb), 0.62), var(--resource-color)); box-shadow: 0 0 13px rgba(var(--resource-rgb), 0.3); transition: width 220ms ease; }
+.resource-card.has-temporary .resource-meter { box-shadow: 0 0 0 1px rgba(var(--resource-rgb), 0.18), 0 0 15px rgba(var(--resource-rgb), 0.13); }
+.resource-adjuster { display: grid; grid-template-columns: 32px minmax(54px, 1fr) 32px; gap: 6px; }
+.resource-adjuster input,
+.resource-adjuster button {
+  height: 32px;
+  border: 1px solid rgba(var(--resource-rgb), 0.2);
+  border-radius: 2px;
+  color: #c9c5bb;
+  background: rgba(0, 0, 0, 0.22);
+}
+.resource-adjuster input { min-width: 0; padding: 0 5px; text-align: center; appearance: textfield; }
+.resource-adjuster input::-webkit-inner-spin-button,
+.resource-adjuster input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+.resource-adjuster button { color: var(--resource-color); cursor: pointer; font-size: 1rem; font-weight: 800; }
+.resource-adjuster button:hover { border-color: var(--resource-color); background: rgba(var(--resource-rgb), 0.09); }
+.resource-adjust-label { margin: -5px 0 0; color: #66645f; font-size: 0.6rem; letter-spacing: 0.08em; text-align: center; text-transform: uppercase; }
+
+.combat-panel { padding: 26px 30px 30px; }
+.combat-panel-head { margin-bottom: 19px; }
+.class-calculation-note { color: #9b8a64 !important; }
+.combat-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(150px, 0.62fr); gap: 13px; }
+.combat-stat {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid rgba(207, 173, 98, 0.14);
+  border-radius: 4px;
+  background: rgba(6, 7, 9, 0.26);
+}
+.combat-stat-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 11px; }
+.combat-stat h3 { margin: 0; color: #e9e3d6; font: 1rem Georgia, "Times New Roman", serif; }
+.defense-base-value { color: #9a8558; font-size: 0.65rem; font-weight: 780; letter-spacing: 0.08em; text-transform: uppercase; }
+.combat-phrase { display: grid; grid-template-columns: minmax(86px, 0.75fr) auto minmax(145px, 1.25fr); align-items: center; gap: 8px; }
+.combat-phrase select,
+.block-input {
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+  padding: 0 29px 0 10px;
+  border: 1px solid #313238;
+  border-radius: 2px;
+  color: #d7d1c5;
+  background: #0b0c0f;
+}
+.combat-phrase select:hover,
+.combat-phrase select:focus,
+.block-input:hover,
+.block-input:focus { border-color: rgba(207, 173, 98, 0.54); }
+.combat-phrase > span { color: #696761; font-size: 0.8rem; }
+.block-input { padding: 0 10px; font: 1.15rem Georgia, "Times New Roman", serif; text-align: center; appearance: textfield; }
+.block-input::-webkit-inner-spin-button,
+.block-input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+
+.combat-stat.is-evasion .combat-phrase select:disabled {
+  border-color: rgba(105, 200, 237, 0.2);
+  color: #caeaf5;
+  background: rgba(45, 117, 145, 0.075);
+  cursor: default;
+  opacity: 1;
+}
+
+.calculated-stat-label {
+  color: #6ebfdd;
+  font-size: 0.62rem;
+  font-weight: 780;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.block-value-row {
+  display: grid;
+  grid-template-columns: minmax(70px, 1fr) auto 38px;
+  align-items: center;
+  gap: 8px;
+}
+
+.block-active-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 9px;
+  border: 1px solid #313238;
+  border-radius: 2px;
+  color: #8e8a81;
+  background: #0b0c0f;
+  cursor: pointer;
+  font-size: 0.67rem;
+  font-weight: 760;
+  white-space: nowrap;
+}
+
+.block-active-toggle:has(input:checked) {
+  border-color: rgba(207, 173, 98, 0.55);
+  color: #efd486;
+  background: rgba(207, 173, 98, 0.1);
+}
+
+.block-active-toggle input,
+.rd-item-toggle input {
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.rd-manager-button {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid rgba(207, 173, 98, 0.28);
+  border-radius: 2px;
+  color: #bca66e;
+  background: rgba(207, 173, 98, 0.04);
+  cursor: pointer;
+}
+
+.rd-manager-button:hover,
+.rd-manager-button[aria-expanded="true"] {
+  border-color: var(--accent-bright);
+  color: #f1d78d;
+  background: rgba(207, 173, 98, 0.12);
+  box-shadow: 0 0 16px rgba(207, 173, 98, 0.1);
+}
+
+.rd-manager-button svg {
+  width: 19px;
+  height: 19px;
+  fill: rgba(207, 173, 98, 0.05);
+  stroke: currentColor;
+  stroke-linejoin: round;
+  stroke-width: 1.45;
+}
+
+.rd-manager {
+  display: grid;
+  gap: 11px;
+  margin-top: 13px;
+  padding-top: 13px;
+  border-top: 1px solid rgba(207, 173, 98, 0.14);
+}
+
+.rd-manager-copy { margin: 0; color: #74716a; font-size: 0.7rem; line-height: 1.45; }
+.rd-create-form { display: grid; grid-template-columns: minmax(90px, 1fr) 62px 34px; gap: 7px; }
+.rd-create-form input,
+.rd-item input[type="text"],
+.rd-item input[type="number"] {
+  min-width: 0;
+  height: 34px;
+  padding: 0 8px;
+  border: 1px solid #303137;
+  border-radius: 2px;
+  color: #dcd6c9;
+  background: #0a0b0e;
+}
+.rd-create-form input:focus,
+.rd-item input:focus { border-color: rgba(207, 173, 98, 0.55); }
+.rd-create-form input[type="number"],
+.rd-item input[type="number"] { text-align: center; appearance: textfield; }
+.rd-create-form input::-webkit-inner-spin-button,
+.rd-create-form input::-webkit-outer-spin-button,
+.rd-item input::-webkit-inner-spin-button,
+.rd-item input::-webkit-outer-spin-button { appearance: none; margin: 0; }
+
+.rd-add-button,
+.rd-delete-button {
+  display: grid;
+  place-items: center;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(207, 173, 98, 0.3);
+  border-radius: 2px;
+  color: #d6bd76;
+  background: rgba(207, 173, 98, 0.06);
+  cursor: pointer;
+}
+.rd-add-button:hover { border-color: var(--accent-bright); color: #ffe39a; }
+.rd-list { display: grid; gap: 7px; }
+.rd-empty { margin: 0; padding: 9px; border: 1px dashed #2b2c31; color: #66645f; font-size: 0.7rem; text-align: center; }
+.rd-item {
+  display: grid;
+  grid-template-columns: 27px minmax(80px, 1fr) 58px 30px;
+  align-items: center;
+  gap: 6px;
+  padding: 7px;
+  border: 1px solid #292a2f;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.012);
+}
+.rd-item.is-active { border-color: rgba(207, 173, 98, 0.34); background: rgba(207, 173, 98, 0.045); }
+.rd-item-toggle { display: grid; place-items: center; cursor: pointer; }
+.rd-delete-button { width: 30px; border-color: rgba(177, 72, 84, 0.24); color: #a46b72; background: rgba(115, 27, 39, 0.05); }
+.rd-delete-button:hover { border-color: #c8616d; color: #ef929d; }
+.rd-delete-button svg { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.5; }
+
+.resource-adjust-feedback {
+  margin: -6px 0 0;
+  color: var(--resource-color);
+  font-size: 0.68rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.echo-panel {
+  --echo-color: #d8d8d4;
+  --echo-rgb: 216, 216, 212;
+  position: relative;
+  margin-top: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(var(--echo-rgb), 0.22);
+  border-radius: 5px;
+  background:
+    radial-gradient(circle at 50% 0, rgba(var(--echo-rgb), 0.08), transparent 24rem),
+    linear-gradient(145deg, rgba(22, 24, 30, 0.96), rgba(11, 12, 16, 0.99));
+  box-shadow: 0 26px 72px rgba(0, 0, 0, 0.26), inset 0 1px rgba(255, 255, 255, 0.02);
+}
+.echo-panel[data-echo="determinado"] { --echo-color: #f13d49; --echo-rgb: 241, 61, 73; }
+.echo-panel[data-echo="justo"] { --echo-color: #efd149; --echo-rgb: 239, 209, 73; }
+.echo-panel[data-echo="bondoso"] { --echo-color: #8bea75; --echo-rgb: 139, 234, 117; }
+.echo-panel[data-echo="paciente"] { --echo-color: #72cff0; --echo-rgb: 114, 207, 240; }
+.echo-panel[data-echo="integro"] { --echo-color: #4876de; --echo-rgb: 72, 118, 222; }
+.echo-panel[data-echo="bravo"] { --echo-color: #f18b3d; --echo-rgb: 241, 139, 61; }
+.echo-panel[data-echo="perseverante"] { --echo-color: #ad67e4; --echo-rgb: 173, 103, 228; }
+.echo-panel[data-echo="indiferente"] { --echo-color: #f1f1ed; --echo-rgb: 241, 241, 237; }
+.echo-panel::before {
+  position: absolute;
+  inset: -1px auto auto -1px;
+  width: 120px;
+  height: 2px;
+  content: "";
+  background: linear-gradient(90deg, var(--echo-color), rgba(var(--echo-rgb), 0.04));
+  box-shadow: 0 0 15px rgba(var(--echo-rgb), 0.26);
+}
+.echo-panel-head { display: grid; justify-items: center; gap: 12px; padding: 26px 28px 22px; border-bottom: 1px solid rgba(var(--echo-rgb), 0.15); }
+.echo-panel-head .eyebrow { margin-bottom: -7px; color: rgba(var(--echo-rgb), 0.72); }
+.echo-panel-title { color: var(--echo-color); text-align: center; text-shadow: 0 0 24px rgba(var(--echo-rgb), 0.2); }
+.echo-segments { display: grid; grid-template-columns: repeat(5, minmax(34px, 52px)); gap: 11px; }
+.echo-segment {
+  height: 17px;
+  border: 2px solid var(--echo-color);
+  border-radius: 1px;
+  background: linear-gradient(180deg, rgba(var(--echo-rgb), 0.18), rgba(var(--echo-rgb), 0.035));
+  box-shadow: 0 0 12px rgba(var(--echo-rgb), 0.12), inset 0 0 8px rgba(var(--echo-rgb), 0.08);
+}
+.echo-panel-body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.25fr); gap: 16px; padding: 20px; }
+.echo-lore-card,
+.echo-ability-card {
+  min-width: 0;
+  border: 1px solid rgba(var(--echo-rgb), 0.2);
+  border-radius: 4px;
+  background: linear-gradient(145deg, rgba(var(--echo-rgb), 0.055), rgba(4, 5, 7, 0.34));
+}
+.echo-lore-card { max-height: 390px; overflow: auto; padding: 21px 22px 24px; scrollbar-color: rgba(var(--echo-rgb), 0.42) transparent; }
+.echo-lore-card h3 { margin: 0 0 10px; color: var(--echo-color); font: 1.05rem Georgia, "Times New Roman", serif; }
+.echo-lore-card h3:not(:first-child) { margin-top: 24px; padding-top: 18px; border-top: 1px solid rgba(var(--echo-rgb), 0.16); }
+.echo-lore-card p { margin: 0 0 12px; color: #aaa69d; font-size: 0.86rem; line-height: 1.72; }
+.echo-lore-card p:last-child { margin-bottom: 0; }
+.echo-ability-card { display: grid; align-content: center; justify-items: center; min-height: 260px; padding: 28px; text-align: center; }
+.echo-ability-star { color: var(--echo-color); font-size: 2rem; text-shadow: 0 0 18px rgba(var(--echo-rgb), 0.35); }
+.echo-ability-card h3 { margin: 10px 0 7px; color: #e8e2d6; font: 1.25rem Georgia, "Times New Roman", serif; }
+.echo-ability-card p { max-width: 360px; margin: 0; color: #77746d; font-size: 0.8rem; line-height: 1.55; }
+
+.training-cap-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid #313238;
+  border-radius: 2px;
+  color: #85827b;
+  background: rgba(255, 255, 255, 0.018);
+  font-size: 0.66rem;
+  font-weight: 760;
+  letter-spacing: 0.045em;
+  white-space: nowrap;
+}
+.training-cap-status.is-ready { border-color: rgba(111, 175, 102, 0.3); color: #9fc798; }
+.training-cap-status.is-over { border-color: rgba(214, 83, 94, 0.55); color: #ed9ba3; background: rgba(140, 30, 43, 0.11); }
+
+.training-limit-modal { z-index: 108; }
+.training-limit-dialog { width: min(540px, 100%); border-color: rgba(224, 177, 71, 0.44); }
+.training-limit-dialog .delete-skill-icon { border-color: rgba(224, 177, 71, 0.5); color: #efcf76; background: rgba(170, 118, 20, 0.11); }
+.training-limit-confirm {
+  min-width: 132px;
+  min-height: 42px;
+  border: 1px solid rgba(218, 177, 75, 0.62);
+  border-radius: 3px;
+  color: #f1d47f;
+  background: rgba(154, 110, 27, 0.16);
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+.training-limit-confirm:hover { border-color: #edcb70; color: #fff0bb; background: rgba(154, 110, 27, 0.28); }
+
+@media (max-width: 1100px) {
+  .resources-grid { grid-template-columns: 1fr; }
+  .resource-card { grid-template-columns: minmax(170px, 0.8fr) minmax(180px, 1.2fr); align-items: center; }
+  .resource-card-head,
+  .resource-values { grid-row: 1; }
+  .resource-meter { grid-column: 1 / -1; }
+  .resource-adjuster,
+  .resource-adjust-label { grid-column: 1 / -1; }
+  .combat-grid { grid-template-columns: 1fr 1fr; }
+  .combat-stat.is-block { grid-column: 1 / -1; }
+  .echo-panel-body { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 900px) {
+  .vitals-panel,
+  .combat-panel { padding: 24px 20px; }
+  .identity-field-composite { grid-template-columns: 1fr; gap: 6px; }
+  .identity-choice-wrap { padding-bottom: 0; }
+  .identity-choice-wrap .identity-separator { display: none; }
+  .identity-choice-select { max-width: 100%; }
+  .character-level-field { margin-left: 5px; }
+}
+
+@media (max-width: 680px) {
+  .resources-grid,
+  .combat-grid { grid-template-columns: 1fr; }
+  .resource-card { display: grid; grid-template-columns: 1fr; }
+  .resource-card-head,
+  .resource-values,
+  .resource-meter,
+  .resource-adjuster,
+  .resource-adjust-label,
+  .combat-stat.is-block { grid-column: auto; grid-row: auto; }
+  .vitals-panel-head,
+  .combat-panel-head { align-items: flex-start; flex-direction: column; gap: 5px; }
+  .combat-phrase { grid-template-columns: 1fr; }
+  .combat-phrase > span { display: none; }
+  .identity-choice-wrap.is-class { flex-wrap: wrap; }
+  .echo-panel-body { grid-template-columns: 1fr; }
+  .echo-lore-card { max-height: 440px; }
+  .echo-ability-card { min-height: 190px; }
+}
+
+@media (max-width: 560px) {
+  .ability-tabs { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+  .ability-tabs button { font-size: 0.61rem; letter-spacing: 0.035em; }
+  .skills-panel-actions { display: grid; grid-template-columns: 1fr; gap: 9px; }
+  .training-cap-status { justify-content: center; width: 100%; white-space: normal; text-align: center; }
+  .training-limit-modal { padding: 12px; }
+  .training-limit-dialog .delete-skill-dialog-footer { display: grid; grid-template-columns: 1fr; }
+  .training-limit-dialog .dialog-button,
+  .training-limit-confirm { width: 100%; }
+  .rd-create-form { grid-template-columns: 1fr 58px 34px; }
+  .echo-panel-head { padding-inline: 18px; }
+  .echo-panel-body { padding: 13px; }
+  .echo-segments { gap: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .condition-alert.is-critical { animation: none; }
+  .resource-meter-fill { transition: none; }
+}
     </style>
   </head>
   <body>
@@ -4168,25 +4746,62 @@ h2 { color: #ece6d8; }
             <div class="identity-fields">
               <h2 id="identity-title">Identidade</h2>
 
-              <label class="text-field">
-                <span>Nome</span>
-                <input
-                  id="character-name"
-                  type="text"
-                  autocomplete="off"
-                  placeholder="Nome do personagem"
-                />
-              </label>
+              <div class="identity-field-composite">
+                <label class="text-field">
+                  <span>Nome</span>
+                  <input
+                    id="character-name"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Nome do personagem"
+                  />
+                </label>
 
-              <label class="text-field">
-                <span>Antecedência</span>
-                <input
-                  id="character-background"
-                  type="text"
-                  autocomplete="off"
-                  placeholder="Origem, ofício ou história"
-                />
-              </label>
+                <label id="echo-choice-wrap" class="identity-choice-wrap" title="Escolher Eco">
+                  <span class="identity-separator" aria-hidden="true">,</span>
+                  <span class="sr-only">Eco</span>
+                  <select id="character-echo" class="identity-choice-select" aria-label="Eco do personagem">
+                    <option value="">Escolher Eco</option>
+                    <option value="determinado">[O Determinado]</option>
+                    <option value="justo">[O Justo]</option>
+                    <option value="bondoso">[O Bondoso]</option>
+                    <option value="paciente">[O Paciente]</option>
+                    <option value="integro">[O Íntegro]</option>
+                    <option value="bravo">[O Bravo]</option>
+                    <option value="perseverante">[O Perseverante]</option>
+                    <option value="indiferente">[O Indiferente]</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="identity-field-composite">
+                <label class="text-field">
+                  <span>Antecedência</span>
+                  <input
+                    id="character-background"
+                    type="text"
+                    autocomplete="off"
+                    placeholder="Origem, ofício ou história"
+                  />
+                </label>
+
+                <div id="class-choice-wrap" class="identity-choice-wrap is-class">
+                  <span class="identity-separator" aria-hidden="true">•</span>
+                  <label>
+                    <span class="sr-only">Classe</span>
+                    <select id="character-class" class="identity-choice-select" aria-label="Classe do personagem">
+                      <option value="">Escolher Classe</option>
+                      <option value="vanguardista">[Vanguardista]</option>
+                      <option value="especialista">[Especialista]</option>
+                      <option value="arcanista">[Arcanista]</option>
+                    </select>
+                  </label>
+                  <label class="character-level-field">
+                    <span>Nível</span>
+                    <input id="character-level" type="number" value="1" min="1" max="10" step="1" inputmode="numeric" aria-label="Nível do personagem" />
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -4259,6 +4874,224 @@ h2 { color: #ece6d8; }
             </label>
           </div>
         </section>
+
+        <section class="vitals-panel" aria-labelledby="vitals-title">
+          <header class="vitals-panel-head">
+            <div>
+              <p class="eyebrow">Condição</p>
+              <h2 id="vitals-title">Recursos</h2>
+            </div>
+            <p>Edite os valores diretamente ou use os controles de ajuste.</p>
+          </header>
+
+          <div id="condition-alerts" class="condition-alerts" aria-live="polite" aria-atomic="true"></div>
+
+          <div class="resources-grid">
+            <article class="resource-card" data-resource="pv">
+              <header class="resource-card-head">
+                <div>
+                  <span class="resource-code">PV</span>
+                  <h3>Pontos de Vida</h3>
+                </div>
+                <span class="temporary-points" data-resource-temporary="pv" hidden></span>
+              </header>
+              <div class="resource-values" aria-label="Pontos de Vida atuais e máximos">
+                <input type="number" value="0" min="0" max="999999" step="1" inputmode="numeric" data-resource-current="pv" aria-label="Pontos de Vida atuais" />
+                <span aria-hidden="true">/</span>
+                <input type="number" value="0" min="0" max="999999" step="1" inputmode="numeric" data-resource-max="pv" aria-label="Pontos de Vida máximos" />
+              </div>
+              <div class="resource-meter" role="progressbar" aria-label="Pontos de Vida" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0">
+                <span class="resource-meter-fill"></span>
+              </div>
+              <div class="resource-adjuster">
+                <button type="button" data-resource-adjust="pv" data-direction="-1" aria-label="Diminuir Pontos de Vida">−</button>
+                <input type="number" value="1" min="0" max="999999" step="1" inputmode="numeric" data-resource-delta="pv" aria-label="Quantidade para ajustar Pontos de Vida" />
+                <button type="button" data-resource-adjust="pv" data-direction="1" aria-label="Adicionar Pontos de Vida">+</button>
+              </div>
+              <p class="resource-adjust-label">Diminuir · Ajuste · Adicionar</p>
+              <p class="resource-adjust-feedback" data-resource-feedback="pv" aria-live="polite" hidden></p>
+            </article>
+
+            <article class="resource-card" data-resource="pa">
+              <header class="resource-card-head">
+                <div>
+                  <span class="resource-code">PA</span>
+                  <h3>Pontos de Ação</h3>
+                </div>
+                <span class="temporary-points" data-resource-temporary="pa" hidden></span>
+              </header>
+              <div class="resource-values" aria-label="Pontos de Ação atuais e máximos">
+                <input type="number" value="0" min="0" max="999999" step="1" inputmode="numeric" data-resource-current="pa" aria-label="Pontos de Ação atuais" />
+                <span aria-hidden="true">/</span>
+                <input type="number" value="0" min="0" max="999999" step="1" inputmode="numeric" data-resource-max="pa" aria-label="Pontos de Ação máximos" />
+              </div>
+              <div class="resource-meter" role="progressbar" aria-label="Pontos de Ação" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0">
+                <span class="resource-meter-fill"></span>
+              </div>
+              <div class="resource-adjuster">
+                <button type="button" data-resource-adjust="pa" data-direction="-1" aria-label="Diminuir Pontos de Ação">−</button>
+                <input type="number" value="1" min="0" max="999999" step="1" inputmode="numeric" data-resource-delta="pa" aria-label="Quantidade para ajustar Pontos de Ação" />
+                <button type="button" data-resource-adjust="pa" data-direction="1" aria-label="Adicionar Pontos de Ação">+</button>
+              </div>
+              <p class="resource-adjust-label">Diminuir · Ajuste · Adicionar</p>
+              <p class="resource-adjust-feedback" data-resource-feedback="pa" aria-live="polite" hidden></p>
+            </article>
+
+            <article class="resource-card" data-resource="sa">
+              <header class="resource-card-head">
+                <div>
+                  <span class="resource-code">SA</span>
+                  <h3>Sanidade</h3>
+                </div>
+              </header>
+              <div class="resource-values" aria-label="Sanidade atual e máxima">
+                <input type="number" value="0" min="0" max="999999" step="1" inputmode="numeric" data-resource-current="sa" aria-label="Sanidade atual" />
+                <span aria-hidden="true">/</span>
+                <input type="number" value="0" min="0" max="999999" step="1" inputmode="numeric" data-resource-max="sa" aria-label="Sanidade máxima" />
+              </div>
+              <div class="resource-meter" role="progressbar" aria-label="Sanidade" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0">
+                <span class="resource-meter-fill"></span>
+              </div>
+              <div class="resource-adjuster">
+                <button type="button" data-resource-adjust="sa" data-direction="-1" aria-label="Diminuir Sanidade">−</button>
+                <input type="number" value="1" min="0" max="999999" step="1" inputmode="numeric" data-resource-delta="sa" aria-label="Quantidade para ajustar Sanidade" />
+                <button type="button" data-resource-adjust="sa" data-direction="1" aria-label="Adicionar Sanidade">+</button>
+              </div>
+              <p class="resource-adjust-label">Diminuir · Ajuste · Adicionar</p>
+              <p class="resource-adjust-feedback" data-resource-feedback="sa" aria-live="polite" hidden></p>
+            </article>
+          </div>
+        </section>
+
+        <section class="combat-panel" aria-labelledby="combat-title">
+          <header class="combat-panel-head">
+            <div>
+              <p class="eyebrow">Proteção</p>
+              <h2 id="combat-title">Defesa e Reação</h2>
+            </div>
+            <p id="class-calculation-note" class="class-calculation-note">Escolha uma Classe para calcular os valores iniciais.</p>
+          </header>
+
+          <div class="combat-grid">
+            <article class="combat-stat">
+              <header class="combat-stat-head">
+                <h3>Defesa</h3>
+                <span id="defense-base-value" class="defense-base-value">Base —</span>
+              </header>
+              <div class="combat-phrase">
+                <label>
+                  <span class="sr-only">Zona de Dificuldade da Defesa</span>
+                  <select id="defense-zone" aria-label="Zona de Dificuldade da Defesa">
+                    <option value="easy">Fácil</option>
+                    <option value="medium" selected>Normal</option>
+                    <option value="hard">Difícil</option>
+                  </select>
+                </label>
+                <span aria-hidden="true">•</span>
+                <label>
+                  <span class="sr-only">Margem necessária da Defesa</span>
+                  <select id="defense-margin" aria-label="Margem necessária da Defesa">
+                    <option value="partial">Sucesso Parcial</option>
+                    <option value="normal" selected>Sucesso Normal</option>
+                    <option value="good">Sucesso Bom</option>
+                    <option value="extreme">Sucesso Extremo</option>
+                  </select>
+                </label>
+              </div>
+            </article>
+
+            <article class="combat-stat is-evasion">
+              <header class="combat-stat-head">
+                <h3>Esquiva</h3>
+                <span class="calculated-stat-label">Calculada pela Defesa</span>
+              </header>
+              <div class="combat-phrase">
+                <label>
+                  <span class="sr-only">Zona de Dificuldade da Esquiva</span>
+                  <select id="evasion-zone" aria-label="Zona de Dificuldade da Esquiva" disabled>
+                    <option value="easy">Fácil</option>
+                    <option value="medium" selected>Normal</option>
+                    <option value="hard">Difícil</option>
+                  </select>
+                </label>
+                <span aria-hidden="true">•</span>
+                <label>
+                  <span class="sr-only">Margem necessária da Esquiva</span>
+                  <select id="evasion-margin" aria-label="Margem necessária da Esquiva" disabled>
+                    <option value="partial">Sucesso Parcial</option>
+                    <option value="normal" selected>Sucesso Normal</option>
+                    <option value="good">Sucesso Bom</option>
+                    <option value="extreme">Sucesso Extremo</option>
+                  </select>
+                </label>
+              </div>
+            </article>
+
+            <article class="combat-stat is-block">
+              <header class="combat-stat-head">
+                <h3>Bloqueio</h3>
+              </header>
+              <div class="block-value-row">
+                <label>
+                  <span class="sr-only">Valor de Bloqueio</span>
+                  <input id="block-value" class="block-input" type="number" value="0" min="0" max="999999" step="1" inputmode="numeric" aria-label="Valor de Bloqueio" />
+                </label>
+                <label class="block-active-toggle" title="Quando ativo, o Bloqueio reduz perdas de PV">
+                  <input id="block-active" type="checkbox" />
+                  <span>Ativo</span>
+                </label>
+                <button id="rd-manager-button" class="rd-manager-button" type="button" aria-expanded="false" aria-controls="rd-manager" aria-label="Abrir Reduções de Dano" title="Reduções de Dano">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z"></path>
+                    <path d="M9 12.2 11.1 14 15.4 9.7"></path>
+                  </svg>
+                </button>
+              </div>
+
+              <div id="rd-manager" class="rd-manager" hidden>
+                <p class="rd-manager-copy">RDs ativas reduzem perdas de PV, PA e SA. O Bloqueio ativo reduz apenas perdas de PV.</p>
+                <form id="rd-create-form" class="rd-create-form">
+                  <label>
+                    <span class="sr-only">Nome da RD</span>
+                    <input id="rd-name" type="text" maxlength="50" autocomplete="off" placeholder="Nome da RD" required />
+                  </label>
+                  <label>
+                    <span class="sr-only">Valor da RD</span>
+                    <input id="rd-value" type="number" value="1" min="0" max="999999" step="1" inputmode="numeric" required />
+                  </label>
+                  <button class="rd-add-button" type="submit" aria-label="Adicionar RD" title="Adicionar RD">+</button>
+                </form>
+                <p id="rd-empty" class="rd-empty">Nenhuma RD criada.</p>
+                <div id="rd-list" class="rd-list"></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="echo-panel" class="echo-panel" data-echo="" aria-labelledby="echo-panel-title">
+          <header class="echo-panel-head">
+            <p class="eyebrow">Eco do personagem</p>
+            <h2 id="echo-panel-title" class="echo-panel-title">Escolha um Eco</h2>
+            <div class="echo-segments" aria-label="Cinco segmentos do Eco">
+              <span class="echo-segment"></span>
+              <span class="echo-segment"></span>
+              <span class="echo-segment"></span>
+              <span class="echo-segment"></span>
+              <span class="echo-segment"></span>
+            </div>
+          </header>
+          <div class="echo-panel-body">
+            <article id="echo-lore-card" class="echo-lore-card">
+              <h3>Eco não definido</h3>
+              <p>Escolha um Eco ao lado do Nome para consultar suas informações.</p>
+            </article>
+            <article class="echo-ability-card">
+              <span class="echo-ability-star" aria-hidden="true">✦</span>
+              <h3>Habilidade de Eco</h3>
+              <p>Nenhuma Habilidade de Eco foi escolhida no Acervo.</p>
+            </article>
+          </div>
+        </section>
       </section>
 
       <section
@@ -4296,6 +5129,7 @@ h2 { color: #ece6d8; }
               <p>Nos dados principais, fica o maior resultado. Em extras, use formatos como 1d6 ou 2d4.</p>
             </div>
             <div class="skills-panel-actions">
+              <span id="training-cap-status" class="training-cap-status" aria-live="polite">Escolha uma Classe no Perfil</span>
               <div class="roll-formula" aria-label="Fórmula da rolagem">
                 <span>Melhor dado</span>
                 <b>+</b>
@@ -4395,7 +5229,7 @@ h2 { color: #ece6d8; }
             <p class="eyebrow">Registro III</p>
             <h1 id="abilities-title">Habilidades</h1>
           </div>
-          <p class="heading-note">Ataques, poderes, feitiços e progressões do personagem</p>
+          <p class="heading-note">Ataques, poderes, feitiços, classe e progressões do personagem</p>
         </div>
 
         <section class="abilities-panel" aria-label="Habilidades do personagem">
@@ -4425,6 +5259,14 @@ h2 { color: #ece6d8; }
                 aria-selected="false"
               >
                 Feitiços
+              </button>
+              <button
+                type="button"
+                role="tab"
+                data-ability-section="classes"
+                aria-selected="false"
+              >
+                Classe
               </button>
               <button
                 type="button"
@@ -4601,6 +5443,39 @@ h2 { color: #ece6d8; }
         <footer class="delete-skill-dialog-footer">
           <button class="dialog-button" type="button" data-close-delete-skill>Cancelar</button>
           <button id="confirm-delete-skill" class="delete-skill-confirm" type="button">Excluir</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="training-limit-modal" class="delete-skill-modal training-limit-modal" hidden>
+      <div class="roll-backdrop" data-close-training-limit aria-hidden="true"></div>
+      <section
+        id="training-limit-dialog"
+        class="delete-skill-dialog training-limit-dialog"
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="training-limit-title"
+        aria-describedby="training-limit-description"
+        tabindex="-1"
+      >
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+        <div class="delete-skill-content">
+          <span class="delete-skill-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 3 2.8 20h18.4L12 3Z"></path>
+              <path d="M12 9v5M12 17.2h.01"></path>
+            </svg>
+          </span>
+          <div>
+            <p class="eyebrow">Limite de treinamento</p>
+            <h2 id="training-limit-title">Ultrapassar o limite?</h2>
+            <p id="training-limit-description">Esta Perícia ultrapassa o limite concedido pela sua Classe. Deseja mantê-la mesmo assim?</p>
+          </div>
+        </div>
+        <footer class="delete-skill-dialog-footer">
+          <button class="dialog-button" type="button" data-close-training-limit>Não, voltar para Leigo</button>
+          <button id="confirm-training-limit" class="training-limit-confirm" type="button">Sim, ultrapassar</button>
         </footer>
       </section>
     </div>
@@ -4863,6 +5738,7 @@ h2 { color: #ece6d8; }
                   <option value="attacks">Ataques</option>
                   <option value="powers">Poderes</option>
                   <option value="spells">Feitiços</option>
+                  <option value="classes">Classe</option>
                   <option value="tree">Árvore</option>
                 </select>
               </label>
@@ -7176,6 +8052,7 @@ const ABILITY_SECTIONS = {
   attacks: { label: "Ataques", eyebrow: "Combate" },
   powers: { label: "Poderes", eyebrow: "Dons e técnicas" },
   spells: { label: "Feitiços", eyebrow: "Feitiçaria" },
+  classes: { label: "Classe", eyebrow: "Arquétipo" },
   tree: { label: "Árvore", eyebrow: "Progressão" },
 };
 
@@ -7187,6 +8064,150 @@ const TRAINING = {
   adepto: { label: "Adepto", die: 12 },
   treinado: { label: "Treinado", die: 20 },
 };
+
+const ECHOES = {
+  determinado: "O Determinado",
+  justo: "O Justo",
+  bondoso: "O Bondoso",
+  paciente: "O Paciente",
+  integro: "O Íntegro",
+  bravo: "O Bravo",
+  perseverante: "O Perseverante",
+  indiferente: "O Indiferente",
+};
+
+const ECHO_DETAILS = {
+  determinado: {
+    title: "O Determinado",
+    intro: [
+      "O Determinado é alguém movido por uma convicção difícil de abalar. Quando estabelece um objetivo, tende a continuar avançando mesmo diante de fracassos, pressão ou consequências desfavoráveis. Esse Eco representa personagens que encontram força justamente nos momentos em que algo tenta interrompê-los, transformando frustração, resistência e adversidade em impulso para seguir adiante.",
+      "Sua determinação não precisa surgir de coragem ou otimismo. Ela pode nascer de ambição, dever, orgulho, apego, esperança, obsessão ou qualquer outra razão suficientemente importante para fazê-lo continuar quando abandonar o caminho pareceria mais fácil.",
+    ],
+    characterTitle: "Personagens Determinados",
+    characters: [
+      "Personagens Determinados tendem a possuir objetivos, convicções ou desejos aos quais se agarram com intensidade. Eles podem insistir repetidamente diante de um obstáculo, colocar cada vez mais de si mesmos em uma ação ou simplesmente se recusar a ceder quando algo tenta quebrar sua vontade.",
+      "Isso não significa que todo Determinado seja imprudente ou incapaz de desistir. Alguns avançam agressivamente contra aquilo que os impede, enquanto outros suportam silenciosamente a pressão até encontrarem outra oportunidade. O que os aproxima é a dificuldade de aceitar que uma adversidade, por si só, seja suficiente para decidir quando algo deve terminar.",
+      "Essa característica também pode assumir formas menos positivas. A determinação pode se transformar em teimosia, obsessão ou incapacidade de reconhecer quando continuar possui um custo maior do que recuar. O mesmo impulso que permite a um personagem superar seus limites pode levá-lo a atravessá-los.",
+    ],
+  },
+  justo: {
+    title: "O Justo",
+    intro: [
+      "O Justo é alguém guiado por uma noção particularmente forte daquilo que considera correto, merecido ou proporcional. Esse Eco representa personagens que dificilmente permanecem indiferentes quando percebem abuso, desigualdade, traição ou alguma situação que viole seu senso de justiça, sentindo-se naturalmente inclinados a tomar uma posição diante dela.",
+      "Aquilo que um Justo considera correto, entretanto, não precisa corresponder às leis, aos costumes ou sequer à moral daqueles ao seu redor. Sua justiça pode nascer de princípios pessoais, dever, experiência, tradição, compaixão ou até de uma visão severa sobre aquilo que cada um merece.",
+    ],
+    characterTitle: "Personagens Justos",
+    characters: [
+      "Personagens Justos costumam observar com atenção a maneira como ações e consequências se relacionam. Alguns procuram proteger aqueles que consideram vítimas, outros desejam responsabilizar culpados, corrigir desequilíbrios ou simplesmente garantir que cada ser receba aquilo que acreditam ser devido.",
+      "Um Justo não precisa ser benevolente, obediente ou misericordioso. Dois personagens podem compartilhar esse Eco enquanto possuem ideias completamente opostas sobre aquilo que constitui justiça. Um pode acreditar em perdão e reparação, enquanto outro considera que toda ação deve possuir uma consequência equivalente.",
+      "Esse senso também pode se tornar inflexível. A busca pelo que considera correto pode levar um Justo a julgar situações antes de compreendê-las por completo, perseguir uma reparação além do necessário ou confundir justiça com punição. A mesma convicção que o impulsiona a enfrentar uma injustiça pode fazê-lo acreditar que possui o direito de decidir sozinho o que os outros merecem.",
+    ],
+  },
+  bondoso: {
+    title: "O Bondoso",
+    intro: [
+      "O Bondoso é alguém naturalmente inclinado a considerar o bem-estar daqueles ao seu redor e agir de maneira a favorecê-lo. Esse Eco representa personagens que encontram valor em ajudar, proteger, cuidar ou simplesmente tornar a situação de outro ser um pouco melhor, mesmo quando não existe uma recompensa imediata por isso.",
+      "Sua bondade não precisa nascer de inocência ou altruísmo absoluto. Ela pode surgir de empatia, responsabilidade, afeto, culpa, fé, princípios ou da simples escolha de não permanecer indiferente diante da necessidade de alguém.",
+    ],
+    characterTitle: "Personagens Bondosos",
+    characters: [
+      "Personagens Bondosos costumam demonstrar sua natureza através das pequenas e grandes formas pelas quais interferem positivamente na vida de outros seres. Alguns oferecem ajuda sem pensar duas vezes, outros preferem proteger discretamente, compartilhar recursos, prestar favores ou assumir responsabilidades que poderiam simplesmente ignorar.",
+      "Ser Bondoso não significa ser ingênuo, pacífico ou incapaz de causar dano. Um personagem pode ser severo, desconfiado ou até violento e ainda assim possuir esse Eco, desde que exista nele uma disposição genuína de fazer o bem quando considera que alguém precisa disso.",
+      "Essa característica também pode levá-lo a se colocar em segundo plano com frequência, assumir problemas que não lhe pertencem ou permitir que outros se aproveitem de sua disposição. A mesma vontade que o torna capaz de cuidar dos demais pode fazê-lo esquecer de preservar a si próprio.",
+    ],
+  },
+  paciente: {
+    title: "O Paciente",
+    intro: [
+      "O Paciente é alguém capaz de resistir à urgência de agir antes da hora, preferindo observar, esperar e reconhecer o momento mais favorável para intervir. Esse Eco representa personagens que encontram força na contenção, permitindo que situações se desenvolvam antes de comprometer seus recursos, suas decisões ou sua posição.",
+      "Sua paciência pode nascer de disciplina, cautela, experiência, confiança, frieza ou simplesmente de um temperamento naturalmente ponderado. Para o Paciente, esperar não significa permanecer inerte, mas compreender que nem toda oportunidade precisa ser aproveitada no instante em que aparece.",
+    ],
+    characterTitle: "Personagens Pacientes",
+    characters: [
+      "Personagens Pacientes costumam observar antes de se comprometer, permitindo que outras pessoas revelem suas intenções ou que uma oportunidade se torne mais favorável antes de agir. Alguns planejam cuidadosamente cada movimento, enquanto outros simplesmente possuem a tranquilidade necessária para não reagir à primeira provocação ou possibilidade que surge.",
+      "Ser Paciente não significa ser passivo, lento ou indeciso. Um personagem desse Eco pode agir com extrema rapidez quando considera que o momento chegou; sua característica está justamente em saber quando ainda não chegou.",
+      "Essa disposição também pode se tornar excessiva. Esperar pela condição perfeita pode significar permitir que oportunidades desapareçam, evitar decisões necessárias ou agir tarde demais. A mesma cautela que permite ao Paciente encontrar o momento ideal pode fazê-lo hesitar enquanto o mundo continua se movendo.",
+    ],
+  },
+  integro: {
+    title: "O Íntegro",
+    intro: [
+      "O Íntegro é alguém que procura permanecer fiel àquilo que considera essencial em si mesmo, mesmo quando as circunstâncias tornam mais fácil ceder. Esse Eco representa personagens que preservam suas convicções, compromissos e valores diante de pressão, tentação ou prejuízo, encontrando força justamente na decisão de não abandonar aquilo que escolheram sustentar.",
+      "Sua integridade não precisa estar ligada à bondade, à honra ou às leis. Ela pode nascer de princípios pessoais, lealdade, disciplina, orgulho, fé, dever ou de qualquer convicção suficientemente importante para que o personagem se recuse a traí-la.",
+    ],
+    characterTitle: "Personagens Íntegros",
+    characters: [
+      "Personagens Íntegros costumam demonstrar sua natureza quando aquilo em que acreditam é colocado à prova. Alguns mantêm promessas mesmo quando quebrá-las seria vantajoso, outros recusam propostas que contradizem seus princípios, permanecem ao lado de alguém apesar das consequências ou sustentam decisões que poderiam abandonar facilmente.",
+      "Ser Íntegro não significa estar sempre certo. Um personagem pode manter convicções equivocadas, severas ou até destrutivas e ainda assim possuir esse Eco. A Integridade representa principalmente a coerência entre aquilo em que acredita e aquilo que escolhe fazer quando existe uma razão real para ceder.",
+      "Essa característica também pode se tornar rigidez. A dificuldade de abandonar uma posição pode impedir o personagem de reconhecer erros, aceitar mudanças ou reconsiderar decisões que já não fazem sentido. A mesma firmeza que o mantém inteiro diante da pressão pode fazê-lo resistir até mesmo quando mudar seria necessário.",
+    ],
+  },
+  bravo: {
+    title: "O Bravo",
+    intro: [
+      "O Bravo é alguém que encontra força na decisão de avançar mesmo quando reconhece o perigo diante de si. Esse Eco representa personagens que não dependem da ausência de medo para agir, mas da disposição de enfrentá-lo, colocando-se voluntariamente em situações arriscadas quando acreditam que recuar significaria abandonar aquilo que precisa ser feito.",
+      "Sua bravura pode nascer de confiança, dever, orgulho, proteção, impulso, raiva ou simples coragem diante do desconhecido. O que define o Bravo não é procurar o perigo por si só, mas aceitar conscientemente seus riscos quando considera que enfrentá-los vale a pena.",
+    ],
+    characterTitle: "Personagens Bravos",
+    characters: [
+      "Personagens Bravos costumam demonstrar sua natureza quando existe uma opção mais segura, mas escolhem assumir uma posição mais arriscada para alcançar algo importante. Alguns avançam primeiro contra uma ameaça, outros permanecem onde seria mais prudente fugir, colocam-se entre o perigo e outra pessoa ou aceitam enfrentar situações que naturalmente provocariam medo.",
+      "Ser Bravo não significa ser imprudente ou incapaz de sentir receio. Um personagem pode compreender perfeitamente o risco de uma situação e ainda assim possuir esse Eco. Sua bravura está justamente em reconhecer aquilo que pode dar errado e decidir agir apesar disso.",
+      "Essa característica também pode se transformar em temeridade. A necessidade de provar coragem, enfrentar desafios ou evitar qualquer aparência de covardia pode levar o personagem a aceitar riscos desnecessários. A mesma disposição que permite ao Bravo caminhar em direção ao perigo pode fazê-lo avançar quando recuar seria a escolha mais sensata.",
+    ],
+  },
+  perseverante: {
+    title: "O Perseverante",
+    intro: [
+      "O Perseverante é alguém capaz de continuar mesmo quando alcançar aquilo que deseja exige tempo, desgaste ou sucessivas tentativas. Esse Eco representa personagens que não dependem de resultados imediatos para manter seus esforços, encontrando força na continuidade e na capacidade de avançar pouco a pouco diante de obstáculos que não podem ser superados de uma única vez.",
+      "Sua perseverança pode nascer de disciplina, esperança, necessidade, responsabilidade, teimosia ou simplesmente da recusa em abandonar algo no qual já investiu tanto de si. Para o Perseverante, um caminho difícil não é necessariamente um caminho impossível.",
+    ],
+    characterTitle: "Personagens Perseverantes",
+    characters: [
+      "Personagens Perseverantes costumam demonstrar sua natureza em situações nas quais progresso exige continuidade. Alguns retomam um trabalho após repetidos contratempos, outros suportam longos períodos de desgaste, perseguem objetivos que parecem cada vez mais distantes ou simplesmente continuam avançando quando resultados imediatos deixaram de aparecer.",
+      "Ser Perseverante não significa insistir cegamente em uma única abordagem. Diferente do Determinado, que encontra impulso para superar uma adversidade presente, o Perseverante se destaca por permanecer comprometido ao longo do tempo, adaptando seus métodos sempre que necessário sem abandonar facilmente aquilo que pretende alcançar.",
+      "Essa característica também pode fazê-lo permanecer preso a algo por tempo demais. O investimento acumulado em um objetivo pode tornar difícil reconhecer quando ele deixou de valer o esforço, levando o personagem a continuar apenas porque já percorreu uma grande parte do caminho. A mesma resistência ao desgaste que o faz seguir adiante pode dificultar reconhecer quando é hora de parar.",
+    ],
+  },
+};
+
+const CHARACTER_CLASSES = {
+  vanguardista: {
+    label: "Vanguardista",
+    pvInitial: 10,
+    pvPerLevel: 8,
+    paInitial: 10,
+    paPerLevel: 5,
+    saInitial: 13,
+    saPerLevel: 1,
+    defenseBase: 10,
+    adeptBase: 2,
+  },
+  especialista: {
+    label: "Especialista",
+    pvInitial: 9,
+    pvPerLevel: 6,
+    paInitial: 10,
+    paPerLevel: 5,
+    saInitial: 16,
+    saPerLevel: 2,
+    defenseBase: 12,
+    adeptBase: 6,
+  },
+  arcanista: {
+    label: "Arcanista",
+    pvInitial: 8,
+    pvPerLevel: 4,
+    paInitial: 11,
+    paPerLevel: 7,
+    saInitial: 16,
+    saPerLevel: 3,
+    defenseBase: 8,
+    adeptBase: 4,
+  },
+};
+
+const COMBAT_ZONES = new Set(["easy", "medium", "hard"]);
+const COMBAT_MARGINS = new Set(["partial", "normal", "good", "extreme"]);
 
 const DIFFICULTIES = {
   easy: {
@@ -7281,6 +8302,35 @@ const featureToggleButton = document.querySelector("#feature-toggle");
 const selectedFeaturesCount = document.querySelector("#selected-features-count");
 const selectedFeaturesEmpty = document.querySelector("#selected-features-empty");
 const selectedFeaturesList = document.querySelector("#selected-features-list");
+const characterEchoSelect = document.querySelector("#character-echo");
+const characterClassSelect = document.querySelector("#character-class");
+const characterLevelInput = document.querySelector("#character-level");
+const echoChoiceWrap = document.querySelector("#echo-choice-wrap");
+const classChoiceWrap = document.querySelector("#class-choice-wrap");
+const conditionAlerts = document.querySelector("#condition-alerts");
+const defenseZoneSelect = document.querySelector("#defense-zone");
+const defenseMarginSelect = document.querySelector("#defense-margin");
+const evasionZoneSelect = document.querySelector("#evasion-zone");
+const evasionMarginSelect = document.querySelector("#evasion-margin");
+const blockValueInput = document.querySelector("#block-value");
+const blockActiveInput = document.querySelector("#block-active");
+const rdManagerButton = document.querySelector("#rd-manager-button");
+const rdManager = document.querySelector("#rd-manager");
+const rdCreateForm = document.querySelector("#rd-create-form");
+const rdNameInput = document.querySelector("#rd-name");
+const rdValueInput = document.querySelector("#rd-value");
+const rdEmpty = document.querySelector("#rd-empty");
+const rdList = document.querySelector("#rd-list");
+const echoPanel = document.querySelector("#echo-panel");
+const echoPanelTitle = document.querySelector("#echo-panel-title");
+const echoLoreCard = document.querySelector("#echo-lore-card");
+const defenseBaseValue = document.querySelector("#defense-base-value");
+const classCalculationNote = document.querySelector("#class-calculation-note");
+const trainingCapStatus = document.querySelector("#training-cap-status");
+const trainingLimitModal = document.querySelector("#training-limit-modal");
+const trainingLimitDialog = document.querySelector("#training-limit-dialog");
+const trainingLimitDescription = document.querySelector("#training-limit-description");
+const confirmTrainingLimitButton = document.querySelector("#confirm-training-limit");
 const openCustomSkillButton = document.querySelector("#open-custom-skill");
 const customSkillModal = document.querySelector("#custom-skill-modal");
 const customSkillDialog = document.querySelector("#custom-skill-dialog");
@@ -7373,6 +8423,12 @@ let activeAbilityTrigger = null;
 let abilityEditorScope = "sheet";
 let pendingAbilityPreviewUrl = "";
 let grimoireAbilities = [];
+let damageReductions = [];
+const resourceMaxManual = { pv: false, pa: false, sa: false };
+let defenseWasManuallySet = false;
+const skillLimitApprovedKeys = new Set();
+const trainingLimitQueue = [];
+let activeTrainingLimitRequest = null;
 const photoEditorState = {
   source: "",
   image: null,
@@ -7432,6 +8488,417 @@ function captureSkillRowState() {
   return state;
 }
 
+function clampInteger(value, minimum = 0, maximum = 999999, fallback = minimum) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) ? Math.min(maximum, Math.max(minimum, parsed)) : fallback;
+}
+
+function getAttributeValue(attribute) {
+  const input = document.querySelector(`[data-attribute="${attribute}"]`);
+  return clampInteger(input?.value, -99, 99, 1);
+}
+
+function getCharacterLevel() {
+  return clampInteger(characterLevelInput.value, 1, 10, 1);
+}
+
+function getResourceInputs(resource) {
+  return {
+    card: document.querySelector(`[data-resource="${resource}"]`),
+    current: document.querySelector(`[data-resource-current="${resource}"]`),
+    maximum: document.querySelector(`[data-resource-max="${resource}"]`),
+    delta: document.querySelector(`[data-resource-delta="${resource}"]`),
+    temporary: document.querySelector(`[data-resource-temporary="${resource}"]`),
+  };
+}
+
+function readResourceValues(resource) {
+  const inputs = getResourceInputs(resource);
+  const maximum = clampInteger(inputs.maximum?.value, 0, 999999, 0);
+  let current = clampInteger(inputs.current?.value, 0, 999999, 0);
+  if (resource === "sa") current = Math.min(current, maximum);
+  return { current, max: maximum, maxManual: Boolean(resourceMaxManual[resource]) };
+}
+
+function setResourceValues(resource, values, options = {}) {
+  const inputs = getResourceInputs(resource);
+  const maximum = clampInteger(values?.max, 0, 999999, 0);
+  let current = clampInteger(values?.current, 0, 999999, 0);
+  if (resource === "sa") current = Math.min(current, maximum);
+  inputs.maximum.value = String(maximum);
+  inputs.current.value = String(current);
+  if (options.setManual !== false) resourceMaxManual[resource] = Boolean(values?.maxManual);
+}
+
+function calculateClassStatistics() {
+  const classDefinition = CHARACTER_CLASSES[characterClassSelect.value];
+  if (!classDefinition) return null;
+  const level = getCharacterLevel();
+  const constitution = getAttributeValue("CON");
+  const agility = getAttributeValue("AGI");
+  return {
+    pv: Math.max(0, classDefinition.pvInitial + (classDefinition.pvPerLevel + constitution) * level),
+    pa: Math.max(0, classDefinition.paInitial + classDefinition.paPerLevel * level),
+    sa: Math.max(0, classDefinition.saInitial + classDefinition.saPerLevel * level),
+    defense: classDefinition.defenseBase + agility,
+    trainingCap: Math.max(0, classDefinition.adeptBase + getAttributeValue("INT")),
+    classDefinition,
+    level,
+  };
+}
+
+function defensePhraseForValue(value) {
+  if (value <= 9) return { zone: "easy", margin: "partial" };
+  if (value <= 11) return { zone: "easy", margin: "normal" };
+  if (value <= 14) return { zone: "medium", margin: "normal" };
+  if (value <= 17) return { zone: "medium", margin: "good" };
+  return { zone: "hard", margin: "good" };
+}
+
+function evasionPhraseForDefense(zone, margin) {
+  const zones = ["easy", "medium", "hard"];
+  const safeZone = COMBAT_ZONES.has(zone) ? zone : "medium";
+  if (margin === "partial") return { zone: safeZone, margin: "normal" };
+  if (margin === "normal") return { zone: safeZone, margin: "good" };
+  const nextZone = zones[Math.min(zones.length - 1, zones.indexOf(safeZone) + 1)];
+  return { zone: nextZone, margin: "good" };
+}
+
+function updateEvasionFromDefense() {
+  const phrase = evasionPhraseForDefense(defenseZoneSelect.value, defenseMarginSelect.value);
+  evasionZoneSelect.value = phrase.zone;
+  evasionMarginSelect.value = phrase.margin;
+}
+
+function renderEchoPanel() {
+  const echoKey = ECHOES[characterEchoSelect.value] ? characterEchoSelect.value : "";
+  const details = ECHO_DETAILS[echoKey];
+  echoPanel.dataset.echo = echoKey;
+  echoPanelTitle.textContent = echoKey ? ECHOES[echoKey] : "Escolha um Eco";
+  echoLoreCard.replaceChildren();
+
+  const createParagraph = (text) => {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    return paragraph;
+  };
+
+  if (!echoKey) {
+    echoLoreCard.append(createParagraph("Escolha um Eco ao lado do nome para revelar sua descrição."));
+    return;
+  }
+  if (!details) {
+    echoLoreCard.append(createParagraph("As informações de O Indiferente ainda não foram registradas."));
+    return;
+  }
+
+  const title = document.createElement("h3");
+  title.textContent = details.title;
+  echoLoreCard.append(title, ...details.intro.map(createParagraph));
+  const characterTitle = document.createElement("h3");
+  characterTitle.textContent = details.characterTitle;
+  echoLoreCard.append(characterTitle, ...details.characters.map(createParagraph));
+}
+
+function updateIdentityChoiceAppearance() {
+  const echo = ECHOES[characterEchoSelect.value] ? characterEchoSelect.value : "";
+  const classKey = CHARACTER_CLASSES[characterClassSelect.value] ? characterClassSelect.value : "";
+  echoChoiceWrap.classList.toggle("has-value", Boolean(echo));
+  echoChoiceWrap.dataset.echo = echo;
+  classChoiceWrap.classList.toggle("has-value", Boolean(classKey));
+  classChoiceWrap.dataset.characterClass = classKey;
+  renderEchoPanel();
+}
+
+function applyClassCalculations(options = {}) {
+  const calculation = calculateClassStatistics();
+  updateIdentityChoiceAppearance();
+
+  if (!calculation) {
+    defenseBaseValue.textContent = "Base —";
+    classCalculationNote.textContent = "Escolha uma Classe para calcular os valores iniciais.";
+    updateEvasionFromDefense();
+    updateTrainingCapStatus();
+    return;
+  }
+
+  ["pv", "pa", "sa"].forEach((resource) => {
+    const inputs = getResourceInputs(resource);
+    const oldMaximum = clampInteger(inputs.maximum.value, 0, 999999, 0);
+    const oldCurrent = clampInteger(inputs.current.value, 0, 999999, 0);
+    if (!resourceMaxManual[resource]) {
+      inputs.maximum.value = String(calculation[resource]);
+      if (options.initializeCurrent && oldMaximum === 0 && oldCurrent === 0) {
+        inputs.current.value = String(calculation[resource]);
+      }
+    }
+  });
+
+  defenseBaseValue.textContent = `Base ${calculation.defense}`;
+  const hasManualMaximum = ["pv", "pa", "sa"].some((resource) => resourceMaxManual[resource]);
+  classCalculationNote.textContent = `${calculation.classDefinition.label} · Nível ${calculation.level} · ${hasManualMaximum ? "máximos manuais preservados" : "máximos calculados automaticamente"}`;
+  if (!defenseWasManuallySet) {
+    const phrase = defensePhraseForValue(calculation.defense);
+    defenseZoneSelect.value = phrase.zone;
+    defenseMarginSelect.value = phrase.margin;
+  }
+  updateEvasionFromDefense();
+  renderResourceState();
+  updateTrainingCapStatus();
+}
+
+function createConditionAlert(label, resource, critical = false) {
+  const alert = document.createElement("span");
+  alert.className = `condition-alert is-${resource}${critical ? " is-critical" : ""}`;
+  alert.textContent = label;
+  return alert;
+}
+
+function renderResourceState() {
+  const values = {};
+  ["pv", "pa", "sa"].forEach((resource) => {
+    const inputs = getResourceInputs(resource);
+    const maximum = clampInteger(inputs.maximum.value, 0, 999999, 0);
+    const current = clampInteger(inputs.current.value, 0, 999999, 0);
+    values[resource] = { current, max: maximum };
+    const percentage = maximum > 0 ? Math.min(100, Math.max(0, (current / maximum) * 100)) : 0;
+    const meter = inputs.card.querySelector(".resource-meter");
+    const fill = meter.querySelector(".resource-meter-fill");
+    fill.style.width = `${percentage}%`;
+    meter.setAttribute("aria-valuemax", String(maximum));
+    meter.setAttribute("aria-valuenow", String(Math.min(current, maximum)));
+
+    const temporary = resource !== "sa" ? Math.max(0, current - maximum) : 0;
+    inputs.card.classList.toggle("has-temporary", temporary > 0);
+    if (inputs.temporary) {
+      inputs.temporary.hidden = temporary === 0;
+      inputs.temporary.textContent = temporary ? `+${temporary} temporários` : "";
+    }
+  });
+
+  const alerts = [];
+  if (values.pv.max > 0) {
+    if (values.pv.current <= 0) alerts.push(createConditionAlert("Últimos Fôlegos", "pv", true));
+    else if (values.pv.current <= values.pv.max / 2) alerts.push(createConditionAlert("Machucado", "pv"));
+  }
+  if (values.pa.max > 0 && values.pa.current <= 0) {
+    alerts.push(createConditionAlert("Exausto", "pa", true));
+  }
+  if (values.sa.max > 0) {
+    if (values.sa.current <= 0) alerts.push(createConditionAlert("Enlouquecendo", "sa", true));
+    else if (values.sa.current <= values.sa.max / 2) alerts.push(createConditionAlert("Perturbado", "sa"));
+  }
+  conditionAlerts.replaceChildren(...alerts);
+}
+
+function normalizeResourceInput(resource, field) {
+  const inputs = getResourceInputs(resource);
+  const maximum = clampInteger(inputs.maximum.value, 0, 999999, 0);
+  let current = clampInteger(inputs.current.value, 0, 999999, 0);
+  if (resource === "sa") current = Math.min(current, maximum);
+  inputs.maximum.value = String(maximum);
+  inputs.current.value = String(current);
+  if (field === "max") resourceMaxManual[resource] = true;
+  renderResourceState();
+  notifySheetChanged("resources");
+}
+
+function sanitizeDamageReduction(rawReduction) {
+  if (!rawReduction || typeof rawReduction !== "object") return null;
+  const name = String(rawReduction.name || "").trim().slice(0, 50);
+  if (!name) return null;
+  return {
+    id: String(rawReduction.id || `rd-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`).slice(0, 100),
+    name,
+    value: clampInteger(rawReduction.value, 0, 999999, 0),
+    active: Boolean(rawReduction.active),
+  };
+}
+
+function renderDamageReductions() {
+  rdList.replaceChildren();
+  rdEmpty.hidden = damageReductions.length > 0;
+  damageReductions.forEach((reduction) => {
+    const item = document.createElement("div");
+    item.className = `rd-item${reduction.active ? " is-active" : ""}`;
+    item.dataset.rdId = reduction.id;
+
+    const toggle = document.createElement("input");
+    toggle.type = "checkbox";
+    toggle.checked = reduction.active;
+    toggle.dataset.rdField = "active";
+    toggle.setAttribute("aria-label", `Ativar ${reduction.name}`);
+
+    const name = document.createElement("input");
+    name.type = "text";
+    name.value = reduction.name;
+    name.maxLength = 50;
+    name.dataset.rdField = "name";
+    name.setAttribute("aria-label", "Nome da redução de dano");
+
+    const value = document.createElement("input");
+    value.type = "number";
+    value.value = String(reduction.value);
+    value.min = "0";
+    value.max = "999999";
+    value.step = "1";
+    value.inputMode = "numeric";
+    value.dataset.rdField = "value";
+    value.setAttribute("aria-label", `Valor de ${reduction.name}`);
+
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "rd-delete-button";
+    remove.dataset.rdDelete = reduction.id;
+    remove.setAttribute("aria-label", `Excluir ${reduction.name}`);
+    remove.textContent = "×";
+    item.append(toggle, name, value, remove);
+    rdList.append(item);
+  });
+}
+
+function getActiveProtection(resource) {
+  const reductions = damageReductions
+    .filter((reduction) => reduction.active)
+    .reduce((total, reduction) => total + reduction.value, 0);
+  const block = resource === "pv" && blockActiveInput.checked
+    ? clampInteger(blockValueInput.value, 0, 999999, 0)
+    : 0;
+  return reductions + block;
+}
+
+function showResourceAdjustment(resource, requested, absorbed, actualLoss) {
+  const feedback = document.querySelector(`[data-resource-feedback="${resource}"]`);
+  if (!feedback) return;
+  if (absorbed <= 0) {
+    feedback.hidden = true;
+    feedback.textContent = "";
+    return;
+  }
+  feedback.hidden = false;
+  feedback.textContent = `${requested} de perda − ${absorbed} de proteção = ${actualLoss}`;
+}
+
+function adjustResource(resource, direction) {
+  const inputs = getResourceInputs(resource);
+  const delta = Math.abs(clampInteger(inputs.delta.value, 0, 999999, 0));
+  const maximum = clampInteger(inputs.maximum.value, 0, 999999, 0);
+  const current = clampInteger(inputs.current.value, 0, 999999, 0);
+  const upperBound = resource === "sa" ? maximum : 999999;
+  if (direction < 0) {
+    const protection = getActiveProtection(resource);
+    const absorbed = Math.min(delta, protection);
+    const actualLoss = Math.max(0, delta - protection);
+    inputs.current.value = String(Math.max(0, current - actualLoss));
+    showResourceAdjustment(resource, delta, absorbed, actualLoss);
+  } else {
+    inputs.current.value = String(Math.min(upperBound, current + delta));
+    showResourceAdjustment(resource, 0, 0, 0);
+  }
+  renderResourceState();
+  notifySheetChanged("resources");
+}
+
+function getTrainingLimit() {
+  return calculateClassStatistics()?.trainingCap ?? null;
+}
+
+function getTrainedSkillEntries() {
+  return [...skillsList.querySelectorAll(".skill-row")]
+    .map((row) => {
+      const select = row.querySelector("[data-training-index]");
+      const skill = SKILLS[Number.parseInt(row.dataset.skillIndex, 10)];
+      return skill && select && select.value !== "leigo"
+        ? { row, select, skill, key: getSkillKey(skill) }
+        : null;
+    })
+    .filter(Boolean);
+}
+
+function updateTrainingCapStatus() {
+  const limit = getTrainingLimit();
+  const trainedCount = getTrainedSkillEntries().length;
+  trainingCapStatus.classList.remove("is-ready", "is-over");
+  if (limit === null) {
+    trainingCapStatus.textContent = "Escolha uma Classe no Perfil";
+    return;
+  }
+  trainingCapStatus.textContent = `${trainedCount} / ${limit} Perícias da Classe`;
+  trainingCapStatus.classList.add(trainedCount > limit ? "is-over" : "is-ready");
+}
+
+function queueTrainingLimitRequest(entry, previousTraining = "leigo") {
+  if (!entry || skillLimitApprovedKeys.has(entry.key)) return;
+  if (activeTrainingLimitRequest?.key === entry.key) return;
+  if (trainingLimitQueue.some((request) => request.key === entry.key)) return;
+  trainingLimitQueue.push({ ...entry, previousTraining: TRAINING[previousTraining] ? previousTraining : "leigo" });
+  showNextTrainingLimitRequest();
+}
+
+function showNextTrainingLimitRequest() {
+  if (activeTrainingLimitRequest || trainingLimitModal.hidden === false) return;
+  activeTrainingLimitRequest = trainingLimitQueue.shift() || null;
+  if (!activeTrainingLimitRequest) return;
+  const limit = getTrainingLimit();
+  const classLabel = CHARACTER_CLASSES[characterClassSelect.value]?.label || "Classe escolhida";
+  trainingLimitDescription.textContent = `${activeTrainingLimitRequest.skill.name} ultrapassa o limite de ${limit ?? 0} escolhas concedidas pela Classe ${classLabel}. Deseja mantê-la mesmo assim?`;
+  trainingLimitModal.hidden = false;
+  syncModalLock();
+  trainingLimitDialog.focus();
+}
+
+function resolveTrainingLimitRequest(keepTraining) {
+  const request = activeTrainingLimitRequest;
+  if (!request) return;
+  if (keepTraining) {
+    skillLimitApprovedKeys.add(request.key);
+    request.select.dataset.previousTraining = request.select.value;
+  } else {
+    request.select.value = request.previousTraining;
+    request.select.dataset.previousTraining = request.previousTraining;
+    request.row.querySelector(".training-die").innerHTML = dieSvg(TRAINING[request.previousTraining].die);
+    updateTrainingIndicator(request.row, request.previousTraining);
+    skillLimitApprovedKeys.delete(request.key);
+  }
+  activeTrainingLimitRequest = null;
+  trainingLimitModal.hidden = true;
+  syncModalLock();
+  filterSkills();
+  updateTrainingCapStatus();
+  notifySheetChanged("training-limit");
+  auditTrainingLimit();
+  showNextTrainingLimitRequest();
+}
+
+function auditTrainingLimit() {
+  updateTrainingCapStatus();
+  if (isApplyingExternalState) return;
+  const limit = getTrainingLimit();
+  if (limit === null) return;
+  const trained = getTrainedSkillEntries();
+  const trainedKeys = new Set(trained.map((entry) => entry.key));
+  [...skillLimitApprovedKeys].forEach((key) => {
+    if (!trainedKeys.has(key)) skillLimitApprovedKeys.delete(key);
+  });
+  const excess = Math.max(0, trained.length - limit);
+  if (excess === 0) {
+    skillLimitApprovedKeys.clear();
+    return;
+  }
+  const approvedCount = trained.filter((entry) => skillLimitApprovedKeys.has(entry.key)).length;
+  const pendingKeys = new Set([
+    ...(activeTrainingLimitRequest ? [activeTrainingLimitRequest.key] : []),
+    ...trainingLimitQueue.map((request) => request.key),
+  ]);
+  const pendingCount = trained.filter((entry) => pendingKeys.has(entry.key)).length;
+  const needed = Math.max(0, excess - approvedCount - pendingCount);
+  if (!needed) return;
+  trained
+    .filter((entry) => !skillLimitApprovedKeys.has(entry.key) && !pendingKeys.has(entry.key))
+    .slice(-needed)
+    .forEach((entry) => queueTrainingLimitRequest(entry, "leigo"));
+}
+
 function captureCompleteSheetState() {
   const attributes = {};
   document.querySelectorAll("[data-attribute]").forEach((input) => {
@@ -7454,17 +8921,42 @@ function captureCompleteSheetState() {
 
   const portraitPreview = document.querySelector("#portrait-preview");
   return {
-    schemaVersion: 3,
+    schemaVersion: 5,
     profile: {
       name: document.querySelector("#character-name").value.trim().slice(0, 120),
       background: document.querySelector("#character-background").value.trim().slice(0, 240),
       portrait: portraitPreview.hidden ? "" : String(portraitPreview.src || ""),
+      echo: ECHOES[characterEchoSelect.value] ? characterEchoSelect.value : "",
+      classKey: CHARACTER_CLASSES[characterClassSelect.value] ? characterClassSelect.value : "",
+      level: getCharacterLevel(),
       attributes,
+      resources: {
+        pv: readResourceValues("pv"),
+        pa: readResourceValues("pa"),
+        sa: readResourceValues("sa"),
+      },
+      combat: {
+        defense: {
+          zone: COMBAT_ZONES.has(defenseZoneSelect.value) ? defenseZoneSelect.value : "medium",
+          margin: COMBAT_MARGINS.has(defenseMarginSelect.value) ? defenseMarginSelect.value : "normal",
+          manual: defenseWasManuallySet,
+        },
+        evasion: {
+          zone: COMBAT_ZONES.has(evasionZoneSelect.value) ? evasionZoneSelect.value : "medium",
+          margin: COMBAT_MARGINS.has(evasionMarginSelect.value) ? evasionMarginSelect.value : "normal",
+        },
+        block: clampInteger(blockValueInput.value, 0, 999999, 0),
+        blockActive: blockActiveInput.checked,
+        reductions: damageReductions.map((reduction) => ({ ...reduction })),
+      },
     },
     sheet: {
       difficulty: DIFFICULTIES[selectedDifficulty] ? selectedDifficulty : "medium",
       skillRows,
       selectedFeatureIds: [...selectedFeatureIds],
+      skillLimitApprovedIds: [...skillLimitApprovedKeys].filter(
+        (key) => skillRows[key] && skillRows[key].training !== "leigo",
+      ),
     },
     customSkills: getCustomSkillsForCloud(),
     abilities: abilities.map((ability) => ({ ...ability })),
@@ -7521,17 +9013,33 @@ function sanitizeStoredRowState(rawState) {
 
 function createCleanSheetState() {
   return {
-    schemaVersion: 3,
+    schemaVersion: 5,
     profile: {
       name: "",
       background: "",
       portrait: "",
+      echo: "",
+      classKey: "",
+      level: 1,
       attributes: { FOR: 1, AGI: 1, INT: 1, CON: 1, POD: 1 },
+      resources: {
+        pv: { current: 0, max: 0, maxManual: false },
+        pa: { current: 0, max: 0, maxManual: false },
+        sa: { current: 0, max: 0, maxManual: false },
+      },
+      combat: {
+        defense: { zone: "medium", margin: "normal", manual: false },
+        evasion: { zone: "medium", margin: "normal" },
+        block: 0,
+        blockActive: false,
+        reductions: [],
+      },
     },
     sheet: {
       difficulty: "medium",
       skillRows: {},
       selectedFeatureIds: [],
+      skillLimitApprovedIds: [],
     },
     customSkills: [],
     abilities: [],
@@ -7604,6 +9112,16 @@ function applyCompleteSheetState(rawState, options = {}) {
   isApplyingExternalState = true;
 
   try {
+    trainingLimitQueue.length = 0;
+    activeTrainingLimitRequest = null;
+    trainingLimitModal.hidden = true;
+    rdManager.hidden = true;
+    rdManagerButton.setAttribute("aria-expanded", "false");
+    document.querySelectorAll("[data-resource-feedback]").forEach((feedback) => {
+      feedback.hidden = true;
+      feedback.textContent = "";
+    });
+    syncModalLock();
     replaceCustomSkills(rawState.customSkills);
     sortSkillsAlphabetically();
     rebuildFeatureCatalog();
@@ -7617,10 +9135,52 @@ function applyCompleteSheetState(rawState, options = {}) {
 
     document.querySelector("#character-name").value = String(profile.name || "").slice(0, 120);
     document.querySelector("#character-background").value = String(profile.background || "").slice(0, 240);
+    characterEchoSelect.value = ECHOES[profile.echo] ? profile.echo : "";
+    characterClassSelect.value = CHARACTER_CLASSES[profile.classKey] ? profile.classKey : "";
+    characterLevelInput.value = String(clampInteger(profile.level, 1, 10, 1));
     document.querySelectorAll("[data-attribute]").forEach((input) => {
       const parsed = Number.parseInt(profile.attributes?.[input.dataset.attribute], 10);
       input.value = String(Number.isFinite(parsed) ? Math.min(99, Math.max(-99, parsed)) : 1);
     });
+
+    const storedResources = profile.resources && typeof profile.resources === "object"
+      ? profile.resources
+      : {};
+    ["pv", "pa", "sa"].forEach((resource) => {
+      const stored = storedResources[resource] && typeof storedResources[resource] === "object"
+        ? storedResources[resource]
+        : {};
+      setResourceValues(resource, {
+        current: stored.current,
+        max: stored.max,
+        maxManual: Boolean(stored.maxManual),
+      });
+    });
+
+    const storedCombat = profile.combat && typeof profile.combat === "object" ? profile.combat : {};
+    const storedDefense = storedCombat.defense && typeof storedCombat.defense === "object"
+      ? storedCombat.defense
+      : {};
+    defenseWasManuallySet = Boolean(storedDefense.manual);
+    defenseZoneSelect.value = COMBAT_ZONES.has(storedDefense.zone) ? storedDefense.zone : "medium";
+    defenseMarginSelect.value = COMBAT_MARGINS.has(storedDefense.margin) ? storedDefense.margin : "normal";
+    blockValueInput.value = String(clampInteger(storedCombat.block, 0, 999999, 0));
+    blockActiveInput.checked = Boolean(storedCombat.blockActive);
+    damageReductions = (Array.isArray(storedCombat.reductions) ? storedCombat.reductions : [])
+      .map(sanitizeDamageReduction)
+      .filter(Boolean);
+    renderDamageReductions();
+
+    skillLimitApprovedKeys.clear();
+    (Array.isArray(sheet.skillLimitApprovedIds) ? sheet.skillLimitApprovedIds : []).forEach((key) => {
+      if (typeof key === "string" && key.length <= 160) skillLimitApprovedKeys.add(key);
+    });
+
+    const shouldInitializeClassValues = Boolean(characterClassSelect.value) && ["pv", "pa", "sa"]
+      .every((resource) => readResourceValues(resource).max === 0 && !resourceMaxManual[resource]);
+    applyClassCalculations({ initializeCurrent: shouldInitializeClassValues });
+    characterClassSelect.dataset.previousValue = characterClassSelect.value;
+    renderResourceState();
 
     const portraitPreview = document.querySelector("#portrait-preview");
     const portraitEmpty = document.querySelector("#portrait-empty");
@@ -7648,6 +9208,8 @@ function applyCompleteSheetState(rawState, options = {}) {
     attributeFilter.value = "all";
     trainingFilter.value = "all";
     filterSkills();
+    updateTrainingCapStatus();
+    queueMicrotask(() => auditTrainingLimit());
     return true;
   } finally {
     isApplyingExternalState = false;
@@ -7778,12 +9340,14 @@ function renderSkills(rowStates = captureSkillRowState()) {
 
     attributeSelect.value = attribute;
     trainingSelect.value = training;
+    trainingSelect.dataset.previousTraining = training;
     mainDiceInput.value = state.mainDiceCount || "1";
     diceInput.value = state.diceModifier || "";
     fixedInput.value = state.fixedModifier || "";
     row.querySelector(".training-die").innerHTML = dieSvg(TRAINING[training].die);
     updateTrainingIndicator(row, training);
   });
+  updateTrainingCapStatus();
 }
 
 function hydrateLegendDice() {
@@ -8848,6 +10412,7 @@ function syncModalLock() {
     featureDetailModal,
     customSkillModal,
     deleteSkillModal,
+    trainingLimitModal,
     photoEditorModal,
     abilityEditorModal,
     grimoirePickerModal,
@@ -9938,10 +11503,31 @@ skillsList.addEventListener("change", (event) => {
   if (event.target.matches("[data-training-index]")) {
     const training = TRAINING[event.target.value];
     const row = event.target.closest(".skill-row");
+    const skill = SKILLS[Number.parseInt(row.dataset.skillIndex, 10)];
+    const previousTraining = TRAINING[event.target.dataset.previousTraining]
+      ? event.target.dataset.previousTraining
+      : "leigo";
     const icon = row.querySelector(".training-die");
     icon.innerHTML = dieSvg(training.die);
     updateTrainingIndicator(row, event.target.value);
     filterSkills();
+    if (event.target.value === "leigo") {
+      skillLimitApprovedKeys.delete(getSkillKey(skill));
+      event.target.dataset.previousTraining = "leigo";
+    } else if (
+      previousTraining === "leigo" &&
+      getTrainingLimit() !== null &&
+      getTrainedSkillEntries().length > getTrainingLimit()
+    ) {
+      queueTrainingLimitRequest(
+        { row, select: event.target, skill, key: getSkillKey(skill) },
+        previousTraining,
+      );
+    } else {
+      event.target.dataset.previousTraining = event.target.value;
+    }
+    updateTrainingCapStatus();
+    auditTrainingLimit();
   }
 
   if (event.target.matches("[data-skill-attribute]")) {
@@ -9968,10 +11554,158 @@ skillsList.addEventListener("input", (event) => {
   }
 });
 
-document.querySelectorAll("#character-name, #character-background, [data-attribute]").forEach((input) => {
+document.querySelectorAll("#character-name, #character-background").forEach((input) => {
   input.addEventListener("input", () => notifySheetChanged("profile"));
   input.addEventListener("change", () => notifySheetChanged("profile"));
 });
+
+document.querySelectorAll("[data-attribute]").forEach((input) => {
+  input.addEventListener("input", () => {
+    applyClassCalculations();
+    notifySheetChanged("profile");
+  });
+  input.addEventListener("change", () => {
+    input.value = String(clampInteger(input.value, -99, 99, 1));
+    applyClassCalculations();
+    if (input.dataset.attribute === "INT") auditTrainingLimit();
+    notifySheetChanged("profile");
+  });
+});
+
+characterEchoSelect.addEventListener("change", () => {
+  updateIdentityChoiceAppearance();
+  notifySheetChanged("echo");
+});
+
+characterClassSelect.addEventListener("change", () => {
+  const previousClass = CHARACTER_CLASSES[characterClassSelect.dataset.previousValue]
+    ? characterClassSelect.dataset.previousValue
+    : "";
+  skillLimitApprovedKeys.clear();
+  applyClassCalculations({ initializeCurrent: !previousClass && Boolean(characterClassSelect.value) });
+  characterClassSelect.dataset.previousValue = characterClassSelect.value;
+  notifySheetChanged("class");
+  auditTrainingLimit();
+});
+
+characterLevelInput.addEventListener("input", () => {
+  applyClassCalculations();
+  notifySheetChanged("level");
+});
+characterLevelInput.addEventListener("change", () => {
+  characterLevelInput.value = String(getCharacterLevel());
+  applyClassCalculations();
+  notifySheetChanged("level");
+});
+
+document.querySelectorAll("[data-resource-current], [data-resource-max]").forEach((input) => {
+  input.addEventListener("input", () => {
+    const resource = input.dataset.resourceCurrent || input.dataset.resourceMax;
+    if (input.matches("[data-resource-max]")) {
+      resourceMaxManual[resource] = true;
+      applyClassCalculations();
+    } else {
+      renderResourceState();
+    }
+    notifySheetChanged("resources");
+  });
+  input.addEventListener("change", () => {
+    const resource = input.dataset.resourceCurrent || input.dataset.resourceMax;
+    normalizeResourceInput(resource, input.matches("[data-resource-max]") ? "max" : "current");
+  });
+});
+
+document.querySelectorAll("[data-resource-delta]").forEach((input) => {
+  input.addEventListener("change", () => {
+    input.value = String(Math.abs(clampInteger(input.value, 0, 999999, 0)));
+  });
+});
+
+document.querySelectorAll("[data-resource-adjust]").forEach((button) => {
+  button.addEventListener("click", () => {
+    adjustResource(button.dataset.resourceAdjust, Number.parseInt(button.dataset.direction, 10));
+  });
+});
+
+[defenseZoneSelect, defenseMarginSelect].forEach((select) => {
+  select.addEventListener("change", () => {
+    defenseWasManuallySet = true;
+    updateEvasionFromDefense();
+    notifySheetChanged("defense");
+  });
+});
+blockValueInput.addEventListener("input", () => notifySheetChanged("block"));
+blockValueInput.addEventListener("change", () => {
+  blockValueInput.value = String(clampInteger(blockValueInput.value, 0, 999999, 0));
+  notifySheetChanged("block");
+});
+blockActiveInput.addEventListener("change", () => notifySheetChanged("block"));
+
+rdManagerButton.addEventListener("click", () => {
+  const willOpen = rdManager.hidden;
+  rdManager.hidden = !willOpen;
+  rdManagerButton.setAttribute("aria-expanded", String(willOpen));
+  if (willOpen) rdNameInput.focus();
+});
+
+rdCreateForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const reduction = sanitizeDamageReduction({
+    name: rdNameInput.value,
+    value: rdValueInput.value,
+    active: false,
+  });
+  if (!reduction) {
+    rdNameInput.focus();
+    return;
+  }
+  damageReductions.push(reduction);
+  rdCreateForm.reset();
+  rdValueInput.value = "0";
+  renderDamageReductions();
+  notifySheetChanged("damage-reductions");
+  rdNameInput.focus();
+});
+
+rdList.addEventListener("input", (event) => {
+  const item = event.target.closest("[data-rd-id]");
+  const reduction = damageReductions.find((entry) => entry.id === item?.dataset.rdId);
+  if (!reduction) return;
+  if (event.target.dataset.rdField === "name") {
+    reduction.name = String(event.target.value || "").slice(0, 50);
+  } else if (event.target.dataset.rdField === "value") {
+    reduction.value = clampInteger(event.target.value, 0, 999999, 0);
+  }
+  notifySheetChanged("damage-reductions");
+});
+
+rdList.addEventListener("change", (event) => {
+  const item = event.target.closest("[data-rd-id]");
+  const reduction = damageReductions.find((entry) => entry.id === item?.dataset.rdId);
+  if (!reduction) return;
+  if (event.target.dataset.rdField === "active") {
+    reduction.active = event.target.checked;
+  } else if (event.target.dataset.rdField === "name") {
+    reduction.name = String(event.target.value || "").trim().slice(0, 50) || "RD sem nome";
+  } else if (event.target.dataset.rdField === "value") {
+    reduction.value = clampInteger(event.target.value, 0, 999999, 0);
+  }
+  renderDamageReductions();
+  notifySheetChanged("damage-reductions");
+});
+
+rdList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-rd-delete]");
+  if (!button) return;
+  damageReductions = damageReductions.filter((entry) => entry.id !== button.dataset.rdDelete);
+  renderDamageReductions();
+  notifySheetChanged("damage-reductions");
+});
+
+document.querySelectorAll("[data-close-training-limit]").forEach((button) => {
+  button.addEventListener("click", () => resolveTrainingLimitRequest(false));
+});
+confirmTrainingLimitButton.addEventListener("click", () => resolveTrainingLimitRequest(true));
 
 document.querySelector("#portrait-input").addEventListener("change", (event) => {
   openPhotoEditor(event.target.files?.[0]);
@@ -10093,6 +11827,8 @@ document.addEventListener("keydown", (event) => {
     closeMinervaGrimoire();
   } else if (event.key === "Escape" && !slotsModal.hidden) {
     closeSlotsManager();
+  } else if (event.key === "Escape" && !trainingLimitModal.hidden) {
+    resolveTrainingLimitRequest(false);
   } else if (event.key === "Escape" && !deleteSkillModal.hidden) {
     closeDeleteSkill();
   } else if (event.key === "Escape" && !photoEditorModal.hidden) {
@@ -10117,6 +11853,7 @@ document.addEventListener("keydown", (event) => {
   trapFeatureDetailFocus(event);
   trapInteractiveModalFocus(event, customSkillModal, customSkillDialog);
   trapInteractiveModalFocus(event, deleteSkillModal, deleteSkillDialog);
+  trapInteractiveModalFocus(event, trainingLimitModal, trainingLimitDialog);
   trapInteractiveModalFocus(event, photoEditorModal, photoEditorDialog);
   trapInteractiveModalFocus(event, abilityEditorModal, abilityEditorDialog);
   trapInteractiveModalFocus(event, grimoirePickerModal, grimoirePickerDialog);
@@ -10133,6 +11870,11 @@ hydrateLegendDice();
 loadSelectedFeatures();
 renderSelectedFeatures();
 renderAbilities();
+updateIdentityChoiceAppearance();
+renderDamageReductions();
+characterClassSelect.dataset.previousValue = characterClassSelect.value;
+renderResourceState();
+applyClassCalculations();
 
 window.AbyssSheet = Object.freeze({
   captureState: captureCompleteSheetState,
@@ -10563,7 +12305,7 @@ async function readCloudSheet(user, slotId) {
   });
 
   return {
-    schemaVersion: 3,
+    schemaVersion: 5,
     profile: {
       ...clean.profile,
       ...profileData,
@@ -10571,12 +12313,30 @@ async function readCloudSheet(user, slotId) {
         ...clean.profile.attributes,
         ...(profileData.attributes || {}),
       },
+      resources: {
+        pv: { ...clean.profile.resources.pv, ...(profileData.resources?.pv || {}) },
+        pa: { ...clean.profile.resources.pa, ...(profileData.resources?.pa || {}) },
+        sa: { ...clean.profile.resources.sa, ...(profileData.resources?.sa || {}) },
+      },
+      combat: {
+        ...clean.profile.combat,
+        ...(profileData.combat || {}),
+        defense: {
+          ...clean.profile.combat.defense,
+          ...(profileData.combat?.defense || {}),
+        },
+        evasion: {
+          ...clean.profile.combat.evasion,
+          ...(profileData.combat?.evasion || {}),
+        },
+      },
     },
     sheet: {
       ...clean.sheet,
       ...sheetData,
       skillRows: sheetData.skillRows || {},
       selectedFeatureIds: sheetData.selectedFeatureIds || [],
+      skillLimitApprovedIds: sheetData.skillLimitApprovedIds || [],
     },
     customSkills: Array.isArray(customData.items) ? customData.items : [],
     abilities: hydratedAbilities,
@@ -10622,15 +12382,20 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     { merge: true },
   );
   batch.set(refs.profile, {
-    schemaVersion: 3,
+    schemaVersion: 5,
     name: String(state.profile?.name || "").slice(0, 120),
     background: String(state.profile?.background || "").slice(0, 240),
     portrait,
+    echo: String(state.profile?.echo || "").slice(0, 24),
+    classKey: String(state.profile?.classKey || "").slice(0, 24),
+    level: Math.min(10, Math.max(1, Number.parseInt(state.profile?.level, 10) || 1)),
     attributes,
+    resources: state.profile?.resources || {},
+    combat: state.profile?.combat || {},
     updatedAt: timestamp,
   });
   batch.set(refs.sheet, {
-    schemaVersion: 3,
+    schemaVersion: 5,
     difficulty: ["easy", "medium", "hard"].includes(state.sheet?.difficulty)
       ? state.sheet.difficulty
       : "medium",
@@ -10638,15 +12403,18 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     selectedFeatureIds: Array.isArray(state.sheet?.selectedFeatureIds)
       ? state.sheet.selectedFeatureIds
       : [],
+    skillLimitApprovedIds: Array.isArray(state.sheet?.skillLimitApprovedIds)
+      ? state.sheet.skillLimitApprovedIds
+      : [],
     updatedAt: timestamp,
   });
   batch.set(refs.customSkills, {
-    schemaVersion: 3,
+    schemaVersion: 5,
     items: Array.isArray(state.customSkills) ? state.customSkills : [],
     updatedAt: timestamp,
   });
   batch.set(refs.abilities, {
-    schemaVersion: 3,
+    schemaVersion: 5,
     items: cloudAbilities,
     updatedAt: timestamp,
   });
