@@ -4640,6 +4640,65 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .theme-color-control { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); cursor: pointer; min-width: 0; }
 .theme-color-control input { flex: 0 0 35px; width: 35px; height: 32px; border: 0; padding: 0; background: transparent; cursor: pointer; }
 .theme-color-control span { color: var(--text); font-size: .77rem; }
+
+.identity-field-composite.is-name-echo-row {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  gap: clamp(12px, 2.2vw, 22px);
+  max-width: 100%;
+}
+.character-name-field {
+  position: relative;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+#character-name {
+  width: var(--character-name-width, 210px);
+  min-width: 160px;
+  max-width: min(420px, 48vw);
+  font-size: 1.32rem;
+  line-height: 1.35;
+}
+.identity-width-sizer {
+  position: fixed !important;
+  left: -10000px !important;
+  width: max-content !important;
+  visibility: hidden !important;
+  white-space: pre !important;
+  pointer-events: none !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  font: 1.32rem/1.35 Georgia, "Times New Roman", serif !important;
+}
+#echo-choice-wrap {
+  flex: 0 0 auto;
+  align-self: flex-end;
+  padding: 0 0 8px;
+}
+#echo-choice-wrap .identity-separator {
+  margin-right: 0;
+  color: var(--text);
+  font: 1.32rem/1.35 Georgia, "Times New Roman", serif;
+}
+#echo-choice-wrap .identity-choice-select {
+  width: var(--echo-tag-width, 190px);
+  max-width: 250px;
+  min-height: 42px;
+  padding: 5px 34px 5px 17px;
+  font: 1.32rem/1.35 Georgia, "Times New Roman", serif;
+  letter-spacing: 0;
+  background-position: calc(100% - 14px) 19px, calc(100% - 10px) 19px;
+}
+#echo-choice-wrap.has-value::before {
+  inset: -4px -7px 2px 7px;
+}
+#echo-choice-wrap.has-value::after {
+  inset: -1px -10px 4px 10px;
+}
+#echo-choice-wrap.has-value .identity-choice-select {
+  padding-inline: 17px 34px;
+}
 @media(max-width: 620px) {
   .ability-tabs { display: flex; }
   .ability-tabs button { flex: 1 1 auto; }
@@ -4649,6 +4708,9 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   .utility-content { padding: 18px; }
   .echo-counter { gap: 10px; }
   .topbar-actions { gap: 6px; }
+  .identity-field-composite.is-name-echo-row { flex-wrap: wrap; align-items: flex-start; }
+  #character-name { max-width: calc(100vw - 86px); }
+  #echo-choice-wrap { padding-bottom: 0; }
 }
     </style>
 
@@ -4850,8 +4912,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
             <div class="identity-fields">
               <h2 id="identity-title">Identidade</h2>
 
-              <div class="identity-field-composite">
-                <label class="text-field">
+              <div class="identity-field-composite is-name-echo-row">
+                <label class="text-field character-name-field">
                   <span>Nome</span>
                   <input
                     id="character-name"
@@ -4859,11 +4921,13 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
                     autocomplete="off"
                     placeholder="Nome do personagem"
                   />
+                  <span id="character-name-sizer" class="identity-width-sizer" aria-hidden="true">Nome do personagem</span>
                 </label>
 
                 <label id="echo-choice-wrap" class="identity-choice-wrap" title="Escolher Eco">
                   <span class="identity-separator" aria-hidden="true">,</span>
                   <span class="sr-only">Eco</span>
+                  <span id="echo-tag-sizer" class="identity-width-sizer echo-tag-sizer" aria-hidden="true">Escolher Eco</span>
                   <select id="character-echo" class="identity-choice-select" aria-label="Eco do personagem">
                     <option value="">Escolher Eco</option>
                     <option value="determinado">O Determinado</option>
@@ -5953,7 +6017,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
               </label>
 
               <label id="ability-echo-field" class="builder-field builder-field-wide" hidden>
-                <span>Eco de origem</span>
+                <span>Eco de origem <small>(obrigatório)</small></span>
                 <select id="ability-echo">
                   <option value="">Escolha um Eco</option>
                   <option value="determinado">O Determinado</option>
@@ -8397,6 +8461,12 @@ const ECHO_DETAILS = {
       "Essa característica também pode fazê-lo permanecer preso a algo por tempo demais. O investimento acumulado em um objetivo pode tornar difícil reconhecer quando ele deixou de valer o esforço, levando o personagem a continuar apenas porque já percorreu uma grande parte do caminho. A mesma resistência ao desgaste que o faz seguir adiante pode dificultar reconhecer quando é hora de parar.",
     ],
   },
+  indiferente: {
+    title: "O Indiferente",
+    intro: ["Nada."],
+    characterTitle: "",
+    characters: [],
+  },
 };
 
 const CHARACTER_CLASSES = {
@@ -9132,6 +9202,9 @@ const featureToggleButton = document.querySelector("#feature-toggle");
 const selectedFeaturesCount = document.querySelector("#selected-features-count");
 const selectedFeaturesEmpty = document.querySelector("#selected-features-empty");
 const selectedFeaturesList = document.querySelector("#selected-features-list");
+const characterNameInput = document.querySelector("#character-name");
+const characterNameSizer = document.querySelector("#character-name-sizer");
+const echoTagSizer = document.querySelector("#echo-tag-sizer");
 const characterEchoSelect = document.querySelector("#character-echo");
 const characterClassSelect = document.querySelector("#character-class");
 const characterLevelInput = document.querySelector("#character-level");
@@ -9552,17 +9625,29 @@ function renderEchoPanel() {
     echoLoreCard.append(createParagraph("Escolha um Eco ao lado do nome para revelar sua descrição."));
     return;
   }
-  if (!details) {
-    echoLoreCard.append(createParagraph("As informações de O Indiferente ainda não foram registradas."));
-    return;
-  }
-
   const title = document.createElement("h3");
   title.textContent = details.title;
   echoLoreCard.append(title, ...details.intro.map(createParagraph));
-  const characterTitle = document.createElement("h3");
-  characterTitle.textContent = details.characterTitle;
-  echoLoreCard.append(characterTitle, ...details.characters.map(createParagraph));
+  if (details.characterTitle || details.characters.length) {
+    const characterTitle = document.createElement("h3");
+    characterTitle.textContent = details.characterTitle;
+    echoLoreCard.append(characterTitle, ...details.characters.map(createParagraph));
+  }
+}
+
+function updateCharacterIdentityWidths() {
+  const nameText = characterNameInput.value || characterNameInput.placeholder || "Nome";
+  characterNameSizer.textContent = nameText;
+  const measuredNameWidth = characterNameSizer.getBoundingClientRect?.().width || nameText.length * 12;
+  const nameWidth = Math.min(420, Math.max(160, Math.ceil(measuredNameWidth + 4)));
+  characterNameInput.style.setProperty("--character-name-width", `${nameWidth}px`);
+  characterNameInput.size = Math.min(40, Math.max(8, [...nameText].length + 1));
+
+  const selectedEcho = ECHOES[characterEchoSelect.value] || "Escolher Eco";
+  echoTagSizer.textContent = selectedEcho;
+  const measuredEchoWidth = echoTagSizer.getBoundingClientRect?.().width || selectedEcho.length * 12;
+  const echoWidth = Math.min(250, Math.max(170, Math.ceil(measuredEchoWidth + 48)));
+  echoChoiceWrap.style.setProperty("--echo-tag-width", `${echoWidth}px`);
 }
 
 function updateIdentityChoiceAppearance() {
@@ -9572,6 +9657,7 @@ function updateIdentityChoiceAppearance() {
   echoChoiceWrap.dataset.echo = echo;
   classChoiceWrap.classList.toggle("has-value", Boolean(classKey));
   classChoiceWrap.dataset.characterClass = classKey;
+  updateCharacterIdentityWidths();
   renderEchoPanel();
 }
 
@@ -10068,16 +10154,19 @@ function sanitizeAbility(rawAbility) {
 
   const name = String(rawAbility.name || "").trim().slice(0, 80);
   if (!name) return null;
+  const section = ABILITY_SECTIONS[rawAbility.section] ? rawAbility.section : "attacks";
+  const echoKey = Object.hasOwn(ECHOES, rawAbility.echoKey) ? rawAbility.echoKey : "";
+  if (section === "echoes" && !echoKey) return null;
 
   return {
     id: String(
       rawAbility.id || `ability-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     ).slice(0, 120),
-    section: ABILITY_SECTIONS[rawAbility.section] ? rawAbility.section : "attacks",
+    section,
     name,
     description: String(rawAbility.description || "").trim().slice(0, 3000),
     origin: String(rawAbility.origin || "").trim().slice(0, 120),
-    echoKey: Object.hasOwn(ECHOES, rawAbility.echoKey) ? rawAbility.echoKey : "",
+    echoKey,
     damage: String(rawAbility.damage || "").trim().slice(0, 100),
     mediaUrl: safeAbilityMediaUrl(rawAbility.mediaUrl),
     mediaRefId: String(rawAbility.mediaRefId || "").slice(0, 120),
@@ -12705,6 +12794,7 @@ document.querySelectorAll("#character-name, #character-background").forEach((inp
   input.addEventListener("input", () => notifySheetChanged("profile"));
   input.addEventListener("change", () => notifySheetChanged("profile"));
 });
+characterNameInput.addEventListener("input", updateCharacterIdentityWidths);
 
 document.querySelectorAll("[data-attribute]").forEach((input) => {
   input.addEventListener("input", () => {
@@ -12985,6 +13075,7 @@ document.querySelectorAll("[data-close-feature-detail]").forEach((button) => {
 window.addEventListener("resize", () => {
   if (!constellationModal.hidden) scheduleConstellationDraw();
   if (!photoEditorModal.hidden) renderPhotoEditor();
+  updateCharacterIdentityWidths();
 });
 
 document.addEventListener("keydown", (event) => {
@@ -13057,6 +13148,9 @@ renderDamageReductions();
 characterClassSelect.dataset.previousValue = characterClassSelect.value;
 renderResourceState();
 applyClassCalculations();
+if (document.fonts?.ready) {
+  document.fonts.ready.then(updateCharacterIdentityWidths).catch(() => {});
+}
 
 window.AbyssSheet = Object.freeze({
   captureState: captureCompleteSheetState,
