@@ -4068,19 +4068,17 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   text-transform: uppercase;
 }
 
-.character-level-field input {
+.character-level-field select {
   width: 44px;
   height: 31px;
-  padding: 0 4px;
+  padding: 0 16px 0 7px;
   border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.2);
   border-radius: 2px;
   color: var(--theme-text-e8dfca, #e8dfca);
   background: rgba(var(--theme-surface-050608-rgb, 5, 6, 8), 0.52);
   text-align: center;
-  appearance: textfield;
+  cursor: pointer;
 }
-.character-level-field input::-webkit-inner-spin-button,
-.character-level-field input::-webkit-outer-spin-button { appearance: none; margin: 0; }
 
 .vitals-panel,
 .combat-panel {
@@ -4575,7 +4573,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .dt-attribute select { height: 30px; border: 1px solid var(--line); border-radius: 3px; background: var(--surface); color: var(--text); }
 .dt-auto-button { margin-left: auto; border: 0; background: transparent; color: var(--muted); cursor: pointer; font-size: .66rem; padding: 5px; text-decoration: underline; text-underline-offset: 3px; }
 .dt-auto-button:hover { color: var(--accent); }
-#echo-choice-wrap { --identity-echo-color: #f1f1ed; --identity-echo-ink: #111111; isolation: isolate; justify-self: start; width: fit-content; }
+#echo-choice-wrap { --identity-echo-color: #f1f1ed; --identity-echo-ink: #111111; isolation: isolate; justify-self: start; width: var(--echo-tag-width, 210px); }
 #echo-choice-wrap[data-echo="determinado"] { --identity-echo-color: #f13d49; }
 #echo-choice-wrap[data-echo="justo"] { --identity-echo-color: #efd149; }
 #echo-choice-wrap[data-echo="bondoso"] { --identity-echo-color: #8bea75; }
@@ -4585,7 +4583,6 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 #echo-choice-wrap[data-echo="perseverante"] { --identity-echo-color: #ad67e4; }
 #echo-choice-wrap[data-echo="indiferente"] { --identity-echo-color: #f1f1ed; }
 #echo-choice-wrap.has-value::before { content: ""; position: absolute; z-index: -1; inset: -2px -4px 8px 12px; background: var(--identity-echo-color); transform: rotate(-1deg); clip-path: polygon(5% 7%, 23% 9%, 24% 3%, 53% 8%, 70% 0, 96% 6%, 94% 16%, 100% 22%, 97% 34%, 98% 63%, 94% 88%, 97% 97%, 68% 93%, 66% 100%, 38% 94%, 15% 98%, 0 90%, 3% 66%, 1% 61%); }
-#echo-choice-wrap.has-value::after { content: ""; pointer-events: none; position: absolute; z-index: -1; inset: 0 -7px 10px 14px; background: repeating-linear-gradient(175deg, transparent 0 6px, rgba(255,255,255,.16) 7px 8px, transparent 9px 14px); clip-path: polygon(5% 0, 100% 9%, 96% 93%, 0 100%); }
 #echo-choice-wrap.has-value .identity-choice-select { color: var(--identity-echo-ink); background-color: transparent; border-color: transparent; border-width: 0; box-shadow: none; font-weight: 650; padding-inline: 12px 25px; }
 #echo-choice-wrap .identity-choice-select:focus-visible { outline: 1px solid var(--identity-echo-color); box-shadow: none; }
 @media(max-width: 760px) { .combat-dt-grid { grid-template-columns: 1fr; } }
@@ -4682,8 +4679,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   font: 1.32rem/1.35 Georgia, "Times New Roman", serif;
 }
 #echo-choice-wrap .identity-choice-select {
-  width: var(--echo-tag-width, 190px);
-  max-width: 250px;
+  width: 100%;
+  max-width: none;
   min-height: 42px;
   padding: 5px 34px 5px 17px;
   font: 1.32rem/1.35 Georgia, "Times New Roman", serif;
@@ -4692,9 +4689,6 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 }
 #echo-choice-wrap.has-value::before {
   inset: -4px -7px 2px 7px;
-}
-#echo-choice-wrap.has-value::after {
-  inset: -1px -10px 4px 10px;
 }
 #echo-choice-wrap.has-value .identity-choice-select {
   padding-inline: 17px 34px;
@@ -4966,7 +4960,18 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
                   </label>
                   <label class="character-level-field">
                     <span>Nível</span>
-                    <input id="character-level" type="number" value="1" min="1" max="10" step="1" inputmode="numeric" aria-label="Nível do personagem" />
+                    <select id="character-level" aria-label="Nível do personagem">
+                      <option value="1" selected>1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5">5</option>
+                      <option value="6">6</option>
+                      <option value="7">7</option>
+                      <option value="8">8</option>
+                      <option value="9">9</option>
+                      <option value="10">10</option>
+                    </select>
                   </label>
                 </div>
               </div>
@@ -9646,7 +9651,7 @@ function updateCharacterIdentityWidths() {
   const selectedEcho = ECHOES[characterEchoSelect.value] || "Escolher Eco";
   echoTagSizer.textContent = selectedEcho;
   const measuredEchoWidth = echoTagSizer.getBoundingClientRect?.().width || selectedEcho.length * 12;
-  const echoWidth = Math.min(250, Math.max(170, Math.ceil(measuredEchoWidth + 48)));
+  const echoWidth = Math.min(360, Math.max(190, Math.ceil(measuredEchoWidth + 76)));
   echoChoiceWrap.style.setProperty("--echo-tag-width", `${echoWidth}px`);
 }
 
