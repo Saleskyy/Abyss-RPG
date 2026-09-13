@@ -4971,6 +4971,11 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
                       <option value="8">8</option>
                       <option value="9">9</option>
                       <option value="10">10</option>
+                      <option value="11">11</option>
+                      <option value="12">12</option>
+                      <option value="13">13</option>
+                      <option value="14">14</option>
+                      <option value="15">15</option>
                     </select>
                   </label>
                 </div>
@@ -9443,7 +9448,7 @@ function getAttributeValue(attribute) {
 }
 
 function getCharacterLevel() {
-  return clampInteger(characterLevelInput.value, 1, 10, 1);
+  return clampInteger(characterLevelInput.value, 1, 15, 1);
 }
 
 function getResourceInputs(resource) {
@@ -10224,7 +10229,7 @@ function applyCompleteSheetState(rawState, options = {}) {
     applyTheme();
     renderThemeFields();
     characterClassSelect.value = CHARACTER_CLASSES[profile.classKey] ? profile.classKey : "";
-    characterLevelInput.value = String(clampInteger(profile.level, 1, 10, 1));
+    characterLevelInput.value = String(clampInteger(profile.level, 1, 15, 1));
     document.querySelectorAll("[data-attribute]").forEach((input) => {
       const parsed = Number.parseInt(profile.attributes?.[input.dataset.attribute], 10);
       input.value = String(Number.isFinite(parsed) ? Math.min(99, Math.max(-99, parsed)) : 1);
