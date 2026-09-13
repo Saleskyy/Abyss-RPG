@@ -5181,12 +5181,25 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
                   </select>
                 </label>
               </div>
+              <div class="dt-controls">
+                <label class="dt-attribute">
+                  <span>Atributo</span>
+                  <select id="defense-attribute" aria-label="Atributo da Defesa">
+                    <option value="FOR">FOR</option>
+                    <option value="AGI" selected>AGI</option>
+                    <option value="INT">INT</option>
+                    <option value="CON">CON</option>
+                    <option value="POD">POD</option>
+                  </select>
+                </label>
+                <button class="dt-auto-button" type="button" data-reset-defense title="Usar a Defesa calculada">Usar cálculo</button>
+              </div>
             </article>
 
             <article class="combat-stat is-evasion">
               <header class="combat-stat-head">
                 <h3>Esquiva</h3>
-                <span class="calculated-stat-label">Calculada pela Defesa</span>
+                <span id="evasion-base-value" class="defense-base-value">Base —</span>
               </header>
               <div class="combat-phrase">
                 <label>
@@ -5205,6 +5218,18 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
                     <option value="normal" selected>Sucesso Normal</option>
                     <option value="good">Sucesso Bom</option>
                     <option value="extreme">Sucesso Extremo</option>
+                  </select>
+                </label>
+              </div>
+              <div class="dt-controls">
+                <label class="dt-attribute">
+                  <span>Atributo</span>
+                  <select id="evasion-attribute" aria-label="Atributo da Esquiva">
+                    <option value="FOR">FOR</option>
+                    <option value="AGI" selected>AGI</option>
+                    <option value="INT">INT</option>
+                    <option value="CON">CON</option>
+                    <option value="POD">POD</option>
                   </select>
                 </label>
               </div>
@@ -5248,7 +5273,9 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
                   <select id="spell-dt-margin" aria-label="Margem de DT de Feitiçaria"><option value="partial" selected>Sucesso Parcial</option><option value="normal">Sucesso Normal</option><option value="good">Sucesso Bom</option><option value="extreme">Sucesso Extremo</option></select>
                 </label>
               </div>
-              <div class="dt-controls"><button class="dt-auto-button" type="button" data-reset-dt="spell" title="Usar a DT calculada">Usar cálculo</button></div>
+              <div class="dt-controls"><label class="dt-attribute"><span>Atributo</span><select id="spell-dt-attribute" aria-label="Atributo da DT de Feitiçaria">
+      <option value="FOR">FOR</option><option value="AGI">AGI</option><option value="INT">INT</option><option value="CON">CON</option><option value="POD" selected>POD</option>
+    </select></label><button class="dt-auto-button" type="button" data-reset-dt="spell" title="Usar a DT calculada">Usar cálculo</button></div>
             </article>
             <article class="combat-stat">
               <header class="combat-stat-head">
@@ -9223,8 +9250,11 @@ const classChoiceWrap = document.querySelector("#class-choice-wrap");
 const conditionAlerts = document.querySelector("#condition-alerts");
 const defenseZoneSelect = document.querySelector("#defense-zone");
 const defenseMarginSelect = document.querySelector("#defense-margin");
+const defenseAttributeSelect = document.querySelector("#defense-attribute");
 const evasionZoneSelect = document.querySelector("#evasion-zone");
 const evasionMarginSelect = document.querySelector("#evasion-margin");
+const evasionAttributeSelect = document.querySelector("#evasion-attribute");
+const evasionBaseValue = document.querySelector("#evasion-base-value");
 const blockValueInput = document.querySelector("#block-value");
 const blockActiveInput = document.querySelector("#block-active");
 const rdManagerButton = document.querySelector("#rd-manager-button");
@@ -9264,7 +9294,12 @@ const dtFields = {
     base: document.querySelector("#ability-dt-base"),
   },
 };
+const spellDtAttributeSelect = document.querySelector("#spell-dt-attribute");
 const abilityDtAttributeSelect = document.querySelector("#ability-dt-attribute");
+const dtAttributeSelects = {
+  spell: spellDtAttributeSelect,
+  ability: abilityDtAttributeSelect,
+};
 const dtManual = { spell: false, ability: false };
 const classCalculationNote = document.querySelector("#class-calculation-note");
 const trainingCapStatus = document.querySelector("#training-cap-status");
@@ -9484,12 +9519,14 @@ function calculateClassStatistics() {
   if (!classDefinition) return null;
   const level = getCharacterLevel();
   const constitution = getAttributeValue("CON");
-  const agility = getAttributeValue("AGI");
+  const defenseAttribute = ATTRIBUTES[defenseAttributeSelect.value] ? defenseAttributeSelect.value : "AGI";
+  const evasionAttribute = ATTRIBUTES[evasionAttributeSelect.value] ? evasionAttributeSelect.value : "AGI";
   return {
     pv: Math.max(0, classDefinition.pvInitial + (classDefinition.pvPerLevel + constitution) * level),
     pa: Math.max(0, classDefinition.paInitial + classDefinition.paPerLevel * level),
     sa: Math.max(0, classDefinition.saInitial + classDefinition.saPerLevel * level),
-    defense: classDefinition.defenseBase + agility,
+    defense: classDefinition.defenseBase + getAttributeValue(defenseAttribute),
+    evasion: classDefinition.defenseBase + getAttributeValue(evasionAttribute),
     trainingCap: Math.max(0, classDefinition.adeptBase + getAttributeValue("INT")),
     classDefinition,
     level,
@@ -9515,7 +9552,7 @@ function evasionPhraseForDefense(zone, margin) {
 
 function updateDifficultyTargets() {
   const values = {
-    spell: 12 + getAttributeValue("POD"),
+    spell: 12 + getAttributeValue(spellDtAttributeSelect.value),
     ability: 10 + getAttributeValue(abilityDtAttributeSelect.value),
   };
   Object.entries(dtFields).forEach(([key, fields]) => {
@@ -9533,12 +9570,17 @@ function captureDifficultyTarget(key) {
     zone: dtFields[key].zone.value,
     margin: dtFields[key].margin.value,
     manual: dtManual[key],
-    ...(key === "ability" ? { attribute: abilityDtAttributeSelect.value } : {}),
+    attribute: dtAttributeSelects[key].value,
   };
 }
 
 function updateEvasionFromDefense() {
-  const phrase = evasionPhraseForDefense(defenseZoneSelect.value, defenseMarginSelect.value);
+  const calculation = calculateClassStatistics();
+  const basePhrase = calculation
+    ? defensePhraseForValue(calculation.evasion)
+    : { zone: defenseZoneSelect.value, margin: defenseMarginSelect.value };
+  const phrase = evasionPhraseForDefense(basePhrase.zone, basePhrase.margin);
+  evasionBaseValue.textContent = calculation ? `Base ${calculation.evasion}` : "Base —";
   evasionZoneSelect.value = phrase.zone;
   evasionMarginSelect.value = phrase.margin;
 }
@@ -10014,10 +10056,12 @@ function captureCompleteSheetState() {
           zone: COMBAT_ZONES.has(defenseZoneSelect.value) ? defenseZoneSelect.value : "medium",
           margin: COMBAT_MARGINS.has(defenseMarginSelect.value) ? defenseMarginSelect.value : "normal",
           manual: defenseWasManuallySet,
+          attribute: ATTRIBUTES[defenseAttributeSelect.value] ? defenseAttributeSelect.value : "AGI",
         },
         evasion: {
           zone: COMBAT_ZONES.has(evasionZoneSelect.value) ? evasionZoneSelect.value : "medium",
           margin: COMBAT_MARGINS.has(evasionMarginSelect.value) ? evasionMarginSelect.value : "normal",
+          attribute: ATTRIBUTES[evasionAttributeSelect.value] ? evasionAttributeSelect.value : "AGI",
         },
         block: clampInteger(blockValueInput.value, 0, 999999, 0),
         spellDt: captureDifficultyTarget("spell"),
@@ -10106,10 +10150,10 @@ function createCleanSheetState() {
         sa: { current: 0, max: 0, maxManual: false },
       },
       combat: {
-        defense: { zone: "medium", margin: "normal", manual: false },
-        evasion: { zone: "medium", margin: "normal" },
+        defense: { zone: "medium", margin: "normal", manual: false, attribute: "AGI" },
+        evasion: { zone: "medium", margin: "normal", attribute: "AGI" },
         block: 0,
-        spellDt: { zone: "medium", margin: "partial", manual: false },
+        spellDt: { zone: "medium", margin: "partial", manual: false, attribute: "POD" },
         abilityDt: { zone: "medium", margin: "partial", manual: false, attribute: "POD" },
         blockActive: false,
         reductions: [],
@@ -10254,8 +10298,13 @@ function applyCompleteSheetState(rawState, options = {}) {
       ? storedCombat.defense
       : {};
     defenseWasManuallySet = Boolean(storedDefense.manual);
+    defenseAttributeSelect.value = ATTRIBUTES[storedDefense.attribute] ? storedDefense.attribute : "AGI";
     defenseZoneSelect.value = COMBAT_ZONES.has(storedDefense.zone) ? storedDefense.zone : "medium";
     defenseMarginSelect.value = COMBAT_MARGINS.has(storedDefense.margin) ? storedDefense.margin : "normal";
+    const storedEvasion = storedCombat.evasion && typeof storedCombat.evasion === "object"
+      ? storedCombat.evasion
+      : {};
+    evasionAttributeSelect.value = ATTRIBUTES[storedEvasion.attribute] ? storedEvasion.attribute : "AGI";
     blockValueInput.value = String(clampInteger(storedCombat.block, 0, 999999, 0));
     blockActiveInput.checked = Boolean(storedCombat.blockActive);
     Object.entries(dtFields).forEach(([key, fields]) => {
@@ -10264,8 +10313,10 @@ function applyCompleteSheetState(rawState, options = {}) {
       fields.zone.value = COMBAT_ZONES.has(stored.zone) ? stored.zone : "medium";
       fields.margin.value = COMBAT_MARGINS.has(stored.margin) ? stored.margin : "partial";
     });
-    abilityDtAttributeSelect.value = ATTRIBUTES[storedCombat.abilityDt?.attribute]
-      ? storedCombat.abilityDt.attribute : "POD";
+    Object.entries(dtAttributeSelects).forEach(([key, select]) => {
+      const storedAttribute = storedCombat[key + "Dt"]?.attribute;
+      select.value = ATTRIBUTES[storedAttribute] ? storedAttribute : "POD";
+    });
     damageReductions = (Array.isArray(storedCombat.reductions) ? storedCombat.reductions : [])
       .map(sanitizeDamageReduction)
       .filter(Boolean);
@@ -12881,6 +12932,20 @@ document.querySelectorAll("[data-resource-adjust]").forEach((button) => {
     notifySheetChanged("defense");
   });
 });
+defenseAttributeSelect.addEventListener("change", () => {
+  defenseWasManuallySet = false;
+  applyClassCalculations();
+  notifySheetChanged("defense");
+});
+evasionAttributeSelect.addEventListener("change", () => {
+  updateEvasionFromDefense();
+  notifySheetChanged("evasion");
+});
+document.querySelector("[data-reset-defense]").addEventListener("click", () => {
+  defenseWasManuallySet = false;
+  applyClassCalculations();
+  notifySheetChanged("defense");
+});
 blockValueInput.addEventListener("input", () => notifySheetChanged("block"));
 blockValueInput.addEventListener("change", () => {
   blockValueInput.value = String(clampInteger(blockValueInput.value, 0, 999999, 0));
@@ -12895,10 +12960,12 @@ Object.entries(dtFields).forEach(([key, fields]) => {
     });
   });
 });
-abilityDtAttributeSelect.addEventListener("change", () => {
-  dtManual.ability = false;
-  updateDifficultyTargets();
-  notifySheetChanged("difficulty-targets");
+Object.entries(dtAttributeSelects).forEach(([key, select]) => {
+  select.addEventListener("change", () => {
+    dtManual[key] = false;
+    updateDifficultyTargets();
+    notifySheetChanged("difficulty-targets");
+  });
 });
 document.querySelectorAll("[data-reset-dt]").forEach((button) => {
   button.addEventListener("click", () => {
@@ -13676,7 +13743,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     echoPoints: Math.min(5, Math.max(0, Number.parseInt(state.profile?.echoPoints ?? 5, 10) || 0)),
     appearance: state.profile?.appearance || {},
     classKey: String(state.profile?.classKey || "").slice(0, 24),
-    level: Math.min(10, Math.max(1, Number.parseInt(state.profile?.level, 10) || 1)),
+    level: Math.min(15, Math.max(1, Number.parseInt(state.profile?.level, 10) || 1)),
     attributes,
     resources: state.profile?.resources || {},
     combat: state.profile?.combat || {},
