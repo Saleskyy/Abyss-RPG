@@ -5482,6 +5482,9 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
               >
                 Ataques
               </button>
+              <button type="button" role="tab" data-ability-section="backgrounds" aria-selected="false">
+                Antecedências
+              </button>
               <button type="button" role="tab" data-ability-section="styles" aria-selected="false">
                 Estilos de Luta
               </button>
@@ -6044,6 +6047,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
                 <span>Seção</span>
                 <select id="ability-section" required>
                   <option value="attacks">Ataques</option>
+                  <option value="backgrounds">Antecedências</option>
                   <option value="styles">Estilos de Luta</option>
                   <option value="powers">Poderes</option>
                   <option value="spells">Feitiços</option>
@@ -8378,6 +8382,7 @@ function playRollSound() {
 
 const ABILITY_SECTIONS = {
   attacks: { label: "Ataques", eyebrow: "Combate" },
+  backgrounds: { label: "Antecedências", eyebrow: "História do personagem" },
   styles: { label: "Estilos de Luta", eyebrow: "Técnicas de combate" },
   powers: { label: "Poderes", eyebrow: "Dons e técnicas" },
   spells: { label: "Feitiços", eyebrow: "Feitiçaria" },
