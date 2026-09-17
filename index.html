@@ -4651,7 +4651,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .theme-group-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .theme-color-control { display: flex; align-items: center; gap: 10px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 4px; background: var(--surface); cursor: pointer; min-width: 0; }
 .theme-color-control input { flex: 0 0 35px; width: 35px; height: 32px; border: 0; padding: 0; background: transparent; cursor: pointer; }
-.theme-color-control span { color: var(--text); font-size: .77rem; }
+.theme-color-control span { flex: 1 1 auto; min-width: 0; color: var(--text); font-size: .77rem; }
+.theme-color-control output { flex: 0 0 auto; color: var(--muted); font: 650 .58rem ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .03em; }
 
 .identity-field-composite.is-name-echo-row {
   display: flex;
@@ -10726,6 +10727,9 @@ function shadeThemeColor(color, original, reference) {
 function applyTheme() {
   const style = document.documentElement.style;
   const defaults = Object.fromEntries(THEME_FIELDS.map((field) => [field.key, field.default]));
+  const resolved = Object.fromEntries(
+    THEME_FIELDS.map((field) => [field.key, themeSettings[field.key] || field.default]),
+  );
   const setColor = (name, color) => {
     if (!color) {
       style.removeProperty(name);
@@ -10738,27 +10742,36 @@ function applyTheme() {
   Object.entries(THEME_TONES).forEach(([key, originals]) => {
     originals.forEach((original) => {
       const name = `--theme-${key}-${original}`;
-      if (!themeSettings[key]) {
-        style.removeProperty(name);
-        style.removeProperty(name + "-rgb");
-        return;
-      }
-      const rgb = shadeThemeColor(themeSettings[key], "#" + original, defaults[key]);
+      const rgb = shadeThemeColor(resolved[key], "#" + original, defaults[key]);
       const hex = "#" + rgb.map((value) => value.toString(16).padStart(2, "0")).join("");
       setColor(name, hex);
     });
   });
   const aliases = { background: "--bg", surface: "--surface", surfaceRaised: "--surface-raised", border: "--line", accent: "--accent", text: "--text", muted: "--muted" };
-  Object.entries(aliases).forEach(([key, name]) => setColor(name, themeSettings[key]));
+  Object.entries(aliases).forEach(([key, name]) => setColor(name, resolved[key]));
   const related = [["accent", "--accent-bright", "#f0d58f"], ["accent", "--accent-deep", "#7e6030"], ["border", "--line-strong", "#4d493f"], ["muted", "--dim", "#6d6b65"]];
   related.forEach(([key, name, original]) => {
-    const color = themeSettings[key];
-    const rgb = color ? shadeThemeColor(color, original, defaults[key]) : null;
-    setColor(name, rgb ? "#" + rgb.map((v) => v.toString(16).padStart(2, "0")).join("") : null);
+    const rgb = shadeThemeColor(resolved[key], original, defaults[key]);
+    setColor(name, "#" + rgb.map((v) => v.toString(16).padStart(2, "0")).join(""));
   });
-  THEME_FIELDS.forEach((field) => setColor("--palette-" + field.key, themeSettings[field.key]));
+  THEME_FIELDS.forEach((field) => setColor("--palette-" + field.key, resolved[field.key]));
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.content = themeSettings.background || defaults.background;
+  if (meta) meta.content = resolved.background;
+}
+
+function updateThemeColor(input, { notify = true } = {}) {
+  const field = THEME_FIELDS.find((entry) => entry.key === input?.dataset.themeKey);
+  const color = String(input?.value || "").toLowerCase();
+  if (!field || !/^#[0-9a-f]{6}$/.test(color)) return;
+
+  const previous = themeSettings[field.key] || field.default;
+  if (color === field.default) delete themeSettings[field.key];
+  else themeSettings[field.key] = color;
+
+  input.closest(".theme-color-control")?.querySelector("[data-theme-value]")
+    ?.replaceChildren(document.createTextNode(color.toUpperCase()));
+  applyTheme();
+  if (notify && color !== previous) notifySheetChanged("appearance");
 }
 
 function renderThemeFields() {
@@ -10783,9 +10796,14 @@ function renderThemeFields() {
     input.dataset.themeKey = field.key;
     input.value = themeSettings[field.key] || field.default;
     input.setAttribute("aria-label", field.label);
+    input.addEventListener("input", (event) => updateThemeColor(event.currentTarget));
+    input.addEventListener("change", (event) => updateThemeColor(event.currentTarget));
     const label = document.createElement("span");
     label.textContent = field.label;
-    control.append(input, label);
+    const value = document.createElement("output");
+    value.dataset.themeValue = "";
+    value.textContent = input.value.toUpperCase();
+    control.append(input, label, value);
     groups.get(field.group).append(control);
   });
 }
@@ -13213,8 +13231,58 @@ function creationSpendLabel(creation) {
   return `Gastar · ${costs.map(costDisplayLabel).join(" + ")}`;
 }
 
+function summarizeCreationCosts(costs) {
+  const totals = Object.fromEntries(
+    Object.keys(CREATION_RESOURCES).map((resource) => [resource, { current: 0, max: 0 }]),
+  );
+  (Array.isArray(costs) ? costs : []).forEach((cost) => {
+    if (!totals[cost.resource] || !["current", "max"].includes(cost.pool)) return;
+    totals[cost.resource][cost.pool] += clampInteger(cost.value, 0, 999999, 0);
+  });
+  return totals;
+}
+
+function findInsufficientCreationCosts(totals) {
+  const missing = [];
+  Object.entries(totals).forEach(([resource, required]) => {
+    const inputs = getResourceInputs(resource);
+    const available = {
+      current: clampInteger(inputs.current?.value, 0, 999999, 0),
+      max: clampInteger(inputs.maximum?.value, 0, 999999, 0),
+    };
+    ["current", "max"].forEach((pool) => {
+      if (required[pool] > available[pool]) {
+        missing.push({ resource, pool, required: required[pool], available: available[pool] });
+      }
+    });
+  });
+  return missing;
+}
+
+async function warnInsufficientCreationCosts(creation, missing, trigger) {
+  const lines = missing.map((entry) => {
+    const resource = CREATION_RESOURCES[entry.resource];
+    const pool = entry.pool === "max" ? "Máximos" : "Atuais";
+    return `${resource} ${pool}: precisa de ${entry.required}, mas possui ${entry.available}.`;
+  });
+  await showAbyssAlert({
+    eyebrow: "Recursos insuficientes",
+    title: "Não é possível gastar",
+    message: `“${creation.name}” exige mais recursos do que o personagem possui.\n\n${lines.join("\n")}`,
+    tone: "danger",
+    trigger,
+  });
+}
+
 async function applyCreationCosts(creation, trigger = null) {
   if (!creation.costs?.length) return true;
+  const totals = summarizeCreationCosts(creation.costs);
+  let missing = findInsufficientCreationCosts(totals);
+  if (missing.length) {
+    await warnInsufficientCreationCosts(creation, missing, trigger);
+    return false;
+  }
+
   const summary = creation.costs.map(costDisplayLabel).join("\n");
   const confirmed = await showAbyssConfirm({
     eyebrow: "Uso de recursos",
@@ -13226,17 +13294,21 @@ async function applyCreationCosts(creation, trigger = null) {
   });
   if (!confirmed) return false;
 
-  creation.costs.forEach((cost) => {
-    const inputs = getResourceInputs(cost.resource);
-    const target = cost.pool === "max" ? inputs.maximum : inputs.current;
-    target.value = String(Math.max(0, clampInteger(target.value, 0, 999999, 0) - cost.value));
-    if (cost.pool === "max") resourceMaxManual[cost.resource] = true;
-    if (cost.resource === "sa") {
-      inputs.current.value = String(Math.min(
-        clampInteger(inputs.current.value, 0, 999999, 0),
-        clampInteger(inputs.maximum.value, 0, 999999, 0),
-      ));
-    }
+  missing = findInsufficientCreationCosts(totals);
+  if (missing.length) {
+    await warnInsufficientCreationCosts(creation, missing, trigger);
+    return false;
+  }
+
+  Object.entries(totals).forEach(([resource, cost]) => {
+    if (!cost.current && !cost.max) return;
+    const inputs = getResourceInputs(resource);
+    const maximum = clampInteger(inputs.maximum.value, 0, 999999, 0) - cost.max;
+    let current = clampInteger(inputs.current.value, 0, 999999, 0) - cost.current;
+    if (resource === "sa") current = Math.min(current, maximum);
+    inputs.maximum.value = String(maximum);
+    inputs.current.value = String(current);
+    if (cost.max) resourceMaxManual[resource] = true;
   });
   renderResourceState();
   notifySheetChanged("creation-costs");
@@ -15725,13 +15797,6 @@ document.querySelectorAll("[data-system-prompt-cancel]").forEach((button) => {
 systemPromptCancel.addEventListener("click", () => closeSystemPrompt(false));
 systemPromptConfirm.addEventListener("click", () => closeSystemPrompt(true));
 themeButton.addEventListener("click", openThemeEditor);
-themeFields.addEventListener("input", (event) => {
-  const key = event.target.dataset.themeKey;
-  if (!THEME_FIELDS.some((field) => field.key === key)) return;
-  themeSettings = sanitizeTheme({ ...themeSettings, [key]: event.target.value });
-  applyTheme();
-  notifySheetChanged("appearance");
-});
 document.querySelector("#theme-reset").addEventListener("click", () => {
   themeSettings = {};
   applyTheme();
