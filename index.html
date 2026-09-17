@@ -5467,6 +5467,22 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.12);
 }
 
+.creation-quick-roll.is-damage-roll {
+  border-color: rgba(183, 80, 91, 0.5);
+  color: #efa0aa;
+  background: rgba(135, 37, 49, 0.11);
+}
+
+.creation-quick-roll.is-damage-roll small {
+  color: #c9828b;
+}
+
+.creation-quick-roll.is-damage-roll:hover {
+  border-color: #d26875;
+  color: #ffd8dd;
+  background: rgba(153, 42, 56, 0.18);
+}
+
 .ability-card.is-equipped-weapon,
 .inventory-card.is-equipped {
   border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.5);
@@ -5544,12 +5560,11 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   min-height: 0;
 }
 
-.creation-card-shell > .critical-margin-box {
-  justify-self: end;
-  margin: -1px 12px 0 0;
-  border-top-color: rgba(183, 80, 91, 0.18);
-  border-radius: 0 0 4px 4px;
-  background: linear-gradient(180deg, rgba(125, 33, 45, 0.11), rgba(125, 33, 45, 0.055));
+.creation-card > .critical-margin-box {
+  grid-column: 1 / -1;
+  justify-self: start;
+  margin: 4px 0 0;
+  border-radius: 3px;
 }
 
 .ability-card.creation-card {
@@ -5724,9 +5739,9 @@ body.inventory-is-dragging {
 
 .critical-margin-box {
   display: inline-grid;
-  grid-template-columns: 32px auto 32px;
+  grid-template-columns: 24px auto 24px;
   align-items: stretch;
-  margin-top: 9px;
+  margin-top: 6px;
   overflow: hidden;
   border: 1px solid rgba(183, 80, 91, 0.38);
   border-radius: 3px;
@@ -5738,13 +5753,14 @@ body.inventory-is-dragging {
   color: #d58b94;
   background: rgba(255, 255, 255, 0.035);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.78rem;
 }
 
 .critical-margin-box button:hover { color: #ffd7dc; background: rgba(183, 80, 91, 0.14); }
-.critical-margin-copy { display: grid; min-width: 148px; padding: 5px 10px; text-align: center; }
-.critical-margin-copy small { color: #a87d83; font-size: 0.58rem; text-transform: uppercase; }
-.critical-margin-copy span { color: #dba2aa; font-size: 0.7rem; }
+.critical-margin-copy { display: flex; min-width: 0; align-items: center; gap: 5px; padding: 3px 7px; text-align: left; }
+.critical-margin-copy small { color: #a87d83; font-size: 0.54rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.critical-margin-copy span { display: flex; align-items: center; gap: 4px; color: #dba2aa; font-size: 0.64rem; white-space: nowrap; }
+.critical-margin-copy em { color: #9f747a; font-style: normal; }
 .critical-margin-copy strong { color: #ffe0e4; }
 
 .mechanics-builder {
@@ -5892,8 +5908,8 @@ body.inventory-is-dragging {
   .mechanics-damage-grid { grid-template-columns: 1fr; }
   .mechanics-repeat-row .mechanics-remove { justify-self: end; }
   .mechanics-wide { grid-column: auto; }
-  .critical-margin-box { display: grid; width: 100%; }
-  .creation-card-shell > .critical-margin-box { justify-self: stretch; width: auto; margin: -1px 10px 0; }
+  .critical-margin-box { display: grid; }
+  .creation-card > .critical-margin-box { justify-self: start; width: auto; margin: 4px 0 0; }
   .critical-margin-copy { min-width: 0; }
 }
 
@@ -5949,6 +5965,114 @@ body.inventory-is-dragging {
   .slots-dialog,
   .ability-roll-dialog,
   .utility-dialog { max-height: 96dvh; }
+}
+    </style>
+    <style id="interaction-polish-styles">
+/* Confirmações do sistema — compartilham a linguagem visual do restante da ficha. */
+.system-prompt-modal { z-index: 180; }
+.system-prompt-dialog {
+  --prompt-color: var(--theme-accent-cfad62, #cfad62);
+  width: min(480px, 100%);
+  overflow: hidden;
+  border-color: color-mix(in srgb, var(--prompt-color) 42%, var(--theme-border-34353a, #34353a));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .72), 0 0 35px color-mix(in srgb, var(--prompt-color) 10%, transparent);
+}
+.system-prompt-dialog.is-danger { --prompt-color: #cf5967; }
+.system-prompt-dialog.is-warning { --prompt-color: #e2a64d; }
+.system-prompt-dialog.is-info { --prompt-color: var(--theme-accent-cfad62, #cfad62); }
+.system-prompt-head {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 13px;
+  padding: 20px 22px 17px;
+  border-bottom: 1px solid color-mix(in srgb, var(--prompt-color) 24%, transparent);
+  background: linear-gradient(120deg, color-mix(in srgb, var(--prompt-color) 9%, transparent), transparent 62%);
+}
+.system-prompt-head h2 { margin: 2px 0 0; color: var(--theme-text-f1efe9, #f1efe9); font: 600 1.3rem Georgia, "Times New Roman", serif; }
+.system-prompt-head .eyebrow { color: var(--prompt-color); }
+.system-prompt-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid color-mix(in srgb, var(--prompt-color) 48%, transparent);
+  border-radius: 50%;
+  color: var(--prompt-color);
+  background: color-mix(in srgb, var(--prompt-color) 9%, transparent);
+  box-shadow: inset 0 0 17px color-mix(in srgb, var(--prompt-color) 10%, transparent);
+  font-size: 1.05rem;
+}
+.system-prompt-content { padding: 23px 24px; }
+.system-prompt-content p { margin: 0; color: var(--theme-text-d8d0c1, #d8d0c1); font-size: .86rem; line-height: 1.72; white-space: pre-line; }
+.system-prompt-footer { display: flex; justify-content: flex-end; gap: 9px; padding: 14px 22px 19px; border-top: 1px solid var(--theme-border-292a30, #292a30); }
+.system-prompt-footer .builder-submit { border-color: color-mix(in srgb, var(--prompt-color) 52%, transparent); color: var(--prompt-color); background: color-mix(in srgb, var(--prompt-color) 10%, transparent); }
+.system-prompt-footer .builder-submit:hover { background: color-mix(in srgb, var(--prompt-color) 18%, transparent); }
+
+/* O editor de paleta é uma gaveta: a página continua visível e utilizável durante a edição. */
+.theme-modal {
+  z-index: 145;
+  place-items: stretch end;
+  padding: 0;
+  pointer-events: none;
+}
+.theme-modal > .roll-backdrop { display: none; }
+.theme-modal #theme-dialog {
+  width: min(410px, 100vw);
+  height: 100dvh;
+  max-height: none;
+  border-top: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 8px 0 0 8px;
+  pointer-events: auto;
+  box-shadow: -24px 0 65px rgba(0, 0, 0, .58);
+}
+.theme-modal .theme-fields { padding-bottom: 42px; }
+
+/* Cor própria para os contêineres internos, sem alterar as cores fixas dos Ecos. */
+:is(
+  .skill-row,
+  .selected-feature-card,
+  .ability-card,
+  .grimoire-item,
+  .creation-detail-section,
+  .mechanics-block,
+  .combat-stat,
+  .echo-lore-card,
+  .echo-ability-card,
+  .rd-item,
+  .slot-item,
+  .theme-color-control
+) {
+  background-image: linear-gradient(145deg, var(--palette-containerRaised, #191a20), var(--palette-container, #111217));
+}
+
+.grimoire-section-tabs {
+  flex: 0 0 auto;
+  flex-wrap: nowrap;
+  margin: 17px 23px 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.grimoire-section-tabs button { flex: 0 0 auto; white-space: nowrap; }
+.minerva-list { padding-top: 14px; }
+
+@media (max-width: 760px) {
+  .theme-modal { place-items: end stretch; }
+  .theme-modal #theme-dialog {
+    width: 100%;
+    height: min(66dvh, 650px);
+    border-top: 1px solid var(--theme-border-34353a, #34353a);
+    border-left: 0;
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -22px 55px rgba(0, 0, 0, .62);
+  }
+  .system-prompt-dialog { width: 100%; }
+  .system-prompt-head { padding-inline: 17px; }
+  .system-prompt-content { padding: 20px 18px; }
+  .system-prompt-footer { padding-inline: 17px; }
+  .grimoire-section-tabs { margin-inline: 14px; }
 }
     </style>
   </head>
@@ -6909,15 +7033,36 @@ body.inventory-is-dragging {
 
     <div id="theme-modal" class="ability-modal utility-modal" hidden>
       <div class="roll-backdrop" data-close-theme aria-hidden="true"></div>
-      <section id="theme-dialog" class="ability-dialog" role="dialog" aria-modal="true" aria-labelledby="theme-title" tabindex="-1">
+      <section id="theme-dialog" class="ability-dialog" role="dialog" aria-modal="false" aria-labelledby="theme-title" tabindex="-1">
         <header class="ability-dialog-head">
-          <div><p class="eyebrow">Aparência</p><h2 id="theme-title">Sua paleta</h2><p>As mudanças aparecem na hora. As cores dos Ecos são fixas.</p></div>
+          <div><p class="eyebrow">Aparência</p><h2 id="theme-title">Sua paleta</h2><p>Edite com a ficha visível. Painéis e contêineres também podem ter cores próprias; as cores dos Ecos permanecem fixas.</p></div>
           <button class="result-close" type="button" data-close-theme aria-label="Fechar paleta de cores">×</button>
         </header>
         <div id="theme-fields" class="utility-content theme-fields"></div>
         <footer class="skill-info-dialog-footer">
           <button id="theme-reset" class="dialog-button" type="button">Restaurar cores</button>
           <button class="dialog-button" type="button" data-close-theme>Fechar</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="system-prompt-modal" class="ability-modal system-prompt-modal" hidden>
+      <div class="roll-backdrop" data-system-prompt-cancel aria-hidden="true"></div>
+      <section id="system-prompt-dialog" class="ability-dialog system-prompt-dialog" role="alertdialog" aria-modal="true" aria-labelledby="system-prompt-title" aria-describedby="system-prompt-message" tabindex="-1">
+        <header class="system-prompt-head">
+          <span id="system-prompt-mark" class="system-prompt-mark" aria-hidden="true">✦</span>
+          <div>
+            <p id="system-prompt-eyebrow" class="eyebrow">Confirmação</p>
+            <h2 id="system-prompt-title">Confirmar ação</h2>
+          </div>
+          <button class="result-close" type="button" data-system-prompt-cancel aria-label="Cancelar">×</button>
+        </header>
+        <div class="system-prompt-content">
+          <p id="system-prompt-message"></p>
+        </div>
+        <footer class="system-prompt-footer">
+          <button id="system-prompt-cancel" class="dialog-button" type="button">Cancelar</button>
+          <button id="system-prompt-confirm" class="builder-submit" type="button">Confirmar</button>
         </footer>
       </section>
     </div>
@@ -7703,6 +7848,17 @@ body.inventory-is-dragging {
             </button>
           </div>
         </header>
+
+        <div id="minerva-section-tabs" class="ability-tabs grimoire-section-tabs" role="tablist" aria-label="Seções do Grimório de Minerva">
+          <button class="is-active" type="button" role="tab" data-minerva-section="attacks" aria-selected="true">Ataques</button>
+          <button type="button" role="tab" data-minerva-section="backgrounds" aria-selected="false">Antecedências</button>
+          <button type="button" role="tab" data-minerva-section="styles" aria-selected="false">Estilos de Luta</button>
+          <button type="button" role="tab" data-minerva-section="powers" aria-selected="false">Poderes</button>
+          <button type="button" role="tab" data-minerva-section="spells" aria-selected="false">Feitiços</button>
+          <button type="button" role="tab" data-minerva-section="echoes" aria-selected="false">Ecos</button>
+          <button type="button" role="tab" data-minerva-section="classes" aria-selected="false">Classes</button>
+          <button type="button" role="tab" data-minerva-section="tree" aria-selected="false">Árvore</button>
+        </div>
 
         <div id="minerva-list" class="grimoire-list minerva-list"></div>
         <div id="minerva-empty" class="grimoire-empty" hidden>
@@ -10048,6 +10204,18 @@ const THEME_FIELDS = [
     "default": "#101116"
   },
   {
+    "key": "containerRaised",
+    "label": "Contêineres · início",
+    "group": "Estrutura",
+    "default": "#191a20"
+  },
+  {
+    "key": "container",
+    "label": "Contêineres · fim",
+    "group": "Estrutura",
+    "default": "#111217"
+  },
+  {
     "key": "border",
     "label": "Bordas",
     "group": "Estrutura",
@@ -10743,6 +10911,14 @@ const themeButton = document.querySelector("#theme-button");
 const themeModal = document.querySelector("#theme-modal");
 const themeDialog = document.querySelector("#theme-dialog");
 const themeFields = document.querySelector("#theme-fields");
+const systemPromptModal = document.querySelector("#system-prompt-modal");
+const systemPromptDialog = document.querySelector("#system-prompt-dialog");
+const systemPromptEyebrow = document.querySelector("#system-prompt-eyebrow");
+const systemPromptTitle = document.querySelector("#system-prompt-title");
+const systemPromptMessage = document.querySelector("#system-prompt-message");
+const systemPromptMark = document.querySelector("#system-prompt-mark");
+const systemPromptCancel = document.querySelector("#system-prompt-cancel");
+const systemPromptConfirm = document.querySelector("#system-prompt-confirm");
 const echoSegments = document.querySelector("#echo-segments");
 const echoDecreaseButton = document.querySelector("#echo-decrease");
 const echoIncreaseButton = document.querySelector("#echo-increase");
@@ -10862,6 +11038,7 @@ const minervaModal = document.querySelector("#minerva-modal");
 const minervaDialog = document.querySelector("#minerva-dialog");
 const minervaList = document.querySelector("#minerva-list");
 const minervaEmpty = document.querySelector("#minerva-empty");
+const minervaSectionButtons = [...document.querySelectorAll("[data-minerva-section]")];
 const slotsModal = document.querySelector("#slots-modal");
 const slotsDialog = document.querySelector("#slots-dialog");
 const abilityRollModal = document.querySelector("#ability-roll-modal");
@@ -10936,6 +11113,7 @@ let activeAbilityTrigger = null;
 let abilityEditorScope = "sheet";
 let pendingAbilityPreviewUrl = "";
 let grimoireAbilities = [];
+let activeMinervaSection = "attacks";
 let damageReductions = [];
 let echoPoints = 5;
 let activeAbilityDetailId = null;
@@ -10944,6 +11122,8 @@ let activeAbilityDetailTrigger = null;
 let activeItemId = null;
 let activeItemTrigger = null;
 let themeSettings = {};
+let systemPromptResolver = null;
+let systemPromptTrigger = null;
 const resourceMaxManual = { pv: false, pa: false, sa: false };
 let defenseWasManuallySet = false;
 const skillLimitApprovedKeys = new Set();
@@ -13033,10 +13213,18 @@ function creationSpendLabel(creation) {
   return `Gastar · ${costs.map(costDisplayLabel).join(" + ")}`;
 }
 
-function applyCreationCosts(creation) {
+async function applyCreationCosts(creation, trigger = null) {
   if (!creation.costs?.length) return true;
   const summary = creation.costs.map(costDisplayLabel).join("\n");
-  if (!window.confirm(`Gastar os recursos de “${creation.name}”:\n\n${summary}?`)) return false;
+  const confirmed = await showAbyssConfirm({
+    eyebrow: "Uso de recursos",
+    title: "Gastar recursos?",
+    message: `“${creation.name}” consumirá:\n\n${summary}`,
+    confirmLabel: "Gastar",
+    tone: "warning",
+    trigger,
+  });
+  if (!confirmed) return false;
 
   creation.costs.forEach((cost) => {
     const inputs = getResourceInputs(cost.resource);
@@ -13068,21 +13256,23 @@ function showCreationRollResult(title, context, parsed, result, trigger) {
   abilityRollDialog.focus();
 }
 
-function rollNamedCreation(scope, creationId, rollId, trigger, chargeCosts = false) {
+async function rollNamedCreation(scope, creationId, rollId, trigger, chargeCosts = false) {
   const creation = getCreation(scope, creationId);
   const roll = creation?.rolls?.find((entry) => entry.id === rollId);
-  if (!creation || !roll || (chargeCosts && !applyCreationCosts(creation))) return;
+  if (!creation || !roll) return;
+  if (chargeCosts && !(await applyCreationCosts(creation, trigger))) return;
   const parsed = parseDamageFormula(roll.formula);
   if (parsed.error || !parsed.tokens.length) return;
   const result = evaluateDamageFormulaDetailed(parsed);
   showCreationRollResult(`${creation.name} · ${roll.name}`, "Rolagem", parsed, result, trigger);
 }
 
-function rollCreationDamage(scope, creationId, trigger, chargeCosts = false) {
+async function rollCreationDamage(scope, creationId, trigger, chargeCosts = false) {
   const creation = getCreation(scope, creationId);
   const profile = creation?.damageProfile || sanitizeDamageProfile({}, creation?.damage);
   const primaryParsed = parseDamageFormula(profile.primary);
-  if (!creation || primaryParsed.error || !primaryParsed.tokens.length || (chargeCosts && !applyCreationCosts(creation))) return;
+  if (!creation || primaryParsed.error || !primaryParsed.tokens.length) return;
+  if (chargeCosts && !(await applyCreationCosts(creation, trigger))) return;
 
   const primary = evaluateDamageFormulaDetailed(primaryParsed);
   let total = primary.total;
@@ -13128,10 +13318,10 @@ function rollCreationDamage(scope, creationId, trigger, chargeCosts = false) {
   );
 }
 
-function useCreation(scope, creationId, trigger) {
+async function useCreation(scope, creationId, trigger) {
   const creation = getCreation(scope, creationId);
   if (!creation?.costs?.length) return;
-  applyCreationCosts(creation);
+  await applyCreationCosts(creation, trigger);
 }
 
 function appendCreationQuickRolls(container, creation, scope, allowRolls = true) {
@@ -13147,12 +13337,35 @@ function appendCreationQuickRolls(container, creation, scope, allowRolls = true)
     button.dataset.creationId = creation.id;
     button.setAttribute("aria-label", `Rolar ${roll.name} de ${creation.name}: ${roll.formula}`);
     button.append(
-      Object.assign(document.createElement("span"), { textContent: `◈ ${roll.name}` }),
+      Object.assign(document.createElement("span"), { textContent: `🎲 ${roll.name}` }),
       Object.assign(document.createElement("small"), { textContent: roll.formula }),
     );
     rolls.append(button);
   });
   container.append(rolls);
+}
+
+function appendCreationDamageRoll(container, creation, scope, allowDamage = true) {
+  const profile = creation?.damageProfile || sanitizeDamageProfile({}, creation?.damage);
+  if (!allowDamage || !profile.primary) return;
+  const rolls = container.querySelector(".creation-quick-rolls") || document.createElement("div");
+  if (!rolls.isConnected) {
+    rolls.className = "creation-quick-rolls";
+    container.append(rolls);
+  }
+  const button = document.createElement("button");
+  button.className = "creation-quick-roll is-damage-roll";
+  button.type = "button";
+  button.dataset.rollCreationDamage = creation.id;
+  button.dataset.creationScope = scope;
+  button.setAttribute("aria-label", `Rolar dano de ${creation.name}: ${profile.primary}`);
+  button.append(
+    Object.assign(document.createElement("span"), { textContent: "⚔️ Dano" }),
+    Object.assign(document.createElement("small"), {
+      textContent: profile.additional ? `${profile.primary} + ${profile.additional}` : profile.primary,
+    }),
+  );
+  rolls.append(button);
 }
 
 function createCreationAction(label, dataKey, creation, scope, className = "") {
@@ -13178,10 +13391,10 @@ function createCreationCardShell(card, creation, scope, options = {}) {
   const shell = document.createElement("div");
   shell.className = `creation-card-shell${options.inventory ? " inventory-card-shell" : ""}`;
   if (options.inventory) shell.dataset.inventorySortId = creation.id;
-  shell.append(card);
   if (creation.damageProfile?.criticalThreshold) {
-    shell.append(createCriticalMarginControl(creation, scope));
+    card.append(createCriticalMarginControl(creation, scope));
   }
+  shell.append(card);
   return shell;
 }
 
@@ -13393,12 +13606,13 @@ function openAbilityDetail(abilityId, trigger, scope = "sheet") {
   if (!media.hidden) media.append(createAbilityMediaElement(ability, "ability-card-media"));
   const damage = document.querySelector("#ability-detail-damage");
   const primaryDamage = ability.damageProfile?.primary || ability.damage || "";
-  damage.hidden = !primaryDamage;
-  damage.textContent = primaryDamage ? `Dano: ${primaryDamage}` : "";
+  damage.hidden = true;
+  damage.textContent = "";
   renderCreationDetailMechanics(ability, scope);
   abilityDetailRoll.hidden = scope === "minerva" || !ability.costs?.length;
   abilityDetailRoll.textContent = creationSpendLabel(ability);
   abilityDetailDamageRoll.hidden = scope !== "sheet" || !primaryDamage;
+  abilityDetailDamageRoll.textContent = primaryDamage ? `⚔️ Dano · ${primaryDamage}` : "⚔️ Dano";
   abilityDetailModifiers.hidden = scope === "minerva" || !ability.grantsModifiers || !ability.modifiers?.length;
   abilityDetailModifiers.textContent = ability.modifiersActive ? "Desativar modificadores" : "Ativar modificadores";
   abilityDetailModifiers.classList.toggle("is-active", ability.modifiersActive);
@@ -13496,25 +13710,13 @@ function renderAbilities() {
     copy.append(heading, description);
 
     const primaryDamage = ability.damageProfile?.primary || ability.damage || "";
-    if (primaryDamage) {
-      const damage = document.createElement("span");
-      damage.className = "ability-card-damage";
-      damage.textContent = ability.damageProfile?.additional
-        ? `${primaryDamage} + ${ability.damageProfile.additional}`
-        : primaryDamage;
-      copy.append(damage);
-    }
-
     appendCreationQuickRolls(copy, ability, scope, true);
+    appendCreationDamageRoll(copy, ability, scope, Boolean(primaryDamage));
     const actions = document.createElement("div");
     actions.className = "creation-main-actions";
     if (ability.costs?.length) {
       actions.append(createCreationAction(creationSpendLabel(ability), "useCreation", ability, scope, "is-spend-action"));
     }
-    if (primaryDamage) {
-      actions.append(createCreationAction("Rolar dano", "rollCreationDamage", ability, scope, "is-damage-action"));
-    }
-
     if (ability.grantsModifiers && ability.modifiers?.length) {
       const toggle = document.createElement("button");
       toggle.className = `ability-card-action${ability.modifiersActive ? " is-active" : ""}`;
@@ -13567,7 +13769,9 @@ function openAbilityEditor(scope, ability = null, trigger = null) {
   activeAbilityId = ability?.id || null;
   activeAbilityTrigger = trigger;
   abilityEditorForm.reset();
-  abilitySectionSelect.value = ability?.section || activeAbilitySection;
+  abilitySectionSelect.value = ability?.section || (
+    abilityEditorScope === "minerva" ? activeMinervaSection : activeAbilitySection
+  );
   abilityNameInput.value = ability?.name || "";
   abilityOriginInput.value = ability?.origin || "";
   abilityEchoSelect.value = ability?.echoKey || characterEchoSelect.value;
@@ -13755,6 +13959,7 @@ async function submitAbilityEditor(event) {
       }
       await window.AbyssCloud.saveMinervaAbility(nextAbility);
       await refreshGrimoireFromCloud();
+      selectMinervaSection(nextAbility.section);
     } else {
       const index = abilities.findIndex((item) => item.id === id);
       if (index >= 0) abilities[index] = nextAbility;
@@ -13799,7 +14004,15 @@ async function submitAbilityEditor(event) {
 
 async function deleteSheetAbility(abilityId) {
   const ability = abilities.find((item) => item.id === abilityId);
-  if (!ability || !window.confirm(`Excluir “${ability.name}” deste Slot?`)) return;
+  if (!ability) return;
+  const confirmed = await showAbyssConfirm({
+    eyebrow: "Habilidades",
+    title: "Excluir Habilidade?",
+    message: `“${ability.name}” será removida deste Slot.`,
+    confirmLabel: "Excluir",
+    tone: "danger",
+  });
+  if (!confirmed) return;
 
   if (ability.modifiersActive) setCreationModifiersActive("sheet", ability.id, false, { notify: false });
   abilities = abilities.filter((item) => item.id !== abilityId);
@@ -13960,7 +14173,7 @@ function createCriticalMarginControl(item, scope = "inventory") {
   decrease.disabled = effective <= 1;
   const copy = document.createElement("span");
   copy.className = "critical-margin-copy";
-  copy.innerHTML = `<small>Margem de Crítico</small><span><b>${effective}+</b> · original <strong>${original}+</strong></span>`;
+  copy.innerHTML = `<small>Crítico</small><span><b>${effective}+</b><em>base <strong>${original}+</strong></em></span>`;
   const increase = document.createElement("button");
   increase.type = "button";
   increase.dataset.adjustCritical = item.id;
@@ -14144,14 +14357,6 @@ function renderInventory() {
     description.textContent = item.description || "Sem descrição.";
     description.className = "creation-card-description";
     copy.append(heading, description);
-    if (item.damageProfile.primary) {
-      const damage = document.createElement("span");
-      damage.className = "ability-card-damage";
-      damage.textContent = item.damageProfile.additional
-        ? `${item.damageProfile.primary} + ${item.damageProfile.additional}`
-        : item.damageProfile.primary;
-      copy.append(damage);
-    }
     appendCreationQuickRolls(copy, item, "inventory", !item.isWeapon);
 
     const actions = document.createElement("div");
@@ -14194,9 +14399,17 @@ function setWeaponEquipped(itemId, shouldEquip) {
   notifySheetChanged(shouldEquip ? "weapon-equipped" : "weapon-unequipped");
 }
 
-function deleteInventoryItem(itemId) {
+async function deleteInventoryItem(itemId) {
   const item = inventoryItems.find((entry) => entry.id === itemId);
-  if (!item || !window.confirm(`Excluir “${item.name}” do Inventário?`)) return;
+  if (!item) return;
+  const confirmed = await showAbyssConfirm({
+    eyebrow: "Inventário",
+    title: "Excluir Item?",
+    message: `“${item.name}” será removido definitivamente deste Slot.`,
+    confirmLabel: "Excluir",
+    tone: "danger",
+  });
+  if (!confirmed) return;
   if (item.modifiersActive) setCreationModifiersActive("inventory", item.id, false, { notify: false });
   inventoryItems = inventoryItems.filter((entry) => entry.id !== itemId);
   renderInventory();
@@ -14281,14 +14494,31 @@ function renderGrimoireCollections() {
   grimoirePickerList.replaceChildren(
     ...visible.map((ability) => createGrimoireItem(ability, "picker")),
   );
+  const minervaVisible = grimoireAbilities
+    .filter((ability) => ability.section === activeMinervaSection)
+    .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
   minervaList.replaceChildren(
-    ...grimoireAbilities
-      .slice()
-      .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }))
-      .map((ability) => createGrimoireItem(ability, "admin")),
+    ...minervaVisible.map((ability) => createGrimoireItem(ability, "admin")),
   );
   grimoirePickerEmpty.hidden = visible.length !== 0;
-  minervaEmpty.hidden = grimoireAbilities.length !== 0;
+  minervaEmpty.textContent = `Nenhuma habilidade em ${abilitySectionLabel(activeMinervaSection)}.`;
+  minervaEmpty.hidden = minervaVisible.length !== 0;
+}
+
+function selectMinervaSection(sectionKey) {
+  if (!ABILITY_SECTIONS[sectionKey]) return;
+  activeMinervaSection = sectionKey;
+  let activeButton = null;
+  minervaSectionButtons.forEach((button) => {
+    const selected = button.dataset.minervaSection === sectionKey;
+    button.classList.toggle("is-active", selected);
+    button.setAttribute("aria-selected", String(selected));
+    if (selected) activeButton = button;
+  });
+  renderGrimoireCollections();
+  if (activeButton && window.matchMedia("(max-width: 760px)").matches) {
+    requestAnimationFrame(() => activeButton.scrollIntoView({ block: "nearest", inline: "center" }));
+  }
 }
 
 async function refreshGrimoireFromCloud() {
@@ -14414,8 +14644,68 @@ function openThemeEditor() {
 function closeThemeEditor() {
   themeModal.hidden = true;
   syncModalLock();
-  themeButton.focus();
+  if (themeButton.isConnected) themeButton.focus();
 }
+
+function closeSystemPrompt(result = false) {
+  if (systemPromptModal.hidden && !systemPromptResolver) return;
+  systemPromptModal.hidden = true;
+  const resolver = systemPromptResolver;
+  const trigger = systemPromptTrigger;
+  systemPromptResolver = null;
+  systemPromptTrigger = null;
+  syncModalLock();
+  if (resolver) resolver(Boolean(result));
+  if (trigger?.isConnected) trigger.focus();
+}
+
+function showSystemPrompt(options = {}) {
+  if (systemPromptResolver) closeSystemPrompt(false);
+  const {
+    eyebrow = "Abyss RPG",
+    title = "Confirmar ação",
+    message = "",
+    confirmLabel = "Confirmar",
+    cancelLabel = "Cancelar",
+    tone = "info",
+    alertOnly = false,
+    trigger = document.activeElement,
+  } = options;
+
+  systemPromptTrigger = trigger instanceof HTMLElement ? trigger : null;
+  systemPromptEyebrow.textContent = eyebrow;
+  systemPromptTitle.textContent = title;
+  systemPromptMessage.textContent = message;
+  systemPromptConfirm.textContent = confirmLabel;
+  systemPromptCancel.textContent = cancelLabel;
+  systemPromptCancel.hidden = alertOnly;
+  systemPromptMark.textContent = tone === "danger" ? "!" : tone === "warning" ? "◆" : "✦";
+  systemPromptDialog.classList.remove("is-danger", "is-warning", "is-info");
+  systemPromptDialog.classList.add(`is-${["danger", "warning", "info"].includes(tone) ? tone : "info"}`);
+  systemPromptModal.hidden = false;
+  syncModalLock();
+
+  const response = new Promise((resolve) => {
+    systemPromptResolver = resolve;
+  });
+  requestAnimationFrame(() => systemPromptConfirm.focus());
+  return response;
+}
+
+function showAbyssConfirm(options = {}) {
+  return showSystemPrompt(options);
+}
+
+function showAbyssAlert(options = {}) {
+  return showSystemPrompt({
+    ...options,
+    alertOnly: true,
+    confirmLabel: options.confirmLabel || "Entendi",
+  });
+}
+
+window.showAbyssConfirm = showAbyssConfirm;
+window.showAbyssAlert = showAbyssAlert;
 
 function syncModalLock() {
   const hasOpenModal = [
@@ -14435,7 +14725,7 @@ function syncModalLock() {
     abilityRollModal,
     abilityDetailModal,
     rdModal,
-    themeModal,
+    systemPromptModal,
   ]
     .some((modal) => !modal.hidden);
   document.body.classList.toggle("modal-open", hasOpenModal);
@@ -15429,6 +15719,11 @@ document.querySelectorAll("[data-close-rd]").forEach((button) => {
 document.querySelectorAll("[data-close-theme]").forEach((button) => {
   button.addEventListener("click", closeThemeEditor);
 });
+document.querySelectorAll("[data-system-prompt-cancel]").forEach((button) => {
+  button.addEventListener("click", () => closeSystemPrompt(false));
+});
+systemPromptCancel.addEventListener("click", () => closeSystemPrompt(false));
+systemPromptConfirm.addEventListener("click", () => closeSystemPrompt(true));
 themeButton.addEventListener("click", openThemeEditor);
 themeFields.addEventListener("input", (event) => {
   const key = event.target.dataset.themeKey;
@@ -15444,6 +15739,9 @@ document.querySelector("#theme-reset").addEventListener("click", () => {
   notifySheetChanged("appearance");
 });
 grimoireSearchInput.addEventListener("input", renderGrimoireCollections);
+minervaSectionButtons.forEach((button) => {
+  button.addEventListener("click", () => selectMinervaSection(button.dataset.minervaSection));
+});
 
 abilityMediaFileInput.addEventListener("change", () => {
   const file = abilityMediaFileInput.files?.[0];
@@ -15471,7 +15769,7 @@ clearAbilityMediaButton.addEventListener("click", () => {
   renderAbilityMediaPreview("");
 });
 
-abilitiesList.addEventListener("click", (event) => {
+abilitiesList.addEventListener("click", async (event) => {
   const critical = event.target.closest("[data-adjust-critical]");
   if (critical) {
     adjustCreationCriticalMargin(critical.dataset.criticalScope || "sheet", critical.dataset.adjustCritical, Number.parseInt(critical.dataset.direction, 10));
@@ -15509,7 +15807,13 @@ abilitiesList.addEventListener("click", (event) => {
     const ability = abilities.find((item) => item.id === edit.dataset.editAbility);
     if (ability) {
       if (ability.modifiersActive) {
-        window.alert("Desative os modificadores desta Habilidade antes de editá-la.");
+        await showAbyssAlert({
+          eyebrow: "Efeitos ativos",
+          title: "Desative antes de editar",
+          message: "Desative os modificadores desta Habilidade antes de editá-la.",
+          tone: "warning",
+          trigger: edit,
+        });
         return;
       }
       openAbilityEditor("sheet", ability, edit);
@@ -15520,7 +15824,13 @@ abilitiesList.addEventListener("click", (event) => {
     const item = inventoryItems.find((entry) => entry.id === editEquipped.dataset.editEquippedWeapon);
     if (item) {
       if (item.modifiersActive) {
-        window.alert("Desative os modificadores desta Arma antes de editá-la.");
+        await showAbyssAlert({
+          eyebrow: "Efeitos ativos",
+          title: "Desative antes de editar",
+          message: "Desative os modificadores desta Arma antes de editá-la.",
+          tone: "warning",
+          trigger: editEquipped,
+        });
         return;
       }
       openItemEditor(item, editEquipped);
@@ -15534,7 +15844,7 @@ abilitiesList.addEventListener("click", (event) => {
   if (remove) deleteSheetAbility(remove.dataset.deleteAbility);
 });
 
-inventoryList.addEventListener("click", (event) => {
+inventoryList.addEventListener("click", async (event) => {
   if (inventoryMoveMode || Date.now() < inventorySuppressClickUntil) {
     event.preventDefault();
     return;
@@ -15567,7 +15877,13 @@ inventoryList.addEventListener("click", (event) => {
     const item = inventoryItems.find((entry) => entry.id === edit.dataset.editItem);
     if (item) {
       if (item.modifiersActive) {
-        window.alert("Desative os modificadores deste Item antes de editá-lo.");
+        await showAbyssAlert({
+          eyebrow: "Efeitos ativos",
+          title: "Desative antes de editar",
+          message: "Desative os modificadores deste Item antes de editá-lo.",
+          tone: "warning",
+          trigger: edit,
+        });
         return;
       }
       openItemEditor(item, edit);
@@ -15613,16 +15929,29 @@ minervaList.addEventListener("click", async (event) => {
   const ability = grimoireAbilities.find(
     (item) => item.id === remove.dataset.deleteMinervaAbility,
   );
-  if (!ability || !window.confirm(`Excluir “${ability.name}” do Grimório de Minerva?`)) {
-    return;
-  }
+  if (!ability) return;
+  const confirmed = await showAbyssConfirm({
+    eyebrow: "Grimório de Minerva",
+    title: "Excluir do Grimório?",
+    message: `“${ability.name}” deixará de ficar disponível para todos os jogadores.`,
+    confirmLabel: "Excluir",
+    tone: "danger",
+    trigger: remove,
+  });
+  if (!confirmed) return;
 
   remove.disabled = true;
   try {
     await window.AbyssCloud.deleteMinervaAbility(ability);
     await refreshGrimoireFromCloud();
   } catch (error) {
-    window.alert(error?.message || "Não foi possível excluir a Habilidade do Grimório.");
+    await showAbyssAlert({
+      eyebrow: "Grimório de Minerva",
+      title: "Exclusão não concluída",
+      message: error?.message || "Não foi possível excluir a Habilidade do Grimório.",
+      tone: "danger",
+      trigger: remove,
+    });
   } finally {
     remove.disabled = false;
   }
@@ -16096,7 +16425,9 @@ window.addEventListener("resize", () => {
 });
 
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape" && !themeModal.hidden) {
+  if (event.key === "Escape" && !systemPromptModal.hidden) {
+    closeSystemPrompt(false);
+  } else if (event.key === "Escape" && !themeModal.hidden) {
     closeThemeEditor();
   } else if (event.key === "Escape" && !rdModal.hidden) {
     closeRdManager();
@@ -16150,7 +16481,7 @@ document.addEventListener("keydown", (event) => {
   trapInteractiveModalFocus(event, abilityRollModal, abilityRollDialog);
   trapInteractiveModalFocus(event, abilityDetailModal, abilityDetailDialog);
   trapInteractiveModalFocus(event, rdModal, rdDialog);
-  trapInteractiveModalFocus(event, themeModal, themeDialog);
+  trapInteractiveModalFocus(event, systemPromptModal, systemPromptDialog);
 });
 
 applyTheme();
@@ -16266,7 +16597,6 @@ let cloudSavePromise = null;
 let stateRevision = 0;
 let lastSavedRevision = 0;
 let isHydratingCloudState = false;
-let resetConfirmationTimer = null;
 
 function firebaseConfigIsReady() {
   const requiredFields = ["apiKey", "authDomain", "projectId", "appId"];
@@ -17037,9 +17367,14 @@ async function deleteCloudSlot(slotId) {
   if (!currentFirebaseUser) return;
 
   const slot = currentSlots.find((item) => item.id === slotId);
-  const confirmed = slot && window.confirm(
-    `Excluir definitivamente o Slot “${slot.name}”? Esta ação não pode ser desfeita.`,
-  );
+  if (!slot) return;
+  const confirmed = await window.showAbyssConfirm({
+    eyebrow: "Slots de Ficha",
+    title: "Excluir Slot?",
+    message: `“${slot.name}” e todos os dados dessa ficha serão excluídos definitivamente. Esta ação não pode ser desfeita.`,
+    confirmLabel: "Excluir Slot",
+    tone: "danger",
+  });
   if (!confirmed) return;
 
   if (slotId === currentSlotId) {
@@ -17118,31 +17453,29 @@ async function resetCurrentSlot() {
   }
 }
 
-function requestResetConfirmation() {
-  if (firebaseUi.reset.dataset.confirming !== "true") {
-    firebaseUi.reset.dataset.confirming = "true";
-    firebaseUi.reset.textContent = "Confirmar reset";
-    window.clearTimeout(resetConfirmationTimer);
-    resetConfirmationTimer = window.setTimeout(() => {
-      firebaseUi.reset.dataset.confirming = "false";
-      firebaseUi.reset.textContent = "Resetar ficha";
-    }, 5000);
-    return;
-  }
+async function requestResetConfirmation() {
+  const slot = currentSlots.find((item) => item.id === currentSlotId);
+  const confirmed = await window.showAbyssConfirm({
+    eyebrow: "Ficha do personagem",
+    title: "Resetar esta ficha?",
+    message: `Todos os dados de “${slot?.name || "Personagem"}” voltarão ao estado inicial. Esta ação não pode ser desfeita.`,
+    confirmLabel: "Resetar ficha",
+    tone: "danger",
+    trigger: firebaseUi.reset,
+  });
+  if (!confirmed) return;
 
-  window.clearTimeout(resetConfirmationTimer);
-  firebaseUi.reset.dataset.confirming = "false";
   firebaseUi.reset.textContent = "Resetando…";
   firebaseUi.reset.disabled = true;
-  resetCurrentSlot()
-    .catch((error) => {
-      setSyncStatus("error", "Erro ao resetar", "Reset incompleto", describeFirebaseError(error));
-      openAccountMenu();
-    })
-    .finally(() => {
-      firebaseUi.reset.disabled = false;
-      firebaseUi.reset.textContent = "Resetar ficha";
-    });
+  try {
+    await resetCurrentSlot();
+  } catch (error) {
+    setSyncStatus("error", "Erro ao resetar", "Reset incompleto", describeFirebaseError(error));
+    openAccountMenu();
+  } finally {
+    firebaseUi.reset.disabled = false;
+    firebaseUi.reset.textContent = "Resetar ficha";
+  }
 }
 
 async function uploadAbilityMedia({ scope, abilityId, file }) {
