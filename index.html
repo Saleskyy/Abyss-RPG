@@ -3,7 +3,7 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#07080a" />
     <meta
       name="description"
@@ -3797,7 +3797,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   }
 
   .sidebar-nav {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     padding-right: 64px;
   }
 
@@ -4720,6 +4720,878 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .roll-dialog.outcome-extreme { --outcome-color: var(--palette-extreme, #e4c362); --outcome-tint: rgba(var(--palette-extreme-rgb, 228, 195, 98), .14); }
 .roll-dialog.outcome-extreme-critical { --outcome-color: var(--palette-extremeCritical, #ffd66b); --outcome-tint: rgba(var(--palette-extremeCritical-rgb, 255, 214, 107), .14); }
     </style>
+
+    <style id="mobile-interface-styles">
+/* Interface móvel automática — mantém o layout desktop acima de 760px. */
+@media (max-width: 760px) {
+  :root {
+    --mobile-nav-height: 74px;
+    --topbar-height: calc(60px + env(safe-area-inset-top, 0px));
+  }
+
+  html {
+    scroll-padding-top: calc(var(--topbar-height) + 12px);
+    scroll-padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px) + 12px);
+  }
+
+  body {
+    min-height: 100dvh;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background-size: auto, auto, 34px 34px, 34px 34px, auto;
+    overscroll-behavior-y: contain;
+  }
+
+  button,
+  select,
+  label,
+  .portrait-frame { touch-action: manipulation; }
+
+  input:not([type="checkbox"]):not([type="color"]):not([type="file"]),
+  select,
+  textarea { font-size: 16px; }
+
+  .topbar {
+    height: var(--topbar-height);
+    gap: 3px;
+    padding: env(safe-area-inset-top, 0px) 10px 0;
+    border-bottom-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.28);
+    background: rgba(var(--theme-background-07080a-rgb, 7, 8, 10), 0.96);
+    backdrop-filter: blur(20px);
+  }
+
+  .brand-mark {
+    flex: 0 0 38px;
+    width: 38px;
+    height: 38px;
+    margin-left: 0;
+    transform: scale(0.86);
+  }
+
+  .brand-copy {
+    min-width: 0;
+    padding-left: 1px;
+  }
+
+  .brand-copy strong {
+    overflow: hidden;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .brand-copy span,
+  .topbar-rule { display: none; }
+
+  .topbar-actions {
+    flex: 0 0 auto;
+    gap: 6px;
+    margin: 0 0 0 auto;
+  }
+
+  .theme-button,
+  .minerva-button,
+  .account-button {
+    width: 40px;
+    min-width: 40px;
+    height: 40px;
+    min-height: 40px;
+  }
+
+  .account-shell { position: static; }
+
+  .account-menu {
+    position: fixed;
+    top: calc(var(--topbar-height) + 8px);
+    right: 10px;
+    left: 10px;
+    width: auto;
+    max-height: calc(100dvh - var(--topbar-height) - var(--mobile-nav-height) - 28px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: 8px;
+  }
+
+  .account-menu-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .account-action { min-height: 44px; }
+
+  .sidebar {
+    inset: auto 0 0;
+    z-index: 45;
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(64px, 1fr);
+    width: auto;
+    height: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    border-top: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.28);
+    border-right: 0;
+    background: rgba(var(--theme-background-08090b-rgb, 8, 9, 11), 0.96);
+    box-shadow: 0 -16px 38px rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(18px);
+  }
+
+  .sidebar::after { display: none; }
+
+  .sidebar-nav {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 4px;
+    height: 100%;
+    padding: 6px 0 6px 6px;
+  }
+
+  .nav-item {
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    min-height: 0;
+    padding: 4px 2px;
+    border-radius: 6px;
+    text-align: center;
+  }
+
+  .nav-item::before {
+    inset: auto 10px 0;
+    width: auto;
+    height: 2px;
+  }
+
+  .nav-item svg { width: 21px; height: 21px; }
+  .nav-item span {
+    display: block;
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    font-size: 0.66rem;
+    line-height: 1.1;
+  }
+
+  .sidebar-footer {
+    position: static;
+    display: flex;
+    width: auto;
+    height: 100%;
+    margin: 0;
+    padding: 6px;
+  }
+
+  .sidebar-signature { display: none; }
+
+  .slots-button {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    padding: 4px 2px;
+    border-color: transparent;
+    border-radius: 6px;
+  }
+
+  .slots-button svg { width: 21px; height: 21px; }
+  .slots-button span {
+    display: block;
+    font-size: 0.66rem;
+    line-height: 1.1;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding-top: var(--topbar-height);
+    padding-bottom: calc(var(--mobile-nav-height) + env(safe-area-inset-bottom, 0px) + 18px);
+  }
+
+  .view {
+    width: min(100% - 20px, 620px);
+    padding: 22px 0 30px;
+  }
+
+  .page-heading {
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+  }
+
+  .page-heading h1 { font-size: clamp(2rem, 10vw, 2.55rem); }
+  .page-heading .eyebrow { margin-bottom: 3px; }
+  .heading-note { display: none; }
+
+  .identity-panel,
+  .attributes-panel,
+  .vitals-panel,
+  .combat-panel,
+  .skills-panel,
+  .sheet-features-panel,
+  .abilities-panel,
+  .echo-panel { border-radius: 7px; }
+
+  .identity-panel {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    min-height: 0;
+    padding: 19px;
+  }
+
+  .identity-copy {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-right: 0;
+  }
+
+  .identity-fields { gap: 19px; max-width: none; }
+  .identity-fields h2 { font-size: 1.2rem; }
+  .section-index { display: none; }
+  .text-field input { min-height: 46px; padding-top: 8px; }
+
+  .identity-field-composite,
+  .identity-field-composite.is-name-echo-row {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 9px 12px;
+    width: 100%;
+  }
+
+  .character-name-field {
+    flex: 1 1 100%;
+    width: 100%;
+  }
+
+  #character-name {
+    width: 100% !important;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  #echo-choice-wrap {
+    width: min(var(--echo-tag-width, 210px), 100%);
+    max-width: 100%;
+    padding-bottom: 0;
+  }
+
+  #echo-choice-wrap .identity-choice-select { min-height: 46px; }
+
+  .identity-choice-wrap.is-class {
+    justify-content: space-between;
+    width: 100%;
+    padding-bottom: 0;
+  }
+
+  .identity-choice-wrap.is-class > label:first-of-type { flex: 1 1 175px; }
+  .identity-choice-wrap.is-class .identity-choice-select {
+    width: 100%;
+    max-width: none;
+    min-height: 44px;
+  }
+
+  .character-level-field { margin-left: auto; }
+  .character-level-field select { width: 50px; height: 44px; }
+
+  .portrait-field { justify-items: center; }
+  .portrait-frame { width: min(52vw, 178px); }
+
+  .attributes-panel { padding: 20px 14px 13px; }
+  .attributes-panel .panel-heading { padding-inline: 5px; }
+  .attributes-row {
+    display: flex;
+    gap: 10px;
+    margin-inline: -4px;
+    padding: 4px 4px 12px;
+    overflow-x: auto;
+    scroll-padding-inline: 4px;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    touch-action: pan-x;
+  }
+
+  .attributes-row::-webkit-scrollbar,
+  .ability-tabs::-webkit-scrollbar { display: none; }
+
+  .attribute {
+    flex: 0 0 112px;
+    min-width: 112px;
+    scroll-snap-align: start;
+  }
+
+  .hex-shell { width: 110px; }
+  .hex-shell input { width: 70px; font-size: 2.2rem; }
+  .attribute-name { font-size: 0.66rem; }
+
+  .vitals-panel,
+  .combat-panel { padding: 19px 14px; }
+
+  .vitals-panel-head,
+  .combat-panel-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .resources-grid,
+  .combat-grid,
+  .combat-dt-grid,
+  .echo-panel-body { grid-template-columns: 1fr; }
+
+  .resource-card {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 13px;
+    padding: 15px;
+  }
+
+  .resource-card-head,
+  .resource-values,
+  .resource-meter,
+  .resource-adjuster,
+  .resource-adjust-label,
+  .combat-stat.is-block { grid-column: auto; grid-row: auto; }
+
+  .resource-values input:first-child { font-size: 1.8rem; }
+  .resource-values input:last-child { font-size: 1.15rem; }
+  .resource-adjuster {
+    grid-template-columns: 42px 42px minmax(46px, 1fr) 42px 42px;
+    gap: 5px;
+  }
+  .resource-adjuster input,
+  .resource-adjuster button { height: 42px; }
+
+  .combat-stat { padding: 15px; }
+  .combat-phrase { grid-template-columns: 1fr; }
+  .combat-phrase > span { display: none; }
+  .combat-phrase select,
+  .block-input { min-height: 44px; }
+  .dt-controls { flex-wrap: wrap; gap: 8px; }
+  .dt-attribute { flex: 1 1 auto; justify-content: space-between; }
+  .dt-attribute select { min-width: 76px; height: 42px; }
+  .dt-auto-button { min-height: 40px; padding-inline: 10px; }
+
+  .echo-panel-head { padding-inline: 16px; }
+  .echo-panel-body { padding: 12px; }
+  .echo-counter { width: 100%; }
+  .echo-counter-button { flex-basis: 42px; height: 42px; }
+  .echo-segments { flex: 1; }
+  .echo-lore-card { max-height: min(55dvh, 440px); }
+
+  .skills-title-zone {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+  }
+
+  .difficulty-switch {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+  }
+  .difficulty-switch button { min-height: 44px; min-width: 0; }
+  .training-key { gap: 8px 13px; }
+
+  .skills-panel-head {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+    min-height: 0;
+    padding: 18px 16px;
+  }
+
+  .skills-panel-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .training-cap-status,
+  .create-skill-button {
+    justify-content: center;
+    width: 100%;
+    min-height: 44px;
+    text-align: center;
+    white-space: normal;
+  }
+
+  .roll-formula { display: none; }
+  .skills-filters {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding: 15px;
+  }
+
+  .filter-search,
+  .filter-clear { grid-column: auto; }
+  .filter-input,
+  .filter-select,
+  .filter-clear { min-height: 44px; }
+  .skills-column-head { display: none; }
+
+  .skills-list {
+    display: grid;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .skill-row {
+    position: relative;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 10px;
+    min-height: 0;
+    padding: 13px;
+    border: 1px solid var(--line);
+    border-radius: 5px;
+  }
+
+  .skill-row:last-child { border-bottom: 1px solid var(--line); }
+  .skill-info { grid-column: 1 / -1; padding-right: 52px; }
+  .skill-info strong { font-size: 1.03rem; white-space: normal; }
+  .control-caption { display: block; margin-bottom: 3px; }
+  .skill-select-wrap,
+  .training-control,
+  .modifier-control { display: grid; gap: 4px; }
+  .attribute-control { grid-template-columns: 44px minmax(0, 1fr); align-items: end; }
+  .skill-info-button { width: 44px; height: 44px; }
+  .attribute-select,
+  .training-select,
+  .modifier-input { min-height: 44px; }
+  .skill-select-wrap::after,
+  .training-control::after { top: auto; bottom: 17px; }
+  .training-die { top: auto; bottom: 10px; }
+  .roll-button { top: 11px; right: 11px; width: 46px; height: 46px; }
+
+  .sheet-features-head {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    padding: 19px 16px;
+  }
+  .selected-feature-card { padding: 14px 12px; }
+  .selected-feature-actions { flex-wrap: wrap; }
+  .selected-feature-open,
+  .selected-feature-remove { min-height: 40px; }
+
+  .abilities-panel-head {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .ability-tabs {
+    display: flex;
+    flex: none;
+    flex-wrap: nowrap;
+    gap: 5px;
+    width: 100%;
+    padding: 4px;
+    overflow-x: auto;
+    scroll-padding-inline: 4px;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  .ability-tabs button {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding-inline: 14px;
+    scroll-snap-align: center;
+    font-size: 0.68rem;
+    white-space: nowrap;
+  }
+
+  .abilities-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+    margin-left: 0;
+  }
+  .abilities-actions button { min-height: 46px; padding-inline: 8px; }
+  .abilities-section-copy { padding: 20px 16px 13px; }
+  .abilities-list { padding: 0 12px 18px; }
+
+  .ability-card {
+    grid-template-columns: 64px minmax(0, 1fr);
+    gap: 11px;
+    padding: 10px;
+  }
+  .ability-card-media { width: 64px; }
+  .ability-card-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+  }
+  .ability-card-action { flex: 1 1 86px; min-height: 42px; }
+  .ability-card-action.is-roll { grid-column: auto; }
+
+  .grimoire-item {
+    grid-template-columns: 54px minmax(0, 1fr);
+    gap: 10px;
+  }
+  .grimoire-item-media { width: 54px; }
+  .grimoire-item-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .grimoire-item-actions button { flex: 1 1 82px; min-height: 42px; }
+
+  .roll-modal,
+  .skill-info-modal,
+  .constellation-modal,
+  .feature-detail-modal,
+  .custom-skill-modal,
+  .delete-skill-modal,
+  .photo-editor-modal,
+  .ability-modal,
+  .ability-roll-modal,
+  .training-limit-modal,
+  .utility-modal {
+    place-items: end center;
+    padding: 0;
+  }
+
+  .roll-dialog,
+  .skill-info-dialog,
+  .constellation-dialog,
+  .feature-detail-dialog,
+  .custom-skill-dialog,
+  .delete-skill-dialog,
+  .photo-editor-dialog,
+  .ability-dialog,
+  .grimoire-dialog,
+  .slots-dialog,
+  .ability-roll-dialog,
+  .training-limit-dialog,
+  .utility-dialog {
+    width: 100%;
+    max-width: none;
+    max-height: min(94dvh, 860px);
+    border-right: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 14px 14px 0 0;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .roll-dialog-head,
+  .skill-info-dialog-head,
+  .constellation-dialog-head,
+  .feature-detail-dialog-head,
+  .custom-skill-dialog-head,
+  .photo-editor-dialog-head,
+  .ability-dialog-head { padding: 19px 17px 15px; }
+
+  .result-close,
+  .account-menu-close { width: 42px; height: 42px; }
+  .utility-content,
+  .ability-editor-content,
+  .skill-info-content,
+  .feature-detail-content { padding: 17px; }
+  .ability-editor-grid,
+  .photo-editor-content { grid-template-columns: 1fr; }
+  .ability-dialog-footer,
+  .skill-info-dialog-footer,
+  .constellation-dialog-footer,
+  .feature-detail-dialog-footer,
+  .delete-skill-dialog-footer {
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+  .dialog-button,
+  .builder-submit,
+  .feature-toggle { min-height: 44px; }
+}
+
+.inventory-panel-head {
+  align-items: center;
+}
+
+.inventory-panel-head h2 {
+  margin: 2px 0 5px;
+  color: var(--theme-text-eee8dc, #eee8dc);
+  font: 600 1.45rem Georgia, "Times New Roman", serif;
+}
+
+.inventory-panel-head > div > p:last-child {
+  margin: 0;
+  color: var(--theme-muted-858179, #858179);
+  font-size: 0.76rem;
+}
+
+.inventory-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 18px 24px 14px;
+  border-top: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.1);
+}
+
+.inventory-toolbar .filter-input-shell { width: min(430px, 100%); }
+
+.inventory-card.is-weapon::before { background: #b84f5e; }
+.inventory-card.is-active {
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.52);
+  box-shadow: inset 0 0 26px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.045);
+}
+
+.item-card-icon {
+  display: grid;
+  place-items: center;
+  width: 82px;
+  aspect-ratio: 1;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.25);
+  border-radius: 3px;
+  color: var(--theme-accent-b8a06a, #b8a06a);
+  background: radial-gradient(circle, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.12), transparent 68%), var(--theme-surface-0a0b0e, #0a0b0e);
+  font: 600 1.5rem Georgia, "Times New Roman", serif;
+}
+
+.creation-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.creation-tag {
+  padding: 3px 7px;
+  border: 1px solid var(--theme-border-34353a, #34353a);
+  border-radius: 999px;
+  color: var(--theme-muted-99958d, #99958d);
+  background: rgba(255, 255, 255, 0.018);
+  font-size: 0.61rem;
+  font-weight: 750;
+}
+
+.creation-tag.is-cost { border-color: rgba(219, 145, 57, 0.35); color: #d9a45f; }
+.creation-tag.is-damage { border-color: rgba(183, 80, 91, 0.38); color: #dc8f98; }
+.creation-tag.is-active { border-color: rgba(109, 193, 126, 0.4); color: #8bd69a; }
+
+.critical-margin-box {
+  display: inline-grid;
+  grid-template-columns: 32px auto 32px;
+  align-items: stretch;
+  margin-top: 9px;
+  overflow: hidden;
+  border: 1px solid rgba(183, 80, 91, 0.38);
+  border-radius: 3px;
+  background: rgba(125, 33, 45, 0.065);
+}
+
+.critical-margin-box button {
+  border: 0;
+  color: #d58b94;
+  background: rgba(255, 255, 255, 0.035);
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.critical-margin-box button:hover { color: #ffd7dc; background: rgba(183, 80, 91, 0.14); }
+.critical-margin-copy { display: grid; min-width: 148px; padding: 5px 10px; text-align: center; }
+.critical-margin-copy small { color: #a87d83; font-size: 0.58rem; text-transform: uppercase; }
+.critical-margin-copy span { color: #dba2aa; font-size: 0.7rem; }
+.critical-margin-copy strong { color: #ffe0e4; }
+
+.mechanics-builder {
+  display: grid;
+  gap: 12px;
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.23);
+  border-radius: 4px;
+  background: linear-gradient(145deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.035), rgba(255, 255, 255, 0.006));
+}
+
+.mechanics-builder-head { padding: 2px 2px 5px; }
+.mechanics-builder-head h3 { margin: 2px 0 4px; color: var(--theme-text-e8e0d2, #e8e0d2); font: 600 1.12rem Georgia, "Times New Roman", serif; }
+.mechanics-builder-head p:last-child { margin: 0; color: var(--theme-muted-77736c, #77736c); font-size: 0.7rem; }
+
+.mechanics-block {
+  padding: 13px;
+  border: 1px solid var(--theme-border-2c2d32, #2c2d32);
+  border-radius: 3px;
+  background: rgba(5, 6, 8, 0.3);
+}
+
+.mechanics-block-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.mechanics-block-head.is-inner { margin-top: 12px; }
+.mechanics-block-head > div { display: grid; gap: 2px; }
+.mechanics-block-head strong { color: var(--theme-text-d8d0c1, #d8d0c1); font-size: 0.76rem; }
+.mechanics-block-head small { color: var(--theme-muted-77736c, #77736c); font-size: 0.64rem; }
+
+.mechanics-repeat-list { display: grid; gap: 8px; }
+.mechanics-repeat-row {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.8fr) minmax(180px, 1.2fr) 36px;
+  align-items: end;
+  gap: 8px;
+  padding: 9px;
+  border: 1px solid var(--theme-border-2a2b30, #2a2b30);
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.012);
+}
+
+.mechanics-repeat-row.is-cost { grid-template-columns: minmax(100px, 0.8fr) minmax(110px, 0.9fr) minmax(90px, 0.65fr) 36px; }
+.mechanics-repeat-row.is-modifier { grid-template-columns: minmax(145px, 1fr) minmax(145px, 1fr) minmax(130px, 0.85fr) 36px; }
+.mechanics-repeat-row .builder-field span { font-size: 0.61rem; }
+.mechanics-remove {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(168, 75, 88, 0.3);
+  border-radius: 3px;
+  color: #b97881;
+  background: transparent;
+  cursor: pointer;
+}
+.mechanics-remove:hover { border-color: #b6505e; color: #f2a0aa; background: rgba(137, 37, 50, 0.08); }
+.mechanics-empty { margin: 4px 0 0; color: var(--theme-muted-625f59, #625f59); font-size: 0.67rem; }
+.mechanics-empty[hidden] { display: none; }
+
+.mechanics-switch { display: flex; align-items: center; gap: 9px; width: fit-content; cursor: pointer; }
+.mechanics-switch input { position: absolute; opacity: 0; pointer-events: none; }
+.mechanics-switch > span {
+  position: relative;
+  width: 38px;
+  height: 21px;
+  border: 1px solid var(--theme-border-404147, #404147);
+  border-radius: 999px;
+  background: var(--theme-surface-0b0c0f, #0b0c0f);
+  transition: 150ms ease;
+}
+.mechanics-switch > span::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  content: "";
+  background: var(--theme-muted-7d7971, #7d7971);
+  transition: 150ms ease;
+}
+.mechanics-switch input:checked + span { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.6); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.12); }
+.mechanics-switch input:checked + span::after { left: 20px; background: var(--theme-accent-e1ca88, #e1ca88); box-shadow: 0 0 8px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.35); }
+.mechanics-switch strong { color: var(--theme-text-d8d0c1, #d8d0c1); font-size: 0.75rem; }
+
+.mechanics-damage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 13px;
+}
+.mechanics-wide { grid-column: 1 / -1; }
+.weapon-fields { margin-top: 13px; }
+.item-editor-dialog { width: min(850px, 100%); }
+
+.creation-detail-mechanics { display: grid; gap: 11px; margin-top: 18px; }
+.creation-detail-section { padding: 12px; border: 1px solid var(--theme-border-2c2d32, #2c2d32); border-radius: 3px; background: rgba(255, 255, 255, 0.012); }
+.creation-detail-section h3 { margin: 0 0 8px; color: var(--theme-accent-d7be78, #d7be78); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.creation-detail-list { display: grid; gap: 6px; }
+.creation-detail-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--theme-muted-aaa69d, #aaa69d); font-size: 0.73rem; }
+.creation-detail-row strong { color: var(--theme-text-ded7c9, #ded7c9); }
+.creation-roll-button { min-height: 34px; padding: 0 10px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.34); border-radius: 3px; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.06); cursor: pointer; font-size: 0.67rem; font-weight: 760; }
+.creation-roll-button:hover { border-color: var(--theme-accent-e0c36e, #e0c36e); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.13); }
+
+@media (max-width: 760px) {
+  .inventory-panel-head { align-items: stretch; flex-direction: column; }
+  .inventory-toolbar { align-items: stretch; flex-direction: column; padding-inline: 14px; }
+  .inventory-toolbar .abilities-count { align-self: flex-start; }
+  .mechanics-repeat-row,
+  .mechanics-repeat-row.is-cost,
+  .mechanics-repeat-row.is-modifier { grid-template-columns: 1fr 1fr; }
+  .mechanics-repeat-row .mechanics-remove { align-self: end; }
+}
+
+@media (max-width: 560px) {
+  .sidebar-nav { gap: 2px; padding-left: 3px; }
+  .nav-item span, .slots-button span { font-size: 0.58rem; }
+  .inventory-card { grid-template-columns: 64px minmax(0, 1fr); }
+  .item-card-icon { width: 64px; }
+  .inventory-card .ability-card-actions { grid-column: 1 / -1; }
+  .mechanics-builder { padding: 10px; }
+  .mechanics-block { padding: 10px; }
+  .mechanics-block-head { align-items: flex-start; }
+  .mechanics-repeat-row,
+  .mechanics-repeat-row.is-cost,
+  .mechanics-repeat-row.is-modifier,
+  .mechanics-damage-grid { grid-template-columns: 1fr; }
+  .mechanics-repeat-row .mechanics-remove { justify-self: end; }
+  .mechanics-wide { grid-column: auto; }
+  .critical-margin-box { display: grid; width: 100%; }
+  .critical-margin-copy { min-width: 0; }
+}
+
+@media (max-width: 420px) {
+  .view { width: calc(100% - 14px); }
+  .brand-mark { flex-basis: 34px; width: 34px; height: 34px; }
+  .brand-copy strong { font-size: 0.75rem; }
+  .topbar-actions { gap: 4px; }
+  .theme-button,
+  .minerva-button,
+  .account-button { width: 38px; min-width: 38px; height: 38px; min-height: 38px; }
+  .account-menu { right: 7px; left: 7px; }
+  .identity-panel { padding: 16px; }
+  .attributes-panel,
+  .vitals-panel,
+  .combat-panel { padding-right: 11px; padding-left: 11px; }
+  .resource-card { padding: 13px 11px; }
+  .resource-adjuster { grid-template-columns: 40px 40px minmax(42px, 1fr) 40px 40px; gap: 4px; }
+  .training-key { justify-content: space-between; }
+  .training-key > span { font-size: 0.66rem; }
+  .skills-list { padding: 6px; }
+  .skill-row { padding: 11px 9px; }
+  .abilities-actions { grid-template-columns: 1fr; }
+  .abilities-section-copy { align-items: flex-start; flex-direction: column; gap: 8px; }
+  .account-menu-actions { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 350px) {
+  .brand-mark { display: none; }
+  .brand-copy strong { font-size: 0.72rem; }
+  .nav-item span,
+  .slots-button span { font-size: 0.6rem; }
+  .skill-row { grid-template-columns: 1fr; }
+  .skill-info { grid-column: 1; }
+  .roll-button { top: 9px; right: 9px; }
+}
+
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
+  :root { --mobile-nav-height: 62px; --topbar-height: calc(54px + env(safe-area-inset-top, 0px)); }
+  .nav-item,
+  .slots-button { flex-direction: row; gap: 6px; }
+  .nav-item svg,
+  .slots-button svg { width: 19px; height: 19px; }
+  .view { padding-top: 16px; }
+  .roll-dialog,
+  .skill-info-dialog,
+  .constellation-dialog,
+  .feature-detail-dialog,
+  .custom-skill-dialog,
+  .photo-editor-dialog,
+  .ability-dialog,
+  .grimoire-dialog,
+  .slots-dialog,
+  .ability-roll-dialog,
+  .utility-dialog { max-height: 96dvh; }
+}
+    </style>
   </head>
   <body>
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
@@ -4867,6 +5739,18 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
             <path d="m13.5 3-8 10h6l-1 8 8-11h-6l1-7Z"></path>
           </svg>
           <span>Habilidades</span>
+        </button>
+
+        <button
+          class="nav-item"
+          type="button"
+          data-view-target="inventory"
+          aria-controls="inventory-view"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 8.5h16v11H4zM7 8.5V6.8A2.8 2.8 0 0 1 9.8 4h4.4A2.8 2.8 0 0 1 17 6.8v1.7M4 13h16M10 11.2h4v3.6h-4z"></path>
+          </svg>
+          <span>Inventário</span>
         </button>
       </nav>
 
@@ -5558,6 +6442,51 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
           </div>
         </section>
       </section>
+
+      <section
+        id="inventory-view"
+        class="view"
+        data-view="inventory"
+        aria-labelledby="inventory-title"
+        hidden
+      >
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">Registro IV</p>
+            <h1 id="inventory-title">Inventário</h1>
+          </div>
+          <p class="heading-note">Equipamentos, armas e recursos do personagem</p>
+        </div>
+
+        <section class="abilities-panel inventory-panel" aria-label="Itens do personagem">
+          <header class="abilities-panel-head inventory-panel-head">
+            <div>
+              <p class="eyebrow">Pertences do Slot</p>
+              <h2>Itens</h2>
+              <p>Crie usos, gastos, armas e efeitos que interagem diretamente com a ficha.</p>
+            </div>
+            <button id="create-item" class="create-ability-button" type="button">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+              <span>Criar Item</span>
+            </button>
+          </header>
+
+          <div class="inventory-toolbar">
+            <label class="filter-input-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
+              <input id="inventory-search" class="filter-input" type="search" autocomplete="off" placeholder="Buscar item..." />
+            </label>
+            <span id="inventory-count" class="abilities-count">0 itens</span>
+          </div>
+
+          <div id="inventory-list" class="abilities-list inventory-list"></div>
+          <div id="inventory-empty" class="abilities-empty">
+            <span aria-hidden="true">◇</span>
+            <strong>Seu inventário está vazio</strong>
+            <p>Crie um item para configurar rolagens, gastos, dano e modificadores.</p>
+          </div>
+        </section>
+      </section>
     </main>
 
 
@@ -5601,9 +6530,11 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
           <div id="ability-detail-media" class="ability-detail-media" hidden></div>
           <p id="ability-detail-description" class="ability-detail-description"></p>
           <p id="ability-detail-damage" class="ability-card-damage" hidden></p>
+          <div id="ability-detail-mechanics" class="creation-detail-mechanics"></div>
         </div>
         <footer class="skill-info-dialog-footer">
-          <button id="ability-detail-roll" class="dialog-button" type="button" hidden>Rolar dano</button>
+          <button id="ability-detail-modifiers" class="dialog-button" type="button" hidden>Ativar modificadores</button>
+          <button id="ability-detail-roll" class="builder-submit" type="button" hidden>Usar</button>
           <button class="dialog-button" type="button" data-close-ability-detail>Fechar</button>
         </footer>
       </section>
@@ -6085,20 +7016,78 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
                 ></textarea>
               </label>
 
-              <label class="builder-field builder-field-wide">
-                <span>Dano</span>
-                <input
-                  id="ability-damage"
-                  type="text"
-                  maxlength="100"
-                  autocomplete="off"
-                  placeholder="Ex.: 1d10 + 1 + FOR"
-                />
-                <small class="ability-field-help">
-                  Aceita dados, números e FOR, AGI, INT, CON ou POD. Exemplos: 2d6+3, 1d10+FOR.
-                </small>
-              </label>
             </div>
+
+            <section class="mechanics-builder" aria-labelledby="ability-mechanics-title">
+              <header class="mechanics-builder-head">
+                <div>
+                  <p class="eyebrow">Uso em jogo</p>
+                  <h3 id="ability-mechanics-title">Rolagens, gastos e efeitos</h3>
+                  <p>Essas regras também funcionam em Poderes, Feitiços, Ataques e nas demais seções.</p>
+                </div>
+              </header>
+
+              <div class="mechanics-block">
+                <div class="mechanics-block-head">
+                  <div><strong>Rolagens nomeadas</strong><small>Adicione quantas quiser.</small></div>
+                  <button id="add-ability-roll" class="builder-add-button" type="button">+ Rolagem</button>
+                </div>
+                <div id="ability-rolls-list" class="mechanics-repeat-list"></div>
+                <p id="ability-rolls-empty" class="mechanics-empty">Nenhuma rolagem adicionada.</p>
+              </div>
+
+              <div class="mechanics-block">
+                <div class="mechanics-block-head">
+                  <div><strong>Gastos</strong><small>PV, PA ou SA atuais ou máximos.</small></div>
+                  <button id="add-ability-cost" class="builder-add-button" type="button">+ Gasto</button>
+                </div>
+                <div id="ability-costs-list" class="mechanics-repeat-list"></div>
+                <p id="ability-costs-empty" class="mechanics-empty">Nenhum gasto adicionado.</p>
+              </div>
+
+              <div class="mechanics-block mechanics-toggle-block">
+                <label class="mechanics-switch">
+                  <input id="ability-has-damage" type="checkbox" />
+                  <span aria-hidden="true"></span>
+                  <strong>Causa dano?</strong>
+                </label>
+                <div id="ability-damage-fields" class="mechanics-damage-grid" hidden>
+                  <label class="builder-field">
+                    <span>Dano Principal</span>
+                    <input id="ability-damage" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: 1d10+FOR" />
+                  </label>
+                  <label class="builder-field">
+                    <span>Dano Adicional <small>(opcional)</small></span>
+                    <input id="ability-additional-damage" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: +1d4 ou +10" />
+                  </label>
+                  <label class="builder-field">
+                    <span>Crítico a partir de <small>(opcional)</small></span>
+                    <input id="ability-critical-threshold" type="number" min="1" max="1000" step="1" inputmode="numeric" placeholder="Ex.: 19" />
+                  </label>
+                  <label class="builder-field">
+                    <span>Dano Crítico <small>(opcional)</small></span>
+                    <input id="ability-critical-bonus" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: +2d10" />
+                  </label>
+                  <small class="ability-field-help mechanics-wide">Aceita dados, números e FOR, AGI, INT, CON ou POD.</small>
+                </div>
+              </div>
+
+              <div class="mechanics-block mechanics-toggle-block">
+                <label class="mechanics-switch">
+                  <input id="ability-grants-modifiers" type="checkbox" />
+                  <span aria-hidden="true"></span>
+                  <strong>Concede Modificadores?</strong>
+                </label>
+                <div id="ability-modifiers-fields" hidden>
+                  <div class="mechanics-block-head is-inner">
+                    <small>Dados de Perícia e Dano rolam a cada uso; efeitos passivos são definidos ao ativar.</small>
+                    <button id="add-ability-modifier" class="builder-add-button" type="button">+ Modificador</button>
+                  </div>
+                  <div id="ability-modifiers-list" class="mechanics-repeat-list"></div>
+                  <p id="ability-modifiers-empty" class="mechanics-empty">Nenhum modificador adicionado.</p>
+                </div>
+              </div>
+            </section>
 
             <section class="ability-media-editor" aria-labelledby="ability-media-title">
               <div id="ability-media-preview" class="ability-media-preview">
@@ -6148,6 +7137,104 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
           <footer class="ability-dialog-footer">
             <button class="dialog-button" type="button" data-close-ability-editor>Cancelar</button>
             <button id="save-ability" class="builder-submit" type="submit">Salvar Habilidade</button>
+          </footer>
+        </form>
+      </section>
+    </div>
+
+    <div id="item-editor-modal" class="ability-modal" hidden>
+      <div class="roll-backdrop" data-close-item-editor aria-hidden="true"></div>
+      <section id="item-editor-dialog" class="ability-dialog item-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="item-editor-title" tabindex="-1">
+        <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
+        <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
+        <header class="ability-dialog-head">
+          <div>
+            <p class="eyebrow">Inventário do personagem</p>
+            <h2 id="item-editor-title">Criar Item</h2>
+            <p>Configure tudo que o item pode rolar, gastar ou modificar.</p>
+          </div>
+          <button class="result-close" type="button" data-close-item-editor aria-label="Fechar editor de item">×</button>
+        </header>
+
+        <form id="item-editor-form" class="ability-editor-form" novalidate>
+          <div class="ability-editor-content">
+            <div class="ability-editor-grid">
+              <label class="builder-field">
+                <span>Nome</span>
+                <input id="item-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Espada do Eclipse" required />
+              </label>
+              <label class="builder-field">
+                <span>Quantidade</span>
+                <input id="item-quantity" type="number" min="1" max="9999" step="1" value="1" inputmode="numeric" />
+              </label>
+              <label class="builder-field builder-field-wide">
+                <span>Descrição</span>
+                <textarea id="item-description" rows="4" maxlength="3000" placeholder="Aparência, função e demais regras do item."></textarea>
+              </label>
+            </div>
+
+            <section class="mechanics-builder" aria-labelledby="item-mechanics-title">
+              <header class="mechanics-builder-head">
+                <div><p class="eyebrow">Uso em jogo</p><h3 id="item-mechanics-title">Mecânicas do Item</h3><p>Rolagens e gastos podem ser usados diretamente pelo card do inventário.</p></div>
+              </header>
+
+              <div class="mechanics-block">
+                <div class="mechanics-block-head">
+                  <div><strong>Rolagens nomeadas</strong><small>Ex.: Ataque, Cura, Teste de carga.</small></div>
+                  <button id="add-item-roll" class="builder-add-button" type="button">+ Rolagem</button>
+                </div>
+                <div id="item-rolls-list" class="mechanics-repeat-list"></div>
+                <p id="item-rolls-empty" class="mechanics-empty">Nenhuma rolagem adicionada.</p>
+              </div>
+
+              <div class="mechanics-block">
+                <div class="mechanics-block-head">
+                  <div><strong>Gastos</strong><small>Cada uso desconta todos os gastos configurados.</small></div>
+                  <button id="add-item-cost" class="builder-add-button" type="button">+ Gasto</button>
+                </div>
+                <div id="item-costs-list" class="mechanics-repeat-list"></div>
+                <p id="item-costs-empty" class="mechanics-empty">Nenhum gasto adicionado.</p>
+              </div>
+
+              <div class="mechanics-block mechanics-toggle-block">
+                <label class="mechanics-switch">
+                  <input id="item-is-weapon" type="checkbox" />
+                  <span aria-hidden="true"></span>
+                  <strong>É uma arma?</strong>
+                </label>
+                <div id="item-weapon-fields" class="weapon-fields" hidden>
+                  <div class="mechanics-damage-grid">
+                    <label class="builder-field"><span>Dano Principal</span><input id="item-primary-damage" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: 1d12+5" /></label>
+                    <label class="builder-field"><span>Dano Adicional <small>(opcional)</small></span><input id="item-additional-damage" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: +10 ou 1d4" /></label>
+                    <label class="builder-field"><span>Crítico a partir de <small>(natural)</small></span><input id="item-critical-threshold" type="number" min="1" max="1000" step="1" inputmode="numeric" placeholder="Ex.: 8" /></label>
+                    <label class="builder-field"><span>Dano Crítico <small>(adicionado uma vez)</small></span><input id="item-critical-bonus" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: +2d10" /></label>
+                  </div>
+                  <p class="ability-field-help">O crítico consulta os resultados naturais do primeiro grupo de dados do Dano Principal. Ex.: em 1d10, margem 8 ativa em 8, 9 ou 10.</p>
+                </div>
+              </div>
+
+              <div class="mechanics-block mechanics-toggle-block">
+                <label class="mechanics-switch">
+                  <input id="item-grants-modifiers" type="checkbox" />
+                  <span aria-hidden="true"></span>
+                  <strong>Concede Modificadores?</strong>
+                </label>
+                <div id="item-modifiers-fields" hidden>
+                  <div class="mechanics-block-head is-inner">
+                    <small>Perícia e Dano rolam a cada uso; os demais efeitos permanecem até serem desativados.</small>
+                    <button id="add-item-modifier" class="builder-add-button" type="button">+ Modificador</button>
+                  </div>
+                  <div id="item-modifiers-list" class="mechanics-repeat-list"></div>
+                  <p id="item-modifiers-empty" class="mechanics-empty">Nenhum modificador adicionado.</p>
+                </div>
+              </div>
+            </section>
+
+            <p id="item-editor-error" class="builder-error" role="alert" hidden></p>
+          </div>
+          <footer class="ability-dialog-footer">
+            <button class="dialog-button" type="button" data-close-item-editor>Cancelar</button>
+            <button id="save-item" class="builder-submit" type="submit">Criar Item</button>
           </footer>
         </form>
       </section>
@@ -8391,6 +9478,26 @@ const ABILITY_SECTIONS = {
   tree: { label: "Árvore", eyebrow: "Progressão" },
 };
 
+const CREATION_RESOURCES = {
+  pv: "PV",
+  pa: "PA",
+  sa: "SA",
+};
+
+const CREATION_MODIFIER_TYPES = {
+  skill: "Perícia",
+  pv: "PV",
+  pa: "PA",
+  sa: "SA",
+  attribute: "Atributo",
+  damage: "Dano",
+  defense: "Defesa",
+  evasion: "Esquiva",
+  abilityDt: "DT de Habilidades",
+  spellDt: "DT de Feitiçaria",
+  block: "Bloqueio",
+};
+
 let FEATURE_CATALOG = [];
 const FEATURE_BY_ID = new Map();
 
@@ -9364,6 +10471,13 @@ const abilityEchoSelect = document.querySelector("#ability-echo");
 const abilityEchoField = document.querySelector("#ability-echo-field");
 const abilityDescriptionInput = document.querySelector("#ability-description");
 const abilityDamageInput = document.querySelector("#ability-damage");
+const abilityAdditionalDamageInput = document.querySelector("#ability-additional-damage");
+const abilityCriticalThresholdInput = document.querySelector("#ability-critical-threshold");
+const abilityCriticalBonusInput = document.querySelector("#ability-critical-bonus");
+const abilityHasDamageInput = document.querySelector("#ability-has-damage");
+const abilityDamageFields = document.querySelector("#ability-damage-fields");
+const abilityGrantsModifiersInput = document.querySelector("#ability-grants-modifiers");
+const abilityModifiersFields = document.querySelector("#ability-modifiers-fields");
 const abilityMediaUrlInput = document.querySelector("#ability-media-url");
 const abilityMediaFileInput = document.querySelector("#ability-media-file");
 const abilityMediaPreview = document.querySelector("#ability-media-preview");
@@ -9384,6 +10498,47 @@ const slotsModal = document.querySelector("#slots-modal");
 const slotsDialog = document.querySelector("#slots-dialog");
 const abilityRollModal = document.querySelector("#ability-roll-modal");
 const abilityRollDialog = document.querySelector("#ability-roll-dialog");
+const abilityDetailModifiers = document.querySelector("#ability-detail-modifiers");
+const inventoryList = document.querySelector("#inventory-list");
+const inventoryEmpty = document.querySelector("#inventory-empty");
+const inventoryCount = document.querySelector("#inventory-count");
+const inventorySearchInput = document.querySelector("#inventory-search");
+const createItemButton = document.querySelector("#create-item");
+const itemEditorModal = document.querySelector("#item-editor-modal");
+const itemEditorDialog = document.querySelector("#item-editor-dialog");
+const itemEditorForm = document.querySelector("#item-editor-form");
+const itemEditorTitle = document.querySelector("#item-editor-title");
+const itemNameInput = document.querySelector("#item-name");
+const itemQuantityInput = document.querySelector("#item-quantity");
+const itemDescriptionInput = document.querySelector("#item-description");
+const itemIsWeaponInput = document.querySelector("#item-is-weapon");
+const itemWeaponFields = document.querySelector("#item-weapon-fields");
+const itemPrimaryDamageInput = document.querySelector("#item-primary-damage");
+const itemAdditionalDamageInput = document.querySelector("#item-additional-damage");
+const itemCriticalThresholdInput = document.querySelector("#item-critical-threshold");
+const itemCriticalBonusInput = document.querySelector("#item-critical-bonus");
+const itemGrantsModifiersInput = document.querySelector("#item-grants-modifiers");
+const itemModifiersFields = document.querySelector("#item-modifiers-fields");
+const itemEditorError = document.querySelector("#item-editor-error");
+const saveItemButton = document.querySelector("#save-item");
+const MECHANIC_EDITORS = {
+  ability: {
+    rolls: document.querySelector("#ability-rolls-list"),
+    rollsEmpty: document.querySelector("#ability-rolls-empty"),
+    costs: document.querySelector("#ability-costs-list"),
+    costsEmpty: document.querySelector("#ability-costs-empty"),
+    modifiers: document.querySelector("#ability-modifiers-list"),
+    modifiersEmpty: document.querySelector("#ability-modifiers-empty"),
+  },
+  item: {
+    rolls: document.querySelector("#item-rolls-list"),
+    rollsEmpty: document.querySelector("#item-rolls-empty"),
+    costs: document.querySelector("#item-costs-list"),
+    costsEmpty: document.querySelector("#item-costs-empty"),
+    modifiers: document.querySelector("#item-modifiers-list"),
+    modifiersEmpty: document.querySelector("#item-modifiers-empty"),
+  },
+};
 const selectedFeatureIds = new Set();
 let rollInterval;
 let rollTimeout;
@@ -9401,6 +10556,7 @@ let pendingDeleteTrigger;
 let activePhotoTrigger;
 let isApplyingExternalState = false;
 let abilities = [];
+let inventoryItems = [];
 let activeAbilitySection = "attacks";
 let activeAbilityId = null;
 let activeAbilityTrigger = null;
@@ -9412,6 +10568,8 @@ let echoPoints = 5;
 let activeAbilityDetailId = null;
 let activeAbilityDetailScope = "sheet";
 let activeAbilityDetailTrigger = null;
+let activeItemId = null;
+let activeItemTrigger = null;
 let themeSettings = {};
 const resourceMaxManual = { pv: false, pa: false, sa: false };
 let defenseWasManuallySet = false;
@@ -9530,8 +10688,8 @@ function calculateClassStatistics() {
     pv: Math.max(0, classDefinition.pvInitial + (classDefinition.pvPerLevel + constitution) * level),
     pa: Math.max(0, classDefinition.paInitial + classDefinition.paPerLevel * level),
     sa: Math.max(0, classDefinition.saInitial + classDefinition.saPerLevel * level),
-    defense: classDefinition.defenseBase + getAttributeValue(defenseAttribute),
-    evasion: classDefinition.defenseBase + getAttributeValue(evasionAttribute),
+    defense: classDefinition.defenseBase + getAttributeValue(defenseAttribute) + getActiveModifierTotal("defense"),
+    evasion: classDefinition.defenseBase + getAttributeValue(evasionAttribute) + getActiveModifierTotal("evasion"),
     trainingCap: Math.max(0, classDefinition.adeptBase + getAttributeValue("INT")),
     classDefinition,
     level,
@@ -9557,8 +10715,8 @@ function evasionPhraseForDefense(zone, margin) {
 
 function updateDifficultyTargets() {
   const values = {
-    spell: 12 + getAttributeValue(spellDtAttributeSelect.value),
-    ability: 10 + getAttributeValue(abilityDtAttributeSelect.value),
+    spell: 12 + getAttributeValue(spellDtAttributeSelect.value) + getActiveModifierTotal("spellDt"),
+    ability: 10 + getAttributeValue(abilityDtAttributeSelect.value) + getActiveModifierTotal("abilityDt"),
   };
   Object.entries(dtFields).forEach(([key, fields]) => {
     fields.base.textContent = `Base ${values[key]}`;
@@ -9871,7 +11029,7 @@ function getActiveProtection(resource) {
     .filter((reduction) => reduction.active)
     .reduce((total, reduction) => total + reduction.value, 0);
   const block = resource === "pv" && blockActiveInput.checked
-    ? clampInteger(blockValueInput.value, 0, 999999, 0)
+    ? Math.max(0, clampInteger(blockValueInput.value, 0, 999999, 0) + getActiveModifierTotal("block"))
     : 0;
   return reductions + block;
 }
@@ -10040,7 +11198,7 @@ function captureCompleteSheetState() {
 
   const portraitPreview = document.querySelector("#portrait-preview");
   return {
-    schemaVersion: 6,
+    schemaVersion: 8,
     profile: {
       name: document.querySelector("#character-name").value.trim().slice(0, 120),
       background: document.querySelector("#character-background").value.trim().slice(0, 240),
@@ -10085,6 +11243,7 @@ function captureCompleteSheetState() {
     },
     customSkills: getCustomSkillsForCloud(),
     abilities: abilities.map((ability) => ({ ...ability })),
+    inventory: inventoryItems.map((item) => ({ ...item })),
   };
 }
 
@@ -10138,7 +11297,7 @@ function sanitizeStoredRowState(rawState) {
 
 function createCleanSheetState() {
   return {
-    schemaVersion: 6,
+    schemaVersion: 8,
     profile: {
       name: "",
       background: "",
@@ -10172,6 +11331,7 @@ function createCleanSheetState() {
     },
     customSkills: [],
     abilities: [],
+    inventory: [],
   };
 }
 
@@ -10208,6 +11368,10 @@ function serializeAbilityForCloud(rawAbility) {
   };
 }
 
+function serializeInventoryItemForCloud(rawItem) {
+  return sanitizeInventoryItem(rawItem);
+}
+
 function sanitizeAbility(rawAbility) {
   if (!rawAbility || typeof rawAbility !== "object") return null;
 
@@ -10216,6 +11380,9 @@ function sanitizeAbility(rawAbility) {
   const section = ABILITY_SECTIONS[rawAbility.section] ? rawAbility.section : "attacks";
   const echoKey = Object.hasOwn(ECHOES, rawAbility.echoKey) ? rawAbility.echoKey : "";
   if (section === "echoes" && !echoKey) return null;
+  const mechanics = sanitizeCreationMechanics(rawAbility);
+  const damageProfile = sanitizeDamageProfile(rawAbility.damageProfile, rawAbility.damage);
+  const hasDamage = Boolean(rawAbility.hasDamage ?? damageProfile.primary);
 
   return {
     id: String(
@@ -10226,7 +11393,10 @@ function sanitizeAbility(rawAbility) {
     description: String(rawAbility.description || "").trim().slice(0, 3000),
     origin: String(rawAbility.origin || "").trim().slice(0, 120),
     echoKey,
-    damage: String(rawAbility.damage || "").trim().slice(0, 100),
+    hasDamage,
+    damage: hasDamage ? damageProfile.primary : "",
+    damageProfile: hasDamage ? damageProfile : sanitizeDamageProfile({}),
+    ...mechanics,
     mediaUrl: safeAbilityMediaUrl(rawAbility.mediaUrl),
     mediaRefId: String(rawAbility.mediaRefId || "").slice(0, 120),
     mediaOwner:
@@ -10355,11 +11525,18 @@ function applyCompleteSheetState(rawState, options = {}) {
     abilities = (Array.isArray(rawState.abilities) ? rawState.abilities : [])
       .map(sanitizeAbility)
       .filter(Boolean);
+    inventoryItems = (Array.isArray(rawState.inventory) ? rawState.inventory : [])
+      .map(sanitizeInventoryItem)
+      .filter(Boolean);
+
+    migrateLegacyDynamicModifiers(rawState.schemaVersion);
+    applyClassCalculations();
 
     persistCustomSkills();
     persistSelectedFeatures();
     renderSelectedFeatures();
     renderAbilities();
+    renderInventory();
     skillSearchInput.value = "";
     attributeFilter.value = "all";
     trainingFilter.value = "all";
@@ -11027,6 +12204,640 @@ function evaluateDamageFormula(parsedFormula) {
   return { total, breakdown: pieces.join(" ") };
 }
 
+function evaluateDamageFormulaDetailed(parsedFormula) {
+  let total = 0;
+  const pieces = [];
+  const evaluatedTokens = [];
+
+  parsedFormula.tokens.forEach((token, index) => {
+    const prefix = token.sign < 0 ? "− " : index === 0 ? "" : "+ ";
+    if (token.type === "dice") {
+      const results = rollDice(token.count, token.faces);
+      const value = sum(results) * token.sign;
+      total += value;
+      pieces.push(`${prefix}${token.count}d${token.faces} [${results.join(", ")}]`);
+      evaluatedTokens.push({ ...token, results, value });
+      return;
+    }
+    if (token.type === "attribute") {
+      const attributeValue = getAttributeValue(token.attribute);
+      const value = attributeValue * token.sign;
+      total += value;
+      pieces.push(`${prefix}${token.attribute} [${attributeValue}]`);
+      evaluatedTokens.push({ ...token, value });
+      return;
+    }
+    const value = token.value * token.sign;
+    total += value;
+    pieces.push(`${prefix}${token.value}`);
+    evaluatedTokens.push({ ...token, value });
+  });
+
+  return { total, breakdown: pieces.join(" "), evaluatedTokens };
+}
+
+function sanitizeCreationRoll(rawRoll) {
+  if (!rawRoll || typeof rawRoll !== "object") return null;
+  const name = String(rawRoll.name || "").trim().slice(0, 80);
+  const parsed = parseDamageFormula(rawRoll.formula);
+  if (!name || parsed.error || !parsed.tokens.length) return null;
+  return {
+    id: String(rawRoll.id || createAbilityId("roll")).slice(0, 120),
+    name,
+    formula: parsed.formula,
+  };
+}
+
+function sanitizeCreationCost(rawCost) {
+  if (!rawCost || typeof rawCost !== "object") return null;
+  const resource = Object.hasOwn(CREATION_RESOURCES, rawCost.resource) ? rawCost.resource : "pa";
+  const pool = rawCost.pool === "max" ? "max" : "current";
+  const value = clampInteger(rawCost.value, 1, 999999, 1);
+  return {
+    id: String(rawCost.id || createAbilityId("cost")).slice(0, 120),
+    resource,
+    pool,
+    value,
+  };
+}
+
+function sanitizeModifierTarget(type, rawTarget) {
+  const target = String(rawTarget || "").slice(0, 160);
+  if (type === "attribute") return ATTRIBUTES[target] ? target : "FOR";
+  if (["pv", "pa", "sa"].includes(type)) return target === "max" ? "max" : "current";
+  if (type === "skill") {
+    if (target === "all") return "all";
+    return target || "all";
+  }
+  return "general";
+}
+
+function sanitizeCreationModifier(rawModifier) {
+  if (!rawModifier || typeof rawModifier !== "object") return null;
+  const type = Object.hasOwn(CREATION_MODIFIER_TYPES, rawModifier.type)
+    ? rawModifier.type
+    : "damage";
+  const parsed = parseDamageFormula(rawModifier.formula);
+  if (parsed.error || !parsed.tokens.length || parsed.tokens.some((token) => token.type === "attribute")) {
+    return null;
+  }
+  return {
+    id: String(rawModifier.id || createAbilityId("modifier")).slice(0, 120),
+    type,
+    target: sanitizeModifierTarget(type, rawModifier.target),
+    formula: parsed.formula,
+    resolvedValue: clampInteger(rawModifier.resolvedValue, -999999, 999999, 0),
+  };
+}
+
+function sanitizeDamageProfile(rawProfile, legacyDamage = "") {
+  const profile = rawProfile && typeof rawProfile === "object" ? rawProfile : {};
+  const primary = parseDamageFormula(profile.primary || legacyDamage);
+  const additional = parseDamageFormula(profile.additional);
+  const criticalBonus = parseDamageFormula(profile.criticalBonus);
+  const originalThreshold = clampInteger(profile.criticalThreshold, 0, 1000, 0);
+  const marginReduction = originalThreshold
+    ? clampInteger(profile.criticalMarginReduction, 0, Math.max(0, originalThreshold - 1), 0)
+    : 0;
+  return {
+    primary: primary.error ? "" : primary.formula,
+    additional: additional.error ? "" : additional.formula,
+    criticalThreshold: originalThreshold,
+    criticalBonus: criticalBonus.error ? "" : criticalBonus.formula,
+    criticalMarginReduction: marginReduction,
+  };
+}
+
+function sanitizeCreationMechanics(rawCreation) {
+  const source = rawCreation && typeof rawCreation === "object" ? rawCreation : {};
+  return {
+    rolls: (Array.isArray(source.rolls) ? source.rolls : [])
+      .map(sanitizeCreationRoll)
+      .filter(Boolean),
+    costs: (Array.isArray(source.costs) ? source.costs : [])
+      .map(sanitizeCreationCost)
+      .filter(Boolean),
+    grantsModifiers: Boolean(source.grantsModifiers),
+    modifiersActive: Boolean(source.modifiersActive),
+    modifiers: (Array.isArray(source.modifiers) ? source.modifiers : [])
+      .map(sanitizeCreationModifier)
+      .filter(Boolean),
+  };
+}
+
+function sanitizeInventoryItem(rawItem) {
+  if (!rawItem || typeof rawItem !== "object") return null;
+  const name = String(rawItem.name || "").trim().slice(0, 80);
+  if (!name) return null;
+  const mechanics = sanitizeCreationMechanics(rawItem);
+  const isWeapon = Boolean(rawItem.isWeapon);
+  const damageProfile = sanitizeDamageProfile(rawItem.damageProfile, rawItem.damage);
+  return {
+    id: String(rawItem.id || createAbilityId("item")).slice(0, 120),
+    name,
+    description: String(rawItem.description || "").trim().slice(0, 3000),
+    quantity: clampInteger(rawItem.quantity, 1, 9999, 1),
+    isWeapon,
+    damageProfile: isWeapon ? damageProfile : sanitizeDamageProfile({}),
+    ...mechanics,
+  };
+}
+
+function modifierTargetOptions(type, selected = "") {
+  if (type === "attribute") {
+    return Object.entries(ATTRIBUTES).map(([value, label]) => ({ value, label: `${value} · ${label}` }));
+  }
+  if (["pv", "pa", "sa"].includes(type)) {
+    return [
+      { value: "current", label: "Valor Atual" },
+      { value: "max", label: "Valor Máximo" },
+    ];
+  }
+  if (type === "skill") {
+    return [
+      { value: "all", label: "Todas as Perícias" },
+      ...SKILLS.map((skill) => ({ value: getSkillKey(skill), label: skill.name })),
+    ];
+  }
+  return [{ value: "general", label: "Geral" }];
+}
+
+function updateModifierTargetRow(row, preferredValue = "") {
+  const type = row.querySelector('[data-mechanic-field="modifier-type"]')?.value || "damage";
+  const target = row.querySelector('[data-mechanic-field="modifier-target"]');
+  if (!target) return;
+  const options = modifierTargetOptions(type, preferredValue);
+  target.replaceChildren(...options.map((option) => {
+    const element = document.createElement("option");
+    element.value = option.value;
+    element.textContent = option.label;
+    return element;
+  }));
+  const desired = sanitizeModifierTarget(type, preferredValue);
+  target.value = options.some((option) => option.value === desired) ? desired : options[0].value;
+  target.closest("label").hidden = options.length === 1;
+}
+
+function createMechanicEditorRow(kind, data = {}) {
+  const row = document.createElement("div");
+  row.className = `mechanics-repeat-row is-${kind}`;
+  row.dataset.mechanicKind = kind;
+  row.dataset.mechanicId = String(data.id || createAbilityId(kind));
+
+  if (kind === "roll") {
+    row.innerHTML = `
+      <label class="builder-field"><span>Nome da rolagem</span><input data-mechanic-field="roll-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Ataque" /></label>
+      <label class="builder-field"><span>Fórmula</span><input data-mechanic-field="roll-formula" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: 1d20+FOR" /></label>
+      <button class="mechanics-remove" type="button" data-remove-mechanic aria-label="Remover rolagem">×</button>`;
+    row.querySelector('[data-mechanic-field="roll-name"]').value = data.name || "";
+    row.querySelector('[data-mechanic-field="roll-formula"]').value = data.formula || "";
+    return row;
+  }
+
+  if (kind === "cost") {
+    row.innerHTML = `
+      <label class="builder-field"><span>Recurso</span><select data-mechanic-field="cost-resource"><option value="pv">PV</option><option value="pa">PA</option><option value="sa">SA</option></select></label>
+      <label class="builder-field"><span>Tipo</span><select data-mechanic-field="cost-pool"><option value="current">Atual</option><option value="max">Máximo</option></select></label>
+      <label class="builder-field"><span>Valor</span><input data-mechanic-field="cost-value" type="number" min="1" max="999999" step="1" inputmode="numeric" value="1" /></label>
+      <button class="mechanics-remove" type="button" data-remove-mechanic aria-label="Remover gasto">×</button>`;
+    row.querySelector('[data-mechanic-field="cost-resource"]').value = data.resource || "pa";
+    row.querySelector('[data-mechanic-field="cost-pool"]').value = data.pool === "max" ? "max" : "current";
+    row.querySelector('[data-mechanic-field="cost-value"]').value = String(data.value || 1);
+    return row;
+  }
+
+  const typeOptions = Object.entries(CREATION_MODIFIER_TYPES)
+    .map(([value, label]) => `<option value="${value}">${escapeHtml(label)}</option>`)
+    .join("");
+  row.innerHTML = `
+    <label class="builder-field"><span>Modificador</span><select data-mechanic-field="modifier-type">${typeOptions}</select></label>
+    <label class="builder-field"><span>Aplicar em</span><select data-mechanic-field="modifier-target"></select></label>
+    <label class="builder-field"><span>Valor</span><input data-mechanic-field="modifier-formula" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: +2 ou 1d4" /></label>
+    <button class="mechanics-remove" type="button" data-remove-mechanic aria-label="Remover modificador">×</button>`;
+  row.querySelector('[data-mechanic-field="modifier-type"]').value = Object.hasOwn(CREATION_MODIFIER_TYPES, data.type) ? data.type : "damage";
+  row.querySelector('[data-mechanic-field="modifier-formula"]').value = data.formula || "";
+  updateModifierTargetRow(row, data.target || "");
+  return row;
+}
+
+function refreshMechanicsEditor(prefix) {
+  const editor = MECHANIC_EDITORS[prefix];
+  if (!editor) return;
+  editor.rollsEmpty.hidden = Boolean(editor.rolls.children.length);
+  editor.costsEmpty.hidden = Boolean(editor.costs.children.length);
+  editor.modifiersEmpty.hidden = Boolean(editor.modifiers.children.length);
+}
+
+function fillMechanicsEditor(prefix, creation = {}) {
+  const editor = MECHANIC_EDITORS[prefix];
+  if (!editor) return;
+  editor.rolls.replaceChildren(...(creation.rolls || []).map((entry) => createMechanicEditorRow("roll", entry)));
+  editor.costs.replaceChildren(...(creation.costs || []).map((entry) => createMechanicEditorRow("cost", entry)));
+  editor.modifiers.replaceChildren(...(creation.modifiers || []).map((entry) => createMechanicEditorRow("modifier", entry)));
+  refreshMechanicsEditor(prefix);
+}
+
+function readMechanicsEditor(prefix, options = {}) {
+  const editor = MECHANIC_EDITORS[prefix];
+  const rolls = [];
+  const costs = [];
+  const modifiers = [];
+
+  for (const row of editor.rolls.children) {
+    const nameInput = row.querySelector('[data-mechanic-field="roll-name"]');
+    const formulaInput = row.querySelector('[data-mechanic-field="roll-formula"]');
+    const name = nameInput.value.trim();
+    const parsed = parseDamageFormula(formulaInput.value);
+    if (!name) return { error: "Dê um nome a todas as rolagens.", input: nameInput };
+    if (parsed.error || !parsed.tokens.length) return { error: parsed.error || "Preencha a fórmula da rolagem.", input: formulaInput };
+    rolls.push(sanitizeCreationRoll({ id: row.dataset.mechanicId, name, formula: parsed.formula }));
+  }
+
+  for (const row of editor.costs.children) {
+    const valueInput = row.querySelector('[data-mechanic-field="cost-value"]');
+    const value = clampInteger(valueInput.value, 1, 999999, 0);
+    if (!value) return { error: "Cada gasto precisa ser de pelo menos 1 ponto.", input: valueInput };
+    costs.push(sanitizeCreationCost({
+      id: row.dataset.mechanicId,
+      resource: row.querySelector('[data-mechanic-field="cost-resource"]').value,
+      pool: row.querySelector('[data-mechanic-field="cost-pool"]').value,
+      value,
+    }));
+  }
+
+  for (const row of options.includeModifiers === false ? [] : editor.modifiers.children) {
+    const formulaInput = row.querySelector('[data-mechanic-field="modifier-formula"]');
+    const parsed = parseDamageFormula(formulaInput.value);
+    if (parsed.error || !parsed.tokens.length) return { error: parsed.error || "Preencha o valor do modificador.", input: formulaInput };
+    if (parsed.tokens.some((token) => token.type === "attribute")) {
+      return { error: "Modificadores aceitam apenas dados ou números fixos.", input: formulaInput };
+    }
+    modifiers.push(sanitizeCreationModifier({
+      id: row.dataset.mechanicId,
+      type: row.querySelector('[data-mechanic-field="modifier-type"]').value,
+      target: row.querySelector('[data-mechanic-field="modifier-target"]').value,
+      formula: parsed.formula,
+      resolvedValue: 0,
+    }));
+  }
+
+  return { rolls, costs, modifiers, error: "" };
+}
+
+function appendMechanicEditorRow(prefix, kind, data = {}) {
+  const editor = MECHANIC_EDITORS[prefix];
+  const list = kind === "roll" ? editor.rolls : kind === "cost" ? editor.costs : editor.modifiers;
+  const row = createMechanicEditorRow(kind, data);
+  list.append(row);
+  refreshMechanicsEditor(prefix);
+  row.querySelector("input, select")?.focus();
+}
+
+function modifierTargetLabel(modifier) {
+  if (modifier.type === "attribute") return modifier.target;
+  if (["pv", "pa", "sa"].includes(modifier.type)) return modifier.target === "max" ? "Máximo" : "Atual";
+  if (modifier.type === "skill") {
+    if (modifier.target === "all") return "Todas";
+    return SKILLS.find((skill) => getSkillKey(skill) === modifier.target)?.name || "Perícia";
+  }
+  return "";
+}
+
+function getAllSheetCreations() {
+  return [
+    ...abilities.map((creation) => ({ scope: "sheet", creation })),
+    ...inventoryItems.map((creation) => ({ scope: "inventory", creation })),
+  ];
+}
+
+function getCreation(scope, id) {
+  const collection = scope === "inventory" ? inventoryItems : scope === "minerva" ? grimoireAbilities : abilities;
+  return collection.find((creation) => creation.id === id) || null;
+}
+
+function getActiveModifierTotal(type, target = "general") {
+  return getAllSheetCreations().reduce((total, { creation }) => {
+    if (!creation.grantsModifiers || !creation.modifiersActive) return total;
+    return total + creation.modifiers.reduce((subtotal, modifier) => {
+      if (modifier.type !== type) return subtotal;
+      if (type === "skill" && !["all", target].includes(modifier.target)) return subtotal;
+      if (type === "attribute" && modifier.target !== target) return subtotal;
+      return subtotal + clampInteger(modifier.resolvedValue, -999999, 999999, 0);
+    }, 0);
+  }, 0);
+}
+
+function modifierMatchesTarget(modifier, type, target = "general") {
+  if (modifier.type !== type) return false;
+  if (type === "skill") return modifier.target === "all" || modifier.target === target;
+  if (type === "attribute") return modifier.target === target;
+  return true;
+}
+
+function rollActiveCreationModifiers(type, target = "general") {
+  let total = 0;
+  const breakdown = [];
+  getAllSheetCreations().forEach(({ creation }) => {
+    if (!creation.grantsModifiers || !creation.modifiersActive) return;
+    creation.modifiers.forEach((modifier) => {
+      if (!modifierMatchesTarget(modifier, type, target)) return;
+      const parsed = parseDamageFormula(modifier.formula);
+      if (parsed.error || !parsed.tokens.length) return;
+      const result = evaluateDamageFormulaDetailed(parsed);
+      total += result.total;
+      breakdown.push(`${creation.name}: ${result.breakdown}`);
+    });
+  });
+  return { total, breakdown };
+}
+
+function modifierRollsPerUse(modifier) {
+  return modifier.type === "skill" || modifier.type === "damage";
+}
+
+function migrateLegacyDynamicModifiers(schemaVersion) {
+  if (clampInteger(schemaVersion, 0, 999, 0) >= 8) return;
+  getAllSheetCreations().forEach(({ creation }) => {
+    if (!creation.modifiersActive) return;
+    creation.modifiers.forEach((modifier) => {
+      const legacyValue = clampInteger(modifier.resolvedValue, -999999, 999999, 0);
+      if (modifier.type === "skill" && legacyValue) {
+        skillsList.querySelectorAll(".skill-row").forEach((row) => {
+          if (modifier.target !== "all" && row.dataset.skillKey !== modifier.target) return;
+          const input = row.querySelector("[data-fixed-modifier]");
+          const current = Number.parseInt(input.value, 10);
+          input.value = String((Number.isFinite(current) ? current : 0) - legacyValue);
+        });
+      }
+      if (modifierRollsPerUse(modifier)) modifier.resolvedValue = 0;
+    });
+  });
+}
+
+function adjustDirectModifierTarget(modifier, direction) {
+  const delta = clampInteger(modifier.resolvedValue, -999999, 999999, 0) * direction;
+  if (!delta) return;
+  if (["pv", "pa", "sa"].includes(modifier.type)) {
+    const inputs = getResourceInputs(modifier.type);
+    const field = modifier.target === "max" ? inputs.maximum : inputs.current;
+    field.value = String(Math.max(0, clampInteger(field.value, 0, 999999, 0) + delta));
+    if (modifier.target === "max") resourceMaxManual[modifier.type] = true;
+    if (modifier.type === "sa") {
+      inputs.current.value = String(Math.min(
+        clampInteger(inputs.current.value, 0, 999999, 0),
+        clampInteger(inputs.maximum.value, 0, 999999, 0),
+      ));
+    }
+    return;
+  }
+  if (modifier.type === "attribute") {
+    const input = document.querySelector(`[data-attribute="${modifier.target}"]`);
+    if (input) input.value = String(clampInteger(clampInteger(input.value, -99, 99, 1) + delta, -99, 99, 1));
+    return;
+  }
+}
+
+function setCreationModifiersActive(scope, id, shouldActivate, options = {}) {
+  const creation = getCreation(scope, id);
+  if (!creation || !creation.grantsModifiers || !creation.modifiers.length) return false;
+  if (Boolean(creation.modifiersActive) === Boolean(shouldActivate)) return true;
+
+  if (shouldActivate) {
+    creation.modifiers.forEach((modifier) => {
+      if (modifierRollsPerUse(modifier)) {
+        modifier.resolvedValue = 0;
+        return;
+      }
+      const parsed = parseDamageFormula(modifier.formula);
+      modifier.resolvedValue = parsed.error ? 0 : evaluateDamageFormula(parsed).total;
+      adjustDirectModifierTarget(modifier, 1);
+    });
+    creation.modifiersActive = true;
+  } else {
+    creation.modifiers.forEach((modifier) => {
+      if (!modifierRollsPerUse(modifier)) adjustDirectModifierTarget(modifier, -1);
+      modifier.resolvedValue = 0;
+    });
+    creation.modifiersActive = false;
+  }
+
+  renderResourceState();
+  applyClassCalculations();
+  updateDifficultyTargets();
+  renderAbilities();
+  renderInventory();
+  if (!abilityDetailModal.hidden && activeAbilityDetailId === id && activeAbilityDetailScope === scope) {
+    openAbilityDetail(id, activeAbilityDetailTrigger, scope);
+  }
+  if (options.notify !== false) notifySheetChanged("creation-modifiers");
+  return true;
+}
+
+function costDisplayLabel(cost) {
+  return `${cost.value} ${CREATION_RESOURCES[cost.resource]} ${cost.pool === "max" ? "Máximos" : "Atuais"}`;
+}
+
+function applyCreationCosts(creation) {
+  if (!creation.costs?.length) return true;
+  const summary = creation.costs.map(costDisplayLabel).join("\n");
+  if (!window.confirm(`Usar “${creation.name}” e gastar:\n\n${summary}?`)) return false;
+
+  creation.costs.forEach((cost) => {
+    const inputs = getResourceInputs(cost.resource);
+    const target = cost.pool === "max" ? inputs.maximum : inputs.current;
+    target.value = String(Math.max(0, clampInteger(target.value, 0, 999999, 0) - cost.value));
+    if (cost.pool === "max") resourceMaxManual[cost.resource] = true;
+    if (cost.resource === "sa") {
+      inputs.current.value = String(Math.min(
+        clampInteger(inputs.current.value, 0, 999999, 0),
+        clampInteger(inputs.maximum.value, 0, 999999, 0),
+      ));
+    }
+  });
+  renderResourceState();
+  notifySheetChanged("creation-costs");
+  return true;
+}
+
+function showCreationRollResult(title, context, parsed, result, trigger) {
+  playRollSound();
+  activeAbilityTrigger = trigger;
+  abilityRollDialog.querySelector(".eyebrow").textContent = context;
+  document.querySelector("#ability-roll-title").textContent = title;
+  document.querySelector("#ability-roll-formula").textContent = parsed.formula;
+  document.querySelector("#ability-roll-total").textContent = result.total;
+  document.querySelector("#ability-roll-breakdown").textContent = result.breakdown;
+  abilityRollModal.hidden = false;
+  syncModalLock();
+  abilityRollDialog.focus();
+}
+
+function rollNamedCreation(scope, creationId, rollId, trigger, chargeCosts = true) {
+  const creation = getCreation(scope, creationId);
+  const roll = creation?.rolls?.find((entry) => entry.id === rollId);
+  if (!creation || !roll || (chargeCosts && !applyCreationCosts(creation))) return;
+  const parsed = parseDamageFormula(roll.formula);
+  if (parsed.error || !parsed.tokens.length) return;
+  const result = evaluateDamageFormulaDetailed(parsed);
+  showCreationRollResult(`${creation.name} · ${roll.name}`, "Rolagem", parsed, result, trigger);
+}
+
+function rollCreationDamage(scope, creationId, trigger, chargeCosts = true) {
+  const creation = getCreation(scope, creationId);
+  const profile = creation?.damageProfile || sanitizeDamageProfile({}, creation?.damage);
+  const primaryParsed = parseDamageFormula(profile.primary);
+  if (!creation || primaryParsed.error || !primaryParsed.tokens.length || (chargeCosts && !applyCreationCosts(creation))) return;
+
+  const primary = evaluateDamageFormulaDetailed(primaryParsed);
+  let total = primary.total;
+  const breakdown = [`Principal: ${primary.breakdown}`];
+  const formulas = [primaryParsed.formula];
+
+  const additionalParsed = parseDamageFormula(profile.additional);
+  if (!additionalParsed.error && additionalParsed.tokens.length) {
+    const additional = evaluateDamageFormulaDetailed(additionalParsed);
+    total += additional.total;
+    breakdown.push(`Adicional: ${additional.breakdown}`);
+    formulas.push(additionalParsed.formula);
+  }
+
+  let criticalTriggered = false;
+  const threshold = profile.criticalThreshold
+    ? Math.max(1, profile.criticalThreshold - profile.criticalMarginReduction)
+    : 0;
+  const mainDice = primary.evaluatedTokens.find((token) => token.type === "dice" && token.sign > 0);
+  if (threshold && mainDice?.results?.some((value) => value >= threshold)) {
+    criticalTriggered = true;
+    const criticalParsed = parseDamageFormula(profile.criticalBonus);
+    if (!criticalParsed.error && criticalParsed.tokens.length) {
+      const critical = evaluateDamageFormulaDetailed(criticalParsed);
+      total += critical.total;
+      breakdown.push(`Crítico (natural ≥ ${threshold}): ${critical.breakdown}`);
+      formulas.push(criticalParsed.formula);
+    }
+  }
+
+  const damageModifiers = rollActiveCreationModifiers("damage");
+  if (damageModifiers.total || damageModifiers.breakdown.length) {
+    total += damageModifiers.total;
+    breakdown.push(`Modificadores ativos: ${damageModifiers.breakdown.join(" · ")} = ${formatSigned(damageModifiers.total)}`);
+  }
+
+  showCreationRollResult(
+    creation.name,
+    criticalTriggered ? "Dano · Crítico ativado" : "Rolagem de dano",
+    { formula: formulas.join(" + ") },
+    { total, breakdown: breakdown.join(" · ") },
+    trigger,
+  );
+}
+
+function useCreation(scope, creationId, trigger) {
+  const creation = getCreation(scope, creationId);
+  if (!creation) return;
+  if (creation.damageProfile?.primary) {
+    rollCreationDamage(scope, creationId, trigger, true);
+    return;
+  }
+  if (creation.rolls?.length === 1) {
+    rollNamedCreation(scope, creationId, creation.rolls[0].id, trigger, true);
+    return;
+  }
+  if (creation.rolls?.length > 1) {
+    openAbilityDetail(creationId, trigger, scope);
+    return;
+  }
+  applyCreationCosts(creation);
+}
+
+function appendCreationDetailSection(container, title, rows) {
+  if (!rows.length) return;
+  const section = document.createElement("section");
+  section.className = "creation-detail-section";
+  const heading = document.createElement("h3");
+  heading.textContent = title;
+  const list = document.createElement("div");
+  list.className = "creation-detail-list";
+  list.append(...rows);
+  section.append(heading, list);
+  container.append(section);
+}
+
+function createCreationDetailRow(label, value, buttonData = null) {
+  const row = document.createElement("div");
+  row.className = "creation-detail-row";
+  const copy = document.createElement("span");
+  copy.textContent = label;
+  const strong = document.createElement("strong");
+  strong.textContent = value;
+  copy.append(" · ", strong);
+  row.append(copy);
+  if (buttonData) {
+    const button = document.createElement("button");
+    button.className = "creation-roll-button";
+    button.type = "button";
+    Object.entries(buttonData.dataset).forEach(([key, entry]) => { button.dataset[key] = entry; });
+    button.textContent = buttonData.label;
+    row.append(button);
+  }
+  return row;
+}
+
+function renderCreationDetailMechanics(creation, scope) {
+  const container = document.querySelector("#ability-detail-mechanics");
+  container.replaceChildren();
+  const profile = creation.damageProfile || sanitizeDamageProfile({}, creation.damage);
+
+  const damageRows = [];
+  if (profile.primary) damageRows.push(createCreationDetailRow("Dano Principal", profile.primary));
+  if (profile.additional) damageRows.push(createCreationDetailRow("Dano Adicional", profile.additional));
+  if (profile.criticalThreshold) {
+    const effective = Math.max(1, profile.criticalThreshold - profile.criticalMarginReduction);
+    damageRows.push(createCreationDetailRow(
+      "Margem de Crítico",
+      `${effective}+ (original ${profile.criticalThreshold}+)${profile.criticalBonus ? ` · + ${profile.criticalBonus}` : ""}`,
+    ));
+  }
+  appendCreationDetailSection(container, "Dano", damageRows);
+  if (profile.criticalThreshold && scope !== "minerva") {
+    container.lastElementChild?.append(createCriticalMarginControl(creation, scope));
+  }
+
+  appendCreationDetailSection(
+    container,
+    "Rolagens",
+    (creation.rolls || []).map((roll) => createCreationDetailRow(
+      roll.name,
+      roll.formula,
+      scope === "minerva" ? null : {
+        label: "Rolar",
+        dataset: { detailRoll: roll.id, creationScope: scope, creationId: creation.id },
+      },
+    )),
+  );
+  appendCreationDetailSection(
+    container,
+    "Gastos por uso",
+    (creation.costs || []).map((cost) => createCreationDetailRow(CREATION_RESOURCES[cost.resource], costDisplayLabel(cost))),
+  );
+  appendCreationDetailSection(
+    container,
+    creation.modifiersActive ? "Modificadores ativos" : "Modificadores",
+    (creation.modifiers || []).map((modifier) => {
+      const target = modifierTargetLabel(modifier);
+      const resolved = creation.modifiersActive
+        ? modifierRollsPerUse(modifier)
+          ? " → rola a cada uso"
+          : ` → ${formatSigned(modifier.resolvedValue)}`
+        : "";
+      return createCreationDetailRow(
+        CREATION_MODIFIER_TYPES[modifier.type],
+        `${target ? `${target} · ` : ""}${modifier.formula}${resolved}`,
+      );
+    }),
+  );
+}
+
 function revokePendingAbilityPreview() {
   if (pendingAbilityPreviewUrl.startsWith("blob:")) {
     URL.revokeObjectURL(pendingAbilityPreviewUrl);
@@ -11101,24 +12912,34 @@ function createAbilityMediaElement(ability, className) {
 }
 
 function openAbilityDetail(abilityId, trigger, scope = "sheet") {
-  const collection = scope === "minerva" ? grimoireAbilities : abilities;
-  const ability = collection.find((item) => item.id === abilityId);
+  const ability = getCreation(scope, abilityId);
   if (!ability) return;
   activeAbilityDetailId = ability.id;
   activeAbilityDetailScope = scope;
   activeAbilityDetailTrigger = trigger;
-  document.querySelector("#ability-detail-kind").textContent = `Informações · ${abilitySectionLabel(ability.section)}`;
+  document.querySelector("#ability-detail-kind").textContent = scope === "inventory"
+    ? `Informações · ${ability.isWeapon ? "Arma" : "Item"}`
+    : `Informações · ${abilitySectionLabel(ability.section)}`;
   document.querySelector("#ability-detail-title").textContent = ability.name;
-  document.querySelector("#ability-detail-origin").textContent = abilityOriginLabel(ability, scope);
+  document.querySelector("#ability-detail-origin").textContent = scope === "inventory"
+    ? `Inventário · Quantidade ${ability.quantity}`
+    : abilityOriginLabel(ability, scope);
   document.querySelector("#ability-detail-description").textContent = ability.description || "Sem descrição.";
   const media = document.querySelector("#ability-detail-media");
   media.replaceChildren();
-  media.hidden = !safeAbilityMediaUrl(ability.mediaUrl);
+  media.hidden = scope === "inventory" || !safeAbilityMediaUrl(ability.mediaUrl);
   if (!media.hidden) media.append(createAbilityMediaElement(ability, "ability-card-media"));
   const damage = document.querySelector("#ability-detail-damage");
-  damage.hidden = !ability.damage;
-  damage.textContent = ability.damage ? `Dano: ${ability.damage}` : "";
-  abilityDetailRoll.hidden = scope !== "sheet" || !ability.damage;
+  const primaryDamage = ability.damageProfile?.primary || ability.damage || "";
+  damage.hidden = !primaryDamage;
+  damage.textContent = primaryDamage ? `Dano: ${primaryDamage}` : "";
+  renderCreationDetailMechanics(ability, scope);
+  const usable = Boolean(primaryDamage || ability.rolls?.length === 1 || (!ability.rolls?.length && ability.costs?.length));
+  abilityDetailRoll.hidden = scope === "minerva" || !usable;
+  abilityDetailRoll.textContent = primaryDamage ? "Usar e rolar dano" : ability.rolls?.length === 1 ? `Usar · ${ability.rolls[0].name}` : "Usar";
+  abilityDetailModifiers.hidden = scope === "minerva" || !ability.grantsModifiers || !ability.modifiers?.length;
+  abilityDetailModifiers.textContent = ability.modifiersActive ? "Desativar modificadores" : "Ativar modificadores";
+  abilityDetailModifiers.classList.toggle("is-active", ability.modifiersActive);
   abilityDetailModal.hidden = false;
   syncModalLock();
   abilityDetailDialog.focus();
@@ -11127,6 +12948,7 @@ function openAbilityDetail(abilityId, trigger, scope = "sheet") {
 function closeAbilityDetail() {
   abilityDetailModal.hidden = true;
   activeAbilityDetailId = null;
+  activeAbilityDetailScope = "sheet";
   syncModalLock();
   if (activeAbilityDetailTrigger?.isConnected) activeAbilityDetailTrigger.focus();
 }
@@ -11174,23 +12996,53 @@ function renderAbilities() {
     });
     copy.append(type, name, description);
 
-    if (ability.damage) {
+    const primaryDamage = ability.damageProfile?.primary || ability.damage || "";
+    if (primaryDamage) {
       const damage = document.createElement("span");
       damage.className = "ability-card-damage";
-      damage.textContent = ability.damage;
+      damage.textContent = ability.damageProfile?.additional
+        ? `${primaryDamage} + ${ability.damageProfile.additional}`
+        : primaryDamage;
       copy.append(damage);
+    }
+
+    const tags = document.createElement("div");
+    tags.className = "creation-tags";
+    const tagData = [
+      ability.rolls?.length ? [`${ability.rolls.length} ${ability.rolls.length === 1 ? "rolagem" : "rolagens"}`, ""] : null,
+      ability.costs?.length ? [`${ability.costs.length} ${ability.costs.length === 1 ? "gasto" : "gastos"}`, "is-cost"] : null,
+      ability.grantsModifiers ? [ability.modifiersActive ? "Efeitos ativos" : `${ability.modifiers.length} modificadores`, ability.modifiersActive ? "is-active" : ""] : null,
+    ].filter(Boolean);
+    tagData.forEach(([label, className]) => {
+      const tag = document.createElement("span");
+      tag.className = `creation-tag ${className}`.trim();
+      tag.textContent = label;
+      tags.append(tag);
+    });
+    if (tags.children.length) copy.append(tags);
+    if (ability.damageProfile?.criticalThreshold) {
+      copy.append(createCriticalMarginControl(ability, "sheet"));
     }
 
     const actions = document.createElement("div");
     actions.className = "ability-card-actions";
 
-    if (ability.damage) {
-      const roll = document.createElement("button");
-      roll.className = "ability-card-action is-roll";
-      roll.type = "button";
-      roll.dataset.rollAbility = ability.id;
-      roll.textContent = "Rolar dano";
-      actions.append(roll);
+    if (primaryDamage || ability.rolls?.length || ability.costs?.length) {
+      const use = document.createElement("button");
+      use.className = "ability-card-action is-roll";
+      use.type = "button";
+      use.dataset.useAbility = ability.id;
+      use.textContent = primaryDamage ? "Usar e rolar dano" : ability.rolls?.length > 1 ? "Escolher rolagem" : "Usar";
+      actions.append(use);
+    }
+
+    if (ability.grantsModifiers && ability.modifiers?.length) {
+      const toggle = document.createElement("button");
+      toggle.className = "ability-card-action";
+      toggle.type = "button";
+      toggle.dataset.toggleAbilityModifiers = ability.id;
+      toggle.textContent = ability.modifiersActive ? "Desativar efeitos" : "Ativar efeitos";
+      actions.append(toggle);
     }
 
     const edit = document.createElement("button");
@@ -11219,14 +13071,20 @@ function renderAbilities() {
 function selectAbilitySection(sectionKey) {
   if (!ABILITY_SECTIONS[sectionKey]) return;
   activeAbilitySection = sectionKey;
+  let activeSectionButton = null;
 
   abilitySectionButtons.forEach((button) => {
     const selected = button.dataset.abilitySection === sectionKey;
     button.classList.toggle("is-active", selected);
     button.setAttribute("aria-selected", String(selected));
+    if (selected) activeSectionButton = button;
   });
 
   renderAbilities();
+  if (activeSectionButton && window.matchMedia("(max-width: 760px)").matches) {
+    const behavior = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth";
+    requestAnimationFrame(() => activeSectionButton.scrollIntoView({ behavior, block: "nearest", inline: "center" }));
+  }
 }
 
 function setAbilityEditorError(message) {
@@ -11245,7 +13103,16 @@ function openAbilityEditor(scope, ability = null, trigger = null) {
   abilityEchoSelect.value = ability?.echoKey || characterEchoSelect.value;
   updateAbilityEchoField();
   abilityDescriptionInput.value = ability?.description || "";
-  abilityDamageInput.value = ability?.damage || "";
+  const damageProfile = ability?.damageProfile || sanitizeDamageProfile({}, ability?.damage);
+  abilityHasDamageInput.checked = Boolean(ability?.hasDamage ?? damageProfile.primary);
+  abilityDamageFields.hidden = !abilityHasDamageInput.checked;
+  abilityDamageInput.value = damageProfile.primary || "";
+  abilityAdditionalDamageInput.value = damageProfile.additional || "";
+  abilityCriticalThresholdInput.value = damageProfile.criticalThreshold ? String(damageProfile.criticalThreshold) : "";
+  abilityCriticalBonusInput.value = damageProfile.criticalBonus || "";
+  abilityGrantsModifiersInput.checked = Boolean(ability?.grantsModifiers);
+  abilityModifiersFields.hidden = !abilityGrantsModifiersInput.checked;
+  fillMechanicsEditor("ability", ability || {});
   abilityMediaUrlInput.value = ability?.mediaOwner === "link" ? ability.mediaUrl || "" : "";
   abilityEditorForm.dataset.existingMediaUrl = ability?.mediaUrl || "";
   abilityEditorForm.dataset.existingMediaRef = ability?.mediaRefId || "";
@@ -11290,10 +13157,47 @@ async function submitAbilityEditor(event) {
     abilityEchoSelect.focus();
     return;
   }
+  const mechanics = readMechanicsEditor("ability", { includeModifiers: abilityGrantsModifiersInput.checked });
+  if (mechanics.error) {
+    setAbilityEditorError(mechanics.error);
+    mechanics.input?.focus();
+    return;
+  }
   const parsedDamage = parseDamageFormula(abilityDamageInput.value);
-  if (parsedDamage.error) {
-    setAbilityEditorError(parsedDamage.error);
+  const parsedAdditionalDamage = parseDamageFormula(abilityAdditionalDamageInput.value);
+  if (abilityHasDamageInput.checked && (parsedDamage.error || !parsedDamage.tokens.length)) {
+    setAbilityEditorError(parsedDamage.error || "Preencha o Dano Principal.");
     abilityDamageInput.focus();
+    return;
+  }
+  if (abilityHasDamageInput.checked && parsedAdditionalDamage.error) {
+    setAbilityEditorError(parsedAdditionalDamage.error);
+    abilityAdditionalDamageInput.focus();
+    return;
+  }
+  const parsedCriticalBonus = parseDamageFormula(abilityCriticalBonusInput.value);
+  const criticalThreshold = clampInteger(abilityCriticalThresholdInput.value, 0, 1000, 0);
+  if (abilityHasDamageInput.checked && parsedCriticalBonus.error) {
+    setAbilityEditorError(parsedCriticalBonus.error);
+    abilityCriticalBonusInput.focus();
+    return;
+  }
+  if (abilityHasDamageInput.checked && (criticalThreshold || parsedCriticalBonus.tokens.length)) {
+    if (!criticalThreshold || !parsedCriticalBonus.tokens.length) {
+      setAbilityEditorError("Para usar crítico, informe a margem natural e o Dano Crítico.");
+      (criticalThreshold ? abilityCriticalBonusInput : abilityCriticalThresholdInput).focus();
+      return;
+    }
+    const primaryDie = parsedDamage.tokens.find((token) => token.type === "dice" && token.sign > 0);
+    if (!primaryDie || criticalThreshold > primaryDie.faces) {
+      setAbilityEditorError("A margem de crítico deve caber no primeiro dado do Dano Principal.");
+      abilityCriticalThresholdInput.focus();
+      return;
+    }
+  }
+  if (abilityGrantsModifiersInput.checked && !mechanics.modifiers.length) {
+    setAbilityEditorError("Adicione pelo menos um modificador ou desative “Concede Modificadores?”.");
+    document.querySelector("#add-ability-modifier").focus();
     return;
   }
 
@@ -11355,7 +13259,20 @@ async function submitAbilityEditor(event) {
       description: abilityDescriptionInput.value,
       origin: abilityOriginInput.value,
       echoKey: abilitySectionSelect.value === "echoes" ? abilityEchoSelect.value : "",
-      damage: parsedDamage.formula,
+      hasDamage: abilityHasDamageInput.checked,
+      damage: abilityHasDamageInput.checked ? parsedDamage.formula : "",
+      damageProfile: {
+        primary: abilityHasDamageInput.checked ? parsedDamage.formula : "",
+        additional: abilityHasDamageInput.checked ? parsedAdditionalDamage.formula : "",
+        criticalThreshold: abilityHasDamageInput.checked ? criticalThreshold : 0,
+        criticalBonus: abilityHasDamageInput.checked ? parsedCriticalBonus.formula : "",
+        criticalMarginReduction: existing?.damageProfile?.criticalMarginReduction || 0,
+      },
+      rolls: mechanics.rolls,
+      costs: mechanics.costs,
+      grantsModifiers: abilityGrantsModifiersInput.checked,
+      modifiersActive: false,
+      modifiers: abilityGrantsModifiersInput.checked ? mechanics.modifiers : [],
       mediaUrl,
       mediaRefId,
       mediaOwner,
@@ -11414,6 +13331,7 @@ async function deleteSheetAbility(abilityId) {
   const ability = abilities.find((item) => item.id === abilityId);
   if (!ability || !window.confirm(`Excluir “${ability.name}” deste Slot?`)) return;
 
+  if (ability.modifiersActive) setCreationModifiersActive("sheet", ability.id, false, { notify: false });
   abilities = abilities.filter((item) => item.id !== abilityId);
   renderAbilities();
   notifySheetChanged("ability-deleted");
@@ -11425,23 +13343,267 @@ async function deleteSheetAbility(abilityId) {
   }
 }
 
-function rollAbilityDamage(abilityId, trigger) {
-  const ability = abilities.find((item) => item.id === abilityId);
-  if (!ability) return;
+function setItemEditorError(message) {
+  itemEditorError.textContent = message;
+  itemEditorError.hidden = !message;
+}
 
-  const parsed = parseDamageFormula(ability.damage);
-  if (parsed.error || !parsed.tokens.length) return;
+function updateItemWeaponFields() {
+  itemWeaponFields.hidden = !itemIsWeaponInput.checked;
+}
 
-  playRollSound();
-  const result = evaluateDamageFormula(parsed);
-  activeAbilityTrigger = trigger;
-  document.querySelector("#ability-roll-title").textContent = ability.name;
-  document.querySelector("#ability-roll-formula").textContent = parsed.formula;
-  document.querySelector("#ability-roll-total").textContent = result.total;
-  document.querySelector("#ability-roll-breakdown").textContent = result.breakdown;
-  abilityRollModal.hidden = false;
+function updateItemModifierFields() {
+  itemModifiersFields.hidden = !itemGrantsModifiersInput.checked;
+}
+
+function openItemEditor(item = null, trigger = null) {
+  activeItemId = item?.id || null;
+  activeItemTrigger = trigger;
+  itemEditorForm.reset();
+  itemNameInput.value = item?.name || "";
+  itemQuantityInput.value = String(item?.quantity || 1);
+  itemDescriptionInput.value = item?.description || "";
+  itemIsWeaponInput.checked = Boolean(item?.isWeapon);
+  const profile = item?.damageProfile || sanitizeDamageProfile({});
+  itemPrimaryDamageInput.value = profile.primary || "";
+  itemAdditionalDamageInput.value = profile.additional || "";
+  itemCriticalThresholdInput.value = profile.criticalThreshold ? String(profile.criticalThreshold) : "";
+  itemCriticalBonusInput.value = profile.criticalBonus || "";
+  itemEditorForm.dataset.criticalMarginReduction = String(profile.criticalMarginReduction || 0);
+  itemGrantsModifiersInput.checked = Boolean(item?.grantsModifiers);
+  fillMechanicsEditor("item", item || {});
+  updateItemWeaponFields();
+  updateItemModifierFields();
+  setItemEditorError("");
+  itemEditorTitle.textContent = item ? "Editar Item" : "Criar Item";
+  saveItemButton.textContent = item ? "Salvar Alterações" : "Criar Item";
+  itemEditorModal.hidden = false;
   syncModalLock();
-  abilityRollDialog.focus();
+  itemEditorDialog.focus();
+  requestAnimationFrame(() => itemNameInput.focus());
+}
+
+function closeItemEditor() {
+  itemEditorModal.hidden = true;
+  activeItemId = null;
+  syncModalLock();
+  if (activeItemTrigger?.isConnected) activeItemTrigger.focus();
+}
+
+function submitItemEditor(event) {
+  event.preventDefault();
+  setItemEditorError("");
+  const name = itemNameInput.value.trim();
+  if (!name) {
+    setItemEditorError("Dê um nome ao Item.");
+    itemNameInput.focus();
+    return;
+  }
+
+  const mechanics = readMechanicsEditor("item", { includeModifiers: itemGrantsModifiersInput.checked });
+  if (mechanics.error) {
+    setItemEditorError(mechanics.error);
+    mechanics.input?.focus();
+    return;
+  }
+  if (itemGrantsModifiersInput.checked && !mechanics.modifiers.length) {
+    setItemEditorError("Adicione pelo menos um modificador ou desative “Concede Modificadores?”.");
+    document.querySelector("#add-item-modifier").focus();
+    return;
+  }
+
+  const primary = parseDamageFormula(itemPrimaryDamageInput.value);
+  const additional = parseDamageFormula(itemAdditionalDamageInput.value);
+  const criticalBonus = parseDamageFormula(itemCriticalBonusInput.value);
+  const criticalThreshold = clampInteger(itemCriticalThresholdInput.value, 0, 1000, 0);
+  if (itemIsWeaponInput.checked && (primary.error || !primary.tokens.length)) {
+    setItemEditorError(primary.error || "Uma arma precisa de Dano Principal.");
+    itemPrimaryDamageInput.focus();
+    return;
+  }
+  if (itemIsWeaponInput.checked && additional.error) {
+    setItemEditorError(additional.error);
+    itemAdditionalDamageInput.focus();
+    return;
+  }
+  if (itemIsWeaponInput.checked && criticalBonus.error) {
+    setItemEditorError(criticalBonus.error);
+    itemCriticalBonusInput.focus();
+    return;
+  }
+  const primaryDie = primary.tokens?.find((token) => token.type === "dice" && token.sign > 0);
+  if (itemIsWeaponInput.checked && (criticalThreshold || criticalBonus.tokens.length)) {
+    if (!criticalThreshold || !criticalBonus.tokens.length) {
+      setItemEditorError("Para usar crítico, informe a margem natural e o Dano Crítico.");
+      (criticalThreshold ? itemCriticalBonusInput : itemCriticalThresholdInput).focus();
+      return;
+    }
+    if (!primaryDie || criticalThreshold > primaryDie.faces) {
+      setItemEditorError("A margem de crítico deve caber no primeiro dado do Dano Principal.");
+      itemCriticalThresholdInput.focus();
+      return;
+    }
+  }
+
+  const existingIndex = inventoryItems.findIndex((entry) => entry.id === activeItemId);
+  const existing = existingIndex >= 0 ? inventoryItems[existingIndex] : null;
+  const nextItem = sanitizeInventoryItem({
+    id: existing?.id || createAbilityId("item"),
+    name,
+    quantity: itemQuantityInput.value,
+    description: itemDescriptionInput.value,
+    isWeapon: itemIsWeaponInput.checked,
+    damageProfile: {
+      primary: itemIsWeaponInput.checked ? primary.formula : "",
+      additional: itemIsWeaponInput.checked ? additional.formula : "",
+      criticalThreshold: itemIsWeaponInput.checked ? criticalThreshold : 0,
+      criticalBonus: itemIsWeaponInput.checked ? criticalBonus.formula : "",
+      criticalMarginReduction: existing?.damageProfile?.criticalMarginReduction || 0,
+    },
+    rolls: mechanics.rolls,
+    costs: mechanics.costs,
+    grantsModifiers: itemGrantsModifiersInput.checked,
+    modifiersActive: false,
+    modifiers: itemGrantsModifiersInput.checked ? mechanics.modifiers : [],
+  });
+  if (existingIndex >= 0) inventoryItems[existingIndex] = nextItem;
+  else inventoryItems.push(nextItem);
+  renderInventory();
+  notifySheetChanged(existing ? "item-edited" : "item-created");
+  closeItemEditor();
+}
+
+function createCriticalMarginControl(item, scope = "inventory") {
+  const box = document.createElement("div");
+  box.className = "critical-margin-box";
+  const original = item.damageProfile.criticalThreshold;
+  const effective = Math.max(1, original - item.damageProfile.criticalMarginReduction);
+  const decrease = document.createElement("button");
+  decrease.type = "button";
+  decrease.dataset.adjustCritical = item.id;
+  decrease.dataset.criticalScope = scope;
+  decrease.dataset.direction = "-1";
+  decrease.setAttribute("aria-label", `Diminuir Margem de Crítico de ${item.name}`);
+  decrease.textContent = "−";
+  decrease.disabled = effective <= 1;
+  const copy = document.createElement("span");
+  copy.className = "critical-margin-copy";
+  copy.innerHTML = `<small>Margem de Crítico</small><span><b>${effective}+</b> · original <strong>${original}+</strong></span>`;
+  const increase = document.createElement("button");
+  increase.type = "button";
+  increase.dataset.adjustCritical = item.id;
+  increase.dataset.criticalScope = scope;
+  increase.dataset.direction = "1";
+  increase.setAttribute("aria-label", `Restaurar Margem de Crítico de ${item.name}`);
+  increase.textContent = "+";
+  increase.disabled = item.damageProfile.criticalMarginReduction <= 0;
+  box.append(decrease, copy, increase);
+  return box;
+}
+
+function adjustCreationCriticalMargin(scope, itemId, direction) {
+  const item = getCreation(scope, itemId);
+  if (!item?.damageProfile?.criticalThreshold) return;
+  const maximumReduction = Math.max(0, item.damageProfile.criticalThreshold - 1);
+  item.damageProfile.criticalMarginReduction = clampInteger(
+    item.damageProfile.criticalMarginReduction + (direction < 0 ? 1 : -1),
+    0,
+    maximumReduction,
+    0,
+  );
+  renderInventory();
+  renderAbilities();
+  if (!abilityDetailModal.hidden && activeAbilityDetailScope === scope && activeAbilityDetailId === itemId) {
+    openAbilityDetail(itemId, activeAbilityDetailTrigger, scope);
+  }
+  notifySheetChanged("critical-margin");
+}
+
+function renderInventory() {
+  if (!inventoryList || !inventoryEmpty) return;
+  const query = normalizeSearchTerm(inventorySearchInput.value);
+  const visible = inventoryItems
+    .filter((item) => !query || normalizeSearchTerm(`${item.name} ${item.description}`).includes(query))
+    .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+  inventoryCount.textContent = `${visible.length} ${visible.length === 1 ? "item" : "itens"}`;
+  inventoryEmpty.hidden = visible.length !== 0;
+  inventoryList.hidden = visible.length === 0;
+  inventoryList.replaceChildren();
+
+  visible.forEach((item) => {
+    const card = document.createElement("article");
+    card.className = `ability-card inventory-card${item.isWeapon ? " is-weapon" : ""}${item.modifiersActive ? " is-active" : ""}`;
+    card.dataset.itemId = item.id;
+    const icon = document.createElement("div");
+    icon.className = "item-card-icon";
+    icon.textContent = item.isWeapon ? "⚔" : "◇";
+    const copy = document.createElement("div");
+    copy.className = "ability-card-copy";
+    const type = document.createElement("small");
+    type.textContent = `${item.isWeapon ? "Arma" : "Item"} · Quantidade ${item.quantity}`;
+    const name = document.createElement("h3");
+    name.textContent = item.name;
+    const description = document.createElement("p");
+    description.textContent = item.description || "Sem descrição.";
+    copy.append(type, name, description);
+    const tags = document.createElement("div");
+    tags.className = "creation-tags";
+    [
+      item.damageProfile.primary ? [item.damageProfile.primary, "is-damage"] : null,
+      item.rolls.length ? [`${item.rolls.length} ${item.rolls.length === 1 ? "rolagem" : "rolagens"}`, ""] : null,
+      item.costs.length ? [`${item.costs.length} ${item.costs.length === 1 ? "gasto" : "gastos"}`, "is-cost"] : null,
+      item.modifiersActive ? ["Efeitos ativos", "is-active"] : item.grantsModifiers ? [`${item.modifiers.length} modificadores`, ""] : null,
+    ].filter(Boolean).forEach(([label, className]) => {
+      const tag = document.createElement("span");
+      tag.className = `creation-tag ${className}`.trim();
+      tag.textContent = label;
+      tags.append(tag);
+    });
+    if (tags.children.length) copy.append(tags);
+    if (item.isWeapon && item.damageProfile.criticalThreshold) copy.append(createCriticalMarginControl(item));
+
+    const actions = document.createElement("div");
+    actions.className = "ability-card-actions";
+    if (item.damageProfile.primary || item.rolls.length || item.costs.length) {
+      const use = document.createElement("button");
+      use.className = "ability-card-action is-roll";
+      use.type = "button";
+      use.dataset.useItem = item.id;
+      use.textContent = item.damageProfile.primary ? "Usar e rolar dano" : item.rolls.length > 1 ? "Escolher rolagem" : "Usar";
+      actions.append(use);
+    }
+    if (item.grantsModifiers && item.modifiers.length) {
+      const toggle = document.createElement("button");
+      toggle.className = "ability-card-action";
+      toggle.type = "button";
+      toggle.dataset.toggleItemModifiers = item.id;
+      toggle.textContent = item.modifiersActive ? "Desativar efeitos" : "Ativar efeitos";
+      actions.append(toggle);
+    }
+    [["Abrir", "openItem"], ["Editar", "editItem"], ["Excluir", "deleteItem"]].forEach(([label, dataKey]) => {
+      const button = document.createElement("button");
+      button.className = `ability-card-action${dataKey === "deleteItem" ? " is-delete" : ""}`;
+      button.type = "button";
+      button.dataset[dataKey] = item.id;
+      button.textContent = label;
+      actions.append(button);
+    });
+    card.append(icon, copy, actions);
+    inventoryList.append(card);
+  });
+}
+
+function deleteInventoryItem(itemId) {
+  const item = inventoryItems.find((entry) => entry.id === itemId);
+  if (!item || !window.confirm(`Excluir “${item.name}” do Inventário?`)) return;
+  if (item.modifiersActive) setCreationModifiersActive("inventory", item.id, false, { notify: false });
+  inventoryItems = inventoryItems.filter((entry) => entry.id !== itemId);
+  renderInventory();
+  notifySheetChanged("item-deleted");
+}
+
+function rollAbilityDamage(abilityId, trigger) {
+  rollCreationDamage("sheet", abilityId, trigger, true);
 }
 
 function closeAbilityRoll() {
@@ -11578,6 +13740,8 @@ function importMinervaAbility(abilityId) {
       section: source.section,
       sourceId: source.id,
       mediaOwner: source.mediaRefId ? "minerva" : "link",
+      modifiersActive: false,
+      modifiers: (source.modifiers || []).map((modifier) => ({ ...modifier, resolvedValue: 0 })),
     }),
   );
   selectAbilitySection(source.section);
@@ -11662,6 +13826,7 @@ function syncModalLock() {
     trainingLimitModal,
     photoEditorModal,
     abilityEditorModal,
+    itemEditorModal,
     grimoirePickerModal,
     minervaModal,
     slotsModal,
@@ -12236,7 +14401,8 @@ function rollSkill(skillIndex, triggerButton) {
   const mainResult = Math.max(...mainResults);
   const extraResults = diceModifier.count ? rollDice(diceModifier.count, diceModifier.faces) : [];
   const extraTotal = sum(extraResults);
-  const total = mainResult + attributeValue + extraTotal + fixedModifier;
+  const grantedModifiers = rollActiveCreationModifiers("skill", getSkillKey(skill));
+  const total = mainResult + attributeValue + extraTotal + fixedModifier + grantedModifiers.total;
   const difficulty = DIFFICULTIES[selectedDifficulty];
   const outcome = evaluateOutcome(training.die, mainResult, total, selectedDifficulty);
 
@@ -12286,6 +14452,13 @@ function rollSkill(skillIndex, triggerButton) {
     }
     if (fixedModifier !== 0) {
       addBreakdownLine("Modificador fixo", "Valor informado", fixedModifier);
+    }
+    if (grantedModifiers.total || grantedModifiers.breakdown.length) {
+      addBreakdownLine(
+        "Modificadores concedidos",
+        grantedModifiers.breakdown.join(" · "),
+        grantedModifiers.total,
+      );
     }
 
     resultSummary.hidden = false;
@@ -12560,6 +14733,50 @@ minervaButton.addEventListener("click", openMinervaGrimoire);
 slotsButton.addEventListener("click", openSlotsManager);
 abilityEditorForm.addEventListener("submit", submitAbilityEditor);
 abilitySectionSelect.addEventListener("change", updateAbilityEchoField);
+abilityHasDamageInput.addEventListener("change", () => {
+  abilityDamageFields.hidden = !abilityHasDamageInput.checked;
+});
+abilityGrantsModifiersInput.addEventListener("change", () => {
+  abilityModifiersFields.hidden = !abilityGrantsModifiersInput.checked;
+});
+itemIsWeaponInput.addEventListener("change", updateItemWeaponFields);
+itemGrantsModifiersInput.addEventListener("change", updateItemModifierFields);
+itemEditorForm.addEventListener("submit", submitItemEditor);
+inventorySearchInput.addEventListener("input", renderInventory);
+createItemButton.addEventListener("click", () => {
+  if (!window.AbyssCloud?.hasActiveSlot()) {
+    setAccountMenuOpen(true);
+    if (!window.AbyssCloud?.isSignedIn()) window.dispatchEvent(new CustomEvent("abyss:firebase-login"));
+    return;
+  }
+  openItemEditor(null, createItemButton);
+});
+
+[
+  ["#add-ability-roll", "ability", "roll"],
+  ["#add-ability-cost", "ability", "cost"],
+  ["#add-ability-modifier", "ability", "modifier"],
+  ["#add-item-roll", "item", "roll"],
+  ["#add-item-cost", "item", "cost"],
+  ["#add-item-modifier", "item", "modifier"],
+].forEach(([selector, prefix, kind]) => {
+  document.querySelector(selector).addEventListener("click", () => appendMechanicEditorRow(prefix, kind));
+});
+
+[abilityEditorDialog, itemEditorDialog].forEach((dialog) => {
+  dialog.addEventListener("click", (event) => {
+    const remove = event.target.closest("[data-remove-mechanic]");
+    if (!remove) return;
+    const row = remove.closest("[data-mechanic-kind]");
+    const prefix = dialog === abilityEditorDialog ? "ability" : "item";
+    row?.remove();
+    refreshMechanicsEditor(prefix);
+  });
+  dialog.addEventListener("change", (event) => {
+    if (!event.target.matches('[data-mechanic-field="modifier-type"]')) return;
+    updateModifierTargetRow(event.target.closest("[data-mechanic-kind]"));
+  });
+});
 document.querySelector("#manage-echo-abilities").addEventListener("click", () => {
   selectAbilitySection("echoes");
   changeView("abilities");
@@ -12571,7 +14788,25 @@ echoAbilitiesList.addEventListener("click", (event) => {
   if (open) openAbilityDetail(open.dataset.openAbility, open);
 });
 abilityDetailRoll.addEventListener("click", () => {
-  if (activeAbilityDetailScope === "sheet") rollAbilityDamage(activeAbilityDetailId, abilityDetailRoll);
+  if (activeAbilityDetailScope !== "minerva") useCreation(activeAbilityDetailScope, activeAbilityDetailId, abilityDetailRoll);
+});
+abilityDetailModifiers.addEventListener("click", () => {
+  const creation = getCreation(activeAbilityDetailScope, activeAbilityDetailId);
+  if (creation) setCreationModifiersActive(activeAbilityDetailScope, creation.id, !creation.modifiersActive);
+});
+document.querySelector("#ability-detail-mechanics").addEventListener("click", (event) => {
+  const critical = event.target.closest("[data-adjust-critical]");
+  if (critical) {
+    adjustCreationCriticalMargin(
+      critical.dataset.criticalScope || activeAbilityDetailScope,
+      critical.dataset.adjustCritical,
+      Number.parseInt(critical.dataset.direction, 10),
+    );
+    return;
+  }
+  const roll = event.target.closest("[data-detail-roll]");
+  if (!roll) return;
+  rollNamedCreation(roll.dataset.creationScope, roll.dataset.creationId, roll.dataset.detailRoll, roll, true);
 });
 document.querySelectorAll("[data-close-ability-detail]").forEach((button) => {
   button.addEventListener("click", closeAbilityDetail);
@@ -12625,25 +14860,80 @@ clearAbilityMediaButton.addEventListener("click", () => {
 });
 
 abilitiesList.addEventListener("click", (event) => {
+  const critical = event.target.closest("[data-adjust-critical]");
+  if (critical) {
+    adjustCreationCriticalMargin("sheet", critical.dataset.adjustCritical, Number.parseInt(critical.dataset.direction, 10));
+    return;
+  }
   const open = event.target.closest("[data-open-ability]");
   if (open) {
     openAbilityDetail(open.dataset.openAbility, open);
     return;
   }
-  const roll = event.target.closest("[data-roll-ability]");
+  const use = event.target.closest("[data-use-ability]");
+  const toggleModifiers = event.target.closest("[data-toggle-ability-modifiers]");
   const edit = event.target.closest("[data-edit-ability]");
   const remove = event.target.closest("[data-delete-ability]");
 
-  if (roll) {
-    rollAbilityDamage(roll.dataset.rollAbility, roll);
+  if (use) {
+    useCreation("sheet", use.dataset.useAbility, use);
+    return;
+  }
+  if (toggleModifiers) {
+    const ability = abilities.find((item) => item.id === toggleModifiers.dataset.toggleAbilityModifiers);
+    if (ability) setCreationModifiersActive("sheet", ability.id, !ability.modifiersActive);
     return;
   }
   if (edit) {
     const ability = abilities.find((item) => item.id === edit.dataset.editAbility);
-    if (ability) openAbilityEditor("sheet", ability, edit);
+    if (ability) {
+      if (ability.modifiersActive) {
+        window.alert("Desative os modificadores desta Habilidade antes de editá-la.");
+        return;
+      }
+      openAbilityEditor("sheet", ability, edit);
+    }
     return;
   }
   if (remove) deleteSheetAbility(remove.dataset.deleteAbility);
+});
+
+inventoryList.addEventListener("click", (event) => {
+  const critical = event.target.closest("[data-adjust-critical]");
+  if (critical) {
+    adjustCreationCriticalMargin(critical.dataset.criticalScope || "inventory", critical.dataset.adjustCritical, Number.parseInt(critical.dataset.direction, 10));
+    return;
+  }
+  const use = event.target.closest("[data-use-item]");
+  if (use) {
+    useCreation("inventory", use.dataset.useItem, use);
+    return;
+  }
+  const toggle = event.target.closest("[data-toggle-item-modifiers]");
+  if (toggle) {
+    const item = inventoryItems.find((entry) => entry.id === toggle.dataset.toggleItemModifiers);
+    if (item) setCreationModifiersActive("inventory", item.id, !item.modifiersActive);
+    return;
+  }
+  const open = event.target.closest("[data-open-item]");
+  if (open) {
+    openAbilityDetail(open.dataset.openItem, open, "inventory");
+    return;
+  }
+  const edit = event.target.closest("[data-edit-item]");
+  if (edit) {
+    const item = inventoryItems.find((entry) => entry.id === edit.dataset.editItem);
+    if (item) {
+      if (item.modifiersActive) {
+        window.alert("Desative os modificadores deste Item antes de editá-lo.");
+        return;
+      }
+      openItemEditor(item, edit);
+    }
+    return;
+  }
+  const remove = event.target.closest("[data-delete-item]");
+  if (remove) deleteInventoryItem(remove.dataset.deleteItem);
 });
 
 grimoirePickerList.addEventListener("click", (event) => {
@@ -12698,6 +14988,9 @@ minervaList.addEventListener("click", async (event) => {
 
 document.querySelectorAll("[data-close-ability-editor]").forEach((button) => {
   button.addEventListener("click", closeAbilityEditor);
+});
+document.querySelectorAll("[data-close-item-editor]").forEach((button) => {
+  button.addEventListener("click", closeItemEditor);
 });
 document.querySelectorAll("[data-close-grimoire-picker]").forEach((button) => {
   button.addEventListener("click", closeGrimoirePicker);
@@ -13171,6 +15464,8 @@ document.addEventListener("keydown", (event) => {
     closeAbilityDetail();
   } else if (event.key === "Escape" && !abilityEditorModal.hidden) {
     closeAbilityEditor();
+  } else if (event.key === "Escape" && !itemEditorModal.hidden) {
+    closeItemEditor();
   } else if (event.key === "Escape" && !grimoirePickerModal.hidden) {
     closeGrimoirePicker();
   } else if (event.key === "Escape" && !minervaModal.hidden) {
@@ -13206,6 +15501,7 @@ document.addEventListener("keydown", (event) => {
   trapInteractiveModalFocus(event, trainingLimitModal, trainingLimitDialog);
   trapInteractiveModalFocus(event, photoEditorModal, photoEditorDialog);
   trapInteractiveModalFocus(event, abilityEditorModal, abilityEditorDialog);
+  trapInteractiveModalFocus(event, itemEditorModal, itemEditorDialog);
   trapInteractiveModalFocus(event, grimoirePickerModal, grimoirePickerDialog);
   trapInteractiveModalFocus(event, minervaModal, minervaDialog);
   trapInteractiveModalFocus(event, slotsModal, slotsDialog);
@@ -13225,6 +15521,7 @@ hydrateLegendDice();
 loadSelectedFeatures();
 renderSelectedFeatures();
 renderAbilities();
+renderInventory();
 updateIdentityChoiceAppearance();
 renderDamageReductions();
 characterClassSelect.dataset.previousValue = characterClassSelect.value;
@@ -13238,6 +15535,7 @@ window.AbyssSheet = Object.freeze({
   captureState: captureCompleteSheetState,
   applyState: applyCompleteSheetState,
   serializeAbility: serializeAbilityForCloud,
+  serializeItem: serializeInventoryItemForCloud,
   persistLocalNow: writeLocalSheetCache,
   getLocalOwner: () => null,
   setLocalOwner: () => {},
@@ -13663,7 +15961,12 @@ async function readCloudSheet(user, slotId) {
   });
 
   return {
-    schemaVersion: 6,
+    schemaVersion: Math.max(
+      Number.parseInt(profileData.schemaVersion, 10) || 0,
+      Number.parseInt(sheetData.schemaVersion, 10) || 0,
+      Number.parseInt(customData.schemaVersion, 10) || 0,
+      Number.parseInt(abilitiesData.schemaVersion, 10) || 0,
+    ),
     profile: {
       ...clean.profile,
       ...profileData,
@@ -13698,6 +16001,7 @@ async function readCloudSheet(user, slotId) {
     },
     customSkills: Array.isArray(customData.items) ? customData.items : [],
     abilities: hydratedAbilities,
+    inventory: Array.isArray(abilitiesData.inventoryItems) ? abilitiesData.inventoryItems : [],
   };
 }
 
@@ -13713,6 +16017,9 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
   });
   const cloudAbilities = (Array.isArray(state.abilities) ? state.abilities : [])
     .map((ability) => sheetBridge.serializeAbility(ability))
+    .filter(Boolean);
+  const cloudInventory = (Array.isArray(state.inventory) ? state.inventory : [])
+    .map((item) => sheetBridge.serializeItem(item))
     .filter(Boolean);
 
   const batch = firestoreApi.writeBatch(firestoreDb);
@@ -13740,7 +16047,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     { merge: true },
   );
   batch.set(refs.profile, {
-    schemaVersion: 6,
+    schemaVersion: 8,
     name: String(state.profile?.name || "").slice(0, 120),
     background: String(state.profile?.background || "").slice(0, 240),
     portrait,
@@ -13755,7 +16062,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     updatedAt: timestamp,
   });
   batch.set(refs.sheet, {
-    schemaVersion: 6,
+    schemaVersion: 8,
     difficulty: ["easy", "medium", "hard"].includes(state.sheet?.difficulty)
       ? state.sheet.difficulty
       : "medium",
@@ -13769,13 +16076,14 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     updatedAt: timestamp,
   });
   batch.set(refs.customSkills, {
-    schemaVersion: 6,
+    schemaVersion: 8,
     items: Array.isArray(state.customSkills) ? state.customSkills : [],
     updatedAt: timestamp,
   });
   batch.set(refs.abilities, {
-    schemaVersion: 6,
+    schemaVersion: 8,
     items: cloudAbilities,
+    inventoryItems: cloudInventory,
     updatedAt: timestamp,
   });
   await batch.commit();
