@@ -3290,6 +3290,21 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   z-index: 118;
 }
 
+/* Mantém os editores ancorados enquanto novas linhas são adicionadas. */
+@media (min-width: 761px) {
+  #ability-editor-modal,
+  #item-editor-modal {
+    place-items: start center;
+    overflow-y: auto;
+  }
+
+  #ability-editor-dialog,
+  #item-editor-dialog {
+    height: min(860px, calc(100dvh - 44px));
+    margin-block: 22px;
+  }
+}
+
 .ability-roll-modal {
   z-index: 112;
 }
@@ -5231,6 +5246,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   }
   .ability-card-action { flex: 1 1 86px; min-height: 42px; }
   .ability-card-action.is-roll { grid-column: auto; }
+  .creation-quick-rolls { grid-column: 1 / -1; }
+  .creation-quick-roll { flex: 1 1 130px; justify-content: space-between; min-height: 40px; }
 
   .grimoire-item {
     grid-template-columns: 54px minmax(0, 1fr);
@@ -5280,6 +5297,11 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
     border-left: 0;
     border-radius: 14px 14px 0 0;
     padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  #ability-editor-dialog,
+  #item-editor-dialog {
+    height: min(94dvh, 860px);
   }
 
   .roll-dialog-head,
@@ -5338,6 +5360,33 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 
 .inventory-toolbar .filter-input-shell { width: min(430px, 100%); }
 
+.inventory-list {
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  align-items: start;
+}
+
+.inventory-card {
+  grid-template-columns: 68px minmax(0, 1fr);
+  align-items: start;
+  min-width: 0;
+  min-height: 100%;
+  padding: 12px;
+}
+
+.inventory-card .item-card-icon { width: 68px; }
+
+.inventory-card .ability-card-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  padding-top: 3px;
+}
+
+.inventory-card .ability-card-action {
+  flex: 1 1 88px;
+}
+
 .inventory-card.is-weapon::before { background: #b84f5e; }
 .inventory-card.is-active {
   border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.52);
@@ -5376,6 +5425,90 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .creation-tag.is-cost { border-color: rgba(219, 145, 57, 0.35); color: #d9a45f; }
 .creation-tag.is-damage { border-color: rgba(183, 80, 91, 0.38); color: #dc8f98; }
 .creation-tag.is-active { border-color: rgba(109, 193, 126, 0.4); color: #8bd69a; }
+.creation-tag.is-equipped {
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.58);
+  color: var(--theme-accent-ffe7a1, #ffe7a1);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.12);
+  box-shadow: 0 0 13px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.12);
+}
+
+.creation-quick-rolls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 9px;
+}
+
+.creation-quick-roll {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+  padding: 0 9px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.34);
+  border-radius: 3px;
+  color: var(--theme-accent-dfc77f, #dfc77f);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.055);
+  cursor: pointer;
+  font-size: 0.66rem;
+  font-weight: 760;
+}
+
+.creation-quick-roll small {
+  color: var(--theme-muted-8d877c, #8d877c);
+  font: 650 0.61rem ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.creation-quick-roll:hover {
+  border-color: var(--theme-accent-e0c36e, #e0c36e);
+  color: var(--theme-accent-ffe7a1, #ffe7a1);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.12);
+}
+
+.ability-card.is-equipped-weapon,
+.inventory-card.is-equipped {
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.5);
+  background:
+    radial-gradient(circle at 42px 50%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.15), transparent 110px),
+    rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.025);
+  box-shadow: inset 0 0 28px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.045);
+}
+
+.ability-card.is-equipped-weapon::before,
+.inventory-card.is-equipped::before {
+  background: var(--theme-accent-e0c36e, #e0c36e);
+  box-shadow: 0 0 11px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.45);
+}
+
+.ability-card-action.is-use {
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.43);
+  color: var(--theme-accent-dfca86, #dfca86);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.07);
+}
+
+.ability-card-action.is-use:hover {
+  border-color: var(--theme-accent-e0c36e, #e0c36e);
+  color: var(--theme-accent-ffe7a1, #ffe7a1);
+}
+
+.ability-card-action.is-equip {
+  border-color: rgba(109, 193, 126, 0.4);
+  color: #93dba0;
+}
+
+.ability-card-action.is-equip.is-equipped {
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.5);
+  color: var(--theme-accent-ffe7a1, #ffe7a1);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.1);
+}
+
+.is-damage-action {
+  border-color: rgba(183, 80, 91, 0.48) !important;
+  color: #ef9aa4 !important;
+  background: rgba(135, 37, 49, 0.11) !important;
+}
 
 .critical-margin-box {
   display: inline-grid;
@@ -5513,6 +5646,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   .inventory-panel-head { align-items: stretch; flex-direction: column; }
   .inventory-toolbar { align-items: stretch; flex-direction: column; padding-inline: 14px; }
   .inventory-toolbar .abilities-count { align-self: flex-start; }
+  .inventory-list { grid-template-columns: 1fr; }
+  .creation-quick-roll { flex: 1 1 130px; justify-content: space-between; min-height: 40px; }
   .mechanics-repeat-row,
   .mechanics-repeat-row.is-cost,
   .mechanics-repeat-row.is-modifier { grid-template-columns: 1fr 1fr; }
@@ -6463,7 +6598,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
             <div>
               <p class="eyebrow">Pertences do Slot</p>
               <h2>Itens</h2>
-              <p>Crie usos, gastos, armas e efeitos que interagem diretamente com a ficha.</p>
+              <p>Crie usos, gastos e efeitos. Armas equipadas aparecem em Habilidades → Ataques.</p>
             </div>
             <button id="create-item" class="create-ability-button" type="button">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
@@ -6535,6 +6670,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
         <footer class="skill-info-dialog-footer">
           <button id="ability-detail-modifiers" class="dialog-button" type="button" hidden>Ativar modificadores</button>
           <button id="ability-detail-roll" class="builder-submit" type="button" hidden>Usar</button>
+          <button id="ability-detail-damage-roll" class="builder-submit is-damage-action" type="button" hidden>Rolar dano</button>
           <button class="dialog-button" type="button" data-close-ability-detail>Fechar</button>
         </footer>
       </section>
@@ -10385,6 +10521,7 @@ const echoAbilitiesEmpty = document.querySelector("#echo-abilities-empty");
 const abilityDetailModal = document.querySelector("#ability-detail-modal");
 const abilityDetailDialog = document.querySelector("#ability-detail-dialog");
 const abilityDetailRoll = document.querySelector("#ability-detail-roll");
+const abilityDetailDamageRoll = document.querySelector("#ability-detail-damage-roll");
 const rdCreateForm = document.querySelector("#rd-create-form");
 const rdNameInput = document.querySelector("#rd-name");
 const rdValueInput = document.querySelector("#rd-value");
@@ -11198,7 +11335,7 @@ function captureCompleteSheetState() {
 
   const portraitPreview = document.querySelector("#portrait-preview");
   return {
-    schemaVersion: 8,
+    schemaVersion: 9,
     profile: {
       name: document.querySelector("#character-name").value.trim().slice(0, 120),
       background: document.querySelector("#character-background").value.trim().slice(0, 240),
@@ -11297,7 +11434,7 @@ function sanitizeStoredRowState(rawState) {
 
 function createCleanSheetState() {
   return {
-    schemaVersion: 8,
+    schemaVersion: 9,
     profile: {
       name: "",
       background: "",
@@ -12338,6 +12475,7 @@ function sanitizeInventoryItem(rawItem) {
     description: String(rawItem.description || "").trim().slice(0, 3000),
     quantity: clampInteger(rawItem.quantity, 1, 9999, 1),
     isWeapon,
+    equipped: isWeapon && Boolean(rawItem.equipped),
     damageProfile: isWeapon ? damageProfile : sanitizeDamageProfile({}),
     ...mechanics,
   };
@@ -12490,7 +12628,22 @@ function appendMechanicEditorRow(prefix, kind, data = {}) {
   const row = createMechanicEditorRow(kind, data);
   list.append(row);
   refreshMechanicsEditor(prefix);
-  row.querySelector("input, select")?.focus();
+  const firstField = row.querySelector("input, select");
+  try {
+    firstField?.focus({ preventScroll: true });
+  } catch {
+    firstField?.focus();
+  }
+  const scroller = row.closest(".ability-editor-content");
+  if (scroller) {
+    requestAnimationFrame(() => {
+      const rowRect = row.getBoundingClientRect();
+      const scrollerRect = scroller.getBoundingClientRect();
+      if (rowRect.bottom > scrollerRect.bottom - 16) {
+        scroller.scrollBy({ top: rowRect.bottom - scrollerRect.bottom + 22, behavior: "smooth" });
+      }
+    });
+  }
 }
 
 function modifierTargetLabel(modifier) {
@@ -12672,7 +12825,7 @@ function showCreationRollResult(title, context, parsed, result, trigger) {
   abilityRollDialog.focus();
 }
 
-function rollNamedCreation(scope, creationId, rollId, trigger, chargeCosts = true) {
+function rollNamedCreation(scope, creationId, rollId, trigger, chargeCosts = false) {
   const creation = getCreation(scope, creationId);
   const roll = creation?.rolls?.find((entry) => entry.id === rollId);
   if (!creation || !roll || (chargeCosts && !applyCreationCosts(creation))) return;
@@ -12682,7 +12835,7 @@ function rollNamedCreation(scope, creationId, rollId, trigger, chargeCosts = tru
   showCreationRollResult(`${creation.name} · ${roll.name}`, "Rolagem", parsed, result, trigger);
 }
 
-function rollCreationDamage(scope, creationId, trigger, chargeCosts = true) {
+function rollCreationDamage(scope, creationId, trigger, chargeCosts = false) {
   const creation = getCreation(scope, creationId);
   const profile = creation?.damageProfile || sanitizeDamageProfile({}, creation?.damage);
   const primaryParsed = parseDamageFormula(profile.primary);
@@ -12734,20 +12887,66 @@ function rollCreationDamage(scope, creationId, trigger, chargeCosts = true) {
 
 function useCreation(scope, creationId, trigger) {
   const creation = getCreation(scope, creationId);
-  if (!creation) return;
-  if (creation.damageProfile?.primary) {
-    rollCreationDamage(scope, creationId, trigger, true);
-    return;
-  }
-  if (creation.rolls?.length === 1) {
-    rollNamedCreation(scope, creationId, creation.rolls[0].id, trigger, true);
-    return;
-  }
-  if (creation.rolls?.length > 1) {
-    openAbilityDetail(creationId, trigger, scope);
-    return;
-  }
+  if (!creation?.costs?.length) return;
   applyCreationCosts(creation);
+}
+
+function appendCreationQuickRolls(container, creation, scope, allowRolls = true) {
+  if (!allowRolls || !creation.rolls?.length) return;
+  const rolls = document.createElement("div");
+  rolls.className = "creation-quick-rolls";
+  creation.rolls.forEach((roll) => {
+    const button = document.createElement("button");
+    button.className = "creation-quick-roll";
+    button.type = "button";
+    button.dataset.quickCreationRoll = roll.id;
+    button.dataset.creationScope = scope;
+    button.dataset.creationId = creation.id;
+    button.setAttribute("aria-label", `Rolar ${roll.name} de ${creation.name}: ${roll.formula}`);
+    button.append(
+      Object.assign(document.createElement("span"), { textContent: `◈ ${roll.name}` }),
+      Object.assign(document.createElement("small"), { textContent: roll.formula }),
+    );
+    rolls.append(button);
+  });
+  container.append(rolls);
+}
+
+function createCreationAction(label, dataKey, creation, scope, className = "") {
+  const button = document.createElement("button");
+  button.className = `ability-card-action ${className}`.trim();
+  button.type = "button";
+  button.dataset[dataKey] = creation.id;
+  button.dataset.creationScope = scope;
+  button.textContent = label;
+  return button;
+}
+
+function handleCreationCardPrimaryAction(event) {
+  const quickRoll = event.target.closest("[data-quick-creation-roll]");
+  if (quickRoll) {
+    rollNamedCreation(
+      quickRoll.dataset.creationScope,
+      quickRoll.dataset.creationId,
+      quickRoll.dataset.quickCreationRoll,
+      quickRoll,
+      false,
+    );
+    return true;
+  }
+
+  const use = event.target.closest("[data-use-creation]");
+  if (use) {
+    useCreation(use.dataset.creationScope, use.dataset.useCreation, use);
+    return true;
+  }
+
+  const damage = event.target.closest("[data-roll-creation-damage]");
+  if (damage) {
+    rollCreationDamage(damage.dataset.creationScope, damage.dataset.rollCreationDamage, damage, false);
+    return true;
+  }
+  return false;
 }
 
 function appendCreationDetailSection(container, title, rows) {
@@ -12809,7 +13008,7 @@ function renderCreationDetailMechanics(creation, scope) {
     (creation.rolls || []).map((roll) => createCreationDetailRow(
       roll.name,
       roll.formula,
-      scope === "minerva" ? null : {
+      scope === "minerva" || (scope === "inventory" && creation.isWeapon) ? null : {
         label: "Rolar",
         dataset: { detailRoll: roll.id, creationScope: scope, creationId: creation.id },
       },
@@ -12934,9 +13133,9 @@ function openAbilityDetail(abilityId, trigger, scope = "sheet") {
   damage.hidden = !primaryDamage;
   damage.textContent = primaryDamage ? `Dano: ${primaryDamage}` : "";
   renderCreationDetailMechanics(ability, scope);
-  const usable = Boolean(primaryDamage || ability.rolls?.length === 1 || (!ability.rolls?.length && ability.costs?.length));
-  abilityDetailRoll.hidden = scope === "minerva" || !usable;
-  abilityDetailRoll.textContent = primaryDamage ? "Usar e rolar dano" : ability.rolls?.length === 1 ? `Usar · ${ability.rolls[0].name}` : "Usar";
+  abilityDetailRoll.hidden = scope === "minerva" || !ability.costs?.length;
+  abilityDetailRoll.textContent = "Usar";
+  abilityDetailDamageRoll.hidden = scope !== "sheet" || !primaryDamage;
   abilityDetailModifiers.hidden = scope === "minerva" || !ability.grantsModifiers || !ability.modifiers?.length;
   abilityDetailModifiers.textContent = ability.modifiersActive ? "Desativar modificadores" : "Ativar modificadores";
   abilityDetailModifiers.classList.toggle("is-active", ability.modifiersActive);
@@ -12964,7 +13163,13 @@ function renderAbilities() {
   const section = ABILITY_SECTIONS[activeAbilitySection] || ABILITY_SECTIONS.attacks;
   const filtered = abilities
     .filter((ability) => ability.section === activeAbilitySection)
-    .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+    .map((ability) => ({ scope: "sheet", kind: "ability", creation: ability }));
+  if (activeAbilitySection === "attacks") {
+    filtered.push(...inventoryItems
+      .filter((item) => item.isWeapon && item.equipped)
+      .map((item) => ({ scope: "inventory", kind: "equipped-weapon", creation: item })));
+  }
+  filtered.sort((a, b) => a.creation.name.localeCompare(b.creation.name, "pt-BR", { sensitivity: "base" }));
 
   abilitySectionEyebrow.textContent = section.eyebrow;
   abilitySectionTitle.textContent = section.label;
@@ -12973,20 +13178,23 @@ function renderAbilities() {
   abilitiesList.hidden = filtered.length === 0;
   abilitiesList.replaceChildren();
 
-  filtered.forEach((ability) => {
-    if (ability.section === "echoes") {
+  filtered.forEach(({ creation: ability, scope, kind }) => {
+    const isEquippedWeapon = kind === "equipped-weapon";
+    if (!isEquippedWeapon && ability.section === "echoes") {
       abilitiesList.append(createEchoAbilityRow(ability));
       return;
     }
     const card = document.createElement("article");
-    card.className = "ability-card";
-    card.dataset.abilityId = ability.id;
+    card.className = `ability-card${isEquippedWeapon ? " is-equipped-weapon" : ""}${ability.modifiersActive ? " is-active" : ""}`;
+    card.dataset[isEquippedWeapon ? "itemId" : "abilityId"] = ability.id;
 
     const copy = document.createElement("div");
     copy.className = "ability-card-copy";
 
     const type = document.createElement("small");
-    type.textContent = `${section.label} · ${abilityOriginLabel(ability)}`;
+    type.textContent = isEquippedWeapon
+      ? "Ataques · Arma equipada · Inventário"
+      : `${section.label} · ${abilityOriginLabel(ability)}`;
 
     const name = Object.assign(document.createElement("h3"), {
       textContent: ability.name,
@@ -13009,6 +13217,7 @@ function renderAbilities() {
     const tags = document.createElement("div");
     tags.className = "creation-tags";
     const tagData = [
+      isEquippedWeapon ? ["Equipado", "is-equipped"] : null,
       ability.rolls?.length ? [`${ability.rolls.length} ${ability.rolls.length === 1 ? "rolagem" : "rolagens"}`, ""] : null,
       ability.costs?.length ? [`${ability.costs.length} ${ability.costs.length === 1 ? "gasto" : "gastos"}`, "is-cost"] : null,
       ability.grantsModifiers ? [ability.modifiersActive ? "Efeitos ativos" : `${ability.modifiers.length} modificadores`, ability.modifiersActive ? "is-active" : ""] : null,
@@ -13020,27 +13229,22 @@ function renderAbilities() {
       tags.append(tag);
     });
     if (tags.children.length) copy.append(tags);
+    appendCreationQuickRolls(copy, ability, scope, true);
     if (ability.damageProfile?.criticalThreshold) {
-      copy.append(createCriticalMarginControl(ability, "sheet"));
+      copy.append(createCriticalMarginControl(ability, scope));
     }
 
     const actions = document.createElement("div");
     actions.className = "ability-card-actions";
 
-    if (primaryDamage || ability.rolls?.length || ability.costs?.length) {
-      const use = document.createElement("button");
-      use.className = "ability-card-action is-roll";
-      use.type = "button";
-      use.dataset.useAbility = ability.id;
-      use.textContent = primaryDamage ? "Usar e rolar dano" : ability.rolls?.length > 1 ? "Escolher rolagem" : "Usar";
-      actions.append(use);
-    }
+    if (ability.costs?.length) actions.append(createCreationAction("Usar", "useCreation", ability, scope, "is-use"));
+    if (primaryDamage) actions.append(createCreationAction("Rolar dano", "rollCreationDamage", ability, scope, "is-damage-action"));
 
     if (ability.grantsModifiers && ability.modifiers?.length) {
       const toggle = document.createElement("button");
       toggle.className = "ability-card-action";
       toggle.type = "button";
-      toggle.dataset.toggleAbilityModifiers = ability.id;
+      toggle.dataset[isEquippedWeapon ? "toggleEquippedModifiers" : "toggleAbilityModifiers"] = ability.id;
       toggle.textContent = ability.modifiersActive ? "Desativar efeitos" : "Ativar efeitos";
       actions.append(toggle);
     }
@@ -13048,22 +13252,41 @@ function renderAbilities() {
     const edit = document.createElement("button");
     edit.className = "ability-card-action";
     edit.type = "button";
-    edit.dataset.editAbility = ability.id;
+    edit.dataset[isEquippedWeapon ? "editEquippedWeapon" : "editAbility"] = ability.id;
     edit.textContent = "Editar";
-
-    const remove = document.createElement("button");
-    remove.className = "ability-card-action is-delete";
-    remove.type = "button";
-    remove.dataset.deleteAbility = ability.id;
-    remove.textContent = "Excluir";
 
     const open = document.createElement("button");
     open.type = "button";
     open.className = "ability-card-action";
-    open.dataset.openAbility = ability.id;
+    open.dataset[isEquippedWeapon ? "openEquippedWeapon" : "openAbility"] = ability.id;
     open.textContent = "Abrir";
-    actions.append(open, edit, remove);
-    card.append(createAbilityMediaElement(ability, "ability-card-media"), copy, actions);
+    actions.append(open, edit);
+
+    if (isEquippedWeapon) {
+      const unequip = document.createElement("button");
+      unequip.className = "ability-card-action is-equip is-equipped";
+      unequip.type = "button";
+      unequip.dataset.unequipWeapon = ability.id;
+      unequip.textContent = "Guardar";
+      actions.append(unequip);
+    } else {
+      const remove = document.createElement("button");
+      remove.className = "ability-card-action is-delete";
+      remove.type = "button";
+      remove.dataset.deleteAbility = ability.id;
+      remove.textContent = "Excluir";
+      actions.append(remove);
+    }
+
+    let media;
+    if (isEquippedWeapon) {
+      media = document.createElement("div");
+      media.className = "item-card-icon";
+      media.textContent = "⚔";
+    } else {
+      media = createAbilityMediaElement(ability, "ability-card-media");
+    }
+    card.append(media, copy, actions);
     abilitiesList.append(card);
   });
 }
@@ -13453,6 +13676,7 @@ function submitItemEditor(event) {
     quantity: itemQuantityInput.value,
     description: itemDescriptionInput.value,
     isWeapon: itemIsWeaponInput.checked,
+    equipped: itemIsWeaponInput.checked && Boolean(existing?.equipped),
     damageProfile: {
       primary: itemIsWeaponInput.checked ? primary.formula : "",
       additional: itemIsWeaponInput.checked ? additional.formula : "",
@@ -13469,6 +13693,7 @@ function submitItemEditor(event) {
   if (existingIndex >= 0) inventoryItems[existingIndex] = nextItem;
   else inventoryItems.push(nextItem);
   renderInventory();
+  renderAbilities();
   notifySheetChanged(existing ? "item-edited" : "item-created");
   closeItemEditor();
 }
@@ -13532,7 +13757,7 @@ function renderInventory() {
 
   visible.forEach((item) => {
     const card = document.createElement("article");
-    card.className = `ability-card inventory-card${item.isWeapon ? " is-weapon" : ""}${item.modifiersActive ? " is-active" : ""}`;
+    card.className = `ability-card inventory-card${item.isWeapon ? " is-weapon" : ""}${item.equipped ? " is-equipped" : ""}${item.modifiersActive ? " is-active" : ""}`;
     card.dataset.itemId = item.id;
     const icon = document.createElement("div");
     icon.className = "item-card-icon";
@@ -13549,6 +13774,7 @@ function renderInventory() {
     const tags = document.createElement("div");
     tags.className = "creation-tags";
     [
+      item.equipped ? ["Equipado", "is-equipped"] : null,
       item.damageProfile.primary ? [item.damageProfile.primary, "is-damage"] : null,
       item.rolls.length ? [`${item.rolls.length} ${item.rolls.length === 1 ? "rolagem" : "rolagens"}`, ""] : null,
       item.costs.length ? [`${item.costs.length} ${item.costs.length === 1 ? "gasto" : "gastos"}`, "is-cost"] : null,
@@ -13560,18 +13786,21 @@ function renderInventory() {
       tags.append(tag);
     });
     if (tags.children.length) copy.append(tags);
+    appendCreationQuickRolls(copy, item, "inventory", !item.isWeapon);
     if (item.isWeapon && item.damageProfile.criticalThreshold) copy.append(createCriticalMarginControl(item));
 
     const actions = document.createElement("div");
     actions.className = "ability-card-actions";
-    if (item.damageProfile.primary || item.rolls.length || item.costs.length) {
-      const use = document.createElement("button");
-      use.className = "ability-card-action is-roll";
-      use.type = "button";
-      use.dataset.useItem = item.id;
-      use.textContent = item.damageProfile.primary ? "Usar e rolar dano" : item.rolls.length > 1 ? "Escolher rolagem" : "Usar";
-      actions.append(use);
+    if (item.isWeapon) {
+      const equip = document.createElement("button");
+      equip.className = `ability-card-action is-equip${item.equipped ? " is-equipped" : ""}`;
+      equip.type = "button";
+      equip.dataset.toggleWeaponEquipped = item.id;
+      equip.textContent = item.equipped ? "Guardar" : "Equipar";
+      equip.setAttribute("aria-pressed", String(item.equipped));
+      actions.append(equip);
     }
+    if (item.costs.length) actions.append(createCreationAction("Usar", "useCreation", item, "inventory", "is-use"));
     if (item.grantsModifiers && item.modifiers.length) {
       const toggle = document.createElement("button");
       toggle.className = "ability-card-action";
@@ -13593,17 +13822,30 @@ function renderInventory() {
   });
 }
 
+function setWeaponEquipped(itemId, shouldEquip) {
+  const item = inventoryItems.find((entry) => entry.id === itemId);
+  if (!item?.isWeapon || item.equipped === Boolean(shouldEquip)) return;
+  if (!shouldEquip && item.modifiersActive) {
+    setCreationModifiersActive("inventory", item.id, false, { notify: false });
+  }
+  item.equipped = Boolean(shouldEquip);
+  renderInventory();
+  renderAbilities();
+  notifySheetChanged(shouldEquip ? "weapon-equipped" : "weapon-unequipped");
+}
+
 function deleteInventoryItem(itemId) {
   const item = inventoryItems.find((entry) => entry.id === itemId);
   if (!item || !window.confirm(`Excluir “${item.name}” do Inventário?`)) return;
   if (item.modifiersActive) setCreationModifiersActive("inventory", item.id, false, { notify: false });
   inventoryItems = inventoryItems.filter((entry) => entry.id !== itemId);
   renderInventory();
+  renderAbilities();
   notifySheetChanged("item-deleted");
 }
 
 function rollAbilityDamage(abilityId, trigger) {
-  rollCreationDamage("sheet", abilityId, trigger, true);
+  rollCreationDamage("sheet", abilityId, trigger, false);
 }
 
 function closeAbilityRoll() {
@@ -14790,6 +15032,11 @@ echoAbilitiesList.addEventListener("click", (event) => {
 abilityDetailRoll.addEventListener("click", () => {
   if (activeAbilityDetailScope !== "minerva") useCreation(activeAbilityDetailScope, activeAbilityDetailId, abilityDetailRoll);
 });
+abilityDetailDamageRoll.addEventListener("click", () => {
+  if (activeAbilityDetailScope === "sheet") {
+    rollCreationDamage("sheet", activeAbilityDetailId, abilityDetailDamageRoll, false);
+  }
+});
 abilityDetailModifiers.addEventListener("click", () => {
   const creation = getCreation(activeAbilityDetailScope, activeAbilityDetailId);
   if (creation) setCreationModifiersActive(activeAbilityDetailScope, creation.id, !creation.modifiersActive);
@@ -14806,7 +15053,7 @@ document.querySelector("#ability-detail-mechanics").addEventListener("click", (e
   }
   const roll = event.target.closest("[data-detail-roll]");
   if (!roll) return;
-  rollNamedCreation(roll.dataset.creationScope, roll.dataset.creationId, roll.dataset.detailRoll, roll, true);
+  rollNamedCreation(roll.dataset.creationScope, roll.dataset.creationId, roll.dataset.detailRoll, roll, false);
 });
 document.querySelectorAll("[data-close-ability-detail]").forEach((button) => {
   button.addEventListener("click", closeAbilityDetail);
@@ -14862,21 +15109,30 @@ clearAbilityMediaButton.addEventListener("click", () => {
 abilitiesList.addEventListener("click", (event) => {
   const critical = event.target.closest("[data-adjust-critical]");
   if (critical) {
-    adjustCreationCriticalMargin("sheet", critical.dataset.adjustCritical, Number.parseInt(critical.dataset.direction, 10));
+    adjustCreationCriticalMargin(critical.dataset.criticalScope || "sheet", critical.dataset.adjustCritical, Number.parseInt(critical.dataset.direction, 10));
     return;
   }
+  if (handleCreationCardPrimaryAction(event)) return;
   const open = event.target.closest("[data-open-ability]");
   if (open) {
     openAbilityDetail(open.dataset.openAbility, open);
     return;
   }
-  const use = event.target.closest("[data-use-ability]");
+  const openEquipped = event.target.closest("[data-open-equipped-weapon]");
+  if (openEquipped) {
+    openAbilityDetail(openEquipped.dataset.openEquippedWeapon, openEquipped, "inventory");
+    return;
+  }
   const toggleModifiers = event.target.closest("[data-toggle-ability-modifiers]");
+  const toggleEquippedModifiers = event.target.closest("[data-toggle-equipped-modifiers]");
   const edit = event.target.closest("[data-edit-ability]");
+  const editEquipped = event.target.closest("[data-edit-equipped-weapon]");
   const remove = event.target.closest("[data-delete-ability]");
+  const unequip = event.target.closest("[data-unequip-weapon]");
 
-  if (use) {
-    useCreation("sheet", use.dataset.useAbility, use);
+  if (toggleEquippedModifiers) {
+    const item = inventoryItems.find((entry) => entry.id === toggleEquippedModifiers.dataset.toggleEquippedModifiers);
+    if (item) setCreationModifiersActive("inventory", item.id, !item.modifiersActive);
     return;
   }
   if (toggleModifiers) {
@@ -14895,6 +15151,21 @@ abilitiesList.addEventListener("click", (event) => {
     }
     return;
   }
+  if (editEquipped) {
+    const item = inventoryItems.find((entry) => entry.id === editEquipped.dataset.editEquippedWeapon);
+    if (item) {
+      if (item.modifiersActive) {
+        window.alert("Desative os modificadores desta Arma antes de editá-la.");
+        return;
+      }
+      openItemEditor(item, editEquipped);
+    }
+    return;
+  }
+  if (unequip) {
+    setWeaponEquipped(unequip.dataset.unequipWeapon, false);
+    return;
+  }
   if (remove) deleteSheetAbility(remove.dataset.deleteAbility);
 });
 
@@ -14904,9 +15175,11 @@ inventoryList.addEventListener("click", (event) => {
     adjustCreationCriticalMargin(critical.dataset.criticalScope || "inventory", critical.dataset.adjustCritical, Number.parseInt(critical.dataset.direction, 10));
     return;
   }
-  const use = event.target.closest("[data-use-item]");
-  if (use) {
-    useCreation("inventory", use.dataset.useItem, use);
+  if (handleCreationCardPrimaryAction(event)) return;
+  const equip = event.target.closest("[data-toggle-weapon-equipped]");
+  if (equip) {
+    const item = inventoryItems.find((entry) => entry.id === equip.dataset.toggleWeaponEquipped);
+    if (item) setWeaponEquipped(item.id, !item.equipped);
     return;
   }
   const toggle = event.target.closest("[data-toggle-item-modifiers]");
@@ -16047,7 +16320,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     { merge: true },
   );
   batch.set(refs.profile, {
-    schemaVersion: 8,
+    schemaVersion: 9,
     name: String(state.profile?.name || "").slice(0, 120),
     background: String(state.profile?.background || "").slice(0, 240),
     portrait,
@@ -16062,7 +16335,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     updatedAt: timestamp,
   });
   batch.set(refs.sheet, {
-    schemaVersion: 8,
+    schemaVersion: 9,
     difficulty: ["easy", "medium", "hard"].includes(state.sheet?.difficulty)
       ? state.sheet.difficulty
       : "medium",
@@ -16076,12 +16349,12 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     updatedAt: timestamp,
   });
   batch.set(refs.customSkills, {
-    schemaVersion: 8,
+    schemaVersion: 9,
     items: Array.isArray(state.customSkills) ? state.customSkills : [],
     updatedAt: timestamp,
   });
   batch.set(refs.abilities, {
-    schemaVersion: 8,
+    schemaVersion: 9,
     items: cloudAbilities,
     inventoryItems: cloudInventory,
     updatedAt: timestamp,
