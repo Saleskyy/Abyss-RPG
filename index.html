@@ -5510,6 +5510,218 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   background: rgba(135, 37, 49, 0.11) !important;
 }
 
+.inventory-head-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.inventory-move-toggle.is-active {
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.62);
+  color: var(--theme-accent-ffe7a1, #ffe7a1);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.13);
+  box-shadow: inset 0 0 18px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.05);
+}
+
+.inventory-move-hint {
+  flex: 1;
+  margin: 0;
+  color: var(--theme-accent-b8a06a, #b8a06a);
+  font-size: 0.7rem;
+  text-align: center;
+}
+
+.creation-card-shell {
+  position: relative;
+  display: grid;
+  min-width: 0;
+  align-content: start;
+}
+
+.creation-card-shell > .ability-card {
+  width: 100%;
+  min-height: 0;
+}
+
+.creation-card-shell > .critical-margin-box {
+  justify-self: end;
+  margin: -1px 12px 0 0;
+  border-top-color: rgba(183, 80, 91, 0.18);
+  border-radius: 0 0 4px 4px;
+  background: linear-gradient(180deg, rgba(125, 33, 45, 0.11), rgba(125, 33, 45, 0.055));
+}
+
+.ability-card.creation-card {
+  grid-template-columns: 82px minmax(0, 1fr);
+  align-items: start;
+  overflow: hidden;
+}
+
+.creation-card .ability-card-copy {
+  display: grid;
+  align-content: start;
+  gap: 0;
+}
+
+.creation-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.creation-card-heading-main {
+  min-width: 0;
+}
+
+.creation-card-heading-main h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.creation-card-heading-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 5px;
+}
+
+.card-mini-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
+}
+
+.card-mini-action {
+  min-width: 0;
+  min-height: 25px;
+  padding: 0 7px;
+  border: 1px solid var(--theme-border-34353a, #34353a);
+  border-radius: 3px;
+  color: var(--theme-muted-8f8b83, #8f8b83);
+  background: rgba(7, 8, 10, 0.6);
+  cursor: pointer;
+  font-size: 0.57rem;
+  font-weight: 760;
+  letter-spacing: 0.025em;
+}
+
+.card-mini-action:hover {
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.45);
+  color: var(--theme-accent-dfca86, #dfca86);
+}
+
+.card-mini-action.is-delete:hover {
+  border-color: #9e5561;
+  color: #ef8c95;
+}
+
+.ability-card-copy .creation-card-description {
+  display: -webkit-box;
+  min-height: 0;
+  margin: 1px 0 0;
+  padding-bottom: 1px;
+  overflow: hidden;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.creation-main-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.creation-main-actions .ability-card-action {
+  flex: 0 1 auto;
+  min-height: 34px;
+}
+
+.creation-main-actions .is-spend-action {
+  border-color: rgba(219, 145, 57, 0.42);
+  color: #e0ae68;
+  background: rgba(133, 78, 22, 0.09);
+}
+
+.creation-main-actions .is-spend-action:hover {
+  border-color: #dca55d;
+  color: #ffd59c;
+}
+
+.creation-main-actions .ability-card-action.is-active {
+  border-color: rgba(109, 193, 126, 0.5);
+  color: #9be1a8;
+  background: rgba(52, 122, 70, 0.1);
+}
+
+.card-mini-action.is-equip {
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.38);
+  color: var(--theme-accent-dfca86, #dfca86);
+}
+
+.inventory-card {
+  min-height: 0;
+  height: auto;
+}
+
+.inventory-list.is-move-mode .inventory-card-shell {
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+
+.inventory-list.is-move-mode .inventory-card-shell::after {
+  position: absolute;
+  right: 11px;
+  bottom: 10px;
+  z-index: 2;
+  padding: 3px 7px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.35);
+  border-radius: 3px;
+  color: var(--theme-accent-b8a06a, #b8a06a);
+  background: rgba(var(--theme-background-07080a-rgb, 7, 8, 10), 0.88);
+  content: "⠿ MOVER";
+  font-size: 0.57rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}
+
+.inventory-list.is-move-mode .inventory-card-shell button,
+.inventory-list.is-move-mode .inventory-card-shell input,
+.inventory-list.is-move-mode .inventory-card-shell select {
+  pointer-events: none;
+}
+
+.inventory-card-shell.is-dragging {
+  opacity: 0.22;
+}
+
+.inventory-drag-ghost {
+  position: fixed;
+  z-index: 250;
+  width: min(410px, calc(100vw - 24px));
+  margin: 0;
+  opacity: 0.94;
+  pointer-events: none;
+  transform: rotate(1deg) scale(0.985);
+  transform-origin: center;
+  filter: drop-shadow(0 22px 35px rgba(0, 0, 0, 0.68));
+}
+
+body.inventory-is-dragging {
+  cursor: grabbing;
+  user-select: none;
+}
+
 .critical-margin-box {
   display: inline-grid;
   grid-template-columns: 32px auto 32px;
@@ -5644,10 +5856,21 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 
 @media (max-width: 760px) {
   .inventory-panel-head { align-items: stretch; flex-direction: column; }
+  .inventory-head-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .inventory-head-actions button { min-height: 44px; }
   .inventory-toolbar { align-items: stretch; flex-direction: column; padding-inline: 14px; }
   .inventory-toolbar .abilities-count { align-self: flex-start; }
+  .inventory-move-hint { text-align: left; }
   .inventory-list { grid-template-columns: 1fr; }
+  .ability-card.creation-card { grid-template-columns: 64px minmax(0, 1fr); gap: 11px; padding: 10px; }
+  .creation-card .ability-card-media,
+  .creation-card .item-card-icon { width: 64px; }
+  .creation-card-heading { flex-wrap: wrap; }
+  .creation-card-heading-main { flex: 1 1 100%; }
+  .card-mini-actions { order: -1; width: 100%; justify-content: flex-end; }
+  .card-mini-action { min-height: 32px; }
   .creation-quick-roll { flex: 1 1 130px; justify-content: space-between; min-height: 40px; }
+  .creation-main-actions .ability-card-action { flex: 1 1 130px; min-height: 40px; }
   .mechanics-repeat-row,
   .mechanics-repeat-row.is-cost,
   .mechanics-repeat-row.is-modifier { grid-template-columns: 1fr 1fr; }
@@ -5670,6 +5893,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   .mechanics-repeat-row .mechanics-remove { justify-self: end; }
   .mechanics-wide { grid-column: auto; }
   .critical-margin-box { display: grid; width: 100%; }
+  .creation-card-shell > .critical-margin-box { justify-self: stretch; width: auto; margin: -1px 10px 0; }
   .critical-margin-copy { min-width: 0; }
 }
 
@@ -6600,10 +6824,16 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
               <h2>Itens</h2>
               <p>Crie usos, gastos e efeitos. Armas equipadas aparecem em Habilidades → Ataques.</p>
             </div>
-            <button id="create-item" class="create-ability-button" type="button">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
-              <span>Criar Item</span>
-            </button>
+            <div class="inventory-head-actions">
+              <button id="inventory-move-toggle" class="ability-secondary-button inventory-move-toggle" type="button" aria-pressed="false">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M3 12h18M12 3 9 6m3-3 3 3M12 21l-3-3m3 3 3-3M3 12l3-3m-3 3 3 3m15-3-3-3m3 3-3 3"></path></svg>
+                <span>Mover</span>
+              </button>
+              <button id="create-item" class="create-ability-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                <span>Criar Item</span>
+              </button>
+            </div>
           </header>
 
           <div class="inventory-toolbar">
@@ -6611,6 +6841,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
               <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
               <input id="inventory-search" class="filter-input" type="search" autocomplete="off" placeholder="Buscar item..." />
             </label>
+            <p id="inventory-move-hint" class="inventory-move-hint" hidden>Segure um card e arraste para reorganizar.</p>
             <span id="inventory-count" class="abilities-count">0 itens</span>
           </div>
 
@@ -10641,6 +10872,8 @@ const inventoryEmpty = document.querySelector("#inventory-empty");
 const inventoryCount = document.querySelector("#inventory-count");
 const inventorySearchInput = document.querySelector("#inventory-search");
 const createItemButton = document.querySelector("#create-item");
+const inventoryMoveToggle = document.querySelector("#inventory-move-toggle");
+const inventoryMoveHint = document.querySelector("#inventory-move-hint");
 const itemEditorModal = document.querySelector("#item-editor-modal");
 const itemEditorDialog = document.querySelector("#item-editor-dialog");
 const itemEditorForm = document.querySelector("#item-editor-form");
@@ -10694,6 +10927,9 @@ let activePhotoTrigger;
 let isApplyingExternalState = false;
 let abilities = [];
 let inventoryItems = [];
+let inventoryMoveMode = false;
+let inventoryDragState = null;
+let inventorySuppressClickUntil = 0;
 let activeAbilitySection = "attacks";
 let activeAbilityId = null;
 let activeAbilityTrigger = null;
@@ -11665,6 +11901,7 @@ function applyCompleteSheetState(rawState, options = {}) {
     inventoryItems = (Array.isArray(rawState.inventory) ? rawState.inventory : [])
       .map(sanitizeInventoryItem)
       .filter(Boolean);
+    setInventoryMoveMode(false, { render: false });
 
     migrateLegacyDynamicModifiers(rawState.schemaVersion);
     applyClassCalculations();
@@ -12790,10 +13027,16 @@ function costDisplayLabel(cost) {
   return `${cost.value} ${CREATION_RESOURCES[cost.resource]} ${cost.pool === "max" ? "Máximos" : "Atuais"}`;
 }
 
+function creationSpendLabel(creation) {
+  const costs = creation?.costs || [];
+  if (!costs.length) return "Gastar";
+  return `Gastar · ${costs.map(costDisplayLabel).join(" + ")}`;
+}
+
 function applyCreationCosts(creation) {
   if (!creation.costs?.length) return true;
   const summary = creation.costs.map(costDisplayLabel).join("\n");
-  if (!window.confirm(`Usar “${creation.name}” e gastar:\n\n${summary}?`)) return false;
+  if (!window.confirm(`Gastar os recursos de “${creation.name}”:\n\n${summary}?`)) return false;
 
   creation.costs.forEach((cost) => {
     const inputs = getResourceInputs(cost.resource);
@@ -12920,6 +13163,26 @@ function createCreationAction(label, dataKey, creation, scope, className = "") {
   button.dataset.creationScope = scope;
   button.textContent = label;
   return button;
+}
+
+function createCardMiniAction(label, dataKey, creationId, className = "") {
+  const button = document.createElement("button");
+  button.className = `card-mini-action ${className}`.trim();
+  button.type = "button";
+  button.dataset[dataKey] = creationId;
+  button.textContent = label;
+  return button;
+}
+
+function createCreationCardShell(card, creation, scope, options = {}) {
+  const shell = document.createElement("div");
+  shell.className = `creation-card-shell${options.inventory ? " inventory-card-shell" : ""}`;
+  if (options.inventory) shell.dataset.inventorySortId = creation.id;
+  shell.append(card);
+  if (creation.damageProfile?.criticalThreshold) {
+    shell.append(createCriticalMarginControl(creation, scope));
+  }
+  return shell;
 }
 
 function handleCreationCardPrimaryAction(event) {
@@ -13134,7 +13397,7 @@ function openAbilityDetail(abilityId, trigger, scope = "sheet") {
   damage.textContent = primaryDamage ? `Dano: ${primaryDamage}` : "";
   renderCreationDetailMechanics(ability, scope);
   abilityDetailRoll.hidden = scope === "minerva" || !ability.costs?.length;
-  abilityDetailRoll.textContent = "Usar";
+  abilityDetailRoll.textContent = creationSpendLabel(ability);
   abilityDetailDamageRoll.hidden = scope !== "sheet" || !primaryDamage;
   abilityDetailModifiers.hidden = scope === "minerva" || !ability.grantsModifiers || !ability.modifiers?.length;
   abilityDetailModifiers.textContent = ability.modifiersActive ? "Desativar modificadores" : "Ativar modificadores";
@@ -13185,24 +13448,52 @@ function renderAbilities() {
       return;
     }
     const card = document.createElement("article");
-    card.className = `ability-card${isEquippedWeapon ? " is-equipped-weapon" : ""}${ability.modifiersActive ? " is-active" : ""}`;
+    card.className = `ability-card creation-card${isEquippedWeapon ? " is-equipped-weapon" : ""}${ability.modifiersActive ? " is-active" : ""}`;
     card.dataset[isEquippedWeapon ? "itemId" : "abilityId"] = ability.id;
 
     const copy = document.createElement("div");
     copy.className = "ability-card-copy";
 
+    const heading = document.createElement("div");
+    heading.className = "creation-card-heading";
+    const headingMain = document.createElement("div");
+    headingMain.className = "creation-card-heading-main";
     const type = document.createElement("small");
     type.textContent = isEquippedWeapon
       ? "Ataques · Arma equipada · Inventário"
       : `${section.label} · ${abilityOriginLabel(ability)}`;
-
     const name = Object.assign(document.createElement("h3"), {
       textContent: ability.name,
     });
+    headingMain.append(type, name);
+    if (isEquippedWeapon) {
+      const headingTags = document.createElement("div");
+      headingTags.className = "creation-card-heading-tags";
+      const equippedTag = document.createElement("span");
+      equippedTag.className = "creation-tag is-equipped";
+      equippedTag.textContent = "Equipado";
+      headingTags.append(equippedTag);
+      headingMain.append(headingTags);
+    }
+
+    const miniActions = document.createElement("div");
+    miniActions.className = "card-mini-actions";
+    miniActions.append(
+      createCardMiniAction("Abrir", isEquippedWeapon ? "openEquippedWeapon" : "openAbility", ability.id),
+      createCardMiniAction("Editar", isEquippedWeapon ? "editEquippedWeapon" : "editAbility", ability.id),
+    );
+    if (isEquippedWeapon) {
+      miniActions.append(createCardMiniAction("Guardar", "unequipWeapon", ability.id, "is-equip"));
+    } else {
+      miniActions.append(createCardMiniAction("Excluir", "deleteAbility", ability.id, "is-delete"));
+    }
+    heading.append(headingMain, miniActions);
+
     const description = Object.assign(document.createElement("p"), {
       textContent: ability.description || "Sem descrição.",
     });
-    copy.append(type, name, description);
+    description.className = "creation-card-description";
+    copy.append(heading, description);
 
     const primaryDamage = ability.damageProfile?.primary || ability.damage || "";
     if (primaryDamage) {
@@ -13214,69 +13505,25 @@ function renderAbilities() {
       copy.append(damage);
     }
 
-    const tags = document.createElement("div");
-    tags.className = "creation-tags";
-    const tagData = [
-      isEquippedWeapon ? ["Equipado", "is-equipped"] : null,
-      ability.rolls?.length ? [`${ability.rolls.length} ${ability.rolls.length === 1 ? "rolagem" : "rolagens"}`, ""] : null,
-      ability.costs?.length ? [`${ability.costs.length} ${ability.costs.length === 1 ? "gasto" : "gastos"}`, "is-cost"] : null,
-      ability.grantsModifiers ? [ability.modifiersActive ? "Efeitos ativos" : `${ability.modifiers.length} modificadores`, ability.modifiersActive ? "is-active" : ""] : null,
-    ].filter(Boolean);
-    tagData.forEach(([label, className]) => {
-      const tag = document.createElement("span");
-      tag.className = `creation-tag ${className}`.trim();
-      tag.textContent = label;
-      tags.append(tag);
-    });
-    if (tags.children.length) copy.append(tags);
     appendCreationQuickRolls(copy, ability, scope, true);
-    if (ability.damageProfile?.criticalThreshold) {
-      copy.append(createCriticalMarginControl(ability, scope));
-    }
-
     const actions = document.createElement("div");
-    actions.className = "ability-card-actions";
-
-    if (ability.costs?.length) actions.append(createCreationAction("Usar", "useCreation", ability, scope, "is-use"));
-    if (primaryDamage) actions.append(createCreationAction("Rolar dano", "rollCreationDamage", ability, scope, "is-damage-action"));
+    actions.className = "creation-main-actions";
+    if (ability.costs?.length) {
+      actions.append(createCreationAction(creationSpendLabel(ability), "useCreation", ability, scope, "is-spend-action"));
+    }
+    if (primaryDamage) {
+      actions.append(createCreationAction("Rolar dano", "rollCreationDamage", ability, scope, "is-damage-action"));
+    }
 
     if (ability.grantsModifiers && ability.modifiers?.length) {
       const toggle = document.createElement("button");
-      toggle.className = "ability-card-action";
+      toggle.className = `ability-card-action${ability.modifiersActive ? " is-active" : ""}`;
       toggle.type = "button";
       toggle.dataset[isEquippedWeapon ? "toggleEquippedModifiers" : "toggleAbilityModifiers"] = ability.id;
       toggle.textContent = ability.modifiersActive ? "Desativar efeitos" : "Ativar efeitos";
       actions.append(toggle);
     }
-
-    const edit = document.createElement("button");
-    edit.className = "ability-card-action";
-    edit.type = "button";
-    edit.dataset[isEquippedWeapon ? "editEquippedWeapon" : "editAbility"] = ability.id;
-    edit.textContent = "Editar";
-
-    const open = document.createElement("button");
-    open.type = "button";
-    open.className = "ability-card-action";
-    open.dataset[isEquippedWeapon ? "openEquippedWeapon" : "openAbility"] = ability.id;
-    open.textContent = "Abrir";
-    actions.append(open, edit);
-
-    if (isEquippedWeapon) {
-      const unequip = document.createElement("button");
-      unequip.className = "ability-card-action is-equip is-equipped";
-      unequip.type = "button";
-      unequip.dataset.unequipWeapon = ability.id;
-      unequip.textContent = "Guardar";
-      actions.append(unequip);
-    } else {
-      const remove = document.createElement("button");
-      remove.className = "ability-card-action is-delete";
-      remove.type = "button";
-      remove.dataset.deleteAbility = ability.id;
-      remove.textContent = "Excluir";
-      actions.append(remove);
-    }
+    if (actions.children.length) copy.append(actions);
 
     let media;
     if (isEquippedWeapon) {
@@ -13286,8 +13533,8 @@ function renderAbilities() {
     } else {
       media = createAbilityMediaElement(ability, "ability-card-media");
     }
-    card.append(media, copy, actions);
-    abilitiesList.append(card);
+    card.append(media, copy);
+    abilitiesList.append(createCreationCardShell(card, ability, scope));
   });
 }
 
@@ -13744,53 +13991,171 @@ function adjustCreationCriticalMargin(scope, itemId, direction) {
   notifySheetChanged("critical-margin");
 }
 
+function setInventoryMoveMode(shouldMove, options = {}) {
+  if (!shouldMove && inventoryDragState) finishInventoryReorder();
+  inventoryMoveMode = Boolean(shouldMove);
+  inventoryMoveToggle.classList.toggle("is-active", inventoryMoveMode);
+  inventoryMoveToggle.setAttribute("aria-pressed", String(inventoryMoveMode));
+  inventoryMoveToggle.querySelector("span").textContent = inventoryMoveMode ? "Concluir" : "Mover";
+  inventoryMoveHint.hidden = !inventoryMoveMode;
+  inventorySearchInput.disabled = inventoryMoveMode;
+  createItemButton.disabled = inventoryMoveMode;
+  if (inventoryMoveMode) inventorySearchInput.value = "";
+  if (options.render !== false) renderInventory();
+}
+
+function beginInventoryReorder(event) {
+  if (!inventoryMoveMode || event.button > 0 || inventoryDragState) return;
+  if (event.target.closest("button, input, select, textarea, a")) return;
+  const source = event.target.closest("[data-inventory-sort-id]");
+  if (!source) return;
+  const rect = source.getBoundingClientRect();
+  inventoryDragState = {
+    pointerId: event.pointerId,
+    source,
+    startX: event.clientX,
+    startY: event.clientY,
+    offsetX: event.clientX - rect.left,
+    offsetY: event.clientY - rect.top,
+    width: rect.width,
+    dragging: false,
+    ghost: null,
+  };
+  source.setPointerCapture?.(event.pointerId);
+  event.preventDefault();
+}
+
+function moveInventoryDragGhost(state, clientX, clientY) {
+  if (!state.ghost) return;
+  state.ghost.style.left = `${clientX - state.offsetX}px`;
+  state.ghost.style.top = `${clientY - state.offsetY}px`;
+}
+
+function updateInventoryReorder(event) {
+  const state = inventoryDragState;
+  if (!state || state.pointerId !== event.pointerId) return;
+  const distance = Math.hypot(event.clientX - state.startX, event.clientY - state.startY);
+  if (!state.dragging && distance < 7) return;
+
+  if (!state.dragging) {
+    state.dragging = true;
+    state.source.classList.add("is-dragging");
+    state.ghost = state.source.cloneNode(true);
+    state.ghost.classList.add("inventory-drag-ghost");
+    state.ghost.classList.remove("is-dragging");
+    state.ghost.style.width = `${state.width}px`;
+    document.body.append(state.ghost);
+    document.body.classList.add("inventory-is-dragging");
+  }
+
+  moveInventoryDragGhost(state, event.clientX, event.clientY);
+  const target = document.elementFromPoint(event.clientX, event.clientY)?.closest("[data-inventory-sort-id]");
+  if (target && target !== state.source && target.parentElement === inventoryList) {
+    const rect = target.getBoundingClientRect();
+    const withinRow = event.clientY >= rect.top && event.clientY <= rect.bottom;
+    const placeBefore = withinRow
+      ? event.clientX < rect.left + rect.width / 2
+      : event.clientY < rect.top + rect.height / 2;
+    inventoryList.insertBefore(state.source, placeBefore ? target : target.nextElementSibling);
+  }
+
+  const edge = 72;
+  if (event.clientY < edge) window.scrollBy({ top: -12, behavior: "auto" });
+  else if (event.clientY > window.innerHeight - edge) window.scrollBy({ top: 12, behavior: "auto" });
+  event.preventDefault();
+}
+
+function finishInventoryReorder(event) {
+  const state = inventoryDragState;
+  if (!state || (event && state.pointerId !== event.pointerId)) return;
+  if (state.source.hasPointerCapture?.(state.pointerId)) {
+    state.source.releasePointerCapture(state.pointerId);
+  }
+  state.source.classList.remove("is-dragging");
+  state.ghost?.remove();
+  document.body.classList.remove("inventory-is-dragging");
+
+  if (state.dragging) {
+    const orderedIds = [...inventoryList.querySelectorAll("[data-inventory-sort-id]")]
+      .map((shell) => shell.dataset.inventorySortId);
+    const itemsById = new Map(inventoryItems.map((item) => [item.id, item]));
+    inventoryItems = [
+      ...orderedIds.map((id) => itemsById.get(id)).filter(Boolean),
+      ...inventoryItems.filter((item) => !orderedIds.includes(item.id)),
+    ];
+    inventorySuppressClickUntil = Date.now() + 300;
+    notifySheetChanged("inventory-order");
+  }
+
+  inventoryDragState = null;
+  renderInventory();
+}
+
 function renderInventory() {
   if (!inventoryList || !inventoryEmpty) return;
   const query = normalizeSearchTerm(inventorySearchInput.value);
   const visible = inventoryItems
-    .filter((item) => !query || normalizeSearchTerm(`${item.name} ${item.description}`).includes(query))
-    .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
+    .filter((item) => !query || normalizeSearchTerm(`${item.name} ${item.description}`).includes(query));
   inventoryCount.textContent = `${visible.length} ${visible.length === 1 ? "item" : "itens"}`;
   inventoryEmpty.hidden = visible.length !== 0;
   inventoryList.hidden = visible.length === 0;
+  inventoryList.classList.toggle("is-move-mode", inventoryMoveMode);
   inventoryList.replaceChildren();
 
   visible.forEach((item) => {
     const card = document.createElement("article");
-    card.className = `ability-card inventory-card${item.isWeapon ? " is-weapon" : ""}${item.equipped ? " is-equipped" : ""}${item.modifiersActive ? " is-active" : ""}`;
+    card.className = `ability-card creation-card inventory-card${item.isWeapon ? " is-weapon" : ""}${item.equipped ? " is-equipped" : ""}${item.modifiersActive ? " is-active" : ""}`;
     card.dataset.itemId = item.id;
     const icon = document.createElement("div");
     icon.className = "item-card-icon";
     icon.textContent = item.isWeapon ? "⚔" : "◇";
     const copy = document.createElement("div");
     copy.className = "ability-card-copy";
+
+    const heading = document.createElement("div");
+    heading.className = "creation-card-heading";
+    const headingMain = document.createElement("div");
+    headingMain.className = "creation-card-heading-main";
     const type = document.createElement("small");
     type.textContent = `${item.isWeapon ? "Arma" : "Item"} · Quantidade ${item.quantity}`;
     const name = document.createElement("h3");
     name.textContent = item.name;
+    headingMain.append(type, name);
+    if (item.equipped) {
+      const headingTags = document.createElement("div");
+      headingTags.className = "creation-card-heading-tags";
+      const equippedTag = document.createElement("span");
+      equippedTag.className = "creation-tag is-equipped";
+      equippedTag.textContent = "Equipado";
+      headingTags.append(equippedTag);
+      headingMain.append(headingTags);
+    }
+
+    const miniActions = document.createElement("div");
+    miniActions.className = "card-mini-actions";
+    miniActions.append(
+      createCardMiniAction("Abrir", "openItem", item.id),
+      createCardMiniAction("Editar", "editItem", item.id),
+      createCardMiniAction("Excluir", "deleteItem", item.id, "is-delete"),
+    );
+    heading.append(headingMain, miniActions);
+
     const description = document.createElement("p");
     description.textContent = item.description || "Sem descrição.";
-    copy.append(type, name, description);
-    const tags = document.createElement("div");
-    tags.className = "creation-tags";
-    [
-      item.equipped ? ["Equipado", "is-equipped"] : null,
-      item.damageProfile.primary ? [item.damageProfile.primary, "is-damage"] : null,
-      item.rolls.length ? [`${item.rolls.length} ${item.rolls.length === 1 ? "rolagem" : "rolagens"}`, ""] : null,
-      item.costs.length ? [`${item.costs.length} ${item.costs.length === 1 ? "gasto" : "gastos"}`, "is-cost"] : null,
-      item.modifiersActive ? ["Efeitos ativos", "is-active"] : item.grantsModifiers ? [`${item.modifiers.length} modificadores`, ""] : null,
-    ].filter(Boolean).forEach(([label, className]) => {
-      const tag = document.createElement("span");
-      tag.className = `creation-tag ${className}`.trim();
-      tag.textContent = label;
-      tags.append(tag);
-    });
-    if (tags.children.length) copy.append(tags);
+    description.className = "creation-card-description";
+    copy.append(heading, description);
+    if (item.damageProfile.primary) {
+      const damage = document.createElement("span");
+      damage.className = "ability-card-damage";
+      damage.textContent = item.damageProfile.additional
+        ? `${item.damageProfile.primary} + ${item.damageProfile.additional}`
+        : item.damageProfile.primary;
+      copy.append(damage);
+    }
     appendCreationQuickRolls(copy, item, "inventory", !item.isWeapon);
-    if (item.isWeapon && item.damageProfile.criticalThreshold) copy.append(createCriticalMarginControl(item));
 
     const actions = document.createElement("div");
-    actions.className = "ability-card-actions";
+    actions.className = "creation-main-actions";
     if (item.isWeapon) {
       const equip = document.createElement("button");
       equip.className = `ability-card-action is-equip${item.equipped ? " is-equipped" : ""}`;
@@ -13800,25 +14165,20 @@ function renderInventory() {
       equip.setAttribute("aria-pressed", String(item.equipped));
       actions.append(equip);
     }
-    if (item.costs.length) actions.append(createCreationAction("Usar", "useCreation", item, "inventory", "is-use"));
+    if (item.costs.length) {
+      actions.append(createCreationAction(creationSpendLabel(item), "useCreation", item, "inventory", "is-spend-action"));
+    }
     if (item.grantsModifiers && item.modifiers.length) {
       const toggle = document.createElement("button");
-      toggle.className = "ability-card-action";
+      toggle.className = `ability-card-action${item.modifiersActive ? " is-active" : ""}`;
       toggle.type = "button";
       toggle.dataset.toggleItemModifiers = item.id;
       toggle.textContent = item.modifiersActive ? "Desativar efeitos" : "Ativar efeitos";
       actions.append(toggle);
     }
-    [["Abrir", "openItem"], ["Editar", "editItem"], ["Excluir", "deleteItem"]].forEach(([label, dataKey]) => {
-      const button = document.createElement("button");
-      button.className = `ability-card-action${dataKey === "deleteItem" ? " is-delete" : ""}`;
-      button.type = "button";
-      button.dataset[dataKey] = item.id;
-      button.textContent = label;
-      actions.append(button);
-    });
-    card.append(icon, copy, actions);
-    inventoryList.append(card);
+    if (actions.children.length) copy.append(actions);
+    card.append(icon, copy);
+    inventoryList.append(createCreationCardShell(card, item, "inventory", { inventory: true }));
   });
 }
 
@@ -14985,6 +15345,11 @@ itemIsWeaponInput.addEventListener("change", updateItemWeaponFields);
 itemGrantsModifiersInput.addEventListener("change", updateItemModifierFields);
 itemEditorForm.addEventListener("submit", submitItemEditor);
 inventorySearchInput.addEventListener("input", renderInventory);
+inventoryMoveToggle.addEventListener("click", () => setInventoryMoveMode(!inventoryMoveMode));
+inventoryList.addEventListener("pointerdown", beginInventoryReorder);
+inventoryList.addEventListener("pointermove", updateInventoryReorder);
+inventoryList.addEventListener("pointerup", finishInventoryReorder);
+inventoryList.addEventListener("pointercancel", finishInventoryReorder);
 createItemButton.addEventListener("click", () => {
   if (!window.AbyssCloud?.hasActiveSlot()) {
     setAccountMenuOpen(true);
@@ -15170,6 +15535,10 @@ abilitiesList.addEventListener("click", (event) => {
 });
 
 inventoryList.addEventListener("click", (event) => {
+  if (inventoryMoveMode || Date.now() < inventorySuppressClickUntil) {
+    event.preventDefault();
+    return;
+  }
   const critical = event.target.closest("[data-adjust-critical]");
   if (critical) {
     adjustCreationCriticalMargin(critical.dataset.criticalScope || "inventory", critical.dataset.adjustCritical, Number.parseInt(critical.dataset.direction, 10));
