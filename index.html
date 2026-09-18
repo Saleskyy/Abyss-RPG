@@ -6514,6 +6514,64 @@ body.campaign-mode > :is(.skip-link, .topbar, .sidebar, .main-content) { display
 .campaign-member-copy strong { display: block; overflow: hidden; color: var(--theme-text-ece6d8, #ece6d8); font-size: .7rem; text-overflow: ellipsis; white-space: nowrap; }
 .campaign-member-copy small { display: block; margin-top: 2px; color: var(--theme-muted-77736c, #77736c); font-size: .55rem; letter-spacing: .06em; text-transform: uppercase; }
 
+/* Escudo do Mestre — visão viva dos personagens da Campanha. */
+.campaign-shield { animation: campaign-detail-in .22s ease both; }
+.campaign-shield-hero {
+  position: relative;
+  display: grid;
+  min-height: 230px;
+  overflow: hidden;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .22);
+  border-radius: 8px;
+  background: #111217 center/cover no-repeat;
+  box-shadow: 0 28px 85px rgba(0,0,0,.32);
+}
+.campaign-shield-hero::before { position: absolute; inset: 0; content: ""; background: linear-gradient(90deg, rgba(7,8,10,.96), rgba(7,8,10,.64) 55%, rgba(7,8,10,.28)), linear-gradient(0deg, rgba(7,8,10,.84), transparent 72%); }
+.campaign-shield-hero-inner { position: relative; z-index: 1; display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; min-height: 230px; padding: 28px clamp(22px, 4vw, 48px); }
+.campaign-shield-heading { min-width: 0; }
+.campaign-shield-heading h1 { margin-top: 5px; font-size: clamp(2.35rem, 5vw, 4.6rem); }
+.campaign-shield-heading > p:last-child { max-width: 65ch; margin: 11px 0 0; color: var(--theme-muted-b0aba1, #b0aba1); font-size: .72rem; line-height: 1.65; }
+.campaign-shield-controls { display: grid; flex: 0 0 min(310px, 42%); gap: 8px; padding: 13px 14px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .24); border-radius: 5px; background: rgba(7,8,10,.76); backdrop-filter: blur(12px); }
+.campaign-shield-controls .mechanics-switch { margin: 0; }
+.campaign-shield-controls > small { color: var(--theme-muted-858179, #858179); font-size: .58rem; line-height: 1.45; }
+.campaign-shield-visibility { display: flex; align-items: center; gap: 8px; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .59rem; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+.campaign-shield-visibility::before { width: 7px; height: 7px; border-radius: 50%; content: ""; background: #6abf8b; box-shadow: 0 0 10px rgba(106,191,139,.4); }
+.campaign-shield-visibility.is-hidden::before { background: #cc7b67; box-shadow: 0 0 10px rgba(204,123,103,.38); }
+.campaign-shield-stage { margin-top: 18px; overflow: hidden; border: 1px solid var(--theme-border-292a30, #292a30); border-radius: 8px; background: radial-gradient(circle at 50% -20%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .09), transparent 44%), linear-gradient(180deg, rgba(19,20,25,.96), rgba(8,9,12,.98)); box-shadow: 0 24px 70px rgba(0,0,0,.26); }
+.campaign-shield-stage-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; padding: 19px 21px 14px; border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .13); }
+.campaign-shield-stage-head h2 { font-size: 1.15rem; }
+.campaign-shield-stage-head p { margin: 5px 0 0; color: var(--theme-muted-858179, #858179); font-size: .64rem; }
+.campaign-shield-roster { display: flex; gap: 16px; min-height: 490px; padding: 18px 19px 24px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline proximity; scrollbar-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .34) transparent; }
+.campaign-shield-character { position: relative; isolation: isolate; display: flex; flex: 0 0 242px; flex-direction: column; justify-content: flex-end; min-height: 440px; overflow: hidden; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .24); border-radius: 7px; background: #101116; box-shadow: 0 18px 43px rgba(0,0,0,.34); scroll-snap-align: start; transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.campaign-shield-character:hover { transform: translateY(-4px); border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .53); box-shadow: 0 25px 58px rgba(0,0,0,.45); }
+.campaign-shield-character::before { position: absolute; inset: 0; z-index: -1; content: ""; background: linear-gradient(180deg, rgba(6,7,9,.04) 6%, rgba(6,7,9,.18) 36%, rgba(6,7,9,.84) 65%, #08090c 92%); }
+.campaign-shield-character::after { position: absolute; inset: 6px; z-index: 3; border: 1px solid rgba(255,255,255,.055); border-radius: 3px; content: ""; pointer-events: none; }
+.campaign-shield-character-art { position: absolute; inset: 0; z-index: -2; background: radial-gradient(circle at 50% 28%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25), transparent 35%), linear-gradient(155deg, #27231c, #12141c 56%, #18101d); background-position: center; background-size: cover; transform: scale(1.015); }
+.campaign-shield-character-initial { position: absolute; top: 22%; left: 50%; z-index: -1; color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .44); font: 600 5.2rem Georgia, serif; transform: translateX(-50%); text-shadow: 0 0 35px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .2); }
+.campaign-shield-character-body { position: relative; z-index: 1; display: grid; gap: 12px; padding: 22px 16px 16px; }
+.campaign-shield-character-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.campaign-shield-character-tags span { padding: 4px 6px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; color: #ddd5c5; background: rgba(6,7,9,.58); font-size: .49rem; font-weight: 850; letter-spacing: .08em; text-transform: uppercase; backdrop-filter: blur(7px); }
+.campaign-shield-character-tags span.is-private { border-color: rgba(206,107,121,.31); color: #efa0ac; }
+.campaign-shield-character-name strong { display: block; overflow: hidden; color: #f5efdf; font: 600 1.35rem Georgia, "Times New Roman", serif; line-height: 1.05; text-overflow: ellipsis; white-space: nowrap; text-shadow: 0 2px 14px #000; }
+.campaign-shield-character-name small { display: block; margin-top: 5px; overflow: hidden; color: #aaa59b; font-size: .58rem; letter-spacing: .055em; text-overflow: ellipsis; white-space: nowrap; }
+.campaign-shield-stats { display: grid; gap: 8px; padding-top: 1px; }
+.campaign-shield-stat { --shield-stat: #e1505c; --shield-stat-rgb: 225, 80, 92; display: grid; gap: 4px; }
+.campaign-shield-stat[data-stat="pa"] { --shield-stat: #e4bd3e; --shield-stat-rgb: 228, 189, 62; }
+.campaign-shield-stat[data-stat="sa"] { --shield-stat: #69c8ed; --shield-stat-rgb: 105, 200, 237; }
+.campaign-shield-stat-copy { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; color: #dad4c7; font-size: .55rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
+.campaign-shield-stat-copy strong { color: var(--shield-stat); font: 800 .64rem ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .03em; }
+.campaign-shield-stat-copy em { color: var(--shield-stat); font-size: .49rem; font-style: normal; }
+.campaign-shield-stat-track { height: 7px; overflow: hidden; border: 1px solid rgba(var(--shield-stat-rgb), .3); border-radius: 999px; background: rgba(4,5,7,.74); }
+.campaign-shield-stat-fill { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, rgba(var(--shield-stat-rgb), .56), var(--shield-stat)); box-shadow: 0 0 11px rgba(var(--shield-stat-rgb), .34); transition: width .25s ease; }
+.campaign-shield-hidden-stats { display: grid; place-items: center; min-height: 83px; border: 1px dashed rgba(255,255,255,.13); border-radius: 4px; color: #aaa49a; background: rgba(5,6,8,.48); text-align: center; font-size: .58rem; line-height: 1.45; }
+.campaign-shield-loading-stats { min-height: 83px; color: #97938b; }
+.campaign-shield-character-action { width: 100%; min-height: 34px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .32); border-radius: 3px; color: var(--theme-accent-f0d58f, #f0d58f); background: rgba(9,10,13,.7); cursor: pointer; font-size: .57rem; font-weight: 850; letter-spacing: .055em; }
+.campaign-shield-character-action:hover { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .64); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); }
+.campaign-shield-empty { display: grid; place-items: center; flex: 1 0 100%; min-height: 445px; border: 1px dashed var(--theme-border-34353a, #34353a); border-radius: 7px; color: var(--theme-muted-77736c, #77736c); text-align: center; }
+.campaign-shield-empty span { display: block; margin-bottom: 9px; color: var(--theme-accent-927a49, #927a49); font-size: 2rem; }
+.campaign-shield-empty strong { display: block; color: var(--theme-muted-aaa69d, #aaa69d); font: 600 1rem Georgia, serif; }
+.campaign-shield-empty p { margin: 6px 0 0; font-size: .65rem; }
+
 /* Formulários e diálogos de Campanha. */
 .campaign-modal { position: fixed; inset: 0; z-index: 240; display: grid; place-items: center; padding: 22px; }
 .campaign-modal[hidden] { display: none; }
@@ -6618,6 +6676,10 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
   .campaign-hero-copy { min-height: 280px; padding: 26px 21px; }
   .campaign-detail-toolbar { align-items: stretch; flex-direction: column; }
   .campaign-detail-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .campaign-shield-hero-inner { align-items: stretch; flex-direction: column; justify-content: flex-end; padding: 24px 20px; }
+  .campaign-shield-controls { flex-basis: auto; width: 100%; }
+  .campaign-shield-roster { min-height: 465px; padding: 15px 13px 20px; }
+  .campaign-shield-character { flex-basis: min(76vw, 250px); min-height: 420px; }
   .campaign-code { justify-content: space-between; }
   .campaign-modal { align-items: end; padding: 0; }
   .campaign-dialog,
@@ -6641,6 +6703,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
   .campaign-lane-head > button span { display: none; }
   .campaign-lane-head > button { width: 40px; padding: 0; }
   .campaign-detail-actions { grid-template-columns: 1fr; }
+  .campaign-shield-stage-head { align-items: flex-start; flex-direction: column; }
   .campaign-sheet-grid { grid-template-columns: 1fr; padding: 8px; }
   .campaign-dialog-head { padding: 19px 16px 15px; }
   .campaign-form { padding: 17px 15px calc(21px + env(safe-area-inset-bottom, 0px)); }
@@ -7762,6 +7825,10 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
               <button id="campaign-copy-code" type="button" aria-label="Copiar código da Campanha" title="Copiar código">⧉</button>
             </div>
             <div class="campaign-detail-actions">
+              <button id="campaign-shield-button" class="campaign-ghost-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 20 6v5c0 5.1-3.1 8.3-8 10-4.9-1.7-8-4.9-8-10V6l8-3Z"></path><path d="M9 12.2 11 14l4-4"></path></svg>
+                Escudo do Mestre
+              </button>
               <button id="campaign-attach-sheet" class="campaign-primary-button" type="button">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5zM15 4v4h4M9 14h6M12 11v6"></path></svg>
                 Vincular ficha
@@ -7791,6 +7858,43 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
               <div id="campaign-members-list" class="campaign-members-list"></div>
             </aside>
           </div>
+        </section>
+
+        <section id="campaign-shield" class="campaign-shield" hidden>
+          <button id="campaign-shield-back" class="campaign-ghost-button campaign-detail-back" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+            Voltar à Campanha
+          </button>
+
+          <header id="campaign-shield-hero" class="campaign-shield-hero">
+            <div class="campaign-shield-hero-inner">
+              <div class="campaign-shield-heading">
+                <p class="eyebrow">Escudo do Mestre</p>
+                <h1 id="campaign-shield-name">Campanha</h1>
+                <p>Uma visão compartilhada dos personagens em cena. As barras acompanham os valores salvos nas fichas em tempo real.</p>
+              </div>
+              <div class="campaign-shield-controls">
+                <label id="campaign-shield-toggle-wrap" class="mechanics-switch" hidden>
+                  <input id="campaign-shield-hide-stats" type="checkbox" />
+                  <span aria-hidden="true"></span>
+                  <strong>Esconder estatísticas</strong>
+                </label>
+                <div id="campaign-shield-visibility" class="campaign-shield-visibility">Estatísticas visíveis</div>
+                <small id="campaign-shield-control-note">PV, PA e SA estão visíveis para todos os membros.</small>
+              </div>
+            </div>
+          </header>
+
+          <section class="campaign-shield-stage" aria-labelledby="campaign-shield-roster-title">
+            <header class="campaign-shield-stage-head">
+              <div>
+                <h2 id="campaign-shield-roster-title">Personagens da Campanha</h2>
+                <p>Abra uma ficha pelo próprio Banner quando precisar dos detalhes.</p>
+              </div>
+              <span id="campaign-shield-count" class="abilities-count">0 personagens</span>
+            </header>
+            <div id="campaign-shield-roster" class="campaign-shield-roster" aria-live="polite"></div>
+          </section>
         </section>
       </main>
 
@@ -18428,6 +18532,7 @@ const campaignUi = {
   detailCode: document.querySelector("#campaign-detail-code"),
   codeValue: document.querySelector("#campaign-code-value"),
   copyCode: document.querySelector("#campaign-copy-code"),
+  shieldButton: document.querySelector("#campaign-shield-button"),
   attachSheet: document.querySelector("#campaign-attach-sheet"),
   edit: document.querySelector("#campaign-edit-button"),
   leave: document.querySelector("#campaign-leave-button"),
@@ -18436,6 +18541,16 @@ const campaignUi = {
   sheetCount: document.querySelector("#campaign-sheet-count"),
   sheetList: document.querySelector("#campaign-sheet-list"),
   membersList: document.querySelector("#campaign-members-list"),
+  shield: document.querySelector("#campaign-shield"),
+  shieldBack: document.querySelector("#campaign-shield-back"),
+  shieldHero: document.querySelector("#campaign-shield-hero"),
+  shieldName: document.querySelector("#campaign-shield-name"),
+  shieldToggleWrap: document.querySelector("#campaign-shield-toggle-wrap"),
+  shieldHideStats: document.querySelector("#campaign-shield-hide-stats"),
+  shieldVisibility: document.querySelector("#campaign-shield-visibility"),
+  shieldControlNote: document.querySelector("#campaign-shield-control-note"),
+  shieldCount: document.querySelector("#campaign-shield-count"),
+  shieldRoster: document.querySelector("#campaign-shield-roster"),
   editorModal: document.querySelector("#campaign-editor-modal"),
   editorDialog: document.querySelector("#campaign-editor-dialog"),
   editorForm: document.querySelector("#campaign-editor-form"),
@@ -18490,6 +18605,8 @@ let campaignEditorId = "";
 let campaignBannerDraft = "";
 let campaignBannerCropped = "";
 let campaignSheetSession = null;
+let campaignShieldUnsubscribers = [];
+const campaignShieldProfiles = new Map();
 let campaignBusy = false;
 const campaignBannerCropState = {
   source: "",
@@ -18875,6 +18992,8 @@ async function openCampaignPortal() {
   campaignUi.loading.classList.remove("is-error");
   campaignUi.dashboard.hidden = true;
   campaignUi.detail.hidden = true;
+  campaignUi.shield.hidden = true;
+  stopCampaignShieldRealtime();
   document.body.classList.add("campaign-mode");
   campaignBusy = true;
   try {
@@ -18893,6 +19012,8 @@ async function openCampaignPortal() {
 
 function closeCampaignPortal() {
   closeAllCampaignModals();
+  stopCampaignShieldRealtime();
+  campaignShieldProfiles.clear();
   campaignUi.app.hidden = true;
   document.body.classList.remove("campaign-mode");
   activeCampaign = null;
@@ -18902,10 +19023,13 @@ function closeCampaignPortal() {
 }
 
 function showCampaignDashboard() {
+  stopCampaignShieldRealtime();
+  campaignShieldProfiles.clear();
   activeCampaign = null;
   activeCampaignMembers = [];
   activeCampaignSheets = [];
   campaignUi.detail.hidden = true;
+  campaignUi.shield.hidden = true;
   campaignUi.loading.hidden = true;
   campaignUi.dashboard.hidden = false;
   renderCampaignDashboard();
@@ -19000,6 +19124,306 @@ function createCampaignSheetCard(sheet) {
   return card;
 }
 
+function stopCampaignShieldRealtime() {
+  campaignShieldUnsubscribers.forEach((unsubscribe) => {
+    try {
+      unsubscribe?.();
+    } catch {
+      // Uma assinatura já encerrada não exige nenhuma ação adicional.
+    }
+  });
+  campaignShieldUnsubscribers = [];
+}
+
+function campaignShieldResourceValues(profile, resource) {
+  const stored = profile?.resources?.[resource];
+  const currentValue = Number.parseInt(stored?.current, 10);
+  const maximumValue = Number.parseInt(stored?.max, 10);
+  const current = Number.isFinite(currentValue) ? Math.min(999999, Math.max(0, currentValue)) : 0;
+  const max = Number.isFinite(maximumValue) ? Math.min(999999, Math.max(0, maximumValue)) : 0;
+  return {
+    current,
+    max,
+    temporary: resource === "sa" ? 0 : Math.max(0, current - max),
+    percent: max > 0 ? Math.min(100, (Math.min(current, max) / max) * 100) : (current > 0 ? 100 : 0),
+  };
+}
+
+function createCampaignShieldStat(profile, resource) {
+  const labels = { pv: "PV", pa: "PA", sa: "SA" };
+  const values = campaignShieldResourceValues(profile, resource);
+  const row = document.createElement("div");
+  row.className = "campaign-shield-stat";
+  row.dataset.stat = resource;
+
+  const copy = document.createElement("div");
+  copy.className = "campaign-shield-stat-copy";
+  const label = document.createElement("span");
+  label.textContent = labels[resource];
+  const value = document.createElement("strong");
+  value.textContent = `${values.current} / ${values.max}`;
+  copy.append(label, value);
+  if (values.temporary > 0) {
+    const temporary = document.createElement("em");
+    temporary.textContent = `+${values.temporary} temporários`;
+    copy.append(temporary);
+  }
+
+  const track = document.createElement("div");
+  track.className = "campaign-shield-stat-track";
+  track.setAttribute("role", "progressbar");
+  track.setAttribute("aria-label", `${labels[resource]} de ${values.current} em ${values.max}`);
+  track.setAttribute("aria-valuemin", "0");
+  track.setAttribute("aria-valuemax", String(values.max));
+  track.setAttribute("aria-valuenow", String(Math.min(values.current, values.max)));
+  const fill = document.createElement("span");
+  fill.className = "campaign-shield-stat-fill";
+  fill.style.width = `${values.percent}%`;
+  track.append(fill);
+  row.append(copy, track);
+  return row;
+}
+
+function campaignShieldStatsHiddenForViewer() {
+  return activeCampaign?.role !== "master" && Boolean(activeCampaign?.hideShieldStats);
+}
+
+function createCampaignShieldCharacter(sheet) {
+  const cached = campaignShieldProfiles.get(sheet.id) || { loading: true };
+  const profile = cached.profile || {};
+  const characterName = String(profile.name || sheet.characterName || sheet.slotName || "Ficha sem nome");
+  const portrait = safeCampaignBanner(profile.portrait || sheet.portrait);
+  const canEdit = activeCampaign?.role === "master" || sheet.ownerUid === currentFirebaseUser?.uid;
+  const card = document.createElement("article");
+  card.className = "campaign-shield-character";
+
+  const art = document.createElement("div");
+  art.className = "campaign-shield-character-art";
+  setCampaignBanner(art, portrait);
+  card.append(art);
+  if (!portrait) {
+    const initial = document.createElement("span");
+    initial.className = "campaign-shield-character-initial";
+    initial.setAttribute("aria-hidden", "true");
+    initial.textContent = characterName.charAt(0).toUpperCase() || "A";
+    card.append(initial);
+  }
+
+  const body = document.createElement("div");
+  body.className = "campaign-shield-character-body";
+  const tags = document.createElement("div");
+  tags.className = "campaign-shield-character-tags";
+  const ownerRole = activeCampaignMembers.find((member) => member.id === sheet.ownerUid)?.role;
+  if (ownerRole === "master") {
+    const masterTag = document.createElement("span");
+    masterTag.textContent = "Mestre";
+    tags.append(masterTag);
+  }
+  if (sheet.ownerUid === currentFirebaseUser?.uid) {
+    const mineTag = document.createElement("span");
+    mineTag.textContent = "Sua ficha";
+    tags.append(mineTag);
+  }
+  if (sheet.privateToPlayers) {
+    const privateTag = document.createElement("span");
+    privateTag.className = "is-private";
+    privateTag.textContent = "Privada";
+    tags.append(privateTag);
+  }
+
+  const name = document.createElement("div");
+  name.className = "campaign-shield-character-name";
+  const title = document.createElement("strong");
+  title.textContent = characterName;
+  const owner = document.createElement("small");
+  owner.textContent = `${sheet.ownerName || "Jogador"} · ${sheet.slotName || "Slot"}`;
+  name.append(title, owner);
+
+  const stats = document.createElement("div");
+  stats.className = "campaign-shield-stats";
+  if (campaignShieldStatsHiddenForViewer()) {
+    stats.classList.add("campaign-shield-hidden-stats");
+    stats.textContent = "Estatísticas ocultas pelo Mestre";
+  } else if (cached.loading) {
+    stats.classList.add("campaign-shield-hidden-stats", "campaign-shield-loading-stats");
+    stats.textContent = "Sincronizando PV, PA e SA…";
+  } else if (cached.error) {
+    stats.classList.add("campaign-shield-hidden-stats");
+    stats.textContent = "Estatísticas indisponíveis";
+  } else {
+    ["pv", "pa", "sa"].forEach((resource) => stats.append(createCampaignShieldStat(profile, resource)));
+  }
+
+  const open = document.createElement("button");
+  open.type = "button";
+  open.className = "campaign-shield-character-action";
+  open.dataset.openCampaignShieldSheet = sheet.id;
+  open.textContent = canEdit ? "Abrir e editar ficha" : "Visualizar ficha";
+  body.append(tags, name, stats, open);
+  card.append(body);
+  return card;
+}
+
+function renderCampaignShieldRoster() {
+  if (!activeCampaign) return;
+  campaignUi.shieldCount.textContent = `${activeCampaignSheets.length} ${activeCampaignSheets.length === 1 ? "personagem" : "personagens"}`;
+  campaignUi.shieldRoster.replaceChildren();
+  if (activeCampaignSheets.length) {
+    activeCampaignSheets.forEach((sheet) => campaignUi.shieldRoster.append(createCampaignShieldCharacter(sheet)));
+    return;
+  }
+  const empty = document.createElement("div");
+  empty.className = "campaign-shield-empty";
+  const copy = document.createElement("div");
+  const mark = document.createElement("span");
+  mark.setAttribute("aria-hidden", "true");
+  mark.textContent = "♜";
+  const title = document.createElement("strong");
+  title.textContent = "O Escudo ainda está vazio";
+  const text = document.createElement("p");
+  text.textContent = "Volte à Campanha e vincule uma ficha para trazer um personagem à cena.";
+  copy.append(mark, title, text);
+  empty.append(copy);
+  campaignUi.shieldRoster.append(empty);
+}
+
+function renderCampaignShield() {
+  if (!activeCampaign) return;
+  const isMaster = activeCampaign.role === "master";
+  const hidden = Boolean(activeCampaign.hideShieldStats);
+  setCampaignBanner(campaignUi.shieldHero, activeCampaign.banner);
+  campaignUi.shieldName.textContent = activeCampaign.name || "Campanha sem nome";
+  campaignUi.shieldToggleWrap.hidden = !isMaster;
+  campaignUi.shieldHideStats.checked = hidden;
+  campaignUi.shieldVisibility.classList.toggle("is-hidden", hidden);
+  if (isMaster) {
+    campaignUi.shieldVisibility.textContent = hidden ? "Ocultas para jogadores" : "Visíveis para todos";
+    campaignUi.shieldControlNote.textContent = hidden
+      ? "Você continua vendo as barras; os jogadores veem apenas os Banners."
+      : "PV, PA e SA estão visíveis para todos os membros.";
+  } else {
+    campaignUi.shieldVisibility.textContent = hidden ? "Estatísticas ocultas" : "Estatísticas visíveis";
+    campaignUi.shieldControlNote.textContent = hidden
+      ? "O Mestre ocultou PV, PA e SA nesta visão."
+      : "PV, PA e SA estão visíveis para todos os membros.";
+  }
+  renderCampaignShieldRoster();
+}
+
+function startCampaignShieldRealtime() {
+  stopCampaignShieldRealtime();
+  campaignShieldProfiles.clear();
+  activeCampaignSheets.forEach((sheet) => campaignShieldProfiles.set(sheet.id, { loading: true }));
+  renderCampaignShield();
+  if (!activeCampaign || typeof firestoreApi?.onSnapshot !== "function") return;
+
+  const campaignId = activeCampaign.id;
+  const campaignReference = firestoreApi.doc(firestoreDb, "campaigns", campaignId);
+  campaignShieldUnsubscribers.push(firestoreApi.onSnapshot(
+    campaignReference,
+    (snapshot) => {
+      if (!snapshot.exists() || activeCampaign?.id !== campaignId) return;
+      const role = activeCampaign.role;
+      const member = activeCampaign.member;
+      activeCampaign = { id: snapshot.id, ...snapshot.data(), role, member };
+      const record = campaignRecords.find((item) => item.id === campaignId);
+      if (record) Object.assign(record, snapshot.data());
+      renderCampaignShield();
+    },
+    () => {},
+  ));
+
+  activeCampaignSheets.forEach((sheet) => {
+    const profileReference = firestoreApi.doc(
+      firestoreDb,
+      "users",
+      sheet.ownerUid,
+      "slots",
+      sheet.slotId,
+      "data",
+      "profile",
+    );
+    campaignShieldUnsubscribers.push(firestoreApi.onSnapshot(
+      profileReference,
+      (snapshot) => {
+        if (activeCampaign?.id !== campaignId) return;
+        campaignShieldProfiles.set(sheet.id, {
+          loading: false,
+          profile: snapshot.exists() ? snapshot.data() : {},
+        });
+        if (!campaignUi.shield.hidden) renderCampaignShieldRoster();
+      },
+      () => {
+        campaignShieldProfiles.set(sheet.id, { loading: false, error: true });
+        if (!campaignUi.shield.hidden) renderCampaignShieldRoster();
+      },
+    ));
+  });
+}
+
+async function openCampaignShield() {
+  if (!activeCampaign || campaignBusy) return;
+  campaignUi.dashboard.hidden = true;
+  campaignUi.detail.hidden = true;
+  campaignUi.loading.hidden = true;
+  campaignUi.shield.hidden = false;
+  renderCampaignShield();
+  startCampaignShieldRealtime();
+  campaignUi.app.scrollTo({ top: 0, behavior: "smooth" });
+
+  const currentSheetLinked = activeCampaignSheets.some(
+    (sheet) => sheet.ownerUid === currentFirebaseUser?.uid && sheet.slotId === currentSlotId,
+  );
+  if (currentSheetLinked && stateRevision > lastSavedRevision) {
+    try {
+      await flushCloudSave();
+    } catch {
+      // A assinatura exibirá o último valor confirmado sem bloquear o Escudo.
+    }
+  }
+}
+
+function closeCampaignShield() {
+  stopCampaignShieldRealtime();
+  campaignShieldProfiles.clear();
+  campaignUi.shield.hidden = true;
+  campaignUi.loading.hidden = true;
+  campaignUi.dashboard.hidden = true;
+  campaignUi.detail.hidden = false;
+  renderCampaignDetail();
+  campaignUi.app.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function toggleCampaignShieldStats(trigger) {
+  if (!activeCampaign || activeCampaign.role !== "master" || campaignBusy) return;
+  const previous = Boolean(activeCampaign.hideShieldStats);
+  const next = Boolean(trigger.checked);
+  activeCampaign.hideShieldStats = next;
+  renderCampaignShield();
+  campaignBusy = true;
+  trigger.disabled = true;
+  try {
+    await firestoreApi.setDoc(
+      firestoreApi.doc(firestoreDb, "campaigns", activeCampaign.id),
+      { hideShieldStats: next, updatedAt: firestoreApi.serverTimestamp() },
+      { merge: true },
+    );
+  } catch (error) {
+    activeCampaign.hideShieldStats = previous;
+    renderCampaignShield();
+    await window.showAbyssAlert?.({
+      eyebrow: "Escudo do Mestre",
+      title: "Não foi possível alterar a visibilidade",
+      message: describeFirebaseError(error),
+      tone: "warning",
+      trigger,
+    });
+  } finally {
+    campaignBusy = false;
+    trigger.disabled = false;
+  }
+}
+
 function renderCampaignDetail() {
   if (!activeCampaign) return;
   const isMaster = activeCampaign.role === "master";
@@ -19036,9 +19460,12 @@ function renderCampaignDetail() {
 
 async function openCampaignDetail(campaignId) {
   if (!currentFirebaseUser || !campaignId) return;
+  stopCampaignShieldRealtime();
+  campaignShieldProfiles.clear();
   campaignBusy = true;
   campaignUi.dashboard.hidden = true;
   campaignUi.detail.hidden = true;
+  campaignUi.shield.hidden = true;
   campaignUi.loading.hidden = false;
   campaignUi.loading.textContent = "Abrindo Campanha…";
   campaignUi.loading.classList.remove("is-error");
@@ -19379,6 +19806,7 @@ async function submitCampaignEditor(event) {
       joinCode,
       ownerUid: currentFirebaseUser.uid,
       ownerName: currentFirebaseUser.displayName || "Mestre",
+      hideShieldStats: false,
       createdAt: timestamp,
       updatedAt: timestamp,
     }), 20000, "O registro da Campanha demorou demais para ser criado.");
@@ -19966,6 +20394,8 @@ async function openCampaignSheet(sheetId, trigger) {
     stateRevision = 0;
     lastSavedRevision = 0;
     isHydratingCloudState = false;
+    stopCampaignShieldRealtime();
+    campaignShieldProfiles.clear();
     campaignUi.app.hidden = true;
     document.body.classList.remove("campaign-mode");
     document.body.classList.add("campaign-sheet-session");
@@ -21589,6 +22019,9 @@ campaignUi.playerList.addEventListener("keydown", campaignCardActivation);
 campaignUi.createButtons.forEach((button) => button.addEventListener("click", () => openCampaignEditor()));
 campaignUi.joinButtons.forEach((button) => button.addEventListener("click", openCampaignJoin));
 campaignUi.detailBack.addEventListener("click", showCampaignDashboard);
+campaignUi.shieldButton.addEventListener("click", openCampaignShield);
+campaignUi.shieldBack.addEventListener("click", closeCampaignShield);
+campaignUi.shieldHideStats.addEventListener("change", () => toggleCampaignShieldStats(campaignUi.shieldHideStats));
 campaignUi.attachSheet.addEventListener("click", openCampaignSlotPicker);
 campaignUi.edit.addEventListener("click", () => openCampaignEditor(activeCampaign));
 campaignUi.leave.addEventListener("click", () => leaveActiveCampaign(campaignUi.leave));
@@ -21713,6 +22146,11 @@ campaignUi.sheetList.addEventListener("click", (event) => {
   }
   const unlink = event.target.closest("[data-unlink-campaign-sheet]");
   if (unlink) unlinkCampaignSheet(unlink.dataset.unlinkCampaignSheet, unlink);
+});
+
+campaignUi.shieldRoster.addEventListener("click", (event) => {
+  const open = event.target.closest("[data-open-campaign-shield-sheet]");
+  if (open) openCampaignSheet(open.dataset.openCampaignShieldSheet, open);
 });
 
 document.addEventListener("keydown", (event) => {
