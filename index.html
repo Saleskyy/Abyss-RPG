@@ -6076,8 +6076,189 @@ body.inventory-is-dragging {
   .grimoire-section-tabs { margin-inline: 14px; }
 }
     </style>
+    <style id="shop-and-slot-gate-styles">
+/* Entrada obrigatória por Slot */
+body.slot-gate-open { overflow: hidden; }
+body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
+  visibility: hidden;
+  pointer-events: none;
+}
+.slot-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 18%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .13), transparent 34%),
+    rgba(4, 5, 7, .96);
+  backdrop-filter: blur(18px);
+}
+.slot-gate[hidden] { display: none; }
+.slot-gate-dialog {
+  position: relative;
+  width: min(760px, 100%);
+  max-height: min(86dvh, 760px);
+  overflow: hidden;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .36);
+  border-radius: 9px;
+  color: var(--theme-text-eee8dc, #eee8dc);
+  background:
+    linear-gradient(145deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .045), transparent 45%),
+    var(--palette-panel, #0d0e12);
+  box-shadow: 0 36px 110px rgba(0, 0, 0, .82), inset 0 0 45px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .025);
+}
+.slot-gate-head {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  align-items: center;
+  gap: 17px;
+  padding: 28px 30px 23px;
+  border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .2);
+}
+.slot-gate-mark {
+  display: grid;
+  place-items: center;
+  width: 58px;
+  height: 58px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .4);
+  border-radius: 50%;
+  color: var(--theme-accent-dfc77f, #dfc77f);
+  background: radial-gradient(circle, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .17), transparent 70%);
+  box-shadow: 0 0 25px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .11);
+  font-size: 1.35rem;
+}
+.slot-gate-head h1 { margin: 2px 0 6px; font: 600 clamp(1.55rem, 4vw, 2.1rem) Georgia, "Times New Roman", serif; }
+.slot-gate-head p:last-child { margin: 0; color: var(--theme-muted-99958d, #99958d); font-size: .79rem; line-height: 1.55; }
+.slot-gate-content { max-height: calc(min(86dvh, 760px) - 145px); padding: 22px 30px 28px; overflow-y: auto; }
+.slot-gate-status { margin: 5px 0 18px; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .78rem; text-align: center; }
+.slot-gate-status.is-error { color: #ef8c98; }
+.slot-gate-spinner {
+  width: 34px;
+  height: 34px;
+  margin: 24px auto 13px;
+  border: 2px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .18);
+  border-top-color: var(--theme-accent-dfc77f, #dfc77f);
+  border-radius: 50%;
+  animation: slot-gate-spin .85s linear infinite;
+}
+@keyframes slot-gate-spin { to { transform: rotate(360deg); } }
+.slot-gate-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.slot-gate-choice {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 74px;
+  padding: 13px 14px;
+  border: 1px solid var(--theme-border-34353a, #34353a);
+  border-radius: 5px;
+  color: var(--theme-text-eee8dc, #eee8dc);
+  background: linear-gradient(145deg, var(--palette-containerRaised, #191a20), var(--palette-container, #111217));
+  cursor: pointer;
+  text-align: left;
+  transition: border-color .18s ease, transform .18s ease, background .18s ease;
+}
+.slot-gate-choice:hover,
+.slot-gate-choice:focus-visible { border-color: var(--theme-accent-cfad62, #cfad62); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .09); transform: translateY(-1px); }
+.slot-gate-choice > span:first-child { color: var(--theme-accent-dfc77f, #dfc77f); font-size: 1.25rem; text-align: center; }
+.slot-gate-choice strong { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 600 1rem Georgia, "Times New Roman", serif; }
+.slot-gate-choice small { display: block; margin-top: 4px; color: var(--theme-muted-858179, #858179); font-size: .65rem; letter-spacing: .07em; text-transform: uppercase; }
+.slot-gate-choice b { color: var(--theme-accent-dfc77f, #dfc77f); font-size: .66rem; letter-spacing: .06em; text-transform: uppercase; }
+.slot-gate-actions { display: flex; justify-content: center; gap: 8px; margin-top: 16px; }
+
+/* Loja e Carteira */
+.shop-wallet {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 20px;
+  padding: 25px 28px;
+  overflow: hidden;
+  border: 1px solid rgba(74, 190, 111, .28);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 12% 50%, rgba(68, 185, 104, .12), transparent 30%),
+    linear-gradient(145deg, var(--palette-panel, #0d0e12), var(--palette-container, #111217));
+  box-shadow: inset 0 0 35px rgba(60, 160, 89, .03);
+}
+.shop-wallet::after { content: "₶"; position: absolute; right: 28px; color: rgba(87, 209, 124, .045); font: 700 8rem Georgia, serif; pointer-events: none; }
+.wallet-copy { position: relative; z-index: 1; display: flex; align-items: center; gap: 16px; }
+.wallet-mark { display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid rgba(83, 210, 121, .38); border-radius: 50%; color: #83e39f; background: rgba(57, 156, 86, .1); font: 700 1.25rem Georgia, serif; }
+.wallet-copy h2 { margin: 2px 0 2px; font: 600 1.35rem Georgia, "Times New Roman", serif; }
+.wallet-balance-line { display: flex; align-items: baseline; gap: 8px; }
+.wallet-balance-line output { color: #8ee8a8; font: 700 clamp(1.8rem, 5vw, 2.6rem) Georgia, "Times New Roman", serif; }
+.wallet-balance-line span { color: #75b988; font-size: .71rem; font-weight: 750; letter-spacing: .09em; text-transform: uppercase; }
+.wallet-adjust-form { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(110px, 170px) auto auto; gap: 7px; }
+.wallet-adjust-form input { min-width: 0; height: 42px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 3px; color: var(--theme-text-eee8dc, #eee8dc); background: rgba(0, 0, 0, .25); padding: 0 11px; }
+.wallet-adjust-form button { min-height: 42px; padding: 0 13px; border: 1px solid rgba(83, 210, 121, .33); border-radius: 3px; color: #8ee8a8; background: rgba(55, 153, 84, .08); cursor: pointer; font-weight: 750; }
+.wallet-adjust-form button[data-wallet-action="remove"] { border-color: rgba(216, 90, 103, .32); color: #e9909a; background: rgba(151, 44, 56, .08); }
+.shop-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px 24px 14px; border-top: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); }
+.shop-toolbar .filter-input-shell { width: min(430px, 100%); }
+.shop-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(330px, 100%), 1fr)); gap: 10px; padding: 10px 18px 20px; }
+.shop-product {
+  position: relative;
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  gap: 12px;
+  align-content: start;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--theme-border-34353a, #34353a);
+  border-radius: 5px;
+  background: linear-gradient(145deg, var(--palette-containerRaised, #191a20), var(--palette-container, #111217));
+}
+.shop-product::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 2px; background: rgba(83, 210, 121, .56); }
+.shop-product-media { display: grid; place-items: center; width: 66px; aspect-ratio: 1; overflow: hidden; border: 1px solid rgba(83, 210, 121, .24); border-radius: 4px; color: #8bdca3; background: radial-gradient(circle, rgba(75, 185, 107, .13), transparent 67%); font-size: 1.35rem; }
+.shop-product-media img { width: 100%; height: 100%; object-fit: cover; }
+.shop-product-copy { min-width: 0; }
+.shop-product-copy small { display: block; overflow: hidden; color: #75b988; font-size: .62rem; letter-spacing: .06em; text-overflow: ellipsis; text-transform: uppercase; white-space: nowrap; }
+.shop-product-copy h3 { margin: 4px 0 6px; overflow: hidden; color: var(--theme-text-eee8dc, #eee8dc); font: 600 1.05rem Georgia, "Times New Roman", serif; text-overflow: ellipsis; white-space: nowrap; }
+.shop-product-copy p { display: -webkit-box; min-height: 2.8em; margin: 0; overflow: hidden; color: var(--theme-muted-99958d, #99958d); font-size: .72rem; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.shop-product-footer { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 4px; }
+.shop-price { color: #8ee8a8; font: 700 .78rem ui-monospace, SFMono-Regular, Menlo, monospace; }
+.shop-buy-button { min-height: 36px; padding: 0 13px; border: 1px solid rgba(83, 210, 121, .4); border-radius: 3px; color: #a0efb6; background: rgba(55, 153, 84, .1); cursor: pointer; font-size: .68rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+.shop-buy-button:disabled { opacity: .43; cursor: not-allowed; }
+.shop-publish-fields { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(150px, .6fr); gap: 12px; padding: 13px; border: 1px solid rgba(83, 210, 121, .2); border-radius: 4px; background: rgba(46, 135, 72, .045); }
+.shop-publish-fields[hidden] { display: none; }
+.shop-publish-fields .mechanics-switch { align-self: center; }
+.shop-price-field[hidden] { display: none; }
+.shop-price-input { display: flex; align-items: center; gap: 8px; }
+.shop-price-input input { flex: 1; min-width: 0; }
+.shop-price-input small { color: #75b988; font-size: .65rem; }
+
+@media (max-width: 900px) {
+  .sidebar { grid-template-columns: minmax(0, 5fr) minmax(54px, 1fr); }
+  .sidebar-nav { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .slot-gate { align-items: end; padding: 0; }
+  .slot-gate-dialog { width: 100%; max-height: 94dvh; border-right: 0; border-bottom: 0; border-left: 0; border-radius: 14px 14px 0 0; }
+  .slot-gate-head { grid-template-columns: 44px minmax(0, 1fr); gap: 12px; padding: 21px 17px 17px; }
+  .slot-gate-mark { width: 44px; height: 44px; }
+  .slot-gate-content { max-height: calc(94dvh - 113px); padding: 16px 14px calc(22px + env(safe-area-inset-bottom, 0px)); }
+  .slot-gate-list { grid-template-columns: 1fr; }
+  .shop-wallet { grid-template-columns: 1fr; gap: 17px; padding: 20px 16px; }
+  .wallet-adjust-form { grid-template-columns: minmax(0, 1fr) auto auto; }
+  .shop-toolbar { align-items: stretch; flex-direction: column; padding-inline: 14px; }
+  .shop-list { grid-template-columns: 1fr; padding-inline: 10px; }
+  .shop-publish-fields { grid-template-columns: 1fr; }
+}
+@media (max-width: 420px) {
+  .sidebar { grid-template-columns: minmax(0, 5fr) 50px; }
+  .sidebar-nav { gap: 1px; padding-right: 0; }
+  .nav-item span, .slots-button span { font-size: .52rem; }
+  .nav-item svg, .slots-button svg { width: 19px; height: 19px; }
+  .wallet-adjust-form { grid-template-columns: 1fr 1fr; }
+  .wallet-adjust-form input { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: reduce) { .slot-gate-spinner { animation-duration: 1.8s; } }
+    </style>
   </head>
-  <body>
+  <body class="slot-gate-open">
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
 
     <header class="topbar">
@@ -6235,6 +6416,18 @@ body.inventory-is-dragging {
             <path d="M4 8.5h16v11H4zM7 8.5V6.8A2.8 2.8 0 0 1 9.8 4h4.4A2.8 2.8 0 0 1 17 6.8v1.7M4 13h16M10 11.2h4v3.6h-4z"></path>
           </svg>
           <span>Inventário</span>
+        </button>
+
+        <button
+          class="nav-item"
+          type="button"
+          data-view-target="shop"
+          aria-controls="shop-view"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 9h16l-1-4H5L4 9Zm1 0v10h14V9M8 19v-5h4v5M4 9c0 1.4.9 2.5 2.2 2.5S8.5 10.4 8.5 9c0 1.4 1 2.5 2.3 2.5S13 10.4 13 9c0 1.4 1 2.5 2.3 2.5s2.2-1.1 2.2-2.5c0 1.4 1 2.5 2.3 2.5"></path>
+          </svg>
+          <span>Loja</span>
         </button>
       </nav>
 
@@ -6978,7 +7171,87 @@ body.inventory-is-dragging {
           </div>
         </section>
       </section>
+
+      <section
+        id="shop-view"
+        class="view"
+        data-view="shop"
+        aria-labelledby="shop-title"
+        hidden
+      >
+        <div class="page-heading">
+          <div>
+            <p class="eyebrow">Registro V</p>
+            <h1 id="shop-title">Loja</h1>
+          </div>
+          <p class="heading-note">Mercadorias do Grimório de Minerva</p>
+        </div>
+
+        <section class="shop-wallet" aria-labelledby="wallet-title">
+          <div class="wallet-copy">
+            <span class="wallet-mark" aria-hidden="true">₶</span>
+            <div>
+              <p class="eyebrow">Carteira do Slot</p>
+              <h2 id="wallet-title">Verdeons</h2>
+              <div class="wallet-balance-line">
+                <output id="wallet-balance" aria-live="polite">0</output>
+                <span>Verdeons</span>
+              </div>
+            </div>
+          </div>
+          <form id="wallet-adjust-form" class="wallet-adjust-form">
+            <input id="wallet-adjust-amount" type="number" min="1" max="999999999" step="1" value="1" inputmode="numeric" aria-label="Quantidade de Verdeons" required />
+            <button type="submit" data-wallet-action="add" aria-label="Adicionar Verdeons">+ Adicionar</button>
+            <button type="submit" data-wallet-action="remove" aria-label="Remover Verdeons">− Remover</button>
+          </form>
+        </section>
+
+        <section class="abilities-panel shop-panel" aria-label="Produtos disponíveis">
+          <header class="abilities-panel-head inventory-panel-head">
+            <div>
+              <p class="eyebrow">Acervo compartilhado</p>
+              <h2>Produtos</h2>
+              <p>Compras são entregues automaticamente ao Inventário ou à seção correspondente de Habilidades.</p>
+            </div>
+          </header>
+          <div class="shop-toolbar">
+            <label class="filter-input-shell">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m15.5 15.5 5 5"></path></svg>
+              <input id="shop-search" class="filter-input" type="search" autocomplete="off" placeholder="Buscar produto..." />
+            </label>
+            <span id="shop-count" class="abilities-count">0 produtos</span>
+          </div>
+          <div id="shop-list" class="shop-list"></div>
+          <div id="shop-empty" class="abilities-empty">
+            <span aria-hidden="true">₶</span>
+            <strong>Nenhum produto disponível</strong>
+            <p>Os itens publicados no Grimório de Minerva aparecerão aqui.</p>
+          </div>
+        </section>
+      </section>
     </main>
+
+    <div id="startup-slot-gate" class="slot-gate" role="dialog" aria-modal="true" aria-labelledby="startup-slot-title" aria-busy="true">
+      <section class="slot-gate-dialog" tabindex="-1">
+        <header class="slot-gate-head">
+          <span class="slot-gate-mark" aria-hidden="true">✦</span>
+          <div>
+            <p class="eyebrow">Abyss RPG</p>
+            <h1 id="startup-slot-title">Escolha sua ficha</h1>
+            <p id="startup-slot-description">Verificando sua conta e buscando os Slots disponíveis.</p>
+          </div>
+        </header>
+        <div class="slot-gate-content">
+          <div id="startup-slot-spinner" class="slot-gate-spinner" aria-hidden="true"></div>
+          <p id="startup-slot-status" class="slot-gate-status" aria-live="polite">Carregando Slots…</p>
+          <div id="startup-slot-list" class="slot-gate-list"></div>
+          <div id="startup-slot-actions" class="slot-gate-actions" hidden>
+            <button id="startup-slot-retry" class="dialog-button" type="button">Tentar novamente</button>
+            <button id="startup-slot-sign-out" class="dialog-button" type="button">Sair da conta</button>
+          </div>
+        </div>
+      </section>
+    </div>
 
 
     <div id="rd-modal" class="ability-modal utility-modal" hidden>
@@ -7529,6 +7802,21 @@ body.inventory-is-dragging {
                 ></textarea>
               </label>
 
+              <div id="ability-shop-fields" class="shop-publish-fields" hidden>
+                <label class="mechanics-switch">
+                  <input id="ability-shop-listed" type="checkbox" />
+                  <span aria-hidden="true"></span>
+                  <strong>Publicar na Loja?</strong>
+                </label>
+                <label id="ability-shop-price-field" class="builder-field shop-price-field" hidden>
+                  <span>Preço</span>
+                  <span class="shop-price-input">
+                    <input id="ability-shop-price" type="number" min="0" max="999999999" step="1" value="0" inputmode="numeric" />
+                    <small>Verdeons</small>
+                  </span>
+                </label>
+              </div>
+
             </div>
 
             <section class="mechanics-builder" aria-labelledby="ability-mechanics-title">
@@ -7662,7 +7950,7 @@ body.inventory-is-dragging {
         <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
         <header class="ability-dialog-head">
           <div>
-            <p class="eyebrow">Inventário do personagem</p>
+            <p id="item-editor-eyebrow" class="eyebrow">Inventário do personagem</p>
             <h2 id="item-editor-title">Criar Item</h2>
             <p>Configure tudo que o item pode rolar, gastar ou modificar.</p>
           </div>
@@ -7679,6 +7967,13 @@ body.inventory-is-dragging {
               <label class="builder-field">
                 <span>Quantidade</span>
                 <input id="item-quantity" type="number" min="1" max="9999" step="1" value="1" inputmode="numeric" />
+              </label>
+              <label id="item-shop-price-field" class="builder-field builder-field-wide" hidden>
+                <span>Preço na Loja</span>
+                <span class="shop-price-input">
+                  <input id="item-shop-price" type="number" min="0" max="999999999" step="1" value="0" inputmode="numeric" />
+                  <small>Verdeons</small>
+                </span>
               </label>
               <label class="builder-field builder-field-wide">
                 <span>Descrição</span>
@@ -7827,7 +8122,7 @@ body.inventory-is-dragging {
           <div>
             <p class="eyebrow">Acesso da Guardiã</p>
             <h2 id="minerva-title">Grimório de Minerva</h2>
-            <p>Crie e edite as habilidades que todos podem acrescentar às próprias fichas.</p>
+            <p>Crie habilidades compartilhadas e publique produtos para a Loja dos jogadores.</p>
           </div>
 
           <div class="minerva-head-actions">
@@ -7859,6 +8154,7 @@ body.inventory-is-dragging {
           <button type="button" role="tab" data-minerva-section="echoes" aria-selected="false">Ecos</button>
           <button type="button" role="tab" data-minerva-section="classes" aria-selected="false">Classes</button>
           <button type="button" role="tab" data-minerva-section="tree" aria-selected="false">Árvore</button>
+          <button type="button" role="tab" data-minerva-section="inventory" aria-selected="false">Itens da Loja</button>
         </div>
 
         <div id="minerva-list" class="grimoire-list minerva-list"></div>
@@ -11032,6 +11328,10 @@ const abilityOriginInput = document.querySelector("#ability-origin");
 const abilityEchoSelect = document.querySelector("#ability-echo");
 const abilityEchoField = document.querySelector("#ability-echo-field");
 const abilityDescriptionInput = document.querySelector("#ability-description");
+const abilityShopFields = document.querySelector("#ability-shop-fields");
+const abilityShopListedInput = document.querySelector("#ability-shop-listed");
+const abilityShopPriceField = document.querySelector("#ability-shop-price-field");
+const abilityShopPriceInput = document.querySelector("#ability-shop-price");
 const abilityDamageInput = document.querySelector("#ability-damage");
 const abilityAdditionalDamageInput = document.querySelector("#ability-additional-damage");
 const abilityCriticalThresholdInput = document.querySelector("#ability-critical-threshold");
@@ -11072,9 +11372,12 @@ const inventoryMoveHint = document.querySelector("#inventory-move-hint");
 const itemEditorModal = document.querySelector("#item-editor-modal");
 const itemEditorDialog = document.querySelector("#item-editor-dialog");
 const itemEditorForm = document.querySelector("#item-editor-form");
+const itemEditorEyebrow = document.querySelector("#item-editor-eyebrow");
 const itemEditorTitle = document.querySelector("#item-editor-title");
 const itemNameInput = document.querySelector("#item-name");
 const itemQuantityInput = document.querySelector("#item-quantity");
+const itemShopPriceField = document.querySelector("#item-shop-price-field");
+const itemShopPriceInput = document.querySelector("#item-shop-price");
 const itemDescriptionInput = document.querySelector("#item-description");
 const itemIsWeaponInput = document.querySelector("#item-is-weapon");
 const itemWeaponFields = document.querySelector("#item-weapon-fields");
@@ -11086,6 +11389,13 @@ const itemGrantsModifiersInput = document.querySelector("#item-grants-modifiers"
 const itemModifiersFields = document.querySelector("#item-modifiers-fields");
 const itemEditorError = document.querySelector("#item-editor-error");
 const saveItemButton = document.querySelector("#save-item");
+const walletBalanceOutput = document.querySelector("#wallet-balance");
+const walletAdjustForm = document.querySelector("#wallet-adjust-form");
+const walletAdjustAmountInput = document.querySelector("#wallet-adjust-amount");
+const shopSearchInput = document.querySelector("#shop-search");
+const shopList = document.querySelector("#shop-list");
+const shopEmpty = document.querySelector("#shop-empty");
+const shopCount = document.querySelector("#shop-count");
 const MECHANIC_EDITORS = {
   ability: {
     rolls: document.querySelector("#ability-rolls-list"),
@@ -11129,9 +11439,12 @@ let activeAbilitySection = "attacks";
 let activeAbilityId = null;
 let activeAbilityTrigger = null;
 let abilityEditorScope = "sheet";
+let itemEditorScope = "inventory";
 let pendingAbilityPreviewUrl = "";
 let grimoireAbilities = [];
+let grimoireItems = [];
 let activeMinervaSection = "attacks";
+let walletBalance = 0;
 let damageReductions = [];
 let echoPoints = 5;
 let activeAbilityDetailId = null;
@@ -11769,7 +12082,7 @@ function captureCompleteSheetState() {
 
   const portraitPreview = document.querySelector("#portrait-preview");
   return {
-    schemaVersion: 9,
+    schemaVersion: 10,
     profile: {
       name: document.querySelector("#character-name").value.trim().slice(0, 120),
       background: document.querySelector("#character-background").value.trim().slice(0, 240),
@@ -11784,6 +12097,9 @@ function captureCompleteSheetState() {
         pv: readResourceValues("pv"),
         pa: readResourceValues("pa"),
         sa: readResourceValues("sa"),
+      },
+      wallet: {
+        verdeons: clampInteger(walletBalance, 0, 999999999, 0),
       },
       combat: {
         defense: {
@@ -11868,7 +12184,7 @@ function sanitizeStoredRowState(rawState) {
 
 function createCleanSheetState() {
   return {
-    schemaVersion: 9,
+    schemaVersion: 10,
     profile: {
       name: "",
       background: "",
@@ -11884,6 +12200,7 @@ function createCleanSheetState() {
         pa: { current: 0, max: 0, maxManual: false },
         sa: { current: 0, max: 0, maxManual: false },
       },
+      wallet: { verdeons: 0 },
       combat: {
         defense: { zone: "medium", margin: "normal", manual: false, attribute: "AGI" },
         evasion: { zone: "medium", margin: "normal", attribute: "AGI" },
@@ -11977,6 +12294,8 @@ function sanitizeAbility(rawAbility) {
           ? "slot"
           : "link",
     sourceId: String(rawAbility.sourceId || "").slice(0, 120),
+    shopListed: Boolean(rawAbility.shopListed),
+    shopPrice: clampInteger(rawAbility.shopPrice, 0, 999999999, 0),
   };
 }
 
@@ -12038,6 +12357,7 @@ function applyCompleteSheetState(rawState, options = {}) {
         maxManual: Boolean(stored.maxManual),
       });
     });
+    walletBalance = clampInteger(profile.wallet?.verdeons, 0, 999999999, 0);
 
     const storedCombat = profile.combat && typeof profile.combat === "object" ? profile.combat : {};
     const storedDefense = storedCombat.defense && typeof storedCombat.defense === "object"
@@ -12109,6 +12429,7 @@ function applyCompleteSheetState(rawState, options = {}) {
     renderSelectedFeatures();
     renderAbilities();
     renderInventory();
+    renderShop();
     skillSearchInput.value = "";
     attributeFilter.value = "all";
     trainingFilter.value = "all";
@@ -12906,6 +13227,7 @@ function sanitizeInventoryItem(rawItem) {
   const damageProfile = sanitizeDamageProfile(rawItem.damageProfile, rawItem.damage);
   return {
     id: String(rawItem.id || createAbilityId("item")).slice(0, 120),
+    kind: "item",
     name,
     description: String(rawItem.description || "").trim().slice(0, 3000),
     quantity: clampInteger(rawItem.quantity, 1, 9999, 1),
@@ -12913,6 +13235,9 @@ function sanitizeInventoryItem(rawItem) {
     equipped: isWeapon && Boolean(rawItem.equipped),
     damageProfile: isWeapon ? damageProfile : sanitizeDamageProfile({}),
     ...mechanics,
+    sourceId: String(rawItem.sourceId || "").slice(0, 120),
+    shopListed: Boolean(rawItem.shopListed),
+    shopPrice: clampInteger(rawItem.shopPrice, 0, 999999999, 0),
   };
 }
 
@@ -13099,7 +13424,13 @@ function getAllSheetCreations() {
 }
 
 function getCreation(scope, id) {
-  const collection = scope === "inventory" ? inventoryItems : scope === "minerva" ? grimoireAbilities : abilities;
+  const collection = scope === "inventory"
+    ? inventoryItems
+    : scope === "minerva"
+      ? grimoireAbilities
+      : scope === "minerva-item"
+        ? grimoireItems
+        : abilities;
   return collection.find((creation) => creation.id === id) || null;
 }
 
@@ -13534,6 +13865,7 @@ function renderCreationDetailMechanics(creation, scope) {
   const container = document.querySelector("#ability-detail-mechanics");
   container.replaceChildren();
   const profile = creation.damageProfile || sanitizeDamageProfile({}, creation.damage);
+  const isCatalogPreview = scope === "minerva" || scope === "minerva-item";
 
   const damageRows = [];
   if (profile.primary) damageRows.push(createCreationDetailRow("Dano Principal", profile.primary));
@@ -13546,7 +13878,7 @@ function renderCreationDetailMechanics(creation, scope) {
     ));
   }
   appendCreationDetailSection(container, "Dano", damageRows);
-  if (profile.criticalThreshold && scope !== "minerva") {
+  if (profile.criticalThreshold && !isCatalogPreview) {
     container.lastElementChild?.append(createCriticalMarginControl(creation, scope));
   }
 
@@ -13556,7 +13888,7 @@ function renderCreationDetailMechanics(creation, scope) {
     (creation.rolls || []).map((roll) => createCreationDetailRow(
       roll.name,
       roll.formula,
-      scope === "minerva" || (scope === "inventory" && creation.isWeapon) ? null : {
+      isCatalogPreview || (scope === "inventory" && creation.isWeapon) ? null : {
         label: "Rolar",
         dataset: { detailRoll: roll.id, creationScope: scope, creationId: creation.id },
       },
@@ -13661,31 +13993,33 @@ function createAbilityMediaElement(ability, className) {
 function openAbilityDetail(abilityId, trigger, scope = "sheet") {
   const ability = getCreation(scope, abilityId);
   if (!ability) return;
+  const isInventoryLike = scope === "inventory" || scope === "minerva-item";
+  const isCatalogPreview = scope === "minerva" || scope === "minerva-item";
   activeAbilityDetailId = ability.id;
   activeAbilityDetailScope = scope;
   activeAbilityDetailTrigger = trigger;
-  document.querySelector("#ability-detail-kind").textContent = scope === "inventory"
+  document.querySelector("#ability-detail-kind").textContent = isInventoryLike
     ? `Informações · ${ability.isWeapon ? "Arma" : "Item"}`
     : `Informações · ${abilitySectionLabel(ability.section)}`;
   document.querySelector("#ability-detail-title").textContent = ability.name;
-  document.querySelector("#ability-detail-origin").textContent = scope === "inventory"
-    ? `Inventário · Quantidade ${ability.quantity}`
+  document.querySelector("#ability-detail-origin").textContent = isInventoryLike
+    ? `${scope === "minerva-item" ? "Loja" : "Inventário"} · Quantidade ${ability.quantity}`
     : abilityOriginLabel(ability, scope);
   document.querySelector("#ability-detail-description").textContent = ability.description || "Sem descrição.";
   const media = document.querySelector("#ability-detail-media");
   media.replaceChildren();
-  media.hidden = scope === "inventory" || !safeAbilityMediaUrl(ability.mediaUrl);
+  media.hidden = isInventoryLike || !safeAbilityMediaUrl(ability.mediaUrl);
   if (!media.hidden) media.append(createAbilityMediaElement(ability, "ability-card-media"));
   const damage = document.querySelector("#ability-detail-damage");
   const primaryDamage = ability.damageProfile?.primary || ability.damage || "";
   damage.hidden = true;
   damage.textContent = "";
   renderCreationDetailMechanics(ability, scope);
-  abilityDetailRoll.hidden = scope === "minerva" || !ability.costs?.length;
+  abilityDetailRoll.hidden = isCatalogPreview || !ability.costs?.length;
   abilityDetailRoll.textContent = creationSpendLabel(ability);
   abilityDetailDamageRoll.hidden = scope !== "sheet" || !primaryDamage;
   abilityDetailDamageRoll.textContent = primaryDamage ? `⚔️ Dano · ${primaryDamage}` : "⚔️ Dano";
-  abilityDetailModifiers.hidden = scope === "minerva" || !ability.grantsModifiers || !ability.modifiers?.length;
+  abilityDetailModifiers.hidden = isCatalogPreview || !ability.grantsModifiers || !ability.modifiers?.length;
   abilityDetailModifiers.textContent = ability.modifiersActive ? "Desativar modificadores" : "Ativar modificadores";
   abilityDetailModifiers.classList.toggle("is-active", ability.modifiersActive);
   abilityDetailModal.hidden = false;
@@ -13705,6 +14039,13 @@ function updateAbilityEchoField() {
   const isEcho = abilitySectionSelect.value === "echoes";
   abilityEchoField.hidden = !isEcho;
   abilityEchoSelect.required = isEcho;
+}
+
+function updateAbilityShopFields() {
+  const canPublish = abilityEditorScope === "minerva";
+  abilityShopFields.hidden = !canPublish;
+  abilityShopPriceField.hidden = !canPublish || !abilityShopListedInput.checked;
+  abilityShopPriceInput.required = canPublish && abilityShopListedInput.checked;
 }
 
 function renderAbilities() {
@@ -13849,6 +14190,9 @@ function openAbilityEditor(scope, ability = null, trigger = null) {
   abilityEchoSelect.value = ability?.echoKey || characterEchoSelect.value;
   updateAbilityEchoField();
   abilityDescriptionInput.value = ability?.description || "";
+  abilityShopListedInput.checked = Boolean(ability?.shopListed);
+  abilityShopPriceInput.value = String(clampInteger(ability?.shopPrice, 0, 999999999, 0));
+  updateAbilityShopFields();
   const damageProfile = ability?.damageProfile || sanitizeDamageProfile({}, ability?.damage);
   abilityHasDamageInput.checked = Boolean(ability?.hasDamage ?? damageProfile.primary);
   abilityDamageFields.hidden = !abilityHasDamageInput.checked;
@@ -14023,6 +14367,11 @@ async function submitAbilityEditor(event) {
       mediaRefId,
       mediaOwner,
       sourceId: existing?.sourceId || abilityEditorForm.dataset.sourceId || "",
+      shopListed: abilityEditorScope === "minerva" && abilityShopListedInput.checked,
+      shopPrice:
+        abilityEditorScope === "minerva" && abilityShopListedInput.checked
+          ? abilityShopPriceInput.value
+          : 0,
     });
 
     if (abilityEditorScope === "minerva") {
@@ -14111,12 +14460,16 @@ function updateItemModifierFields() {
   itemModifiersFields.hidden = !itemGrantsModifiersInput.checked;
 }
 
-function openItemEditor(item = null, trigger = null) {
+function openItemEditor(item = null, trigger = null, scope = "inventory") {
+  itemEditorScope = scope === "minerva" ? "minerva" : "inventory";
   activeItemId = item?.id || null;
   activeItemTrigger = trigger;
   itemEditorForm.reset();
   itemNameInput.value = item?.name || "";
   itemQuantityInput.value = String(item?.quantity || 1);
+  itemShopPriceInput.value = String(clampInteger(item?.shopPrice, 0, 999999999, 0));
+  itemShopPriceField.hidden = itemEditorScope !== "minerva";
+  itemShopPriceInput.required = itemEditorScope === "minerva";
   itemDescriptionInput.value = item?.description || "";
   itemIsWeaponInput.checked = Boolean(item?.isWeapon);
   const profile = item?.damageProfile || sanitizeDamageProfile({});
@@ -14130,8 +14483,9 @@ function openItemEditor(item = null, trigger = null) {
   updateItemWeaponFields();
   updateItemModifierFields();
   setItemEditorError("");
-  itemEditorTitle.textContent = item ? "Editar Item" : "Criar Item";
-  saveItemButton.textContent = item ? "Salvar Alterações" : "Criar Item";
+  itemEditorEyebrow.textContent = itemEditorScope === "minerva" ? "Produto da Loja" : "Inventário do personagem";
+  itemEditorTitle.textContent = item ? "Editar Item" : itemEditorScope === "minerva" ? "Criar Item da Loja" : "Criar Item";
+  saveItemButton.textContent = item ? "Salvar Alterações" : itemEditorScope === "minerva" ? "Publicar Item" : "Criar Item";
   itemEditorModal.hidden = false;
   syncModalLock();
   itemEditorDialog.focus();
@@ -14145,7 +14499,7 @@ function closeItemEditor() {
   if (activeItemTrigger?.isConnected) activeItemTrigger.focus();
 }
 
-function submitItemEditor(event) {
+async function submitItemEditor(event) {
   event.preventDefault();
   setItemEditorError("");
   const name = itemNameInput.value.trim();
@@ -14200,8 +14554,9 @@ function submitItemEditor(event) {
     }
   }
 
-  const existingIndex = inventoryItems.findIndex((entry) => entry.id === activeItemId);
-  const existing = existingIndex >= 0 ? inventoryItems[existingIndex] : null;
+  const targetCollection = itemEditorScope === "minerva" ? grimoireItems : inventoryItems;
+  const existingIndex = targetCollection.findIndex((entry) => entry.id === activeItemId);
+  const existing = existingIndex >= 0 ? targetCollection[existingIndex] : null;
   const nextItem = sanitizeInventoryItem({
     id: existing?.id || createAbilityId("item"),
     name,
@@ -14221,7 +14576,31 @@ function submitItemEditor(event) {
     grantsModifiers: itemGrantsModifiersInput.checked,
     modifiersActive: false,
     modifiers: itemGrantsModifiersInput.checked ? mechanics.modifiers : [],
+    sourceId: existing?.sourceId || "",
+    shopListed: itemEditorScope === "minerva",
+    shopPrice: itemEditorScope === "minerva" ? itemShopPriceInput.value : 0,
   });
+  if (itemEditorScope === "minerva") {
+    if (!window.AbyssCloud?.isMinervaAdmin()) {
+      setItemEditorError("Esta conta não possui acesso ao Grimório de Minerva.");
+      return;
+    }
+    saveItemButton.disabled = true;
+    saveItemButton.textContent = "Publicando…";
+    try {
+      await window.AbyssCloud.saveMinervaItem(nextItem);
+      await refreshGrimoireFromCloud();
+      selectMinervaSection("inventory");
+      closeItemEditor();
+    } catch (error) {
+      setItemEditorError(error?.message || "Não foi possível publicar este Item.");
+    } finally {
+      saveItemButton.disabled = false;
+      saveItemButton.textContent = existing ? "Salvar Alterações" : "Publicar Item";
+    }
+    return;
+  }
+
   if (existingIndex >= 0) inventoryItems[existingIndex] = nextItem;
   else inventoryItems.push(nextItem);
   renderInventory();
@@ -14507,7 +14886,7 @@ function createGrimoireItem(ability, mode) {
   copy.className = "grimoire-item-copy";
 
   const type = document.createElement("small");
-  type.textContent = `${abilitySectionLabel(ability.section)} · ${abilityOriginLabel(ability, "minerva")}`;
+  type.textContent = `${abilitySectionLabel(ability.section)} · ${abilityOriginLabel(ability, "minerva")} · ${ability.shopListed ? `Loja: ${ability.shopPrice.toLocaleString("pt-BR")} Verdeons` : "Fora da Loja"}`;
   const name = Object.assign(document.createElement("strong"), {
     textContent: ability.name,
   });
@@ -14552,10 +14931,274 @@ function createGrimoireItem(ability, mode) {
   return card;
 }
 
+function createGrimoireInventoryItem(item) {
+  const card = document.createElement("article");
+  card.className = "grimoire-item";
+
+  const icon = document.createElement("div");
+  icon.className = "grimoire-item-media item-card-icon";
+  icon.textContent = item.isWeapon ? "⚔" : "◇";
+
+  const copy = document.createElement("div");
+  copy.className = "grimoire-item-copy";
+  const type = document.createElement("small");
+  type.textContent = `${item.isWeapon ? "Arma" : "Item"} · ${item.shopPrice.toLocaleString("pt-BR")} Verdeons`;
+  const name = Object.assign(document.createElement("strong"), { textContent: item.name });
+  const description = Object.assign(document.createElement("p"), {
+    textContent: item.description || "Sem descrição.",
+  });
+  copy.append(type, name, description);
+
+  const actions = document.createElement("div");
+  actions.className = "grimoire-item-actions";
+  const open = document.createElement("button");
+  open.type = "button";
+  open.className = "ability-card-action";
+  open.dataset.openMinervaItem = item.id;
+  open.textContent = "Abrir";
+  const edit = document.createElement("button");
+  edit.type = "button";
+  edit.className = "ability-card-action";
+  edit.dataset.editMinervaItem = item.id;
+  edit.textContent = "Editar";
+  const remove = document.createElement("button");
+  remove.type = "button";
+  remove.className = "ability-card-action is-delete";
+  remove.dataset.deleteMinervaItem = item.id;
+  remove.textContent = "Excluir";
+  actions.append(open, edit, remove);
+  card.append(icon, copy, actions);
+  return card;
+}
+
+function getShopProducts() {
+  return [
+    ...grimoireAbilities
+      .filter((ability) => ability.shopListed)
+      .map((creation) => ({ kind: "ability", creation })),
+    ...grimoireItems
+      .filter((item) => item.shopListed)
+      .map((creation) => ({ kind: "item", creation })),
+  ];
+}
+
+function shopDestinationLabel(kind, creation) {
+  return kind === "item" ? "Inventário" : `Habilidades · ${abilitySectionLabel(creation.section)}`;
+}
+
+function renderShop() {
+  if (!shopList || !walletBalanceOutput) return;
+  walletBalance = clampInteger(walletBalance, 0, 999999999, 0);
+  walletBalanceOutput.textContent = walletBalance.toLocaleString("pt-BR");
+
+  const query = normalizeSearchTerm(shopSearchInput?.value || "");
+  const products = getShopProducts()
+    .filter(({ kind, creation }) => {
+      const searchable = normalizeSearchTerm(
+        `${creation.name} ${creation.description} ${kind === "item" ? "item inventário arma" : abilitySectionLabel(creation.section)}`,
+      );
+      return !query || searchable.includes(query);
+    })
+    .sort((a, b) => a.creation.name.localeCompare(b.creation.name, "pt-BR", { sensitivity: "base" }));
+
+  shopCount.textContent = `${products.length} ${products.length === 1 ? "produto" : "produtos"}`;
+  shopList.replaceChildren();
+  shopList.hidden = products.length === 0;
+  shopEmpty.hidden = products.length !== 0;
+  if (!products.length) {
+    const title = shopEmpty.querySelector("strong");
+    if (title) title.textContent = "Nenhum produto disponível";
+    const message = shopEmpty.querySelector("p");
+    if (message) {
+      message.textContent = window.AbyssCloud?.isSignedIn()
+        ? "Os produtos publicados no Grimório de Minerva aparecerão aqui."
+        : "Entre com o Google e escolha um Slot para acessar a Loja.";
+    }
+    return;
+  }
+
+  products.forEach(({ kind, creation }) => {
+    const card = document.createElement("article");
+    card.className = "shop-product";
+    const media = document.createElement("div");
+    media.className = "shop-product-media";
+    if (kind === "ability" && safeAbilityMediaUrl(creation.mediaUrl)) {
+      const image = document.createElement("img");
+      image.src = creation.mediaUrl;
+      image.alt = "";
+      image.loading = "lazy";
+      image.addEventListener("error", () => media.replaceChildren(document.createTextNode("✦")), { once: true });
+      media.append(image);
+    } else {
+      media.textContent = kind === "item" ? (creation.isWeapon ? "⚔" : "◇") : "✦";
+    }
+
+    const copy = document.createElement("div");
+    copy.className = "shop-product-copy";
+    const destination = document.createElement("small");
+    destination.textContent = shopDestinationLabel(kind, creation);
+    const name = document.createElement("h3");
+    name.textContent = creation.name;
+    const description = document.createElement("p");
+    description.textContent = creation.description || "Sem descrição.";
+    copy.append(destination, name, description);
+
+    const footer = document.createElement("div");
+    footer.className = "shop-product-footer";
+    const price = document.createElement("span");
+    price.className = "shop-price";
+    price.textContent = `${creation.shopPrice.toLocaleString("pt-BR")} Verdeons`;
+    const actionGroup = document.createElement("div");
+    actionGroup.className = "card-mini-actions";
+    const open = document.createElement("button");
+    open.type = "button";
+    open.className = "card-mini-action";
+    open.dataset.openShopKind = kind;
+    open.dataset.openShopId = creation.id;
+    open.textContent = "Abrir";
+    const buy = document.createElement("button");
+    buy.type = "button";
+    buy.className = "shop-buy-button";
+    buy.dataset.buyShopKind = kind;
+    buy.dataset.buyShopId = creation.id;
+    buy.textContent = "Comprar";
+    buy.disabled = !window.AbyssCloud?.hasActiveSlot();
+    actionGroup.append(open, buy);
+    footer.append(price, actionGroup);
+    card.append(media, copy, footer);
+    shopList.append(card);
+  });
+}
+
+async function adjustWallet(action, rawValue, trigger) {
+  if (!window.AbyssCloud?.hasActiveSlot()) {
+    await showAbyssAlert({
+      eyebrow: "Carteira",
+      title: "Escolha um Slot",
+      message: "Entre com o Google e abra uma ficha antes de alterar a Carteira.",
+      tone: "warning",
+      trigger,
+    });
+    return;
+  }
+  const value = clampInteger(rawValue, 1, 999999999, 0);
+  if (!value) return;
+  if (action === "remove" && value > walletBalance) {
+    await showAbyssAlert({
+      eyebrow: "Carteira",
+      title: "Verdeons insuficientes",
+      message: `A Carteira possui ${walletBalance.toLocaleString("pt-BR")} Verdeons e não pode remover ${value.toLocaleString("pt-BR")}.`,
+      tone: "warning",
+      trigger,
+    });
+    return;
+  }
+  walletBalance = clampInteger(
+    action === "remove" ? walletBalance - value : walletBalance + value,
+    0,
+    999999999,
+    0,
+  );
+  renderShop();
+  notifySheetChanged(action === "remove" ? "wallet-removed" : "wallet-added");
+}
+
+async function purchaseShopProduct(kind, productId, trigger) {
+  if (!window.AbyssCloud?.hasActiveSlot()) {
+    await showAbyssAlert({
+      eyebrow: "Loja",
+      title: "Nenhum Slot aberto",
+      message: "Escolha a ficha que receberá esta compra.",
+      tone: "warning",
+      trigger,
+    });
+    return;
+  }
+  const source = kind === "item"
+    ? grimoireItems.find((item) => item.id === productId && item.shopListed)
+    : grimoireAbilities.find((ability) => ability.id === productId && ability.shopListed);
+  if (!source) return;
+
+  if (kind === "ability" && abilities.some((ability) => ability.sourceId === source.id)) {
+    await showAbyssAlert({
+      eyebrow: "Loja",
+      title: "Habilidade já adquirida",
+      message: `“${source.name}” já faz parte desta ficha.`,
+      tone: "info",
+      trigger,
+    });
+    return;
+  }
+  const price = clampInteger(source.shopPrice, 0, 999999999, 0);
+  if (walletBalance < price) {
+    await showAbyssAlert({
+      eyebrow: "Loja",
+      title: "Verdeons insuficientes",
+      message: `Esta compra custa ${price.toLocaleString("pt-BR")} Verdeons, mas a Carteira possui ${walletBalance.toLocaleString("pt-BR")}.`,
+      tone: "warning",
+      trigger,
+    });
+    return;
+  }
+
+  const confirmed = await showAbyssConfirm({
+    eyebrow: "Loja",
+    title: `Comprar ${source.name}?`,
+    message: `${price.toLocaleString("pt-BR")} Verdeons serão descontados da Carteira.\n\nDestino: ${shopDestinationLabel(kind, source)}.`,
+    confirmLabel: price ? "Comprar" : "Obter",
+    tone: "info",
+    trigger,
+  });
+  if (!confirmed) return;
+  if (walletBalance < price) return;
+
+  walletBalance -= price;
+  if (kind === "item") {
+    const existing = inventoryItems.find((item) => item.sourceId === source.id);
+    if (existing) {
+      existing.quantity = clampInteger(existing.quantity + source.quantity, 1, 9999, 1);
+    } else {
+      inventoryItems.push(sanitizeInventoryItem({
+        ...source,
+        id: createAbilityId("item"),
+        sourceId: source.id,
+        equipped: false,
+        modifiersActive: false,
+        modifiers: (source.modifiers || []).map((modifier) => ({ ...modifier, resolvedValue: 0 })),
+        shopListed: false,
+        shopPrice: 0,
+      }));
+    }
+    renderInventory();
+  } else {
+    abilities.push(sanitizeAbility({
+      ...source,
+      id: createAbilityId("ability"),
+      sourceId: source.id,
+      mediaOwner: source.mediaRefId ? "minerva" : "link",
+      modifiersActive: false,
+      modifiers: (source.modifiers || []).map((modifier) => ({ ...modifier, resolvedValue: 0 })),
+      shopListed: false,
+      shopPrice: 0,
+    }));
+    renderAbilities();
+  }
+  renderShop();
+  notifySheetChanged("shop-purchase");
+  await showAbyssAlert({
+    eyebrow: "Compra concluída",
+    title: source.name,
+    message: `O produto foi enviado para ${shopDestinationLabel(kind, source)}.`,
+    tone: "info",
+    trigger,
+  });
+}
+
 function renderGrimoireCollections() {
   const query = normalizeSearchTerm(grimoireSearchInput.value);
   const visible = grimoireAbilities
     .filter((ability) => {
+      if (ability.shopListed) return false;
       const searchable = normalizeSearchTerm(
         `${ability.name} ${ability.description} ${ability.damage} ${abilitySectionLabel(ability.section)} ${abilityOriginLabel(ability, "minerva")}`,
       );
@@ -14566,19 +15209,27 @@ function renderGrimoireCollections() {
   grimoirePickerList.replaceChildren(
     ...visible.map((ability) => createGrimoireItem(ability, "picker")),
   );
-  const minervaVisible = grimoireAbilities
-    .filter((ability) => ability.section === activeMinervaSection)
+  grimoirePickerEmpty.textContent = "Nenhuma habilidade disponível no Grimório.";
+  const showingItems = activeMinervaSection === "inventory";
+  const minervaVisible = (showingItems
+    ? grimoireItems
+    : grimoireAbilities.filter((ability) => ability.section === activeMinervaSection))
     .sort((a, b) => a.name.localeCompare(b.name, "pt-BR", { sensitivity: "base" }));
-  minervaList.replaceChildren(
-    ...minervaVisible.map((ability) => createGrimoireItem(ability, "admin")),
-  );
+  minervaList.replaceChildren(...minervaVisible.map((creation) =>
+    showingItems ? createGrimoireInventoryItem(creation) : createGrimoireItem(creation, "admin"),
+  ));
   grimoirePickerEmpty.hidden = visible.length !== 0;
-  minervaEmpty.textContent = `Nenhuma habilidade em ${abilitySectionLabel(activeMinervaSection)}.`;
+  minervaEmpty.textContent = showingItems
+    ? "Nenhum Item foi publicado na Loja."
+    : `Nenhuma habilidade em ${abilitySectionLabel(activeMinervaSection)}.`;
   minervaEmpty.hidden = minervaVisible.length !== 0;
+  const createLabel = document.querySelector("#create-minerva-ability span");
+  if (createLabel) createLabel.textContent = showingItems ? "Novo Item" : "Nova Habilidade";
+  renderShop();
 }
 
 function selectMinervaSection(sectionKey) {
-  if (!ABILITY_SECTIONS[sectionKey]) return;
+  if (!ABILITY_SECTIONS[sectionKey] && sectionKey !== "inventory") return;
   activeMinervaSection = sectionKey;
   let activeButton = null;
   minervaSectionButtons.forEach((button) => {
@@ -14599,7 +15250,10 @@ async function refreshGrimoireFromCloud() {
   }
 
   const loaded = await window.AbyssCloud.loadGrimoire();
-  grimoireAbilities = loaded.map(sanitizeAbility).filter(Boolean);
+  const abilityEntries = Array.isArray(loaded) ? loaded : loaded.abilities;
+  const itemEntries = Array.isArray(loaded) ? [] : loaded.items;
+  grimoireAbilities = (Array.isArray(abilityEntries) ? abilityEntries : []).map(sanitizeAbility).filter(Boolean);
+  grimoireItems = (Array.isArray(itemEntries) ? itemEntries : []).map(sanitizeInventoryItem).filter(Boolean);
   renderGrimoireCollections();
 }
 
@@ -14635,7 +15289,7 @@ function closeGrimoirePicker() {
 
 function importMinervaAbility(abilityId) {
   const source = grimoireAbilities.find((item) => item.id === abilityId);
-  if (!source) return;
+  if (!source || source.shopListed) return;
 
   abilities.push(
     sanitizeAbility({
@@ -14646,6 +15300,8 @@ function importMinervaAbility(abilityId) {
       mediaOwner: source.mediaRefId ? "minerva" : "link",
       modifiersActive: false,
       modifiers: (source.modifiers || []).map((modifier) => ({ ...modifier, resolvedValue: 0 })),
+      shopListed: false,
+      shopPrice: 0,
     }),
   );
   selectAbilitySection(source.section);
@@ -15674,7 +16330,25 @@ document.addEventListener("pointerdown", (event) => {
 });
 
 viewButtons.forEach((button) => {
-  button.addEventListener("click", () => changeView(button.dataset.viewTarget));
+  button.addEventListener("click", async () => {
+    const target = button.dataset.viewTarget;
+    changeView(target);
+    if (target === "shop" && window.AbyssCloud?.isSignedIn()) {
+      shopList.setAttribute("aria-busy", "true");
+      try {
+        await refreshGrimoireFromCloud();
+      } catch {
+        shopList.replaceChildren();
+        shopList.hidden = true;
+        shopCount.textContent = "0 produtos";
+        shopEmpty.hidden = false;
+        shopEmpty.querySelector("strong").textContent = "Não foi possível carregar a Loja";
+        shopEmpty.querySelector("p").textContent = "Confira sua conexão e as regras do Firestore.";
+      } finally {
+        shopList.removeAttribute("aria-busy");
+      }
+    }
+  });
 });
 
 abilitySectionButtons.forEach((button) => {
@@ -15697,6 +16371,7 @@ minervaButton.addEventListener("click", openMinervaGrimoire);
 slotsButton.addEventListener("click", openSlotsManager);
 abilityEditorForm.addEventListener("submit", submitAbilityEditor);
 abilitySectionSelect.addEventListener("change", updateAbilityEchoField);
+abilityShopListedInput.addEventListener("change", updateAbilityShopFields);
 abilityHasDamageInput.addEventListener("change", () => {
   abilityDamageFields.hidden = !abilityHasDamageInput.checked;
 });
@@ -15707,6 +16382,25 @@ itemIsWeaponInput.addEventListener("change", updateItemWeaponFields);
 itemGrantsModifiersInput.addEventListener("change", updateItemModifierFields);
 itemEditorForm.addEventListener("submit", submitItemEditor);
 inventorySearchInput.addEventListener("input", renderInventory);
+shopSearchInput.addEventListener("input", renderShop);
+walletAdjustForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  const action = event.submitter?.dataset.walletAction || "add";
+  adjustWallet(action, walletAdjustAmountInput.value, event.submitter);
+});
+shopList.addEventListener("click", (event) => {
+  const open = event.target.closest("[data-open-shop-id]");
+  if (open) {
+    openAbilityDetail(
+      open.dataset.openShopId,
+      open,
+      open.dataset.openShopKind === "item" ? "minerva-item" : "minerva",
+    );
+    return;
+  }
+  const buy = event.target.closest("[data-buy-shop-id]");
+  if (buy) purchaseShopProduct(buy.dataset.buyShopKind, buy.dataset.buyShopId, buy);
+});
 inventoryMoveToggle.addEventListener("click", () => setInventoryMoveMode(!inventoryMoveMode));
 inventoryList.addEventListener("pointerdown", beginInventoryReorder);
 inventoryList.addEventListener("pointermove", updateInventoryReorder);
@@ -15970,10 +16664,55 @@ grimoirePickerList.addEventListener("click", (event) => {
 });
 
 document.querySelector("#create-minerva-ability").addEventListener("click", (event) => {
-  openAbilityEditor("minerva", null, event.currentTarget);
+  if (activeMinervaSection === "inventory") {
+    openItemEditor(null, event.currentTarget, "minerva");
+  } else {
+    openAbilityEditor("minerva", null, event.currentTarget);
+  }
 });
 
 minervaList.addEventListener("click", async (event) => {
+  const openItem = event.target.closest("[data-open-minerva-item]");
+  if (openItem) {
+    openAbilityDetail(openItem.dataset.openMinervaItem, openItem, "minerva-item");
+    return;
+  }
+  const editItem = event.target.closest("[data-edit-minerva-item]");
+  if (editItem) {
+    const item = grimoireItems.find((entry) => entry.id === editItem.dataset.editMinervaItem);
+    if (item) openItemEditor(item, editItem, "minerva");
+    return;
+  }
+  const removeItem = event.target.closest("[data-delete-minerva-item]");
+  if (removeItem) {
+    const item = grimoireItems.find((entry) => entry.id === removeItem.dataset.deleteMinervaItem);
+    if (!item) return;
+    const confirmed = await showAbyssConfirm({
+      eyebrow: "Loja de Minerva",
+      title: "Excluir produto?",
+      message: `“${item.name}” deixará de aparecer na Loja para todos os jogadores.`,
+      confirmLabel: "Excluir",
+      tone: "danger",
+      trigger: removeItem,
+    });
+    if (!confirmed) return;
+    removeItem.disabled = true;
+    try {
+      await window.AbyssCloud.deleteMinervaItem(item);
+      await refreshGrimoireFromCloud();
+    } catch (error) {
+      await showAbyssAlert({
+        eyebrow: "Loja de Minerva",
+        title: "Exclusão não concluída",
+        message: error?.message || "Não foi possível excluir o produto.",
+        tone: "danger",
+        trigger: removeItem,
+      });
+    } finally {
+      removeItem.disabled = false;
+    }
+    return;
+  }
   const open = event.target.closest("[data-open-grimoire-ability]");
   if (open) {
     openAbilityDetail(open.dataset.openGrimoireAbility, open, "minerva");
@@ -16560,6 +17299,7 @@ loadSelectedFeatures();
 renderSelectedFeatures();
 renderAbilities();
 renderInventory();
+renderShop();
 updateIdentityChoiceAppearance();
 renderDamageReductions();
 characterClassSelect.dataset.previousValue = characterClassSelect.value;
@@ -16647,6 +17387,15 @@ const firebaseUi = {
   slotsLoginNote: document.querySelector("#slots-login-note"),
   createSlotForm: document.querySelector("#create-slot-form"),
   newSlotName: document.querySelector("#new-slot-name"),
+  startupGate: document.querySelector("#startup-slot-gate"),
+  startupGateDialog: document.querySelector("#startup-slot-gate .slot-gate-dialog"),
+  startupGateDescription: document.querySelector("#startup-slot-description"),
+  startupGateSpinner: document.querySelector("#startup-slot-spinner"),
+  startupGateStatus: document.querySelector("#startup-slot-status"),
+  startupGateList: document.querySelector("#startup-slot-list"),
+  startupGateActions: document.querySelector("#startup-slot-actions"),
+  startupGateRetry: document.querySelector("#startup-slot-retry"),
+  startupGateSignOut: document.querySelector("#startup-slot-sign-out"),
 };
 
 let firebaseAuth = null;
@@ -16662,6 +17411,61 @@ let cloudSavePromise = null;
 let stateRevision = 0;
 let lastSavedRevision = 0;
 let isHydratingCloudState = false;
+let preferredStartupSlotId = "";
+
+function openStartupSlotGate({ loading = true, message = "Carregando Slots…" } = {}) {
+  firebaseUi.startupGate.hidden = false;
+  firebaseUi.startupGate.setAttribute("aria-busy", String(loading));
+  firebaseUi.startupGateSpinner.hidden = !loading;
+  firebaseUi.startupGateStatus.classList.remove("is-error");
+  firebaseUi.startupGateStatus.textContent = message;
+  firebaseUi.startupGateActions.hidden = true;
+  if (loading) firebaseUi.startupGateList.replaceChildren();
+  document.body.classList.add("slot-gate-open");
+  requestAnimationFrame(() => firebaseUi.startupGateDialog.focus());
+}
+
+function closeStartupSlotGate() {
+  firebaseUi.startupGate.hidden = true;
+  firebaseUi.startupGate.setAttribute("aria-busy", "false");
+  document.body.classList.remove("slot-gate-open");
+}
+
+function showStartupSlotGateError(message) {
+  openStartupSlotGate({ loading: false, message });
+  firebaseUi.startupGateStatus.classList.add("is-error");
+  firebaseUi.startupGateActions.hidden = false;
+}
+
+function renderStartupSlotChoices() {
+  firebaseUi.startupGateList.replaceChildren();
+  firebaseUi.startupGateSpinner.hidden = true;
+  firebaseUi.startupGate.setAttribute("aria-busy", "false");
+  firebaseUi.startupGateActions.hidden = true;
+  firebaseUi.startupGateStatus.classList.remove("is-error");
+  firebaseUi.startupGateStatus.textContent = "Selecione o Slot que deseja abrir.";
+  firebaseUi.startupGateDescription.textContent = "Cada ficha é independente. Nada será carregado até você escolher um Slot.";
+
+  currentSlots.forEach((slot, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "slot-gate-choice";
+    button.dataset.startupSlot = slot.id;
+    const marker = document.createElement("span");
+    marker.setAttribute("aria-hidden", "true");
+    marker.textContent = slot.id === preferredStartupSlotId ? "✦" : "◇";
+    const copy = document.createElement("span");
+    const name = document.createElement("strong");
+    name.textContent = slot.name;
+    const detail = document.createElement("small");
+    detail.textContent = slot.id === preferredStartupSlotId ? "Último Slot usado" : `Slot ${index + 1}`;
+    copy.append(name, detail);
+    const action = document.createElement("b");
+    action.textContent = "Abrir";
+    button.append(marker, copy, action);
+    firebaseUi.startupGateList.append(button);
+  });
+}
 
 function firebaseConfigIsReady() {
   const requiredFields = ["apiKey", "authDomain", "projectId", "appId"];
@@ -17016,6 +17820,10 @@ async function readCloudSheet(user, slotId) {
         pa: { ...clean.profile.resources.pa, ...(profileData.resources?.pa || {}) },
         sa: { ...clean.profile.resources.sa, ...(profileData.resources?.sa || {}) },
       },
+      wallet: {
+        ...clean.profile.wallet,
+        ...(profileData.wallet || {}),
+      },
       combat: {
         ...clean.profile.combat,
         ...(profileData.combat || {}),
@@ -17084,7 +17892,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     { merge: true },
   );
   batch.set(refs.profile, {
-    schemaVersion: 9,
+    schemaVersion: 10,
     name: String(state.profile?.name || "").slice(0, 120),
     background: String(state.profile?.background || "").slice(0, 240),
     portrait,
@@ -17095,11 +17903,17 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     level: Math.min(15, Math.max(1, Number.parseInt(state.profile?.level, 10) || 1)),
     attributes,
     resources: state.profile?.resources || {},
+    wallet: {
+      verdeons: Math.min(
+        999999999,
+        Math.max(0, Number.parseInt(state.profile?.wallet?.verdeons, 10) || 0),
+      ),
+    },
     combat: state.profile?.combat || {},
     updatedAt: timestamp,
   });
   batch.set(refs.sheet, {
-    schemaVersion: 9,
+    schemaVersion: 10,
     difficulty: ["easy", "medium", "hard"].includes(state.sheet?.difficulty)
       ? state.sheet.difficulty
       : "medium",
@@ -17113,12 +17927,12 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     updatedAt: timestamp,
   });
   batch.set(refs.customSkills, {
-    schemaVersion: 9,
+    schemaVersion: 10,
     items: Array.isArray(state.customSkills) ? state.customSkills : [],
     updatedAt: timestamp,
   });
   batch.set(refs.abilities, {
-    schemaVersion: 9,
+    schemaVersion: 10,
     items: cloudAbilities,
     inventoryItems: cloudInventory,
     updatedAt: timestamp,
@@ -17328,14 +18142,19 @@ async function initializeUserSlots(user) {
   const directory = await loadSlotDirectory(user);
 
   if (!currentSlots.length) {
-    await createCloudSlot("Personagem 1", { announce: true });
+    const slot = await createCloudSlot("Personagem 1", { announce: false });
+    preferredStartupSlotId = slot.id;
+    currentSlotId = null;
+    sheetBridge.resetState();
+    renderSlots();
     return;
   }
 
-  const preferred = currentSlots.some((slot) => slot.id === directory.activeSlotId)
+  preferredStartupSlotId = currentSlots.some((slot) => slot.id === directory.activeSlotId)
     ? directory.activeSlotId
     : currentSlots[0].id;
-  await hydrateSlot(user, preferred);
+  currentSlotId = null;
+  renderSlots();
 }
 
 async function switchCloudSlot(slotId) {
@@ -17660,7 +18479,7 @@ async function deleteMedia(reference) {
 }
 
 async function loadGrimoire() {
-  if (!currentFirebaseUser) return [];
+  if (!currentFirebaseUser) return { abilities: [], items: [] };
   const snapshot = await withCloudTimeout(
     firestoreApi.getDocs(
       firestoreApi.collection(firestoreDb, "minervaAbilities"),
@@ -17668,11 +18487,14 @@ async function loadGrimoire() {
     20000,
     "O Grimório demorou demais para responder. Verifique sua conexão e tente novamente.",
   );
-  const abilities = snapshot.docs.map((item) => ({ ...item.data(), id: item.id }));
-  return hydrateAbilityMedia(abilities, {
+  const entries = snapshot.docs.map((item) => ({ ...item.data(), id: item.id }));
+  const rawAbilities = entries.filter((entry) => entry.kind !== "item");
+  const items = entries.filter((entry) => entry.kind === "item");
+  const abilities = await hydrateAbilityMedia(rawAbilities, {
     uid: currentFirebaseUser.uid,
     slotId: "",
   });
+  return { abilities, items };
 }
 
 async function saveMinervaAbility(ability) {
@@ -17689,12 +18511,36 @@ async function saveMinervaAbility(ability) {
       firestoreApi.doc(firestoreDb, "minervaAbilities", id),
       {
         ...fields,
+        kind: "ability",
         updatedBy: currentFirebaseUser.email || "",
         updatedAt: firestoreApi.serverTimestamp(),
       },
     ),
     20000,
     "O Grimório demorou demais para salvar. Verifique sua conexão e tente novamente.",
+  );
+}
+
+async function saveMinervaItem(item) {
+  if (!isMinervaAdmin()) {
+    throw new Error("Esta conta não possui acesso ao Grimório de Minerva.");
+  }
+  const serialized = sheetBridge.serializeItem(item);
+  if (!serialized) throw new Error("O Item não possui dados válidos.");
+  const { id, ...fields } = serialized;
+  await withCloudTimeout(
+    firestoreApi.setDoc(
+      firestoreApi.doc(firestoreDb, "minervaAbilities", id),
+      {
+        ...fields,
+        kind: "item",
+        shopListed: true,
+        updatedBy: currentFirebaseUser.email || "",
+        updatedAt: firestoreApi.serverTimestamp(),
+      },
+    ),
+    20000,
+    "A Loja demorou demais para salvar. Verifique sua conexão e tente novamente.",
   );
 }
 
@@ -17715,6 +18561,19 @@ async function deleteMinervaAbility(ability) {
   }
 }
 
+async function deleteMinervaItem(item) {
+  if (!isMinervaAdmin()) {
+    throw new Error("Esta conta não possui acesso ao Grimório de Minerva.");
+  }
+  await withCloudTimeout(
+    firestoreApi.deleteDoc(
+      firestoreApi.doc(firestoreDb, "minervaAbilities", item.id),
+    ),
+    20000,
+    "A Loja demorou demais para excluir este Item.",
+  );
+}
+
 window.AbyssCloud = Object.freeze({
   isSignedIn: () => Boolean(currentFirebaseUser),
   hasActiveSlot: () => Boolean(currentFirebaseUser && currentSlotId),
@@ -17724,6 +18583,8 @@ window.AbyssCloud = Object.freeze({
   loadGrimoire,
   saveMinervaAbility,
   deleteMinervaAbility,
+  saveMinervaItem,
+  deleteMinervaItem,
   renderSlots,
   describeError: describeFirebaseError,
 });
@@ -17814,6 +18675,7 @@ async function hydrateUserSheet(user) {
     await initializeUserSlots(user);
     if (currentFirebaseUser?.uid !== user.uid) return;
     renderSlots();
+    renderStartupSlotChoices();
     closeAccountMenu();
   } catch (error) {
     if (currentFirebaseUser?.uid !== user.uid) return;
@@ -17823,11 +18685,75 @@ async function hydrateUserSheet(user) {
       "Não foi possível abrir a nuvem",
       describeFirebaseError(error),
     );
-    openAccountMenu();
+    showStartupSlotGateError(describeFirebaseError(error));
   } finally {
     if (currentFirebaseUser?.uid === user.uid) isHydratingCloudState = false;
   }
 }
+
+firebaseUi.startupGateList.addEventListener("click", async (event) => {
+  const choice = event.target.closest("[data-startup-slot]");
+  if (!choice || !currentFirebaseUser) return;
+  const slotId = choice.dataset.startupSlot;
+  [...firebaseUi.startupGateList.querySelectorAll("button")].forEach((button) => {
+    button.disabled = true;
+  });
+  firebaseUi.startupGateSpinner.hidden = false;
+  firebaseUi.startupGate.setAttribute("aria-busy", "true");
+  firebaseUi.startupGateStatus.textContent = "Abrindo a ficha escolhida…";
+  try {
+    await hydrateSlot(currentFirebaseUser, slotId);
+    if (currentSlotId === slotId) {
+      closeStartupSlotGate();
+      renderAccountIdentity(currentFirebaseUser, "signed-in");
+    }
+  } catch (error) {
+    showStartupSlotGateError(describeFirebaseError(error));
+  } finally {
+    [...firebaseUi.startupGateList.querySelectorAll("button")].forEach((button) => {
+      button.disabled = false;
+    });
+    firebaseUi.startupGateSpinner.hidden = true;
+  }
+});
+
+firebaseUi.startupGateRetry.addEventListener("click", () => {
+  if (currentFirebaseUser) {
+    openStartupSlotGate();
+    hydrateUserSheet(currentFirebaseUser);
+  }
+});
+
+firebaseUi.startupGateSignOut.addEventListener("click", () => {
+  requestFirebaseSignOut();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (firebaseUi.startupGate.hidden) return;
+  if (event.key === "Escape") {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    return;
+  }
+  if (event.key !== "Tab") return;
+  const focusable = [...firebaseUi.startupGate.querySelectorAll(
+    'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+  )].filter((element) => !element.hidden && element.getClientRects().length);
+  if (!focusable.length) {
+    event.preventDefault();
+    firebaseUi.startupGateDialog.focus();
+    return;
+  }
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}, true);
 
 async function requestFirebaseLogin() {
   if (!firebaseAuth || !authApi) {
@@ -17957,6 +18883,7 @@ window.addEventListener("online", () => {
 
 async function initializeFirebaseSync() {
   if (!sheetBridge) {
+    closeStartupSlotGate();
     renderAccountIdentity(null, "error");
     setSyncStatus(
       "error",
@@ -17967,6 +18894,7 @@ async function initializeFirebaseSync() {
     return;
   }
   if (!firebaseConfigIsReady()) {
+    closeStartupSlotGate();
     renderAccountIdentity(null, "missing");
     setSyncStatus(
       "idle",
@@ -18003,6 +18931,8 @@ async function initializeFirebaseSync() {
         stateRevision = 0;
         lastSavedRevision = 0;
         sheetBridge.resetState();
+        preferredStartupSlotId = "";
+        closeStartupSlotGate();
         renderAccountIdentity(null, "signed-out");
         renderSlots();
         setSyncStatus(
@@ -18017,10 +18947,12 @@ async function initializeFirebaseSync() {
       currentSlotId = null;
       currentSlots = [];
       sheetBridge.resetState();
+      openStartupSlotGate({ loading: true, message: "Buscando os Slots desta conta…" });
       renderAccountIdentity(user, "signed-in");
       await hydrateUserSheet(user);
     });
   } catch (error) {
+    closeStartupSlotGate();
     renderAccountIdentity(null, "error");
     setSyncStatus(
       "error",
