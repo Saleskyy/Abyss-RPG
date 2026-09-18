@@ -6190,7 +6190,7 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
     linear-gradient(145deg, var(--palette-panel, #0d0e12), var(--palette-container, #111217));
   box-shadow: inset 0 0 35px rgba(60, 160, 89, .03);
 }
-.shop-wallet::after { content: "V̵"; position: absolute; right: 28px; color: rgba(87, 209, 124, .045); font: 700 8rem Georgia, serif; pointer-events: none; }
+.shop-wallet::after { content: "V"; position: absolute; right: 28px; color: rgba(87, 209, 124, .045); font: 700 8rem Georgia, serif; text-decoration: line-through double currentColor; pointer-events: none; }
 .wallet-copy { position: relative; z-index: 1; display: flex; align-items: center; gap: 16px; }
 .wallet-mark { display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid rgba(83, 210, 121, .38); border-radius: 50%; color: #83e39f; background: rgba(57, 156, 86, .1); font: 700 1.25rem Georgia, serif; }
 .wallet-mark svg { width: 29px; height: 29px; fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
@@ -6290,6 +6290,325 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
   .shop-history-entry { grid-template-columns: 34px minmax(0, 1fr); }
   .shop-history-entry-price { grid-column: 2; }
 }
+
+/* Identidade simplificada e símbolo monetário dos Verdeons. */
+.topbar > .brand-copy { margin-left: 24px; padding-left: 0; }
+.verdeon-symbol {
+  position: relative;
+  display: inline-block;
+  width: .83em;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+  text-align: center;
+}
+.verdeon-symbol::before,
+.verdeon-symbol::after {
+  position: absolute;
+  left: -.08em;
+  width: 1em;
+  height: .075em;
+  content: "";
+  background: currentColor;
+  border-radius: 999px;
+  pointer-events: none;
+}
+.verdeon-symbol::before { top: 42%; }
+.verdeon-symbol::after { top: 57%; }
+.verdeon-value { display: inline-flex; align-items: baseline; gap: .24em; white-space: nowrap; }
+
+/* Página independente de Campanhas. */
+.campaign-app {
+  position: fixed;
+  inset: 0;
+  z-index: 155;
+  overflow: auto;
+  color: var(--theme-text-eee8dc, #eee8dc);
+  background:
+    radial-gradient(circle at 10% -10%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .14), transparent 34rem),
+    radial-gradient(circle at 92% 92%, rgba(91, 69, 122, .14), transparent 32rem),
+    linear-gradient(150deg, var(--palette-background, #090a0d), var(--palette-panel, #0d0e12) 58%, #08090b);
+  isolation: isolate;
+}
+.campaign-app[hidden] { display: none; }
+.campaign-app::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  content: "";
+  opacity: .2;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .035) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(to bottom, #000, transparent 74%);
+}
+body.campaign-mode { overflow: hidden; }
+body.campaign-mode > :is(.skip-link, .topbar, .sidebar, .main-content) { display: none !important; }
+.campaign-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  min-height: 74px;
+  padding: 10px clamp(18px, 4vw, 58px);
+  border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .2);
+  background: rgba(var(--theme-background-090a0c-rgb, 9, 10, 12), .88);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .3);
+  backdrop-filter: blur(20px);
+}
+.campaign-brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.campaign-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .55);
+  border-radius: 50%;
+  color: var(--theme-accent-dfc77f, #dfc77f);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .07);
+  box-shadow: 0 0 24px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08);
+}
+.campaign-brand-mark svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.campaign-brand strong { display: block; font: 600 .98rem Georgia, "Times New Roman", serif; letter-spacing: .13em; text-transform: uppercase; }
+.campaign-brand small { display: block; margin-top: 2px; color: var(--theme-muted-858179, #858179); font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; }
+.campaign-topbar-rule { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .35), transparent); }
+.campaign-top-actions { display: flex; align-items: center; gap: 8px; }
+.campaign-user-pill {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 6px 10px 6px 7px;
+  border: 1px solid var(--theme-border-292a30, #292a30);
+  border-radius: 999px;
+  background: rgba(255,255,255,.02);
+}
+.campaign-user-pill img,
+.campaign-user-fallback { width: 27px; height: 27px; border-radius: 50%; object-fit: cover; }
+.campaign-user-fallback { display: grid; place-items: center; color: #111; background: var(--theme-accent-dfc77f, #dfc77f); font-size: .65rem; font-weight: 850; }
+.campaign-user-pill span { max-width: 130px; overflow: hidden; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .65rem; text-overflow: ellipsis; white-space: nowrap; }
+.campaign-exit-button,
+.campaign-ghost-button,
+.campaign-primary-button,
+.campaign-danger-button,
+.campaign-icon-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25);
+  border-radius: 4px;
+  color: var(--theme-text-ece6d8, #ece6d8);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .055);
+  cursor: pointer;
+  font-size: .69rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+}
+.campaign-exit-button svg,
+.campaign-ghost-button svg,
+.campaign-primary-button svg,
+.campaign-icon-button svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.campaign-primary-button { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .48); color: #0b0c0f; background: var(--theme-accent-dfc77f, #dfc77f); }
+.campaign-danger-button { border-color: rgba(211, 72, 85, .35); color: #ef969f; background: rgba(133, 35, 45, .09); }
+.campaign-icon-button { width: 40px; padding: 0; }
+.campaign-exit-button:hover,
+.campaign-ghost-button:hover { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .48); color: var(--theme-accent-f0d58f, #f0d58f); }
+.campaign-shell { width: min(1460px, calc(100% - clamp(28px, 7vw, 110px))); margin: 0 auto; padding: clamp(34px, 5vw, 72px) 0 80px; }
+.campaign-dashboard-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 28px; margin-bottom: 35px; }
+.campaign-dashboard-head h1 { max-width: 760px; font-size: clamp(2.55rem, 5.6vw, 5.2rem); }
+.campaign-dashboard-head p:last-child { max-width: 48ch; margin: 11px 0 0; color: var(--theme-muted-99958d, #99958d); font-size: .81rem; line-height: 1.65; }
+.campaign-dashboard-actions { display: flex; gap: 8px; }
+.campaign-lane { position: relative; padding: 22px 0 27px; border-top: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .18); }
+.campaign-lane + .campaign-lane { margin-top: 13px; }
+.campaign-lane-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 15px; }
+.campaign-lane-title { display: flex; align-items: center; gap: 11px; }
+.campaign-lane-title span { display: grid; place-items: center; width: 31px; height: 31px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .23); border-radius: 50%; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04); }
+.campaign-lane-title svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.5; }
+.campaign-lane-title h2 { font-size: 1.16rem; }
+.campaign-lane-title small { color: var(--theme-muted-7f7b72, #7f7b72); font-size: .61rem; letter-spacing: .11em; text-transform: uppercase; }
+.campaign-strip { display: flex; gap: 14px; min-height: 224px; padding: 4px 2px 15px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: inline proximity; }
+.campaign-card {
+  position: relative;
+  flex: 0 0 clamp(245px, 25vw, 340px);
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--theme-border-34353a, #34353a);
+  border-radius: 7px;
+  background: linear-gradient(150deg, var(--palette-containerRaised, #191a20), var(--palette-container, #111217));
+  box-shadow: 0 18px 48px rgba(0, 0, 0, .22);
+  scroll-snap-align: start;
+  cursor: pointer;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+.campaign-card:hover { transform: translateY(-3px); border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .5); box-shadow: 0 25px 60px rgba(0,0,0,.34); }
+.campaign-card-banner { position: relative; height: 132px; overflow: hidden; background: radial-gradient(circle at 25% 20%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25), transparent 34%), linear-gradient(135deg, #29241c, #11131a 58%, #161020); background-position: center; background-size: cover; }
+.campaign-card-banner::after { position: absolute; inset: auto 0 0; height: 70%; content: ""; background: linear-gradient(transparent, rgba(9,10,13,.9)); }
+.campaign-card-role { position: absolute; top: 10px; left: 10px; z-index: 1; padding: 5px 8px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; color: #f3ead4; background: rgba(8,9,12,.72); backdrop-filter: blur(8px); font-size: .55rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.campaign-card-copy { padding: 14px 15px 16px; }
+.campaign-card-copy strong { display: block; overflow: hidden; color: var(--theme-text-f2ecdc, #f2ecdc); font: 600 1.05rem Georgia, "Times New Roman", serif; text-overflow: ellipsis; white-space: nowrap; }
+.campaign-card-copy p { display: -webkit-box; min-height: 2.75em; margin: 6px 0 12px; overflow: hidden; color: var(--theme-muted-99958d, #99958d); font-size: .68rem; line-height: 1.4; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.campaign-card-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--theme-muted-858179, #858179); font-size: .59rem; letter-spacing: .06em; text-transform: uppercase; }
+.campaign-card-meta b { color: var(--theme-accent-dfc77f, #dfc77f); }
+.campaign-empty-lane { display: grid; place-items: center; flex: 1 0 100%; min-height: 205px; border: 1px dashed var(--theme-border-34353a, #34353a); border-radius: 7px; color: var(--theme-muted-77736c, #77736c); text-align: center; background: rgba(255,255,255,.012); }
+.campaign-empty-lane span { display: block; margin-bottom: 7px; color: var(--theme-accent-927a49, #927a49); font-size: 1.7rem; }
+.campaign-empty-lane strong { display: block; color: var(--theme-muted-aaa69d, #aaa69d); font: 600 .93rem Georgia, "Times New Roman", serif; }
+.campaign-empty-lane p { margin: 5px 0 0; font-size: .67rem; }
+.campaign-loading { display: grid; place-items: center; min-height: 350px; color: var(--theme-muted-99958d, #99958d); }
+.campaign-loading::before { width: 34px; height: 34px; margin-bottom: 12px; border: 2px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .16); border-top-color: var(--theme-accent-dfc77f, #dfc77f); border-radius: 50%; content: ""; animation: campaign-spin .8s linear infinite; }
+.campaign-loading.is-error { color: #dc929a; text-align: center; }
+.campaign-loading.is-error::before { display: grid; place-items: center; border-color: rgba(211, 72, 85, .34); color: #ef969f; content: "!"; animation: none; font-weight: 900; }
+@keyframes campaign-spin { to { transform: rotate(360deg); } }
+
+/* Detalhes da Campanha. */
+.campaign-detail { animation: campaign-detail-in .22s ease both; }
+@keyframes campaign-detail-in { from { opacity: 0; transform: translateY(7px); } }
+.campaign-detail-back { margin-bottom: 14px; }
+.campaign-hero { position: relative; min-height: 315px; overflow: hidden; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .22); border-radius: 8px; background: #111217 center/cover no-repeat; box-shadow: 0 28px 85px rgba(0,0,0,.32); }
+.campaign-hero::before { position: absolute; inset: 0; content: ""; background: linear-gradient(90deg, rgba(7,8,10,.97) 2%, rgba(7,8,10,.78) 44%, rgba(7,8,10,.15)), linear-gradient(0deg, rgba(7,8,10,.85), transparent 55%); }
+.campaign-hero-copy { position: relative; z-index: 1; display: flex; flex-direction: column; justify-content: flex-end; min-height: 315px; max-width: 760px; padding: clamp(27px, 5vw, 58px); }
+.campaign-hero-copy h1 { font-size: clamp(2.5rem, 5vw, 4.8rem); }
+.campaign-hero-copy > p { max-width: 70ch; margin: 16px 0 0; color: var(--theme-muted-b0aba1, #b0aba1); font-size: .79rem; line-height: 1.7; white-space: pre-wrap; }
+.campaign-hero-badges { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 13px; }
+.campaign-badge { padding: 5px 8px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .3); border-radius: 999px; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(9,10,13,.58); font-size: .55rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; backdrop-filter: blur(7px); }
+.campaign-detail-toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 15px 0 25px; padding: 13px; border: 1px solid var(--theme-border-292a30, #292a30); border-radius: 6px; background: rgba(15,16,20,.72); }
+.campaign-detail-actions { display: flex; flex-wrap: wrap; gap: 7px; }
+.campaign-code { display: flex; align-items: center; gap: 8px; min-height: 40px; padding: 5px 6px 5px 12px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .24); border-radius: 4px; color: var(--theme-muted-99958d, #99958d); font-size: .61rem; letter-spacing: .08em; text-transform: uppercase; }
+.campaign-code strong { color: var(--theme-accent-f0d58f, #f0d58f); font: 800 .82rem ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .16em; }
+.campaign-code button { width: 29px; height: 29px; padding: 0; border: 0; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08); cursor: pointer; }
+.campaign-detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 18px; align-items: start; }
+.campaign-section-panel { border: 1px solid var(--theme-border-292a30, #292a30); border-radius: 7px; background: linear-gradient(145deg, rgba(20,21,26,.94), rgba(11,12,15,.97)); box-shadow: 0 22px 65px rgba(0,0,0,.22); }
+.campaign-section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 18px; padding: 20px 21px 15px; border-bottom: 1px solid var(--theme-border-292a30, #292a30); }
+.campaign-section-head h2 { font-size: 1.16rem; }
+.campaign-section-head p { margin: 5px 0 0; color: var(--theme-muted-858179, #858179); font-size: .65rem; }
+.campaign-sheet-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 10px; padding: 12px; }
+.campaign-sheet-card { position: relative; display: grid; grid-template-columns: 58px minmax(0, 1fr); gap: 12px; min-width: 0; padding: 13px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 5px; background: linear-gradient(145deg, var(--palette-containerRaised, #191a20), var(--palette-container, #111217)); }
+.campaign-sheet-avatar { display: grid; place-items: center; width: 58px; height: 58px; overflow: hidden; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25); border-radius: 5px; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .05); font: 600 1.3rem Georgia, serif; }
+.campaign-sheet-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.campaign-sheet-copy { min-width: 0; }
+.campaign-sheet-copy strong { display: block; overflow: hidden; color: var(--theme-text-f2ecdc, #f2ecdc); font: 600 .94rem Georgia, serif; text-overflow: ellipsis; white-space: nowrap; }
+.campaign-sheet-copy small { display: block; margin-top: 4px; overflow: hidden; color: var(--theme-muted-858179, #858179); font-size: .61rem; text-overflow: ellipsis; white-space: nowrap; }
+.campaign-sheet-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+.campaign-sheet-tag { padding: 3px 6px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 999px; color: var(--theme-muted-99958d, #99958d); font-size: .51rem; letter-spacing: .07em; text-transform: uppercase; }
+.campaign-sheet-tag.is-private { border-color: rgba(193, 104, 117, .28); color: #df939d; }
+.campaign-sheet-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 6px; padding-top: 3px; }
+.campaign-sheet-actions button { min-height: 32px; padding: 0 9px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 3px; color: var(--theme-muted-b0aba1, #b0aba1); background: rgba(255,255,255,.025); cursor: pointer; font-size: .58rem; font-weight: 800; }
+.campaign-sheet-actions button.is-primary { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .38); color: var(--theme-accent-f0d58f, #f0d58f); }
+.campaign-sheet-actions button.is-danger { border-color: rgba(211,72,85,.28); color: #e98b95; }
+.campaign-panel-empty { grid-column: 1 / -1; padding: 50px 20px; color: var(--theme-muted-77736c, #77736c); text-align: center; }
+.campaign-panel-empty strong { display: block; color: var(--theme-muted-aaa69d, #aaa69d); font: 600 .94rem Georgia, serif; }
+.campaign-panel-empty p { margin: 5px 0 0; font-size: .66rem; }
+.campaign-members-list { display: grid; gap: 6px; padding: 12px; }
+.campaign-member { display: grid; grid-template-columns: 34px minmax(0, 1fr); align-items: center; gap: 9px; padding: 8px; border: 1px solid var(--theme-border-292a30, #292a30); border-radius: 4px; }
+.campaign-member-avatar { display: grid; place-items: center; width: 34px; height: 34px; overflow: hidden; border-radius: 50%; color: #111; background: var(--theme-accent-dfc77f, #dfc77f); font-size: .65rem; font-weight: 850; }
+.campaign-member-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.campaign-member-copy { min-width: 0; }
+.campaign-member-copy strong { display: block; overflow: hidden; color: var(--theme-text-ece6d8, #ece6d8); font-size: .7rem; text-overflow: ellipsis; white-space: nowrap; }
+.campaign-member-copy small { display: block; margin-top: 2px; color: var(--theme-muted-77736c, #77736c); font-size: .55rem; letter-spacing: .06em; text-transform: uppercase; }
+
+/* Formulários e diálogos de Campanha. */
+.campaign-modal { position: fixed; inset: 0; z-index: 240; display: grid; place-items: center; padding: 22px; }
+.campaign-modal[hidden] { display: none; }
+.campaign-modal-backdrop { position: absolute; inset: 0; border: 0; background: rgba(2,3,5,.82); backdrop-filter: blur(9px); }
+.campaign-dialog { position: relative; width: min(660px, 100%); max-height: calc(100dvh - 44px); overflow: auto; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .27); border-radius: 7px; color: var(--theme-text-eee8dc, #eee8dc); background: linear-gradient(145deg, var(--palette-containerRaised, #191a20), var(--palette-panel, #0d0e12)); box-shadow: 0 35px 110px rgba(0,0,0,.62); }
+.campaign-dialog.is-narrow { width: min(480px, 100%); }
+.campaign-dialog.is-wide { width: min(920px, 100%); }
+.campaign-dialog-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 23px 24px 18px; border-bottom: 1px solid var(--theme-border-292a30, #292a30); }
+.campaign-dialog-head h2 { font-size: 1.35rem; }
+.campaign-dialog-head p:last-child { margin: 6px 0 0; color: var(--theme-muted-858179, #858179); font-size: .67rem; }
+.campaign-dialog-close { width: 34px; height: 34px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 50%; color: var(--theme-muted-b0aba1, #b0aba1); background: transparent; cursor: pointer; font-size: 1.1rem; }
+.campaign-form { display: grid; gap: 14px; padding: 21px 24px 24px; }
+.campaign-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.campaign-field { display: grid; gap: 7px; min-width: 0; }
+.campaign-field.is-wide { grid-column: 1 / -1; }
+.campaign-field > span { color: var(--theme-muted-b0aba1, #b0aba1); font-size: .62rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+.campaign-field input,
+.campaign-field textarea { min-width: 0; width: 100%; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 4px; color: var(--theme-text-eee8dc, #eee8dc); background: rgba(0,0,0,.23); padding: 11px 12px; resize: vertical; }
+.campaign-field textarea { min-height: 120px; line-height: 1.55; }
+.campaign-banner-preview { position: relative; display: grid; place-items: center; min-height: 155px; overflow: hidden; border: 1px dashed var(--theme-border-4b4c52, #4b4c52); border-radius: 5px; color: var(--theme-muted-77736c, #77736c); background: radial-gradient(circle, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08), transparent 60%), #0b0c0f center/cover no-repeat; }
+.campaign-banner-preview.has-image span { display: none; }
+.campaign-form-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 4px; }
+.campaign-form-error { margin: 0; color: #e98b95; font-size: .67rem; line-height: 1.5; }
+.campaign-code-input { text-align: center; font: 800 1.15rem ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .2em; text-transform: uppercase; }
+.campaign-slot-list { display: grid; gap: 7px; max-height: 360px; overflow: auto; }
+.campaign-slot-choice { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 4px; cursor: pointer; background: rgba(255,255,255,.018); }
+.campaign-slot-choice:has(input:checked) { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .5); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .07); }
+.campaign-slot-choice input { accent-color: var(--theme-accent-dfc77f, #dfc77f); }
+.campaign-slot-choice strong { display: block; color: var(--theme-text-ece6d8, #ece6d8); font-size: .76rem; }
+.campaign-slot-choice small { display: block; margin-top: 3px; color: var(--theme-muted-77736c, #77736c); font-size: .58rem; }
+.campaign-rules-copy { padding: 20px 22px 23px; }
+.campaign-rules-copy pre { max-height: 55dvh; margin: 0 0 12px; overflow: auto; border: 1px solid var(--theme-border-292a30, #292a30); border-radius: 4px; color: #c8c3b8; background: #08090b; padding: 15px; font: .65rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; }
+
+/* Faixa ao abrir uma ficha pela Campanha. */
+.campaign-sheet-session-bar { position: fixed; top: var(--topbar-height); right: 0; left: var(--sidebar-width); z-index: 27; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; padding: 6px 24px; border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .26); background: rgba(15,16,20,.96); box-shadow: 0 12px 28px rgba(0,0,0,.28); backdrop-filter: blur(14px); }
+.campaign-sheet-session-bar[hidden] { display: none; }
+.campaign-sheet-session-copy { min-width: 0; }
+.campaign-sheet-session-copy strong { display: block; overflow: hidden; color: var(--theme-accent-f0d58f, #f0d58f); font: 600 .78rem Georgia, serif; text-overflow: ellipsis; white-space: nowrap; }
+.campaign-sheet-session-copy small { display: block; margin-top: 2px; color: var(--theme-muted-858179, #858179); font-size: .56rem; letter-spacing: .06em; text-transform: uppercase; }
+body.campaign-sheet-session .main-content { padding-top: calc(var(--topbar-height) + 48px); }
+body.campaign-sheet-session.is-readonly .main-content { cursor: default; }
+body.campaign-sheet-session .topbar-actions { visibility: hidden; pointer-events: none; }
+body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; }
+
+@media (max-width: 900px) {
+  .campaign-shell { width: min(100% - 30px, 740px); }
+  .campaign-dashboard-head { align-items: flex-start; flex-direction: column; }
+  .campaign-detail-grid { grid-template-columns: 1fr; }
+  .campaign-members-panel { order: -1; }
+}
+@media (max-width: 760px) {
+  .topbar > .brand-copy { margin-left: 0; }
+  .sidebar { grid-template-columns: minmax(0, 6fr) minmax(54px, 1fr); }
+  .sidebar-nav { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .campaign-topbar { min-height: 62px; padding: 8px 12px; }
+  .campaign-brand-mark { width: 36px; height: 36px; }
+  .campaign-brand small,
+  .campaign-topbar-rule,
+  .campaign-user-pill { display: none; }
+  .campaign-top-actions { margin-left: auto; }
+  .campaign-exit-button span { display: none; }
+  .campaign-exit-button { width: 40px; padding: 0; }
+  .campaign-shell { width: min(100% - 24px, 680px); padding: 27px 0 95px; }
+  .campaign-dashboard-head { margin-bottom: 23px; }
+  .campaign-dashboard-head h1 { font-size: clamp(2.4rem, 13vw, 4rem); }
+  .campaign-dashboard-actions { display: grid; width: 100%; grid-template-columns: 1fr 1fr; }
+  .campaign-strip { min-height: 214px; }
+  .campaign-card { flex-basis: min(82vw, 315px); }
+  .campaign-hero { min-height: 280px; }
+  .campaign-hero-copy { min-height: 280px; padding: 26px 21px; }
+  .campaign-detail-toolbar { align-items: stretch; flex-direction: column; }
+  .campaign-detail-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .campaign-code { justify-content: space-between; }
+  .campaign-modal { align-items: end; padding: 0; }
+  .campaign-dialog,
+  .campaign-dialog.is-narrow,
+  .campaign-dialog.is-wide { width: 100%; max-height: 94dvh; border-right: 0; border-bottom: 0; border-left: 0; border-radius: 12px 12px 0 0; }
+  .campaign-form-grid { grid-template-columns: 1fr; }
+  .campaign-field.is-wide { grid-column: auto; }
+  .campaign-sheet-session-bar { right: 0; left: 0; min-height: 54px; padding: 6px 10px; }
+  body.campaign-sheet-session .main-content { padding-top: calc(var(--topbar-height) + 54px); }
+}
+@media (max-width: 480px) {
+  .campaign-brand strong { font-size: .76rem; letter-spacing: .08em; }
+  .campaign-shell { width: calc(100% - 18px); }
+  .campaign-dashboard-actions { grid-template-columns: 1fr; }
+  .campaign-lane-head { align-items: flex-start; }
+  .campaign-lane-head > button span { display: none; }
+  .campaign-lane-head > button { width: 40px; padding: 0; }
+  .campaign-detail-actions { grid-template-columns: 1fr; }
+  .campaign-sheet-grid { grid-template-columns: 1fr; padding: 8px; }
+  .campaign-dialog-head { padding: 19px 16px 15px; }
+  .campaign-form { padding: 17px 15px calc(21px + env(safe-area-inset-bottom, 0px)); }
+  .campaign-form-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .campaign-sheet-session-copy small { max-width: 53vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+}
 @media (prefers-reduced-motion: reduce) { .slot-gate-spinner { animation-duration: 1.8s; } }
     </style>
   </head>
@@ -6297,9 +6616,6 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
 
     <header class="topbar">
-      <div class="brand-mark" aria-hidden="true">
-        <span></span>
-      </div>
       <div class="brand-copy">
         <strong>Abyss RPG</strong>
         <span>Ficha de personagem</span>
@@ -6464,6 +6780,19 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
           </svg>
           <span>Loja</span>
         </button>
+
+        <button
+          id="campaign-button"
+          class="nav-item"
+          type="button"
+          aria-controls="campaign-app"
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 19.5V6.8c2.8-1.8 5.5-1.8 8.1 0 2.5-1.8 5.1-1.8 7.9 0v12.7c-2.8-1.8-5.4-1.8-7.9 0-2.6-1.8-5.3-1.8-8.1 0Z"></path>
+            <path d="M12.1 6.8v12.7M7 10h2.3M15 10h2.3"></path>
+          </svg>
+          <span>Campanha</span>
+        </button>
       </nav>
 
       <div class="sidebar-footer">
@@ -6480,6 +6809,17 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
         </button>
       </div>
     </aside>
+
+    <div id="campaign-sheet-session-bar" class="campaign-sheet-session-bar" hidden>
+      <div class="campaign-sheet-session-copy">
+        <strong id="campaign-sheet-session-title">Ficha da Campanha</strong>
+        <small id="campaign-sheet-session-status">Visualização compartilhada</small>
+      </div>
+      <button id="campaign-sheet-session-back" class="campaign-ghost-button" type="button">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+        Voltar à Campanha
+      </button>
+    </div>
 
     <main id="main-content" class="main-content">
       <section
@@ -7235,7 +7575,7 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
               <p class="eyebrow">Carteira do Slot</p>
               <h2 id="wallet-title">Verdeons</h2>
               <div class="wallet-balance-line">
-                <output id="wallet-balance" aria-live="polite">V̵ 0</output>
+                <output id="wallet-balance" class="verdeon-value" aria-live="polite"><span class="verdeon-symbol" aria-hidden="true">V</span><span>0</span></output>
                 <span>Verdeons</span>
               </div>
             </div>
@@ -7243,7 +7583,7 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
           <div class="wallet-tools">
             <form id="wallet-adjust-form" class="wallet-adjust-form">
               <label class="wallet-amount-field">
-                <span class="verdeon-symbol" aria-hidden="true">V̵</span>
+                <span class="verdeon-symbol" aria-hidden="true">V</span>
                 <input id="wallet-adjust-amount" type="number" min="1" max="999999999" step="1" value="1" inputmode="numeric" aria-label="Quantidade de Verdeons" required />
               </label>
               <button type="submit" data-wallet-action="add" aria-label="Adicionar Verdeons">+ Adicionar</button>
@@ -7274,13 +7614,231 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
           </div>
           <div id="shop-list" class="shop-list"></div>
           <div id="shop-empty" class="abilities-empty">
-            <span class="verdeon-symbol" aria-hidden="true">V̵</span>
+            <span class="verdeon-symbol" aria-hidden="true">V</span>
             <strong>Nenhum produto disponível</strong>
             <p>Os itens publicados no Grimório de Minerva aparecerão aqui.</p>
           </div>
         </section>
       </section>
     </main>
+
+    <section id="campaign-app" class="campaign-app" aria-label="Campanhas" hidden>
+      <header class="campaign-topbar">
+        <div class="campaign-brand">
+          <span class="campaign-brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M4 19.5V6.8c2.8-1.8 5.5-1.8 8.1 0 2.5-1.8 5.1-1.8 7.9 0v12.7c-2.8-1.8-5.4-1.8-7.9 0-2.6-1.8-5.3-1.8-8.1 0ZM12.1 6.8v12.7"></path></svg>
+          </span>
+          <span>
+            <strong>Abyss RPG</strong>
+            <small>Central de Campanhas</small>
+          </span>
+        </div>
+        <span class="campaign-topbar-rule" aria-hidden="true"></span>
+        <div class="campaign-top-actions">
+          <div class="campaign-user-pill">
+            <span id="campaign-user-fallback" class="campaign-user-fallback" aria-hidden="true">A</span>
+            <img id="campaign-user-avatar" alt="" referrerpolicy="no-referrer" hidden />
+            <span id="campaign-user-name">Conta Google</span>
+          </div>
+          <button id="campaign-rules-button" class="campaign-icon-button" type="button" aria-label="Configuração do Firebase" title="Configuração do Firebase">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.3a3.3 3.3 0 1 0 0-6.6 3.3 3.3 0 0 0 0 6.6Z"></path><path d="m19 13.3 1.4 1.1-2 3.5-1.8-.7a7.8 7.8 0 0 1-2.3 1.3L14 20.5h-4l-.3-2a7.8 7.8 0 0 1-2.3-1.3l-1.8.7-2-3.5L5 13.3a7.8 7.8 0 0 1 0-2.6L3.6 9.6l2-3.5 1.8.7a7.8 7.8 0 0 1 2.3-1.3l.3-2h4l.3 2a7.8 7.8 0 0 1 2.3 1.3l1.8-.7 2 3.5-1.4 1.1a7.8 7.8 0 0 1 0 2.6Z"></path></svg>
+          </button>
+          <button id="campaign-exit" class="campaign-exit-button" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+            <span>Voltar à ficha</span>
+          </button>
+        </div>
+      </header>
+
+      <main class="campaign-shell">
+        <section id="campaign-loading" class="campaign-loading" aria-live="polite">Carregando Campanhas…</section>
+
+        <section id="campaign-dashboard" hidden>
+          <header class="campaign-dashboard-head">
+            <div>
+              <p class="eyebrow">Arquivo de jornadas</p>
+              <h1>Suas Campanhas</h1>
+              <p>Crie mundos como Mestre, entre com um código e vincule seus Slots sem duplicar nenhuma ficha.</p>
+            </div>
+            <div class="campaign-dashboard-actions">
+              <button id="campaign-create-button" class="campaign-primary-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                Criar Campanha
+              </button>
+              <button id="campaign-join-button" class="campaign-ghost-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5h6v14h-6M5 12h10m-3-3 3 3-3 3"></path></svg>
+                Entrar por código
+              </button>
+            </div>
+          </header>
+
+          <section class="campaign-lane" aria-labelledby="campaign-master-title">
+            <header class="campaign-lane-head">
+              <div class="campaign-lane-title">
+                <span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18h16M6 15l-1-8 5 4 2-6 2 6 5-4-1 8H6Z"></path></svg></span>
+                <div><h2 id="campaign-master-title">Mestre</h2><small>Campanhas criadas por você</small></div>
+              </div>
+              <button class="campaign-icon-button" type="button" data-open-campaign-create aria-label="Criar Campanha" title="Criar Campanha">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+                <span class="sr-only">Criar Campanha</span>
+              </button>
+            </header>
+            <div id="campaign-master-list" class="campaign-strip"></div>
+          </section>
+
+          <section class="campaign-lane" aria-labelledby="campaign-player-title">
+            <header class="campaign-lane-head">
+              <div class="campaign-lane-title">
+                <span aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"></circle><path d="M5.5 19c.5-3.9 2.7-5.8 6.5-5.8s6 1.9 6.5 5.8"></path></svg></span>
+                <div><h2 id="campaign-player-title">Jogador</h2><small>Campanhas das quais você participa</small></div>
+              </div>
+              <button class="campaign-ghost-button" type="button" data-open-campaign-join>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 5h6v14h-6M5 12h10m-3-3 3 3-3 3"></path></svg>
+                <span>Entrar</span>
+              </button>
+            </header>
+            <div id="campaign-player-list" class="campaign-strip"></div>
+          </section>
+        </section>
+
+        <section id="campaign-detail" class="campaign-detail" hidden>
+          <button id="campaign-detail-back" class="campaign-ghost-button campaign-detail-back" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
+            Todas as Campanhas
+          </button>
+
+          <section id="campaign-hero" class="campaign-hero">
+            <div class="campaign-hero-copy">
+              <div class="campaign-hero-badges">
+                <span id="campaign-detail-role" class="campaign-badge">Jogador</span>
+                <span id="campaign-detail-members-count" class="campaign-badge">0 membros</span>
+              </div>
+              <h1 id="campaign-detail-name">Campanha</h1>
+              <p id="campaign-detail-synopsis">Sem sinopse.</p>
+            </div>
+          </section>
+
+          <div class="campaign-detail-toolbar">
+            <div id="campaign-detail-code" class="campaign-code" hidden>
+              Código <strong id="campaign-code-value">ABYSS000</strong>
+              <button id="campaign-copy-code" type="button" aria-label="Copiar código da Campanha" title="Copiar código">⧉</button>
+            </div>
+            <div class="campaign-detail-actions">
+              <button id="campaign-attach-sheet" class="campaign-primary-button" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h10l4 4v12H5zM15 4v4h4M9 14h6M12 11v6"></path></svg>
+                Vincular ficha
+              </button>
+              <button id="campaign-edit-button" class="campaign-ghost-button" type="button" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 16-.8 3.8L8 19l10-10-3-3L5 16ZM13.5 7.5l3 3"></path></svg>
+                Editar Campanha
+              </button>
+              <button id="campaign-leave-button" class="campaign-danger-button" type="button">Sair da Campanha</button>
+              <button id="campaign-delete-button" class="campaign-danger-button" type="button" hidden>Excluir Campanha</button>
+            </div>
+          </div>
+
+          <div class="campaign-detail-grid">
+            <section class="campaign-section-panel">
+              <header class="campaign-section-head">
+                <div><h2>Fichas vinculadas</h2><p id="campaign-sheet-limit-note">Vincule até quatro Slots seus.</p></div>
+                <span id="campaign-sheet-count" class="abilities-count">0 fichas</span>
+              </header>
+              <div id="campaign-sheet-list" class="campaign-sheet-grid"></div>
+            </section>
+
+            <aside class="campaign-section-panel campaign-members-panel">
+              <header class="campaign-section-head">
+                <div><h2>Membros</h2><p>Mestre e jogadores desta jornada.</p></div>
+              </header>
+              <div id="campaign-members-list" class="campaign-members-list"></div>
+            </aside>
+          </div>
+        </section>
+      </main>
+
+      <div id="campaign-editor-modal" class="campaign-modal" hidden>
+        <button class="campaign-modal-backdrop" type="button" data-close-campaign-editor aria-label="Fechar"></button>
+        <section id="campaign-editor-dialog" class="campaign-dialog" role="dialog" aria-modal="true" aria-labelledby="campaign-editor-title" tabindex="-1">
+          <header class="campaign-dialog-head">
+            <div><p class="eyebrow">Mestre</p><h2 id="campaign-editor-title">Criar Campanha</h2><p>Defina a identidade da nova jornada.</p></div>
+            <button class="campaign-dialog-close" type="button" data-close-campaign-editor aria-label="Fechar">×</button>
+          </header>
+          <form id="campaign-editor-form" class="campaign-form" novalidate>
+            <div class="campaign-form-grid">
+              <label class="campaign-field is-wide"><span>Nome da Campanha</span><input id="campaign-name" type="text" maxlength="90" required placeholder="Ex.: Ecos sob a Lua Morta" /></label>
+              <label class="campaign-field is-wide"><span>Sinopse</span><textarea id="campaign-synopsis" maxlength="1800" required placeholder="Apresente a premissa, o tom e o ponto de partida da Campanha."></textarea></label>
+              <label class="campaign-field is-wide"><span>Link do Banner <small>(opcional)</small></span><input id="campaign-banner-url" type="url" maxlength="1800" placeholder="https://..." /></label>
+              <label class="campaign-field"><span>Arquivo do Banner <small>(opcional)</small></span><input id="campaign-banner-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /></label>
+              <div class="campaign-field"><span>Prévia</span><div id="campaign-banner-preview" class="campaign-banner-preview"><span>Banner da Campanha</span></div></div>
+            </div>
+            <p id="campaign-editor-error" class="campaign-form-error" role="alert" hidden></p>
+            <div class="campaign-form-actions">
+              <button class="campaign-ghost-button" type="button" data-close-campaign-editor>Cancelar</button>
+              <button id="campaign-editor-submit" class="campaign-primary-button" type="submit">Criar Campanha</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <div id="campaign-join-modal" class="campaign-modal" hidden>
+        <button class="campaign-modal-backdrop" type="button" data-close-campaign-join aria-label="Fechar"></button>
+        <section id="campaign-join-dialog" class="campaign-dialog is-narrow" role="dialog" aria-modal="true" aria-labelledby="campaign-join-title" tabindex="-1">
+          <header class="campaign-dialog-head">
+            <div><p class="eyebrow">Convite</p><h2 id="campaign-join-title">Entrar em uma Campanha</h2><p>Digite o código compartilhado pelo Mestre.</p></div>
+            <button class="campaign-dialog-close" type="button" data-close-campaign-join aria-label="Fechar">×</button>
+          </header>
+          <form id="campaign-join-form" class="campaign-form" novalidate>
+            <label class="campaign-field"><span>Código da Campanha</span><input id="campaign-join-code" class="campaign-code-input" type="text" maxlength="12" autocomplete="off" spellcheck="false" required placeholder="ABYSS000" /></label>
+            <p id="campaign-join-error" class="campaign-form-error" role="alert" hidden></p>
+            <div class="campaign-form-actions">
+              <button class="campaign-ghost-button" type="button" data-close-campaign-join>Cancelar</button>
+              <button id="campaign-join-submit" class="campaign-primary-button" type="submit">Entrar</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <div id="campaign-slot-modal" class="campaign-modal" hidden>
+        <button class="campaign-modal-backdrop" type="button" data-close-campaign-slot aria-label="Fechar"></button>
+        <section id="campaign-slot-dialog" class="campaign-dialog is-narrow" role="dialog" aria-modal="true" aria-labelledby="campaign-slot-title" tabindex="-1">
+          <header class="campaign-dialog-head">
+            <div><p class="eyebrow">Fichas do personagem</p><h2 id="campaign-slot-title">Vincular um Slot</h2><p>A ficha continuará sendo o mesmo Slot da sua conta.</p></div>
+            <button class="campaign-dialog-close" type="button" data-close-campaign-slot aria-label="Fechar">×</button>
+          </header>
+          <form id="campaign-slot-form" class="campaign-form" novalidate>
+            <div id="campaign-slot-list" class="campaign-slot-list"></div>
+            <label class="mechanics-switch">
+              <input id="campaign-slot-private" type="checkbox" />
+              <span aria-hidden="true"></span>
+              <strong>Ocultar dos outros jogadores</strong>
+            </label>
+            <small class="ability-field-help">O Mestre sempre poderá visualizar e editar a ficha.</small>
+            <p id="campaign-slot-error" class="campaign-form-error" role="alert" hidden></p>
+            <div class="campaign-form-actions">
+              <button class="campaign-ghost-button" type="button" data-close-campaign-slot>Cancelar</button>
+              <button id="campaign-slot-submit" class="campaign-primary-button" type="submit">Vincular ficha</button>
+            </div>
+          </form>
+        </section>
+      </div>
+
+      <div id="campaign-rules-modal" class="campaign-modal" hidden>
+        <button class="campaign-modal-backdrop" type="button" data-close-campaign-rules aria-label="Fechar"></button>
+        <section id="campaign-rules-dialog" class="campaign-dialog is-wide" role="dialog" aria-modal="true" aria-labelledby="campaign-rules-title" tabindex="-1">
+          <header class="campaign-dialog-head">
+            <div><p class="eyebrow">Firebase</p><h2 id="campaign-rules-title">Regras do Firestore</h2><p>Publique estas regras para liberar Campanhas e preservar as permissões das fichas.</p></div>
+            <button class="campaign-dialog-close" type="button" data-close-campaign-rules aria-label="Fechar">×</button>
+          </header>
+          <div class="campaign-rules-copy">
+            <pre id="campaign-rules-code"></pre>
+            <div class="campaign-form-actions">
+              <button class="campaign-ghost-button" type="button" data-close-campaign-rules>Fechar</button>
+              <button id="campaign-copy-rules" class="campaign-primary-button" type="button">Copiar regras</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
 
     <div id="startup-slot-gate" class="slot-gate" role="dialog" aria-modal="true" aria-labelledby="startup-slot-title" aria-busy="true">
       <section class="slot-gate-dialog" tabindex="-1">
@@ -7316,10 +7874,10 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
           <button class="result-close" type="button" data-close-shop-history aria-label="Fechar histórico de compras">×</button>
         </header>
         <div class="utility-content shop-history-content">
-          <p class="shop-history-summary"><span id="shop-history-summary">Nenhuma compra registrada</span><strong id="shop-history-total">V̵ 0</strong></p>
+          <p class="shop-history-summary"><span id="shop-history-summary">Nenhuma compra registrada</span><strong id="shop-history-total" class="verdeon-value"><span class="verdeon-symbol" aria-hidden="true">V</span><span>0</span></strong></p>
           <div id="shop-history-list" class="shop-history-list"></div>
           <div id="shop-history-empty" class="shop-history-empty">
-            <span class="verdeon-symbol" aria-hidden="true">V̵</span>
+            <span class="verdeon-symbol" aria-hidden="true">V</span>
             <strong>Nenhuma compra neste Slot</strong>
             <p>Quando algo for adquirido na Loja, a operação aparecerá aqui.</p>
           </div>
@@ -7889,7 +8447,7 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
                   <span>Preço</span>
                   <span class="shop-price-input">
                     <input id="ability-shop-price" type="number" min="0" max="999999999" step="1" value="0" inputmode="numeric" />
-                    <small class="verdeon-symbol">V̵</small>
+                    <small class="verdeon-symbol" aria-label="Verdeons">V</small>
                   </span>
                 </label>
               </div>
@@ -8049,7 +8607,7 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
                 <span>Preço na Loja</span>
                 <span class="shop-price-input">
                   <input id="item-shop-price" type="number" min="0" max="999999999" step="1" value="0" inputmode="numeric" />
-                  <small class="verdeon-symbol">V̵</small>
+                  <small class="verdeon-symbol" aria-label="Verdeons">V</small>
                 </span>
               </label>
               <label id="item-shop-destination-field" class="builder-field builder-field-wide" hidden>
@@ -10404,11 +10962,25 @@ const ABILITY_SECTIONS = {
   tree: { label: "Árvore", eyebrow: "Progressão" },
 };
 
-const VERDEON_SYMBOL = "V̵";
+const VERDEON_SYMBOL = "V̶";
 const MAX_PURCHASE_HISTORY = 200;
 
 function formatVerdeons(value) {
   return `${VERDEON_SYMBOL}\u00a0${clampInteger(value, 0, 999999999, 0).toLocaleString("pt-BR")}`;
+}
+
+function renderVerdeonAmount(element, value) {
+  if (!element) return;
+  const amount = clampInteger(value, 0, 999999999, 0).toLocaleString("pt-BR");
+  const symbol = document.createElement("span");
+  symbol.className = "verdeon-symbol";
+  symbol.setAttribute("aria-hidden", "true");
+  symbol.textContent = "V";
+  const number = document.createElement("span");
+  number.textContent = amount;
+  element.classList.add("verdeon-value");
+  element.setAttribute("aria-label", `${amount} Verdeons`);
+  element.replaceChildren(symbol, number);
 }
 
 function sanitizeShopDestination(value) {
@@ -11525,6 +12097,7 @@ const shopHistoryList = document.querySelector("#shop-history-list");
 const shopHistoryEmpty = document.querySelector("#shop-history-empty");
 const shopHistorySummary = document.querySelector("#shop-history-summary");
 const shopHistoryTotal = document.querySelector("#shop-history-total");
+const campaignButton = document.querySelector("#campaign-button");
 const MECHANIC_EDITORS = {
   ability: {
     rolls: document.querySelector("#ability-rolls-list"),
@@ -15193,7 +15766,7 @@ function shopDestinationLabel(kind, creation) {
 function renderShop() {
   if (!shopList || !walletBalanceOutput) return;
   walletBalance = clampInteger(walletBalance, 0, 999999999, 0);
-  walletBalanceOutput.textContent = formatVerdeons(walletBalance);
+  renderVerdeonAmount(walletBalanceOutput, walletBalance);
   shopHistoryCount.textContent = String(purchaseHistory.length);
 
   const query = normalizeSearchTerm(shopSearchInput?.value || "");
@@ -15252,7 +15825,7 @@ function renderShop() {
     footer.className = "shop-product-footer";
     const price = document.createElement("span");
     price.className = "shop-price";
-    price.textContent = formatVerdeons(creation.shopPrice);
+    renderVerdeonAmount(price, creation.shopPrice);
     const actionGroup = document.createElement("div");
     actionGroup.className = "card-mini-actions";
     const open = document.createElement("button");
@@ -15307,7 +15880,8 @@ function renderPurchaseHistory() {
   shopHistorySummary.textContent = purchaseHistory.length
     ? `${purchaseHistory.length} ${purchaseHistory.length === 1 ? "compra registrada" : "compras registradas"}`
     : "Nenhuma compra registrada";
-  shopHistoryTotal.textContent = formatVerdeons(
+  renderVerdeonAmount(
+    shopHistoryTotal,
     purchaseHistory.reduce((total, entry) => total + entry.price, 0),
   );
 
@@ -15328,7 +15902,7 @@ function renderPurchaseHistory() {
     copy.append(name, detail);
     const price = document.createElement("span");
     price.className = "shop-history-entry-price";
-    price.textContent = formatVerdeons(entry.price);
+    renderVerdeonAmount(price, entry.price);
     row.append(mark, copy, price);
     shopHistoryList.append(row);
   });
@@ -16706,6 +17280,9 @@ createAbilityButton.addEventListener("click", () => {
 openGrimoirePickerButton.addEventListener("click", openGrimoirePicker);
 minervaButton.addEventListener("click", openMinervaGrimoire);
 slotsButton.addEventListener("click", openSlotsManager);
+campaignButton.addEventListener("click", () => {
+  window.dispatchEvent(new CustomEvent("abyss:campaign-open"));
+});
 abilityEditorForm.addEventListener("submit", submitAbilityEditor);
 abilitySectionSelect.addEventListener("change", updateAbilityEchoField);
 abilityShopListedInput.addEventListener("change", updateAbilityShopFields);
@@ -17759,6 +18336,1480 @@ let lastSavedRevision = 0;
 let isHydratingCloudState = false;
 let preferredStartupSlotId = "";
 
+const campaignUi = {
+  app: document.querySelector("#campaign-app"),
+  openButton: document.querySelector("#campaign-button"),
+  exit: document.querySelector("#campaign-exit"),
+  userAvatar: document.querySelector("#campaign-user-avatar"),
+  userFallback: document.querySelector("#campaign-user-fallback"),
+  userName: document.querySelector("#campaign-user-name"),
+  loading: document.querySelector("#campaign-loading"),
+  dashboard: document.querySelector("#campaign-dashboard"),
+  masterList: document.querySelector("#campaign-master-list"),
+  playerList: document.querySelector("#campaign-player-list"),
+  createButtons: [...document.querySelectorAll("#campaign-create-button, [data-open-campaign-create]")],
+  joinButtons: [...document.querySelectorAll("#campaign-join-button, [data-open-campaign-join]")],
+  detail: document.querySelector("#campaign-detail"),
+  detailBack: document.querySelector("#campaign-detail-back"),
+  hero: document.querySelector("#campaign-hero"),
+  detailRole: document.querySelector("#campaign-detail-role"),
+  detailMembersCount: document.querySelector("#campaign-detail-members-count"),
+  detailName: document.querySelector("#campaign-detail-name"),
+  detailSynopsis: document.querySelector("#campaign-detail-synopsis"),
+  detailCode: document.querySelector("#campaign-detail-code"),
+  codeValue: document.querySelector("#campaign-code-value"),
+  copyCode: document.querySelector("#campaign-copy-code"),
+  attachSheet: document.querySelector("#campaign-attach-sheet"),
+  edit: document.querySelector("#campaign-edit-button"),
+  leave: document.querySelector("#campaign-leave-button"),
+  remove: document.querySelector("#campaign-delete-button"),
+  sheetLimitNote: document.querySelector("#campaign-sheet-limit-note"),
+  sheetCount: document.querySelector("#campaign-sheet-count"),
+  sheetList: document.querySelector("#campaign-sheet-list"),
+  membersList: document.querySelector("#campaign-members-list"),
+  editorModal: document.querySelector("#campaign-editor-modal"),
+  editorDialog: document.querySelector("#campaign-editor-dialog"),
+  editorForm: document.querySelector("#campaign-editor-form"),
+  editorTitle: document.querySelector("#campaign-editor-title"),
+  editorSubmit: document.querySelector("#campaign-editor-submit"),
+  editorError: document.querySelector("#campaign-editor-error"),
+  name: document.querySelector("#campaign-name"),
+  synopsis: document.querySelector("#campaign-synopsis"),
+  bannerUrl: document.querySelector("#campaign-banner-url"),
+  bannerFile: document.querySelector("#campaign-banner-file"),
+  bannerPreview: document.querySelector("#campaign-banner-preview"),
+  joinModal: document.querySelector("#campaign-join-modal"),
+  joinDialog: document.querySelector("#campaign-join-dialog"),
+  joinForm: document.querySelector("#campaign-join-form"),
+  joinCode: document.querySelector("#campaign-join-code"),
+  joinError: document.querySelector("#campaign-join-error"),
+  joinSubmit: document.querySelector("#campaign-join-submit"),
+  slotModal: document.querySelector("#campaign-slot-modal"),
+  slotDialog: document.querySelector("#campaign-slot-dialog"),
+  slotForm: document.querySelector("#campaign-slot-form"),
+  slotList: document.querySelector("#campaign-slot-list"),
+  slotPrivate: document.querySelector("#campaign-slot-private"),
+  slotError: document.querySelector("#campaign-slot-error"),
+  slotSubmit: document.querySelector("#campaign-slot-submit"),
+  rulesButton: document.querySelector("#campaign-rules-button"),
+  rulesModal: document.querySelector("#campaign-rules-modal"),
+  rulesDialog: document.querySelector("#campaign-rules-dialog"),
+  rulesCode: document.querySelector("#campaign-rules-code"),
+  copyRules: document.querySelector("#campaign-copy-rules"),
+  sheetSessionBar: document.querySelector("#campaign-sheet-session-bar"),
+  sheetSessionTitle: document.querySelector("#campaign-sheet-session-title"),
+  sheetSessionStatus: document.querySelector("#campaign-sheet-session-status"),
+  sheetSessionBack: document.querySelector("#campaign-sheet-session-back"),
+};
+
+let campaignRecords = [];
+let activeCampaign = null;
+let activeCampaignMembers = [];
+let activeCampaignSheets = [];
+let campaignEditorId = "";
+let campaignBannerDraft = "";
+let campaignSheetSession = null;
+let campaignBusy = false;
+
+const CAMPAIGN_FIRESTORE_RULES = String.raw`rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function mine(uid) { return signedIn() && request.auth.uid == uid; }
+    function minervaAdmin() {
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email in [
+          'zkyokoo007@gmail.com',
+          'anthonysousabr002@gmail.com',
+          'annysousa314@gmail.com'
+        ];
+    }
+    function campaignMember(campaignId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/campaigns/$(campaignId)/members/$(request.auth.uid));
+    }
+    function campaignMaster(campaignId) {
+      return signedIn()
+        && get(/databases/$(database)/documents/campaigns/$(campaignId)).data.ownerUid == request.auth.uid;
+    }
+    function access(ownerUid, slotId) {
+      return get(/databases/$(database)/documents/users/$(ownerUid)/slots/$(slotId)/campaignAccess/$(request.auth.uid));
+    }
+    function hasViewGrant(ownerUid, slotId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(ownerUid)/slots/$(slotId)/campaignAccess/$(request.auth.uid))
+        && (
+          access(ownerUid, slotId).data.get('viewCampaignIds', []).size() > 0
+          || access(ownerUid, slotId).data.get('editCampaignIds', []).size() > 0
+        );
+    }
+    function hasEditGrant(ownerUid, slotId) {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(ownerUid)/slots/$(slotId)/campaignAccess/$(request.auth.uid))
+        && access(ownerUid, slotId).data.get('editCampaignIds', []).size() > 0;
+    }
+    function canViewSlot(ownerUid, slotId) { return mine(ownerUid) || hasViewGrant(ownerUid, slotId); }
+    function canEditSlot(ownerUid, slotId) { return mine(ownerUid) || hasEditGrant(ownerUid, slotId); }
+    function publicGrantIsValid(ownerUid, slotId, granteeUid, campaignId) {
+      return signedIn()
+        && request.auth.uid == granteeUid
+        && campaignMember(campaignId)
+        && exists(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(ownerUid + '_' + slotId))
+        && get(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(ownerUid + '_' + slotId)).data.privateToPlayers == false;
+    }
+    function masterGrantIsValid(ownerUid, slotId, campaignId) {
+      return campaignMaster(campaignId)
+        && exists(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(ownerUid + '_' + slotId));
+    }
+    function accessDocumentMatches(ownerUid, slotId, granteeUid) {
+      return request.resource.data.ownerUid == ownerUid
+        && request.resource.data.slotId == slotId
+        && request.resource.data.granteeUid == granteeUid;
+    }
+
+    match /users/{uid} {
+      allow read, create, update, delete: if mine(uid);
+      match /campaigns/{campaignId} {
+        allow read: if mine(uid);
+        allow delete: if mine(uid) || campaignMaster(campaignId);
+        allow create, update: if mine(uid)
+          && request.resource.data.campaignId == campaignId
+          && getAfter(/databases/$(database)/documents/campaigns/$(campaignId)/members/$(uid)).data.uid == uid
+          && request.resource.data.role == getAfter(/databases/$(database)/documents/campaigns/$(campaignId)/members/$(uid)).data.role;
+      }
+      match /slots/{slotId} {
+        allow read: if canViewSlot(uid, slotId);
+        allow create, update, delete: if mine(uid);
+        match /data/{dataId} {
+          allow read: if canViewSlot(uid, slotId);
+          allow create, update, delete: if canEditSlot(uid, slotId);
+        }
+        match /abilityMedia/{mediaId} {
+          allow read: if canViewSlot(uid, slotId);
+          allow create, update, delete: if canEditSlot(uid, slotId);
+          match /chunks/{chunkId} {
+            allow read: if canViewSlot(uid, slotId);
+            allow create, update, delete: if canEditSlot(uid, slotId);
+          }
+        }
+        match /campaignAccess/{granteeUid} {
+          allow read: if mine(uid) || request.auth.uid == granteeUid;
+          allow create: if accessDocumentMatches(uid, slotId, granteeUid) && (
+            mine(uid)
+            || publicGrantIsValid(uid, slotId, granteeUid, request.resource.data.grantCampaignId)
+            || masterGrantIsValid(uid, slotId, request.resource.data.grantCampaignId)
+          );
+          allow update: if accessDocumentMatches(uid, slotId, granteeUid) && (
+            mine(uid)
+            || publicGrantIsValid(uid, slotId, granteeUid, request.resource.data.grantCampaignId)
+            || masterGrantIsValid(uid, slotId, request.resource.data.grantCampaignId)
+          );
+          allow delete: if mine(uid) || request.auth.uid == granteeUid;
+        }
+      }
+    }
+
+    match /campaignCodes/{code} {
+      allow get: if signedIn();
+      allow list: if false;
+      allow create: if signedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && getAfter(/databases/$(database)/documents/campaigns/$(request.resource.data.campaignId)).data.ownerUid == request.auth.uid
+        && getAfter(/databases/$(database)/documents/campaigns/$(request.resource.data.campaignId)).data.joinCode == code;
+      allow update: if false;
+      allow delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
+    }
+
+    match /campaigns/{campaignId} {
+      allow get: if signedIn();
+      allow list: if false;
+      allow create: if signedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.joinCode is string;
+      allow update: if signedIn()
+        && resource.data.ownerUid == request.auth.uid
+        && request.resource.data.ownerUid == resource.data.ownerUid
+        && request.resource.data.joinCode == resource.data.joinCode
+        && request.resource.data.name is string;
+      allow delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
+
+      match /members/{memberUid} {
+        allow read: if campaignMember(campaignId)
+          || (signedIn() && memberUid == request.auth.uid);
+        allow create: if signedIn() && (
+          (memberUid == request.auth.uid
+            && request.resource.data.role == 'master'
+            && getAfter(/databases/$(database)/documents/campaigns/$(campaignId)).data.ownerUid == request.auth.uid)
+          ||
+          (memberUid == request.auth.uid
+            && request.resource.data.role == 'player'
+            && exists(/databases/$(database)/documents/campaignCodes/$(request.resource.data.joinCode))
+            && get(/databases/$(database)/documents/campaignCodes/$(request.resource.data.joinCode)).data.campaignId == campaignId)
+        );
+        allow update: if request.resource.data.uid == resource.data.uid
+          && request.resource.data.role == resource.data.role
+          && (
+            campaignMaster(campaignId)
+            || (memberUid == request.auth.uid
+              && (resource.data.role == 'master' || request.resource.data.get('sheetIds', []).size() <= 4))
+          );
+        allow delete: if campaignMaster(campaignId) || memberUid == request.auth.uid;
+      }
+
+      match /sheets/{sheetId} {
+        allow read: if campaignMember(campaignId) && (
+          campaignMaster(campaignId)
+          || resource.data.ownerUid == request.auth.uid
+          || resource.data.privateToPlayers == false
+        );
+        allow create: if campaignMember(campaignId)
+          && request.resource.data.ownerUid == request.auth.uid
+          && request.resource.data.slotId is string
+          && request.resource.data.privateToPlayers is bool
+          && sheetId == request.resource.data.ownerUid + '_' + request.resource.data.slotId
+          && getAfter(/databases/$(database)/documents/campaigns/$(campaignId)/members/$(request.auth.uid)).data.get('sheetIds', []).hasAny([sheetId]);
+        allow update: if (campaignMaster(campaignId) || resource.data.ownerUid == request.auth.uid)
+          && request.resource.data.ownerUid == resource.data.ownerUid
+          && request.resource.data.slotId == resource.data.slotId;
+        allow delete: if campaignMaster(campaignId) || resource.data.ownerUid == request.auth.uid;
+      }
+    }
+
+    match /minervaAbilities/{abilityId} {
+      allow read: if signedIn();
+      allow create, update, delete: if minervaAdmin();
+    }
+    match /minervaAbilityMedia/{mediaId} {
+      allow read: if signedIn();
+      allow create, update, delete: if minervaAdmin();
+      match /chunks/{chunkId} {
+        allow read: if signedIn();
+        allow create, update, delete: if minervaAdmin();
+      }
+    }
+  }
+}`;
+
+function normalizeCampaignCode(value) {
+  return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12);
+}
+
+function campaignSheetLinkId(ownerUid, slotId) {
+  return `${String(ownerUid || "").replaceAll("/", "_")}_${String(slotId || "").replaceAll("/", "_")}`;
+}
+
+function safeCampaignBanner(value) {
+  const source = String(value || "").trim();
+  if (/^data:image\/(?:png|jpe?g|webp|gif);base64,[a-z0-9+/=]+$/i.test(source)) return source;
+  try {
+    const url = new URL(source);
+    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+function campaignTimestamp(value) {
+  if (value?.toMillis) return value.toMillis();
+  if (value instanceof Date) return value.getTime();
+  const parsed = Date.parse(String(value || ""));
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function setCampaignBanner(element, value) {
+  if (!element) return;
+  const banner = safeCampaignBanner(value);
+  element.style.backgroundImage = banner ? `url("${banner.replaceAll('"', '%22')}")` : "";
+  element.classList.toggle("has-image", Boolean(banner));
+}
+
+function setCampaignFormError(element, message = "") {
+  element.textContent = message;
+  element.hidden = !message;
+}
+
+function setCampaignModal(modal, dialog, open) {
+  modal.hidden = !open;
+  document.body.classList.toggle(
+    "modal-open",
+    open || [...document.querySelectorAll(".campaign-modal")].some((item) => !item.hidden),
+  );
+  if (open) requestAnimationFrame(() => dialog.focus());
+}
+
+function closeAllCampaignModals() {
+  document.querySelectorAll(".campaign-modal").forEach((modal) => { modal.hidden = true; });
+  document.body.classList.remove("modal-open");
+}
+
+function renderCampaignIdentity() {
+  const user = currentFirebaseUser;
+  const name = user?.displayName || user?.email || "Conta Google";
+  campaignUi.userName.textContent = name;
+  campaignUi.userFallback.textContent = name.trim().charAt(0).toUpperCase() || "A";
+  campaignUi.userAvatar.hidden = !user?.photoURL;
+  campaignUi.userFallback.hidden = Boolean(user?.photoURL);
+  if (user?.photoURL) campaignUi.userAvatar.src = user.photoURL;
+  else campaignUi.userAvatar.removeAttribute("src");
+}
+
+function campaignEmptyLane(title, description) {
+  const empty = document.createElement("div");
+  empty.className = "campaign-empty-lane";
+  const copy = document.createElement("div");
+  const mark = document.createElement("span");
+  mark.setAttribute("aria-hidden", "true");
+  mark.textContent = "✦";
+  const heading = document.createElement("strong");
+  heading.textContent = title;
+  const text = document.createElement("p");
+  text.textContent = description;
+  copy.append(mark, heading, text);
+  empty.append(copy);
+  return empty;
+}
+
+function createCampaignCard(record) {
+  const card = document.createElement("article");
+  card.className = "campaign-card";
+  card.tabIndex = 0;
+  card.dataset.campaignId = record.id;
+  card.setAttribute("role", "button");
+  card.setAttribute("aria-label", `Abrir Campanha ${record.name}`);
+
+  const banner = document.createElement("div");
+  banner.className = "campaign-card-banner";
+  setCampaignBanner(banner, record.banner);
+  const role = document.createElement("span");
+  role.className = "campaign-card-role";
+  role.textContent = record.role === "master" ? "Mestre" : "Jogador";
+  banner.append(role);
+
+  const copy = document.createElement("div");
+  copy.className = "campaign-card-copy";
+  const name = document.createElement("strong");
+  name.textContent = record.name || "Campanha sem nome";
+  const synopsis = document.createElement("p");
+  synopsis.textContent = record.synopsis || "Sem sinopse.";
+  const meta = document.createElement("div");
+  meta.className = "campaign-card-meta";
+  const owner = document.createElement("span");
+  owner.textContent = record.role === "master" ? "Sua criação" : `Mestre: ${record.ownerName || "Campanha"}`;
+  const action = document.createElement("b");
+  action.textContent = "Abrir →";
+  meta.append(owner, action);
+  copy.append(name, synopsis, meta);
+  card.append(banner, copy);
+  return card;
+}
+
+function renderCampaignDashboard() {
+  const masters = campaignRecords.filter((record) => record.role === "master");
+  const players = campaignRecords.filter((record) => record.role !== "master");
+  campaignUi.masterList.replaceChildren();
+  campaignUi.playerList.replaceChildren();
+
+  if (masters.length) masters.forEach((record) => campaignUi.masterList.append(createCampaignCard(record)));
+  else campaignUi.masterList.append(campaignEmptyLane("Nenhuma Campanha como Mestre", "Crie uma jornada e compartilhe o código com seus jogadores."));
+
+  if (players.length) players.forEach((record) => campaignUi.playerList.append(createCampaignCard(record)));
+  else campaignUi.playerList.append(campaignEmptyLane("Você ainda não entrou em uma Campanha", "Use o código recebido de um Mestre para participar."));
+}
+
+async function loadCampaignRecords() {
+  if (!currentFirebaseUser || !firestoreDb || !firestoreApi) return [];
+  const indexRef = firestoreApi.collection(
+    firestoreDb,
+    "users",
+    currentFirebaseUser.uid,
+    "campaigns",
+  );
+  const indexSnapshot = await withCloudTimeout(
+    firestoreApi.getDocs(indexRef),
+    20000,
+    "As Campanhas demoraram demais para carregar.",
+  );
+  const records = await Promise.all(indexSnapshot.docs.map(async (indexDoc) => {
+    const campaignSnapshot = await firestoreApi.getDoc(
+      firestoreApi.doc(firestoreDb, "campaigns", indexDoc.id),
+    );
+    if (!campaignSnapshot.exists()) return null;
+    const indexData = indexDoc.data() || {};
+    const data = campaignSnapshot.data() || {};
+    return {
+      id: campaignSnapshot.id,
+      ...data,
+      role: indexData.role === "master" || data.ownerUid === currentFirebaseUser.uid
+        ? "master"
+        : "player",
+      joinedAt: indexData.joinedAt || data.createdAt,
+    };
+  }));
+  campaignRecords = records
+    .filter(Boolean)
+    .sort((a, b) => campaignTimestamp(b.updatedAt || b.createdAt) - campaignTimestamp(a.updatedAt || a.createdAt));
+  return campaignRecords;
+}
+
+async function openCampaignPortal() {
+  if (campaignSheetSession) {
+    await closeCampaignSheetSession();
+    return;
+  }
+  if (!currentFirebaseUser) {
+    window.dispatchEvent(new CustomEvent("abyss:firebase-login"));
+    await window.showAbyssAlert?.({
+      eyebrow: "Campanhas",
+      title: "Entre com o Google",
+      message: "As Campanhas são compartilhadas através da sua conta Google.",
+      tone: "info",
+      trigger: campaignUi.openButton,
+    });
+    return;
+  }
+  if (!firestoreDb || !firestoreApi || campaignBusy) return;
+  renderCampaignIdentity();
+  campaignUi.app.hidden = false;
+  campaignUi.loading.hidden = false;
+  campaignUi.loading.textContent = "Carregando Campanhas…";
+  campaignUi.loading.classList.remove("is-error");
+  campaignUi.dashboard.hidden = true;
+  campaignUi.detail.hidden = true;
+  document.body.classList.add("campaign-mode");
+  campaignBusy = true;
+  try {
+    await loadCampaignRecords();
+    renderCampaignDashboard();
+    campaignUi.loading.hidden = true;
+    campaignUi.dashboard.hidden = false;
+    campaignUi.dashboard.querySelector("h1")?.focus?.();
+  } catch (error) {
+    campaignUi.loading.textContent = describeFirebaseError(error);
+    campaignUi.loading.classList.add("is-error");
+  } finally {
+    campaignBusy = false;
+  }
+}
+
+function closeCampaignPortal() {
+  closeAllCampaignModals();
+  campaignUi.app.hidden = true;
+  document.body.classList.remove("campaign-mode");
+  activeCampaign = null;
+  activeCampaignMembers = [];
+  activeCampaignSheets = [];
+  campaignUi.openButton.focus();
+}
+
+function showCampaignDashboard() {
+  activeCampaign = null;
+  activeCampaignMembers = [];
+  activeCampaignSheets = [];
+  campaignUi.detail.hidden = true;
+  campaignUi.loading.hidden = true;
+  campaignUi.dashboard.hidden = false;
+  renderCampaignDashboard();
+  campaignUi.app.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function createCampaignMemberRow(member) {
+  const row = document.createElement("article");
+  row.className = "campaign-member";
+  const avatar = document.createElement("span");
+  avatar.className = "campaign-member-avatar";
+  if (member.photoURL) {
+    const image = document.createElement("img");
+    image.src = member.photoURL;
+    image.alt = "";
+    image.referrerPolicy = "no-referrer";
+    avatar.append(image);
+  } else {
+    avatar.textContent = String(member.displayName || "A").charAt(0).toUpperCase();
+  }
+  const copy = document.createElement("div");
+  copy.className = "campaign-member-copy";
+  const name = document.createElement("strong");
+  name.textContent = member.displayName || "Jogador";
+  const role = document.createElement("small");
+  role.textContent = member.role === "master" ? "Mestre" : "Jogador";
+  copy.append(name, role);
+  row.append(avatar, copy);
+  return row;
+}
+
+function createCampaignSheetCard(sheet) {
+  const card = document.createElement("article");
+  card.className = "campaign-sheet-card";
+  const avatar = document.createElement("span");
+  avatar.className = "campaign-sheet-avatar";
+  const portrait = safeCampaignBanner(sheet.portrait);
+  if (portrait) {
+    const image = document.createElement("img");
+    image.src = portrait;
+    image.alt = "";
+    avatar.append(image);
+  } else {
+    avatar.textContent = String(sheet.characterName || sheet.slotName || "A").charAt(0).toUpperCase();
+  }
+  const copy = document.createElement("div");
+  copy.className = "campaign-sheet-copy";
+  const name = document.createElement("strong");
+  name.textContent = sheet.characterName || sheet.slotName || "Ficha sem nome";
+  const owner = document.createElement("small");
+  owner.textContent = `${sheet.ownerName || "Jogador"} · ${sheet.slotName || "Slot"}`;
+  const tags = document.createElement("div");
+  tags.className = "campaign-sheet-tags";
+  const access = document.createElement("span");
+  access.className = `campaign-sheet-tag${sheet.privateToPlayers ? " is-private" : ""}`;
+  access.textContent = sheet.privateToPlayers ? "Privada para jogadores" : "Visível aos jogadores";
+  tags.append(access);
+  if (sheet.ownerUid === currentFirebaseUser?.uid) {
+    const mine = document.createElement("span");
+    mine.className = "campaign-sheet-tag";
+    mine.textContent = "Sua ficha";
+    tags.append(mine);
+  }
+  copy.append(name, owner, tags);
+
+  const actions = document.createElement("div");
+  actions.className = "campaign-sheet-actions";
+  const open = document.createElement("button");
+  open.type = "button";
+  open.className = "is-primary";
+  open.dataset.openCampaignSheet = sheet.id;
+  const canEdit = activeCampaign?.role === "master" || sheet.ownerUid === currentFirebaseUser?.uid;
+  open.textContent = canEdit ? "Abrir e editar" : "Visualizar";
+  actions.append(open);
+
+  if (sheet.ownerUid === currentFirebaseUser?.uid) {
+    const privacy = document.createElement("button");
+    privacy.type = "button";
+    privacy.dataset.toggleCampaignSheetPrivacy = sheet.id;
+    privacy.textContent = sheet.privateToPlayers ? "Tornar visível" : "Privar de jogadores";
+    actions.append(privacy);
+  }
+  if (sheet.ownerUid === currentFirebaseUser?.uid || activeCampaign?.role === "master") {
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "is-danger";
+    remove.dataset.unlinkCampaignSheet = sheet.id;
+    remove.textContent = "Desvincular";
+    actions.append(remove);
+  }
+  card.append(avatar, copy, actions);
+  return card;
+}
+
+function renderCampaignDetail() {
+  if (!activeCampaign) return;
+  const isMaster = activeCampaign.role === "master";
+  setCampaignBanner(campaignUi.hero, activeCampaign.banner);
+  campaignUi.detailRole.textContent = isMaster ? "Mestre" : "Jogador";
+  campaignUi.detailMembersCount.textContent = `${activeCampaignMembers.length} ${activeCampaignMembers.length === 1 ? "membro" : "membros"}`;
+  campaignUi.detailName.textContent = activeCampaign.name || "Campanha sem nome";
+  campaignUi.detailSynopsis.textContent = activeCampaign.synopsis || "Sem sinopse.";
+  campaignUi.detailCode.hidden = !isMaster;
+  campaignUi.codeValue.textContent = activeCampaign.joinCode || "";
+  campaignUi.edit.hidden = !isMaster;
+  campaignUi.remove.hidden = !isMaster;
+  campaignUi.leave.hidden = isMaster;
+  campaignUi.sheetLimitNote.textContent = isMaster
+    ? "Como Mestre, você pode vincular quantos Slots quiser."
+    : "Como Jogador, você pode vincular até quatro Slots nesta Campanha.";
+  campaignUi.sheetCount.textContent = `${activeCampaignSheets.length} ${activeCampaignSheets.length === 1 ? "ficha" : "fichas"}`;
+
+  campaignUi.sheetList.replaceChildren();
+  if (activeCampaignSheets.length) {
+    activeCampaignSheets.forEach((sheet) => campaignUi.sheetList.append(createCampaignSheetCard(sheet)));
+  } else {
+    const empty = document.createElement("div");
+    empty.className = "campaign-panel-empty";
+    const title = document.createElement("strong");
+    title.textContent = "Nenhuma ficha vinculada";
+    const text = document.createElement("p");
+    text.textContent = "Use “Vincular ficha” para colocar um dos seus Slots nesta Campanha.";
+    empty.append(title, text);
+    campaignUi.sheetList.append(empty);
+  }
+  campaignUi.membersList.replaceChildren(...activeCampaignMembers.map(createCampaignMemberRow));
+}
+
+async function openCampaignDetail(campaignId) {
+  if (!currentFirebaseUser || !campaignId) return;
+  campaignBusy = true;
+  campaignUi.dashboard.hidden = true;
+  campaignUi.detail.hidden = true;
+  campaignUi.loading.hidden = false;
+  campaignUi.loading.textContent = "Abrindo Campanha…";
+  campaignUi.loading.classList.remove("is-error");
+  try {
+    const campaignRef = firestoreApi.doc(firestoreDb, "campaigns", campaignId);
+    const membersRef = firestoreApi.collection(firestoreDb, "campaigns", campaignId, "members");
+    const sheetsRef = firestoreApi.collection(firestoreDb, "campaigns", campaignId, "sheets");
+    const known = campaignRecords.find((record) => record.id === campaignId);
+    const isMaster = known?.role === "master";
+    const [campaignSnapshot, membersSnapshot, publicSheetsSnapshot, ownSheetsSnapshot] = await Promise.all([
+      firestoreApi.getDoc(campaignRef),
+      firestoreApi.getDocs(membersRef),
+      isMaster
+        ? firestoreApi.getDocs(sheetsRef)
+        : firestoreApi.getDocs(firestoreApi.query(sheetsRef, firestoreApi.where("privateToPlayers", "==", false))),
+      isMaster
+        ? Promise.resolve(null)
+        : firestoreApi.getDocs(firestoreApi.query(sheetsRef, firestoreApi.where("ownerUid", "==", currentFirebaseUser.uid))),
+    ]);
+    if (!campaignSnapshot.exists()) throw new Error("Esta Campanha não existe mais.");
+    activeCampaignMembers = membersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+    const ownMember = activeCampaignMembers.find((member) => member.id === currentFirebaseUser.uid);
+    if (!ownMember) throw Object.assign(new Error("Você não faz mais parte desta Campanha."), { code: "permission-denied" });
+    const sheets = new Map();
+    publicSheetsSnapshot.docs.forEach((doc) => sheets.set(doc.id, { id: doc.id, ...doc.data() }));
+    ownSheetsSnapshot?.docs.forEach((doc) => sheets.set(doc.id, { id: doc.id, ...doc.data() }));
+    await ensureCurrentUserCampaignSheetAccess(
+      campaignId,
+      ownMember.role === "master" ? "master" : "player",
+      [...sheets.values()],
+    );
+    activeCampaignSheets = [...sheets.values()].sort(
+      (a, b) => campaignTimestamp(a.addedAt) - campaignTimestamp(b.addedAt),
+    );
+    activeCampaign = {
+      id: campaignSnapshot.id,
+      ...campaignSnapshot.data(),
+      role: ownMember.role === "master" ? "master" : "player",
+      member: ownMember,
+    };
+    renderCampaignDetail();
+    campaignUi.loading.hidden = true;
+    campaignUi.detail.hidden = false;
+    campaignUi.app.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (error) {
+    campaignUi.loading.textContent = error?.message || describeFirebaseError(error);
+    campaignUi.loading.classList.add("is-error");
+  } finally {
+    campaignBusy = false;
+  }
+}
+
+function updateCampaignBannerPreview(value = campaignBannerDraft || campaignUi.bannerUrl.value) {
+  const banner = safeCampaignBanner(value);
+  setCampaignBanner(campaignUi.bannerPreview, banner);
+  campaignUi.bannerPreview.classList.toggle("has-image", Boolean(banner));
+}
+
+function openCampaignEditor(record = null) {
+  campaignEditorId = record?.id || "";
+  campaignBannerDraft = safeCampaignBanner(record?.banner);
+  campaignUi.editorForm.reset();
+  campaignUi.name.value = record?.name || "";
+  campaignUi.synopsis.value = record?.synopsis || "";
+  campaignUi.bannerUrl.value = campaignBannerDraft && !campaignBannerDraft.startsWith("data:")
+    ? campaignBannerDraft
+    : "";
+  campaignUi.editorTitle.textContent = record ? "Editar Campanha" : "Criar Campanha";
+  campaignUi.editorSubmit.textContent = record ? "Salvar Alterações" : "Criar Campanha";
+  setCampaignFormError(campaignUi.editorError);
+  updateCampaignBannerPreview(campaignBannerDraft);
+  setCampaignModal(campaignUi.editorModal, campaignUi.editorDialog, true);
+  requestAnimationFrame(() => campaignUi.name.focus());
+}
+
+function closeCampaignEditor() {
+  setCampaignModal(campaignUi.editorModal, campaignUi.editorDialog, false);
+  campaignEditorId = "";
+  campaignBannerDraft = "";
+}
+
+function openCampaignJoin() {
+  campaignUi.joinForm.reset();
+  setCampaignFormError(campaignUi.joinError);
+  setCampaignModal(campaignUi.joinModal, campaignUi.joinDialog, true);
+  requestAnimationFrame(() => campaignUi.joinCode.focus());
+}
+
+function closeCampaignJoin() {
+  setCampaignModal(campaignUi.joinModal, campaignUi.joinDialog, false);
+}
+
+function openCampaignRules() {
+  campaignUi.rulesCode.textContent = CAMPAIGN_FIRESTORE_RULES;
+  setCampaignModal(campaignUi.rulesModal, campaignUi.rulesDialog, true);
+}
+
+function closeCampaignRules() {
+  setCampaignModal(campaignUi.rulesModal, campaignUi.rulesDialog, false);
+}
+
+async function copyText(value, successMessage, trigger) {
+  try {
+    await navigator.clipboard.writeText(value);
+    const original = trigger.textContent;
+    trigger.textContent = "Copiado";
+    window.setTimeout(() => { trigger.textContent = original; }, 1300);
+  } catch {
+    await window.showAbyssAlert?.({
+      eyebrow: "Área de transferência",
+      title: "Não foi possível copiar",
+      message: "Selecione o conteúdo manualmente e copie pelo navegador.",
+      tone: "warning",
+      trigger,
+    });
+  }
+}
+
+function loadImageElement(source) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.addEventListener("load", () => resolve(image), { once: true });
+    image.addEventListener("error", () => reject(new Error("Não foi possível abrir o Banner escolhido.")), { once: true });
+    image.src = source;
+  });
+}
+
+async function compactCampaignBanner(file) {
+  if (!file) return "";
+  if (!new Set(["image/png", "image/jpeg", "image/webp", "image/gif"]).has(file.type)) {
+    throw new Error("Use um Banner em PNG, JPG, WEBP ou GIF.");
+  }
+  if (file.size > 10 * 1024 * 1024) throw new Error("O Banner deve ter no máximo 10 MB.");
+  const source = await readFileAsDataUrl(file);
+  if (file.type === "image/gif") {
+    if (file.size > 580 * 1024 || source.length > 800000) {
+      throw new Error("Para preservar a animação, o Banner em GIF deve ter no máximo 580 KB.");
+    }
+    return source;
+  }
+  const image = await loadImageElement(source);
+  const canvas = document.createElement("canvas");
+  canvas.width = 1400;
+  canvas.height = 560;
+  const context = canvas.getContext("2d");
+  const scale = Math.max(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight);
+  const width = image.naturalWidth * scale;
+  const height = image.naturalHeight * scale;
+  context.drawImage(image, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
+  let result = canvas.toDataURL("image/jpeg", .78);
+  if (result.length > 720000) result = canvas.toDataURL("image/jpeg", .58);
+  if (result.length > 850000) throw new Error("O Banner ficou grande demais. Tente uma imagem mais simples.");
+  return result;
+}
+
+async function generateCampaignCode() {
+  const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  for (let attempt = 0; attempt < 12; attempt += 1) {
+    let code = "";
+    const random = crypto.getRandomValues(new Uint8Array(8));
+    random.forEach((value) => { code += alphabet[value % alphabet.length]; });
+    const snapshot = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "campaignCodes", code));
+    if (!snapshot.exists()) return code;
+  }
+  throw new Error("Não foi possível gerar um código único. Tente novamente.");
+}
+
+async function submitCampaignEditor(event) {
+  event.preventDefault();
+  if (!currentFirebaseUser || campaignBusy) return;
+  setCampaignFormError(campaignUi.editorError);
+  const name = campaignUi.name.value.trim().replace(/\s+/g, " ").slice(0, 90);
+  const synopsis = campaignUi.synopsis.value.trim().slice(0, 1800);
+  if (!name) {
+    setCampaignFormError(campaignUi.editorError, "Dê um nome à Campanha.");
+    campaignUi.name.focus();
+    return;
+  }
+  if (!synopsis) {
+    setCampaignFormError(campaignUi.editorError, "Escreva uma sinopse para a Campanha.");
+    campaignUi.synopsis.focus();
+    return;
+  }
+  const linkedBanner = safeCampaignBanner(campaignUi.bannerUrl.value);
+  if (campaignUi.bannerUrl.value.trim() && !linkedBanner) {
+    setCampaignFormError(campaignUi.editorError, "O link do Banner precisa começar com http:// ou https://.");
+    campaignUi.bannerUrl.focus();
+    return;
+  }
+  campaignBusy = true;
+  campaignUi.editorSubmit.disabled = true;
+  campaignUi.editorSubmit.textContent = campaignEditorId ? "Salvando…" : "Criando…";
+  try {
+    const uploadedBanner = campaignUi.bannerFile.files?.[0]
+      ? await compactCampaignBanner(campaignUi.bannerFile.files[0])
+      : "";
+    const banner = uploadedBanner || linkedBanner || campaignBannerDraft;
+    if (campaignEditorId) {
+      const existing = campaignRecords.find((record) => record.id === campaignEditorId) || activeCampaign;
+      if (!existing || existing.ownerUid !== currentFirebaseUser.uid) throw new Error("Somente o Mestre pode editar esta Campanha.");
+      await firestoreApi.setDoc(
+        firestoreApi.doc(firestoreDb, "campaigns", campaignEditorId),
+        { name, synopsis, banner, updatedAt: firestoreApi.serverTimestamp() },
+        { merge: true },
+      );
+      const editedId = campaignEditorId;
+      closeCampaignEditor();
+      await loadCampaignRecords();
+      renderCampaignDashboard();
+      await openCampaignDetail(editedId);
+      return;
+    }
+
+    const campaignRef = firestoreApi.doc(firestoreApi.collection(firestoreDb, "campaigns"));
+    const campaignId = campaignRef.id;
+    const joinCode = await generateCampaignCode();
+    const timestamp = firestoreApi.serverTimestamp();
+    const memberRef = firestoreApi.doc(firestoreDb, "campaigns", campaignId, "members", currentFirebaseUser.uid);
+    const indexRef = firestoreApi.doc(firestoreDb, "users", currentFirebaseUser.uid, "campaigns", campaignId);
+    const codeRef = firestoreApi.doc(firestoreDb, "campaignCodes", joinCode);
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    batch.set(campaignRef, {
+      name,
+      synopsis,
+      banner,
+      joinCode,
+      ownerUid: currentFirebaseUser.uid,
+      ownerName: currentFirebaseUser.displayName || "Mestre",
+      createdAt: timestamp,
+      updatedAt: timestamp,
+    });
+    batch.set(memberRef, {
+      uid: currentFirebaseUser.uid,
+      role: "master",
+      displayName: currentFirebaseUser.displayName || "Mestre",
+      photoURL: currentFirebaseUser.photoURL || "",
+      sheetIds: [],
+      joinedAt: timestamp,
+    });
+    batch.set(indexRef, { campaignId, role: "master", joinedAt: timestamp });
+    batch.set(codeRef, { campaignId, ownerUid: currentFirebaseUser.uid, createdAt: timestamp });
+    await withCloudTimeout(batch.commit(), 20000, "A Campanha demorou demais para ser criada.");
+    closeCampaignEditor();
+    await loadCampaignRecords();
+    renderCampaignDashboard();
+    await openCampaignDetail(campaignId);
+  } catch (error) {
+    setCampaignFormError(campaignUi.editorError, error?.message || describeFirebaseError(error));
+  } finally {
+    campaignBusy = false;
+    campaignUi.editorSubmit.disabled = false;
+    campaignUi.editorSubmit.textContent = campaignEditorId ? "Salvar Alterações" : "Criar Campanha";
+  }
+}
+
+async function submitCampaignJoin(event) {
+  event.preventDefault();
+  if (!currentFirebaseUser || campaignBusy) return;
+  setCampaignFormError(campaignUi.joinError);
+  const code = normalizeCampaignCode(campaignUi.joinCode.value);
+  campaignUi.joinCode.value = code;
+  if (code.length < 6) {
+    setCampaignFormError(campaignUi.joinError, "Digite o código completo enviado pelo Mestre.");
+    campaignUi.joinCode.focus();
+    return;
+  }
+  campaignBusy = true;
+  campaignUi.joinSubmit.disabled = true;
+  campaignUi.joinSubmit.textContent = "Entrando…";
+  try {
+    const codeSnapshot = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "campaignCodes", code));
+    if (!codeSnapshot.exists()) throw new Error("Nenhuma Campanha foi encontrada com este código.");
+    const campaignId = String(codeSnapshot.data()?.campaignId || "");
+    const campaignSnapshot = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "campaigns", campaignId));
+    if (!campaignSnapshot.exists()) throw new Error("Esta Campanha não existe mais.");
+    if (campaignSnapshot.data()?.ownerUid === currentFirebaseUser.uid) {
+      throw new Error("Você já é o Mestre desta Campanha.");
+    }
+    const memberRef = firestoreApi.doc(firestoreDb, "campaigns", campaignId, "members", currentFirebaseUser.uid);
+    if ((await firestoreApi.getDoc(memberRef)).exists()) throw new Error("Você já faz parte desta Campanha.");
+    const timestamp = firestoreApi.serverTimestamp();
+    const indexRef = firestoreApi.doc(firestoreDb, "users", currentFirebaseUser.uid, "campaigns", campaignId);
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    batch.set(memberRef, {
+      uid: currentFirebaseUser.uid,
+      role: "player",
+      joinCode: code,
+      displayName: currentFirebaseUser.displayName || "Jogador",
+      photoURL: currentFirebaseUser.photoURL || "",
+      sheetIds: [],
+      joinedAt: timestamp,
+    });
+    batch.set(indexRef, { campaignId, role: "player", joinedAt: timestamp });
+    await withCloudTimeout(batch.commit(), 20000, "A entrada na Campanha demorou demais.");
+    await grantCurrentPlayerPublicCampaignSheets(campaignId).catch(() => {});
+    closeCampaignJoin();
+    await loadCampaignRecords();
+    renderCampaignDashboard();
+    await openCampaignDetail(campaignId);
+  } catch (error) {
+    setCampaignFormError(campaignUi.joinError, error?.message || describeFirebaseError(error));
+  } finally {
+    campaignBusy = false;
+    campaignUi.joinSubmit.disabled = false;
+    campaignUi.joinSubmit.textContent = "Entrar";
+  }
+}
+
+function campaignAccessRef(ownerUid, slotId, granteeUid) {
+  return firestoreApi.doc(
+    firestoreDb,
+    "users",
+    ownerUid,
+    "slots",
+    slotId,
+    "campaignAccess",
+    granteeUid,
+  );
+}
+
+async function addCampaignAccess({ ownerUid, slotId, granteeUid, campaignId, edit = false }) {
+  const field = edit ? "editCampaignIds" : "viewCampaignIds";
+  await firestoreApi.setDoc(
+    campaignAccessRef(ownerUid, slotId, granteeUid),
+    {
+      ownerUid,
+      slotId,
+      granteeUid,
+      grantCampaignId: campaignId,
+      updatedAt: firestoreApi.serverTimestamp(),
+      [field]: firestoreApi.arrayUnion(campaignId),
+    },
+    { merge: true },
+  );
+}
+
+async function removeCampaignAccess({ ownerUid, slotId, granteeUid, campaignId, edit = false }) {
+  const field = edit ? "editCampaignIds" : "viewCampaignIds";
+  await firestoreApi.setDoc(
+    campaignAccessRef(ownerUid, slotId, granteeUid),
+    {
+      ownerUid,
+      slotId,
+      granteeUid,
+      grantCampaignId: campaignId,
+      [field]: firestoreApi.arrayRemove(campaignId),
+      updatedAt: firestoreApi.serverTimestamp(),
+    },
+    { merge: true },
+  );
+}
+
+async function ensureCurrentUserCampaignSheetAccess(campaignId, role, sheets) {
+  if (!currentFirebaseUser) return;
+  const edit = role === "master";
+  const field = edit ? "editCampaignIds" : "viewCampaignIds";
+  const visibleSheets = sheets.filter(
+    (sheet) => sheet.ownerUid
+      && sheet.slotId
+      && sheet.ownerUid !== currentFirebaseUser.uid
+      && (edit || !sheet.privateToPlayers),
+  );
+  await Promise.all(visibleSheets.map(async (sheet) => {
+    const reference = campaignAccessRef(sheet.ownerUid, sheet.slotId, currentFirebaseUser.uid);
+    const snapshot = await firestoreApi.getDoc(reference);
+    const campaignIds = snapshot.exists() && Array.isArray(snapshot.data()?.[field])
+      ? snapshot.data()[field]
+      : [];
+    if (campaignIds.includes(campaignId)) return;
+    await addCampaignAccess({
+      ownerUid: sheet.ownerUid,
+      slotId: sheet.slotId,
+      granteeUid: currentFirebaseUser.uid,
+      campaignId,
+      edit,
+    });
+  }));
+}
+
+async function grantCurrentPlayerPublicCampaignSheets(campaignId) {
+  if (!currentFirebaseUser) return;
+  const sheetsRef = firestoreApi.collection(firestoreDb, "campaigns", campaignId, "sheets");
+  const snapshot = await firestoreApi.getDocs(
+    firestoreApi.query(sheetsRef, firestoreApi.where("privateToPlayers", "==", false)),
+  );
+  for (const sheetDoc of snapshot.docs) {
+    const sheet = sheetDoc.data() || {};
+    if (!sheet.ownerUid || !sheet.slotId || sheet.ownerUid === currentFirebaseUser.uid) continue;
+    await addCampaignAccess({
+      ownerUid: sheet.ownerUid,
+      slotId: sheet.slotId,
+      granteeUid: currentFirebaseUser.uid,
+      campaignId,
+      edit: false,
+    });
+  }
+}
+
+function openCampaignSlotPicker() {
+  if (!activeCampaign || !currentFirebaseUser) return;
+  const ownLinkedIds = new Set(
+    activeCampaignSheets
+      .filter((sheet) => sheet.ownerUid === currentFirebaseUser.uid)
+      .map((sheet) => sheet.slotId),
+  );
+  const ownCount = ownLinkedIds.size;
+  if (activeCampaign.role !== "master" && ownCount >= 4) {
+    window.showAbyssAlert?.({
+      eyebrow: "Campanha",
+      title: "Limite de fichas atingido",
+      message: "Jogadores podem vincular até quatro fichas em cada Campanha.",
+      tone: "warning",
+      trigger: campaignUi.attachSheet,
+    });
+    return;
+  }
+  campaignUi.slotForm.reset();
+  campaignUi.slotList.replaceChildren();
+  const available = currentSlots.filter((slot) => !ownLinkedIds.has(slot.id));
+  if (!available.length) {
+    const empty = document.createElement("div");
+    empty.className = "campaign-panel-empty";
+    const title = document.createElement("strong");
+    title.textContent = "Todos os seus Slots já estão vinculados";
+    const text = document.createElement("p");
+    text.textContent = "Crie outro Slot na ficha principal para adicionar mais um personagem.";
+    empty.append(title, text);
+    campaignUi.slotList.append(empty);
+    campaignUi.slotSubmit.disabled = true;
+  } else {
+    available.forEach((slot, index) => {
+      const label = document.createElement("label");
+      label.className = "campaign-slot-choice";
+      const input = document.createElement("input");
+      input.type = "radio";
+      input.name = "campaign-slot";
+      input.value = slot.id;
+      input.required = true;
+      input.checked = index === 0;
+      const copy = document.createElement("span");
+      const name = document.createElement("strong");
+      name.textContent = slot.name;
+      const detail = document.createElement("small");
+      detail.textContent = slot.id === currentSlotId ? "Slot aberto agora" : "Slot salvo na conta";
+      copy.append(name, detail);
+      label.append(input, copy);
+      campaignUi.slotList.append(label);
+    });
+    campaignUi.slotSubmit.disabled = false;
+  }
+  setCampaignFormError(campaignUi.slotError);
+  setCampaignModal(campaignUi.slotModal, campaignUi.slotDialog, true);
+}
+
+function closeCampaignSlotPicker() {
+  setCampaignModal(campaignUi.slotModal, campaignUi.slotDialog, false);
+}
+
+async function readSlotStateForCampaign(slotId) {
+  if (slotId === currentSlotId) {
+    if (cloudSavePromise && !(await cloudSavePromise)) throw new Error("A ficha atual ainda não terminou de salvar.");
+    if (stateRevision > lastSavedRevision && !(await flushCloudSave())) {
+      throw new Error("Salve a ficha atual antes de vinculá-la.");
+    }
+    return sheetBridge.captureState();
+  }
+  return readCloudSheet(currentFirebaseUser, slotId);
+}
+
+async function grantSheetCampaignAccess(sheet, members, campaign) {
+  const operations = [];
+  if (sheet.ownerUid !== campaign.ownerUid) {
+    operations.push(addCampaignAccess({
+      ownerUid: sheet.ownerUid,
+      slotId: sheet.slotId,
+      granteeUid: campaign.ownerUid,
+      campaignId: campaign.id,
+      edit: true,
+    }));
+  }
+  if (!sheet.privateToPlayers) {
+    members
+      .filter((member) => member.role !== "master" && member.id !== sheet.ownerUid)
+      .forEach((member) => operations.push(addCampaignAccess({
+        ownerUid: sheet.ownerUid,
+        slotId: sheet.slotId,
+        granteeUid: member.id,
+        campaignId: campaign.id,
+        edit: false,
+      })));
+  }
+  await Promise.all(operations);
+}
+
+async function revokeSheetCampaignAccess(sheet, members, campaign) {
+  const operations = [];
+  if (sheet.ownerUid !== campaign.ownerUid) {
+    operations.push(removeCampaignAccess({
+      ownerUid: sheet.ownerUid,
+      slotId: sheet.slotId,
+      granteeUid: campaign.ownerUid,
+      campaignId: campaign.id,
+      edit: true,
+    }));
+  }
+  members
+    .filter((member) => member.role !== "master" && member.id !== sheet.ownerUid)
+    .forEach((member) => operations.push(removeCampaignAccess({
+      ownerUid: sheet.ownerUid,
+      slotId: sheet.slotId,
+      granteeUid: member.id,
+      campaignId: campaign.id,
+      edit: false,
+    })));
+  await Promise.all(operations);
+}
+
+async function submitCampaignSlot(event) {
+  event.preventDefault();
+  if (!activeCampaign || !currentFirebaseUser || campaignBusy) return;
+  const slotId = campaignUi.slotForm.querySelector('input[name="campaign-slot"]:checked')?.value || "";
+  const slot = currentSlots.find((item) => item.id === slotId);
+  if (!slot) {
+    setCampaignFormError(campaignUi.slotError, "Escolha um Slot válido.");
+    return;
+  }
+  const ownCount = activeCampaignSheets.filter((sheet) => sheet.ownerUid === currentFirebaseUser.uid).length;
+  if (activeCampaign.role !== "master" && ownCount >= 4) {
+    setCampaignFormError(campaignUi.slotError, "Você já vinculou o máximo de quatro fichas.");
+    return;
+  }
+  campaignBusy = true;
+  campaignUi.slotSubmit.disabled = true;
+  campaignUi.slotSubmit.textContent = "Vinculando…";
+  try {
+    const state = await readSlotStateForCampaign(slotId);
+    const profile = state.profile || {};
+    const linkId = campaignSheetLinkId(currentFirebaseUser.uid, slotId);
+    const privateToPlayers = campaignUi.slotPrivate.checked;
+    const portrait = await compactPortraitForFirestore(String(profile.portrait || ""));
+    const sheet = {
+      id: linkId,
+      ownerUid: currentFirebaseUser.uid,
+      ownerName: currentFirebaseUser.displayName || "Jogador",
+      ownerPhotoURL: currentFirebaseUser.photoURL || "",
+      slotId,
+      slotName: slot.name,
+      characterName: String(profile.name || slot.name).slice(0, 120),
+      portrait,
+      privateToPlayers,
+      addedAt: firestoreApi.serverTimestamp(),
+      updatedAt: firestoreApi.serverTimestamp(),
+    };
+    const sheetRef = firestoreApi.doc(firestoreDb, "campaigns", activeCampaign.id, "sheets", linkId);
+    const memberRef = firestoreApi.doc(firestoreDb, "campaigns", activeCampaign.id, "members", currentFirebaseUser.uid);
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    batch.set(sheetRef, sheet);
+    batch.set(memberRef, { sheetIds: firestoreApi.arrayUnion(linkId) }, { merge: true });
+    await batch.commit();
+    await grantSheetCampaignAccess({ ...sheet, addedAt: Date.now() }, activeCampaignMembers, activeCampaign);
+    closeCampaignSlotPicker();
+    await openCampaignDetail(activeCampaign.id);
+  } catch (error) {
+    setCampaignFormError(campaignUi.slotError, error?.message || describeFirebaseError(error));
+  } finally {
+    campaignBusy = false;
+    campaignUi.slotSubmit.disabled = false;
+    campaignUi.slotSubmit.textContent = "Vincular ficha";
+  }
+}
+
+async function toggleCampaignSheetPrivacy(sheetId, trigger) {
+  const sheet = activeCampaignSheets.find((item) => item.id === sheetId);
+  if (!sheet || sheet.ownerUid !== currentFirebaseUser?.uid || campaignBusy) return;
+  campaignBusy = true;
+  trigger.disabled = true;
+  const nextPrivate = !sheet.privateToPlayers;
+  try {
+    const sheetRef = firestoreApi.doc(firestoreDb, "campaigns", activeCampaign.id, "sheets", sheet.id);
+    const players = activeCampaignMembers.filter((member) => member.role !== "master" && member.id !== sheet.ownerUid);
+    if (nextPrivate) {
+      for (const player of players) {
+        await removeCampaignAccess({
+          ownerUid: sheet.ownerUid,
+          slotId: sheet.slotId,
+          granteeUid: player.id,
+          campaignId: activeCampaign.id,
+          edit: false,
+        });
+      }
+    }
+    await firestoreApi.setDoc(
+      sheetRef,
+      { privateToPlayers: nextPrivate, updatedAt: firestoreApi.serverTimestamp() },
+      { merge: true },
+    );
+    if (!nextPrivate) {
+      for (const player of players) {
+        await addCampaignAccess({
+          ownerUid: sheet.ownerUid,
+          slotId: sheet.slotId,
+          granteeUid: player.id,
+          campaignId: activeCampaign.id,
+          edit: false,
+        });
+      }
+    }
+    sheet.privateToPlayers = nextPrivate;
+    renderCampaignDetail();
+  } catch (error) {
+    await window.showAbyssAlert?.({
+      eyebrow: "Privacidade da ficha",
+      title: "Não foi possível alterar",
+      message: describeFirebaseError(error),
+      tone: "warning",
+      trigger,
+    });
+  } finally {
+    campaignBusy = false;
+    trigger.disabled = false;
+  }
+}
+
+async function unlinkCampaignSheet(sheetId, trigger, { skipConfirm = false } = {}) {
+  const sheet = activeCampaignSheets.find((item) => item.id === sheetId);
+  if (!sheet || !activeCampaign || campaignBusy) return false;
+  if (!skipConfirm) {
+    const confirmed = await window.showAbyssConfirm?.({
+      eyebrow: "Campanha",
+      title: "Desvincular ficha?",
+      message: `“${sheet.characterName || sheet.slotName}” sairá desta Campanha, mas o Slot continuará intacto na conta do proprietário.`,
+      confirmLabel: "Desvincular",
+      tone: "danger",
+      trigger,
+    });
+    if (!confirmed) return false;
+  }
+  campaignBusy = true;
+  if (trigger) trigger.disabled = true;
+  try {
+    await revokeSheetCampaignAccess(sheet, activeCampaignMembers, activeCampaign);
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    batch.delete(firestoreApi.doc(firestoreDb, "campaigns", activeCampaign.id, "sheets", sheet.id));
+    batch.set(
+      firestoreApi.doc(firestoreDb, "campaigns", activeCampaign.id, "members", sheet.ownerUid),
+      { sheetIds: firestoreApi.arrayRemove(sheet.id) },
+      { merge: true },
+    );
+    await batch.commit();
+    activeCampaignSheets = activeCampaignSheets.filter((item) => item.id !== sheet.id);
+    const ownerMember = activeCampaignMembers.find((member) => member.id === sheet.ownerUid);
+    if (ownerMember) ownerMember.sheetIds = (ownerMember.sheetIds || []).filter((id) => id !== sheet.id);
+    renderCampaignDetail();
+    return true;
+  } catch (error) {
+    await window.showAbyssAlert?.({
+      eyebrow: "Campanha",
+      title: "Não foi possível desvincular",
+      message: describeFirebaseError(error),
+      tone: "warning",
+      trigger,
+    });
+    return false;
+  } finally {
+    campaignBusy = false;
+    if (trigger) trigger.disabled = false;
+  }
+}
+
+async function leaveActiveCampaign(trigger) {
+  if (!activeCampaign || activeCampaign.role === "master" || campaignBusy) return;
+  const confirmed = await window.showAbyssConfirm?.({
+    eyebrow: "Campanha",
+    title: "Sair da Campanha?",
+    message: `Você deixará “${activeCampaign.name}”. Suas fichas serão desvinculadas, mas os Slots continuarão na sua conta.`,
+    confirmLabel: "Sair",
+    tone: "danger",
+    trigger,
+  });
+  if (!confirmed) return;
+  campaignBusy = true;
+  try {
+    const campaignId = activeCampaign.id;
+    const ownSheets = activeCampaignSheets.filter((sheet) => sheet.ownerUid === currentFirebaseUser.uid);
+    for (const sheet of ownSheets) {
+      await revokeSheetCampaignAccess(sheet, activeCampaignMembers, activeCampaign);
+      await firestoreApi.deleteDoc(firestoreApi.doc(firestoreDb, "campaigns", campaignId, "sheets", sheet.id));
+    }
+    const publicOthers = activeCampaignSheets.filter(
+      (sheet) => sheet.ownerUid !== currentFirebaseUser.uid && !sheet.privateToPlayers,
+    );
+    for (const sheet of publicOthers) {
+      await removeCampaignAccess({
+        ownerUid: sheet.ownerUid,
+        slotId: sheet.slotId,
+        granteeUid: currentFirebaseUser.uid,
+        campaignId,
+        edit: false,
+      });
+    }
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    batch.delete(firestoreApi.doc(firestoreDb, "campaigns", campaignId, "members", currentFirebaseUser.uid));
+    batch.delete(firestoreApi.doc(firestoreDb, "users", currentFirebaseUser.uid, "campaigns", campaignId));
+    await batch.commit();
+    await loadCampaignRecords();
+    showCampaignDashboard();
+  } catch (error) {
+    await window.showAbyssAlert?.({
+      eyebrow: "Campanha",
+      title: "Não foi possível sair",
+      message: describeFirebaseError(error),
+      tone: "warning",
+      trigger,
+    });
+  } finally {
+    campaignBusy = false;
+  }
+}
+
+async function commitCampaignDeletes(references) {
+  for (let index = 0; index < references.length; index += 400) {
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    references.slice(index, index + 400).forEach((reference) => batch.delete(reference));
+    await batch.commit();
+  }
+}
+
+async function deleteActiveCampaign(trigger) {
+  if (!activeCampaign || activeCampaign.role !== "master" || campaignBusy) return;
+  const confirmed = await window.showAbyssConfirm?.({
+    eyebrow: "Campanha do Mestre",
+    title: "Excluir Campanha definitivamente?",
+    message: `“${activeCampaign.name}” será removida para todos os jogadores. As fichas originais permanecerão nas contas de seus donos.`,
+    confirmLabel: "Excluir Campanha",
+    tone: "danger",
+    trigger,
+  });
+  if (!confirmed) return;
+  campaignBusy = true;
+  try {
+    const campaignId = activeCampaign.id;
+    for (const sheet of activeCampaignSheets) {
+      await revokeSheetCampaignAccess(sheet, activeCampaignMembers, activeCampaign);
+    }
+    const references = [
+      ...activeCampaignSheets.map((sheet) => firestoreApi.doc(firestoreDb, "campaigns", campaignId, "sheets", sheet.id)),
+      ...activeCampaignMembers.map((member) => firestoreApi.doc(firestoreDb, "campaigns", campaignId, "members", member.id)),
+      ...activeCampaignMembers.map((member) => firestoreApi.doc(firestoreDb, "users", member.id, "campaigns", campaignId)),
+      firestoreApi.doc(firestoreDb, "campaignCodes", activeCampaign.joinCode),
+    ];
+    await commitCampaignDeletes(references);
+    await firestoreApi.deleteDoc(firestoreApi.doc(firestoreDb, "campaigns", campaignId));
+    await loadCampaignRecords();
+    showCampaignDashboard();
+  } catch (error) {
+    await window.showAbyssAlert?.({
+      eyebrow: "Campanha",
+      title: "Não foi possível excluir",
+      message: describeFirebaseError(error),
+      tone: "warning",
+      trigger,
+    });
+  } finally {
+    campaignBusy = false;
+  }
+}
+
+async function openCampaignSheet(sheetId, trigger) {
+  const sheet = activeCampaignSheets.find((item) => item.id === sheetId);
+  if (!sheet || !activeCampaign || !currentFirebaseUser || campaignBusy) return;
+  campaignBusy = true;
+  if (trigger) trigger.disabled = true;
+  try {
+    if (cloudSavePromise && !(await cloudSavePromise)) throw new Error("A ficha atual ainda não terminou de salvar.");
+    if (stateRevision > lastSavedRevision && !(await flushCloudSave())) {
+      throw new Error("Não foi possível salvar a ficha atual antes de abrir a Campanha.");
+    }
+    const remoteState = await readCloudSheet({ uid: sheet.ownerUid }, sheet.slotId);
+    const canEdit = activeCampaign.role === "master" || sheet.ownerUid === currentFirebaseUser.uid;
+    const returnSlotId = currentSlotId;
+    const returnCampaignId = activeCampaign.id;
+    campaignSheetSession = {
+      token: `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`,
+      campaignId: activeCampaign.id,
+      campaignName: activeCampaign.name,
+      sheetId: sheet.id,
+      ownerUid: sheet.ownerUid,
+      ownerName: sheet.ownerName,
+      slotId: sheet.slotId,
+      slotName: sheet.slotName,
+      canEdit,
+      returnSlotId,
+      returnCampaignId,
+    };
+    isHydratingCloudState = true;
+    sheetBridge.applyState(remoteState, { persistLocal: false });
+    stateRevision = 0;
+    lastSavedRevision = 0;
+    isHydratingCloudState = false;
+    campaignUi.app.hidden = true;
+    document.body.classList.remove("campaign-mode");
+    document.body.classList.add("campaign-sheet-session");
+    document.body.classList.toggle("is-readonly", !canEdit);
+    document.querySelector("#main-content").inert = !canEdit;
+    campaignUi.sheetSessionBar.hidden = false;
+    campaignUi.sheetSessionTitle.textContent = sheet.characterName || sheet.slotName || "Ficha da Campanha";
+    campaignUi.sheetSessionStatus.textContent = canEdit
+      ? `Edição autorizada · ${activeCampaign.name}`
+      : `Somente visualização · ${activeCampaign.name}`;
+    document.querySelector('[data-view-target="profile"]')?.click();
+    window.scrollTo({ top: 0, behavior: "auto" });
+  } catch (error) {
+    isHydratingCloudState = false;
+    campaignSheetSession = null;
+    await window.showAbyssAlert?.({
+      eyebrow: "Ficha da Campanha",
+      title: "Não foi possível abrir",
+      message: error?.message || describeFirebaseError(error),
+      tone: "warning",
+      trigger,
+    });
+  } finally {
+    campaignBusy = false;
+    if (trigger) trigger.disabled = false;
+  }
+}
+
+async function closeCampaignSheetSession() {
+  const session = campaignSheetSession;
+  if (!session || campaignBusy) return;
+  campaignBusy = true;
+  campaignUi.sheetSessionBack.disabled = true;
+  try {
+    if (session.canEdit && stateRevision > lastSavedRevision) {
+      const saved = await flushCloudSave();
+      if (!saved) throw new Error("A ficha compartilhada ainda não pôde ser salva.");
+    }
+    campaignSheetSession = null;
+    document.querySelector("#main-content").inert = false;
+    document.body.classList.remove("campaign-sheet-session", "is-readonly");
+    campaignUi.sheetSessionBar.hidden = true;
+    if (currentFirebaseUser && session.returnSlotId) {
+      await hydrateSlot(currentFirebaseUser, session.returnSlotId, { announce: false });
+    }
+    campaignBusy = false;
+    await openCampaignPortal();
+    await openCampaignDetail(session.returnCampaignId);
+  } catch (error) {
+    await window.showAbyssAlert?.({
+      eyebrow: "Ficha da Campanha",
+      title: "Não foi possível voltar",
+      message: error?.message || describeFirebaseError(error),
+      tone: "warning",
+      trigger: campaignUi.sheetSessionBack,
+    });
+  } finally {
+    campaignBusy = false;
+    campaignUi.sheetSessionBack.disabled = false;
+  }
+}
+
+function clearCampaignSheetSession() {
+  campaignSheetSession = null;
+  document.querySelector("#main-content").inert = false;
+  document.body.classList.remove("campaign-sheet-session", "is-readonly", "campaign-mode");
+  campaignUi.sheetSessionBar.hidden = true;
+  campaignUi.app.hidden = true;
+}
+
 function openStartupSlotGate({ loading = true, message = "Carregando Slots…" } = {}) {
   firebaseUi.startupGate.hidden = false;
   firebaseUi.startupGate.setAttribute("aria-busy", String(loading));
@@ -17882,6 +19933,7 @@ function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") 
   firebaseUi.minervaButton.hidden = !signedIn || !isMinervaAdmin(user);
   firebaseUi.slotsLoginNote.hidden = signedIn;
   firebaseUi.createSlotForm.hidden = !signedIn;
+  renderCampaignIdentity();
 }
 
 function describeFirebaseError(error) {
@@ -17964,8 +20016,8 @@ function normalizeMediaRefId(value) {
 function getFirestoreMediaRefs({
   scope,
   refId,
-  uid = currentFirebaseUser?.uid,
-  slotId = currentSlotId,
+  uid = campaignSheetSession?.ownerUid || currentFirebaseUser?.uid,
+  slotId = campaignSheetSession?.slotId || currentSlotId,
 }) {
   const normalizedRefId = normalizeMediaRefId(refId);
   if (!normalizedRefId) throw new Error("A imagem não possui uma referência válida.");
@@ -18233,29 +20285,31 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     .filter((entry) => entry.id && entry.name && entry.purchasedAt);
 
   const batch = firestoreApi.writeBatch(firestoreDb);
-  batch.set(
-    refs.user,
-    {
-      displayName: user.displayName || "",
-      email: user.email || "",
-      photoURL: user.photoURL || "",
-      activeSlotId: slotId,
-      lastActiveAt: timestamp,
-    },
-    { merge: true },
-  );
-  batch.set(
-    refs.slot,
-    {
-      name: normalizeSlotName(
-        options.slotName || currentSlots.find((slot) => slot.id === slotId)?.name,
-        "Personagem",
-      ),
-      updatedAt: timestamp,
-      ...(options.created ? { createdAt: timestamp } : {}),
-    },
-    { merge: true },
-  );
+  if (!options.skipDirectoryWrites) {
+    batch.set(
+      refs.user,
+      {
+        displayName: user.displayName || "",
+        email: user.email || "",
+        photoURL: user.photoURL || "",
+        activeSlotId: slotId,
+        lastActiveAt: timestamp,
+      },
+      { merge: true },
+    );
+    batch.set(
+      refs.slot,
+      {
+        name: normalizeSlotName(
+          options.slotName || currentSlots.find((slot) => slot.id === slotId)?.name,
+          "Personagem",
+        ),
+        updatedAt: timestamp,
+        ...(options.created ? { createdAt: timestamp } : {}),
+      },
+      { merge: true },
+    );
+  }
   batch.set(refs.profile, {
     schemaVersion: 11,
     name: String(state.profile?.name || "").slice(0, 120),
@@ -18738,8 +20792,13 @@ async function uploadAbilityMedia({ scope, abilityId, file }) {
   ) {
     throw new Error("Escolha uma imagem ou GIF de até 8 MB.");
   }
-  if (scope !== "minerva" && !currentSlotId) {
+  const targetSlotId = campaignSheetSession?.slotId || currentSlotId;
+  const targetOwnerUid = campaignSheetSession?.ownerUid || currentFirebaseUser.uid;
+  if (scope !== "minerva" && !targetSlotId) {
     throw new Error("Nenhum Slot está ativo.");
+  }
+  if (scope !== "minerva" && campaignSheetSession && !campaignSheetSession.canEdit) {
+    throw new Error("Esta ficha está aberta somente para visualização.");
   }
   if (scope === "minerva" && !isMinervaAdmin()) {
     throw new Error("Esta conta não possui acesso ao Grimório de Minerva.");
@@ -18773,8 +20832,8 @@ async function uploadAbilityMedia({ scope, abilityId, file }) {
   const reference = {
     scope: mediaScope,
     refId,
-    uid: currentFirebaseUser.uid,
-    slotId: mediaScope === "sheet" ? currentSlotId : "",
+    uid: targetOwnerUid,
+    slotId: mediaScope === "sheet" ? targetSlotId : "",
   };
   const refs = getFirestoreMediaRefs(reference);
   const version = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
@@ -18957,6 +21016,7 @@ window.AbyssCloud = Object.freeze({
 
 function scheduleCloudSave() {
   if (!currentFirebaseUser || isHydratingCloudState) return;
+  if (campaignSheetSession && !campaignSheetSession.canEdit) return;
   window.clearTimeout(cloudSaveTimer);
   setSyncStatus(
     "saving",
@@ -18969,8 +21029,13 @@ function scheduleCloudSave() {
 
 async function flushCloudSave() {
   window.clearTimeout(cloudSaveTimer);
-  const user = currentFirebaseUser;
-  const slotId = currentSlotId;
+  const signedUser = currentFirebaseUser;
+  const session = campaignSheetSession ? { ...campaignSheetSession } : null;
+  if (session && !session.canEdit) return true;
+  const user = session
+    ? { uid: session.ownerUid, displayName: session.ownerName || "", email: "", photoURL: "" }
+    : signedUser;
+  const slotId = session?.slotId || currentSlotId;
   if (!user || !slotId || !sheetBridge) return false;
   if (!navigator.onLine) {
     setSyncStatus(
@@ -18994,14 +21059,29 @@ async function flushCloudSave() {
   firebaseUi.syncNow.disabled = true;
   cloudSavePromise = (async () => {
     try {
-      await writeCloudSheet(user, slotId, state);
-      if (currentFirebaseUser?.uid !== user.uid || currentSlotId !== slotId) return false;
+      await writeCloudSheet(user, slotId, state, { skipDirectoryWrites: Boolean(session) });
+      if (session) {
+        await firestoreApi.setDoc(
+          firestoreApi.doc(firestoreDb, "campaigns", session.campaignId, "sheets", session.sheetId),
+          {
+            characterName: String(state.profile?.name || session.slotName || "Personagem").slice(0, 120),
+            portrait: await compactPortraitForFirestore(String(state.profile?.portrait || "")),
+            updatedAt: firestoreApi.serverTimestamp(),
+          },
+          { merge: true },
+        );
+        if (campaignSheetSession?.token !== session.token) return false;
+      } else if (currentFirebaseUser?.uid !== user.uid || currentSlotId !== slotId) {
+        return false;
+      }
       lastSavedRevision = Math.max(lastSavedRevision, revisionBeingSaved);
       setSyncStatus(
         "saved",
         "Salvo na conta",
-        "Ficha sincronizada",
-        "Todas as alterações estão salvas nesta conta Google.",
+        session ? "Ficha da Campanha sincronizada" : "Ficha sincronizada",
+        session
+          ? "As alterações foram aplicadas diretamente ao Slot vinculado."
+          : "Todas as alterações estão salvas nesta conta Google.",
       );
       return true;
     } catch (error) {
@@ -19017,8 +21097,8 @@ async function flushCloudSave() {
       cloudSavePromise = null;
       firebaseUi.syncNow.disabled = false;
       if (
-        currentFirebaseUser?.uid === user.uid &&
-        currentSlotId === slotId &&
+        currentFirebaseUser?.uid === signedUser?.uid &&
+        (session ? campaignSheetSession?.token === session.token : currentSlotId === slotId) &&
         stateRevision > revisionBeingSaved
       ) {
         scheduleCloudSave();
@@ -19247,6 +21327,104 @@ window.addEventListener("online", () => {
   if (currentFirebaseUser && stateRevision > lastSavedRevision) flushCloudSave();
 });
 
+function campaignCardActivation(event) {
+  const card = event.target.closest("[data-campaign-id]");
+  if (!card) return;
+  if (event.type === "keydown" && !["Enter", " "].includes(event.key)) return;
+  if (event.type === "keydown") event.preventDefault();
+  openCampaignDetail(card.dataset.campaignId);
+}
+
+function trapCampaignModalFocus(event) {
+  if (event.key !== "Tab") return;
+  const modal = [...document.querySelectorAll(".campaign-modal")].find((item) => !item.hidden);
+  if (!modal) return;
+  const focusable = [...modal.querySelectorAll(
+    'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+  )].filter((element) => !element.closest("[hidden]"));
+  const first = focusable[0];
+  const last = focusable.at(-1);
+  if (!first || !last) return;
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === modal.querySelector("[role=dialog]"))) {
+    event.preventDefault();
+    last.focus();
+  } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+  }
+}
+
+window.addEventListener("abyss:campaign-open", openCampaignPortal);
+campaignUi.exit.addEventListener("click", closeCampaignPortal);
+campaignUi.masterList.addEventListener("click", campaignCardActivation);
+campaignUi.masterList.addEventListener("keydown", campaignCardActivation);
+campaignUi.playerList.addEventListener("click", campaignCardActivation);
+campaignUi.playerList.addEventListener("keydown", campaignCardActivation);
+campaignUi.createButtons.forEach((button) => button.addEventListener("click", () => openCampaignEditor()));
+campaignUi.joinButtons.forEach((button) => button.addEventListener("click", openCampaignJoin));
+campaignUi.detailBack.addEventListener("click", showCampaignDashboard);
+campaignUi.attachSheet.addEventListener("click", openCampaignSlotPicker);
+campaignUi.edit.addEventListener("click", () => openCampaignEditor(activeCampaign));
+campaignUi.leave.addEventListener("click", () => leaveActiveCampaign(campaignUi.leave));
+campaignUi.remove.addEventListener("click", () => deleteActiveCampaign(campaignUi.remove));
+campaignUi.copyCode.addEventListener("click", () => copyText(activeCampaign?.joinCode || "", "Código copiado", campaignUi.copyCode));
+campaignUi.rulesButton.addEventListener("click", openCampaignRules);
+campaignUi.copyRules.addEventListener("click", () => copyText(CAMPAIGN_FIRESTORE_RULES, "Regras copiadas", campaignUi.copyRules));
+campaignUi.editorForm.addEventListener("submit", submitCampaignEditor);
+campaignUi.joinForm.addEventListener("submit", submitCampaignJoin);
+campaignUi.slotForm.addEventListener("submit", submitCampaignSlot);
+campaignUi.sheetSessionBack.addEventListener("click", closeCampaignSheetSession);
+
+campaignUi.joinCode.addEventListener("input", () => {
+  campaignUi.joinCode.value = normalizeCampaignCode(campaignUi.joinCode.value);
+});
+campaignUi.bannerUrl.addEventListener("input", () => {
+  if (!campaignUi.bannerFile.files?.length) updateCampaignBannerPreview(campaignUi.bannerUrl.value || campaignBannerDraft);
+});
+campaignUi.bannerFile.addEventListener("change", async () => {
+  const file = campaignUi.bannerFile.files?.[0];
+  if (!file) {
+    updateCampaignBannerPreview(campaignUi.bannerUrl.value || campaignBannerDraft);
+    return;
+  }
+  try {
+    const source = await readFileAsDataUrl(file);
+    setCampaignBanner(campaignUi.bannerPreview, source);
+  } catch (error) {
+    setCampaignFormError(campaignUi.editorError, error?.message || "Não foi possível abrir o Banner.");
+  }
+});
+
+document.querySelectorAll("[data-close-campaign-editor]").forEach((button) => button.addEventListener("click", closeCampaignEditor));
+document.querySelectorAll("[data-close-campaign-join]").forEach((button) => button.addEventListener("click", closeCampaignJoin));
+document.querySelectorAll("[data-close-campaign-slot]").forEach((button) => button.addEventListener("click", closeCampaignSlotPicker));
+document.querySelectorAll("[data-close-campaign-rules]").forEach((button) => button.addEventListener("click", closeCampaignRules));
+
+campaignUi.sheetList.addEventListener("click", (event) => {
+  const open = event.target.closest("[data-open-campaign-sheet]");
+  if (open) {
+    openCampaignSheet(open.dataset.openCampaignSheet, open);
+    return;
+  }
+  const privacy = event.target.closest("[data-toggle-campaign-sheet-privacy]");
+  if (privacy) {
+    toggleCampaignSheetPrivacy(privacy.dataset.toggleCampaignSheetPrivacy, privacy);
+    return;
+  }
+  const unlink = event.target.closest("[data-unlink-campaign-sheet]");
+  if (unlink) unlinkCampaignSheet(unlink.dataset.unlinkCampaignSheet, unlink);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    if (!campaignUi.rulesModal.hidden) closeCampaignRules();
+    else if (!campaignUi.slotModal.hidden) closeCampaignSlotPicker();
+    else if (!campaignUi.joinModal.hidden) closeCampaignJoin();
+    else if (!campaignUi.editorModal.hidden) closeCampaignEditor();
+  }
+  trapCampaignModalFocus(event);
+});
+
 async function initializeFirebaseSync() {
   if (!sheetBridge) {
     closeStartupSlotGate();
@@ -19289,6 +21467,10 @@ async function initializeFirebaseSync() {
     authApi.onAuthStateChanged(firebaseAuth, async (user) => {
       currentFirebaseUser = user;
       if (!user) {
+        clearCampaignSheetSession();
+        closeAllCampaignModals();
+        campaignRecords = [];
+        activeCampaign = null;
         authChangeSequence += 1;
         isHydratingCloudState = false;
         window.clearTimeout(cloudSaveTimer);
