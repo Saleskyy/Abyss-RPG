@@ -6411,6 +6411,7 @@ body.campaign-mode > :is(.skip-link, .topbar, .sidebar, .main-content) { display
   font-size: .69rem;
   font-weight: 800;
   letter-spacing: .04em;
+  text-decoration: none;
 }
 .campaign-exit-button svg,
 .campaign-ghost-button svg,
@@ -6536,6 +6537,8 @@ body.campaign-mode > :is(.skip-link, .topbar, .sidebar, .main-content) { display
 .campaign-banner-preview.has-image span { display: none; }
 .campaign-form-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 4px; }
 .campaign-form-error { margin: 0; color: #e98b95; font-size: .67rem; line-height: 1.5; }
+.campaign-permission-help { justify-self: start; min-height: 34px; padding: 0 11px; border: 1px solid rgba(211,72,85,.34); border-radius: 3px; color: #efabb2; background: rgba(133,35,45,.1); cursor: pointer; font-size: .62rem; font-weight: 800; }
+.campaign-permission-help:hover { border-color: rgba(239,150,159,.62); background: rgba(133,35,45,.18); }
 .campaign-code-input { text-align: center; font: 800 1.15rem ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .2em; text-transform: uppercase; }
 .campaign-slot-list { display: grid; gap: 7px; max-height: 360px; overflow: auto; }
 .campaign-slot-choice { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 4px; cursor: pointer; background: rgba(255,255,255,.018); }
@@ -6545,6 +6548,36 @@ body.campaign-mode > :is(.skip-link, .topbar, .sidebar, .main-content) { display
 .campaign-slot-choice small { display: block; margin-top: 3px; color: var(--theme-muted-77736c, #77736c); font-size: .58rem; }
 .campaign-rules-copy { padding: 20px 22px 23px; }
 .campaign-rules-copy pre { max-height: 55dvh; margin: 0 0 12px; overflow: auto; border: 1px solid var(--theme-border-292a30, #292a30); border-radius: 4px; color: #c8c3b8; background: #08090b; padding: 15px; font: .65rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; }
+
+/* Recorte do Banner da Campanha. */
+.campaign-banner-crop-dialog { width: min(940px, 100%); }
+.campaign-banner-crop-content { display: grid; gap: 18px; padding: 22px 24px 24px; }
+.campaign-banner-crop-viewport {
+  position: relative;
+  isolation: isolate;
+  width: 100%;
+  aspect-ratio: 5 / 2;
+  overflow: hidden;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .5);
+  border-radius: 5px;
+  background: #07080a;
+  box-shadow: inset 0 0 45px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04), 0 18px 45px rgba(0,0,0,.34);
+  cursor: grab;
+  overscroll-behavior: contain;
+  touch-action: none;
+  user-select: none;
+}
+.campaign-banner-crop-viewport.is-dragging { cursor: grabbing; }
+.campaign-banner-crop-viewport:focus-visible { outline: 2px solid var(--theme-accent-f0d58f, #f0d58f); outline-offset: 3px; }
+.campaign-banner-crop-image { position: absolute; top: 50%; left: 50%; z-index: 1; display: block; max-width: none; opacity: 1; visibility: visible; transform-origin: center; pointer-events: none; user-select: none; -webkit-user-drag: none; will-change: left, top, transform; }
+.campaign-banner-crop-grid { position: absolute; inset: 0; z-index: 2; pointer-events: none; background: linear-gradient(90deg, transparent 33.15%, rgba(255,255,255,.16) 33.25%, rgba(255,255,255,.16) 33.45%, transparent 33.55%, transparent 66.45%, rgba(255,255,255,.16) 66.55%, rgba(255,255,255,.16) 66.75%, transparent 66.85%), linear-gradient(transparent 49.8%, rgba(255,255,255,.13) 49.9%, rgba(255,255,255,.13) 50.1%, transparent 50.2%); }
+.campaign-banner-crop-hint { position: absolute; right: 12px; bottom: 12px; z-index: 3; display: flex; align-items: center; gap: 7px; padding: 7px 9px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .35); border-radius: 3px; color: var(--theme-accent-f0d58f, #f0d58f); background: rgba(7,8,10,.78); pointer-events: none; font-size: .63rem; font-weight: 800; transition: opacity .15s ease; }
+.campaign-banner-crop-viewport.is-dragging .campaign-banner-crop-hint { opacity: .3; }
+.campaign-banner-crop-controls { display: grid; grid-template-columns: auto auto minmax(170px, 1fr) auto auto; align-items: center; gap: 10px; }
+.campaign-banner-crop-controls > span { color: var(--theme-muted-b0aba1, #b0aba1); font-size: .62rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.campaign-banner-crop-controls input { width: 100%; accent-color: var(--theme-accent-dfc77f, #dfc77f); cursor: pointer; }
+.campaign-banner-crop-controls button { min-width: 38px; min-height: 36px; padding: 0 10px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .28); border-radius: 3px; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .055); cursor: pointer; font-weight: 800; }
+.campaign-banner-crop-note { margin: -7px 0 0; color: var(--theme-muted-858179, #858179); font-size: .64rem; line-height: 1.5; }
 
 /* Faixa ao abrir uma ficha pela Campanha. */
 .campaign-sheet-session-bar { position: fixed; top: var(--topbar-height); right: 0; left: var(--sidebar-width); z-index: 27; display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 48px; padding: 6px 24px; border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .26); background: rgba(15,16,20,.96); box-shadow: 0 12px 28px rgba(0,0,0,.28); backdrop-filter: blur(14px); }
@@ -6590,6 +6623,11 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
   .campaign-dialog,
   .campaign-dialog.is-narrow,
   .campaign-dialog.is-wide { width: 100%; max-height: 94dvh; border-right: 0; border-bottom: 0; border-left: 0; border-radius: 12px 12px 0 0; }
+  .campaign-banner-crop-dialog { width: 100%; }
+  .campaign-banner-crop-content { padding: 17px 14px 20px; }
+  .campaign-banner-crop-controls { grid-template-columns: auto minmax(100px, 1fr) auto; }
+  .campaign-banner-crop-controls > span { grid-column: 1 / -1; }
+  .campaign-banner-center { grid-column: 1 / -1; }
   .campaign-form-grid { grid-template-columns: 1fr; }
   .campaign-field.is-wide { grid-column: auto; }
   .campaign-sheet-session-bar { right: 0; left: 0; min-height: 54px; padding: 6px 10px; }
@@ -7768,15 +7806,45 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
               <label class="campaign-field is-wide"><span>Nome da Campanha</span><input id="campaign-name" type="text" maxlength="90" required placeholder="Ex.: Ecos sob a Lua Morta" /></label>
               <label class="campaign-field is-wide"><span>Sinopse</span><textarea id="campaign-synopsis" maxlength="1800" required placeholder="Apresente a premissa, o tom e o ponto de partida da Campanha."></textarea></label>
               <label class="campaign-field is-wide"><span>Link do Banner <small>(opcional)</small></span><input id="campaign-banner-url" type="url" maxlength="1800" placeholder="https://..." /></label>
-              <label class="campaign-field"><span>Arquivo do Banner <small>(opcional)</small></span><input id="campaign-banner-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /></label>
+              <label class="campaign-field"><span>Arquivo do Banner <small>(opcional)</small></span><input id="campaign-banner-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /><small class="ability-field-help">Ao escolher uma imagem, você poderá arrastar, centralizar e ajustar o zoom.</small></label>
               <div class="campaign-field"><span>Prévia</span><div id="campaign-banner-preview" class="campaign-banner-preview"><span>Banner da Campanha</span></div></div>
             </div>
             <p id="campaign-editor-error" class="campaign-form-error" role="alert" hidden></p>
+            <button id="campaign-editor-rules-link" class="campaign-permission-help" type="button" hidden>Abrir regras do Firestore</button>
             <div class="campaign-form-actions">
               <button class="campaign-ghost-button" type="button" data-close-campaign-editor>Cancelar</button>
               <button id="campaign-editor-submit" class="campaign-primary-button" type="submit">Criar Campanha</button>
             </div>
           </form>
+        </section>
+      </div>
+
+      <div id="campaign-banner-crop-modal" class="campaign-modal" hidden>
+        <button class="campaign-modal-backdrop" type="button" data-close-campaign-banner-crop aria-label="Cancelar recorte"></button>
+        <section id="campaign-banner-crop-dialog" class="campaign-dialog campaign-banner-crop-dialog" role="dialog" aria-modal="true" aria-labelledby="campaign-banner-crop-title" tabindex="-1">
+          <header class="campaign-dialog-head">
+            <div><p class="eyebrow">Banner da Campanha</p><h2 id="campaign-banner-crop-title">Ajustar enquadramento</h2><p>Arraste a imagem dentro da moldura e use o controle para aproximar.</p></div>
+            <button class="campaign-dialog-close" type="button" data-close-campaign-banner-crop aria-label="Cancelar recorte">×</button>
+          </header>
+          <div class="campaign-banner-crop-content">
+            <div id="campaign-banner-crop-viewport" class="campaign-banner-crop-viewport" tabindex="0" aria-label="Área de enquadramento do Banner; arraste a imagem ou use as setas do teclado">
+              <img id="campaign-banner-crop-image" class="campaign-banner-crop-image" alt="Prévia do enquadramento do Banner" draggable="false" />
+              <span class="campaign-banner-crop-grid" aria-hidden="true"></span>
+              <span class="campaign-banner-crop-hint" aria-hidden="true">✥ Arraste a imagem</span>
+            </div>
+            <div class="campaign-banner-crop-controls">
+              <span>Zoom</span>
+              <button id="campaign-banner-zoom-out" type="button" aria-label="Diminuir zoom">−</button>
+              <input id="campaign-banner-zoom" type="range" min="1" max="4" step="0.01" value="1.04" aria-label="Zoom do Banner" />
+              <button id="campaign-banner-zoom-in" type="button" aria-label="Aumentar zoom">+</button>
+              <button id="campaign-banner-center" class="campaign-banner-center" type="button">Centralizar</button>
+            </div>
+            <p id="campaign-banner-crop-note" class="campaign-banner-crop-note">Mouse ou toque: arraste diretamente. Teclado: use as setas. A moldura corresponde ao Banner final.</p>
+            <div class="campaign-form-actions">
+              <button class="campaign-ghost-button" type="button" data-close-campaign-banner-crop>Cancelar</button>
+              <button id="campaign-banner-crop-apply" class="campaign-primary-button" type="button">Usar este recorte</button>
+            </div>
+          </div>
         </section>
       </div>
 
@@ -7826,13 +7894,14 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
         <button class="campaign-modal-backdrop" type="button" data-close-campaign-rules aria-label="Fechar"></button>
         <section id="campaign-rules-dialog" class="campaign-dialog is-wide" role="dialog" aria-modal="true" aria-labelledby="campaign-rules-title" tabindex="-1">
           <header class="campaign-dialog-head">
-            <div><p class="eyebrow">Firebase</p><h2 id="campaign-rules-title">Regras do Firestore</h2><p>Publique estas regras para liberar Campanhas e preservar as permissões das fichas.</p></div>
+            <div><p class="eyebrow">Firebase</p><h2 id="campaign-rules-title">Regras do Firestore</h2><p>Substitua o conteúdo atual por estas regras completas e publique para liberar Campanhas.</p></div>
             <button class="campaign-dialog-close" type="button" data-close-campaign-rules aria-label="Fechar">×</button>
           </header>
           <div class="campaign-rules-copy">
             <pre id="campaign-rules-code"></pre>
             <div class="campaign-form-actions">
               <button class="campaign-ghost-button" type="button" data-close-campaign-rules>Fechar</button>
+              <a class="campaign-ghost-button" href="https://console.firebase.google.com/project/abyssrpg/firestore/rules" target="_blank" rel="noreferrer">Abrir Firebase</a>
               <button id="campaign-copy-rules" class="campaign-primary-button" type="button">Copiar regras</button>
             </div>
           </div>
@@ -18373,11 +18442,22 @@ const campaignUi = {
   editorTitle: document.querySelector("#campaign-editor-title"),
   editorSubmit: document.querySelector("#campaign-editor-submit"),
   editorError: document.querySelector("#campaign-editor-error"),
+  editorRulesLink: document.querySelector("#campaign-editor-rules-link"),
   name: document.querySelector("#campaign-name"),
   synopsis: document.querySelector("#campaign-synopsis"),
   bannerUrl: document.querySelector("#campaign-banner-url"),
   bannerFile: document.querySelector("#campaign-banner-file"),
   bannerPreview: document.querySelector("#campaign-banner-preview"),
+  bannerCropModal: document.querySelector("#campaign-banner-crop-modal"),
+  bannerCropDialog: document.querySelector("#campaign-banner-crop-dialog"),
+  bannerCropViewport: document.querySelector("#campaign-banner-crop-viewport"),
+  bannerCropImage: document.querySelector("#campaign-banner-crop-image"),
+  bannerZoom: document.querySelector("#campaign-banner-zoom"),
+  bannerZoomOut: document.querySelector("#campaign-banner-zoom-out"),
+  bannerZoomIn: document.querySelector("#campaign-banner-zoom-in"),
+  bannerCenter: document.querySelector("#campaign-banner-center"),
+  bannerCropApply: document.querySelector("#campaign-banner-crop-apply"),
+  bannerCropNote: document.querySelector("#campaign-banner-crop-note"),
   joinModal: document.querySelector("#campaign-join-modal"),
   joinDialog: document.querySelector("#campaign-join-dialog"),
   joinForm: document.querySelector("#campaign-join-form"),
@@ -18408,8 +18488,22 @@ let activeCampaignMembers = [];
 let activeCampaignSheets = [];
 let campaignEditorId = "";
 let campaignBannerDraft = "";
+let campaignBannerCropped = "";
 let campaignSheetSession = null;
 let campaignBusy = false;
+const campaignBannerCropState = {
+  source: "",
+  image: null,
+  zoom: 1.04,
+  x: 0,
+  y: 0,
+  pointerId: null,
+  dragStartX: 0,
+  dragStartY: 0,
+  originX: 0,
+  originY: 0,
+  inputType: "",
+};
 
 const CAMPAIGN_FIRESTORE_RULES = String.raw`rules_version = '2';
 service cloud.firestore {
@@ -18474,9 +18568,7 @@ service cloud.firestore {
         allow read: if mine(uid);
         allow delete: if mine(uid) || campaignMaster(campaignId);
         allow create, update: if mine(uid)
-          && request.resource.data.campaignId == campaignId
-          && getAfter(/databases/$(database)/documents/campaigns/$(campaignId)/members/$(uid)).data.uid == uid
-          && request.resource.data.role == getAfter(/databases/$(database)/documents/campaigns/$(campaignId)/members/$(uid)).data.role;
+          && request.resource.data.campaignId == campaignId;
       }
       match /slots/{slotId} {
         allow read: if canViewSlot(uid, slotId);
@@ -18515,8 +18607,8 @@ service cloud.firestore {
       allow list: if false;
       allow create: if signedIn()
         && request.resource.data.ownerUid == request.auth.uid
-        && getAfter(/databases/$(database)/documents/campaigns/$(request.resource.data.campaignId)).data.ownerUid == request.auth.uid
-        && getAfter(/databases/$(database)/documents/campaigns/$(request.resource.data.campaignId)).data.joinCode == code;
+        && get(/databases/$(database)/documents/campaigns/$(request.resource.data.campaignId)).data.ownerUid == request.auth.uid
+        && get(/databases/$(database)/documents/campaigns/$(request.resource.data.campaignId)).data.joinCode == code;
       allow update: if false;
       allow delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
     }
@@ -18541,7 +18633,7 @@ service cloud.firestore {
         allow create: if signedIn() && (
           (memberUid == request.auth.uid
             && request.resource.data.role == 'master'
-            && getAfter(/databases/$(database)/documents/campaigns/$(campaignId)).data.ownerUid == request.auth.uid)
+            && get(/databases/$(database)/documents/campaigns/$(campaignId)).data.ownerUid == request.auth.uid)
           ||
           (memberUid == request.auth.uid
             && request.resource.data.role == 'player'
@@ -18640,6 +18732,12 @@ function setCampaignModal(modal, dialog, open) {
 }
 
 function closeAllCampaignModals() {
+  const pointerId = campaignBannerCropState.pointerId;
+  campaignBannerCropState.pointerId = null;
+  campaignUi.bannerCropViewport?.classList.remove("is-dragging");
+  if (pointerId !== null && campaignUi.bannerCropViewport?.hasPointerCapture?.(pointerId)) {
+    campaignUi.bannerCropViewport.releasePointerCapture(pointerId);
+  }
   document.querySelectorAll(".campaign-modal").forEach((modal) => { modal.hidden = true; });
   document.body.classList.remove("modal-open");
 }
@@ -18993,7 +19091,7 @@ async function openCampaignDetail(campaignId) {
   }
 }
 
-function updateCampaignBannerPreview(value = campaignBannerDraft || campaignUi.bannerUrl.value) {
+function updateCampaignBannerPreview(value = campaignBannerCropped || campaignUi.bannerUrl.value || campaignBannerDraft) {
   const banner = safeCampaignBanner(value);
   setCampaignBanner(campaignUi.bannerPreview, banner);
   campaignUi.bannerPreview.classList.toggle("has-image", Boolean(banner));
@@ -19002,6 +19100,7 @@ function updateCampaignBannerPreview(value = campaignBannerDraft || campaignUi.b
 function openCampaignEditor(record = null) {
   campaignEditorId = record?.id || "";
   campaignBannerDraft = safeCampaignBanner(record?.banner);
+  campaignBannerCropped = "";
   campaignUi.editorForm.reset();
   campaignUi.name.value = record?.name || "";
   campaignUi.synopsis.value = record?.synopsis || "";
@@ -19011,15 +19110,18 @@ function openCampaignEditor(record = null) {
   campaignUi.editorTitle.textContent = record ? "Editar Campanha" : "Criar Campanha";
   campaignUi.editorSubmit.textContent = record ? "Salvar Alterações" : "Criar Campanha";
   setCampaignFormError(campaignUi.editorError);
+  campaignUi.editorRulesLink.hidden = true;
   updateCampaignBannerPreview(campaignBannerDraft);
   setCampaignModal(campaignUi.editorModal, campaignUi.editorDialog, true);
   requestAnimationFrame(() => campaignUi.name.focus());
 }
 
 function closeCampaignEditor() {
+  if (!campaignUi.bannerCropModal.hidden) closeCampaignBannerCrop({ restorePreview: false });
   setCampaignModal(campaignUi.editorModal, campaignUi.editorDialog, false);
   campaignEditorId = "";
   campaignBannerDraft = "";
+  campaignBannerCropped = "";
 }
 
 function openCampaignJoin() {
@@ -19068,50 +19170,160 @@ function loadImageElement(source) {
   });
 }
 
-async function compactCampaignBanner(file) {
-  if (!file) return "";
+function getCampaignBannerCropScale() {
+  if (!campaignBannerCropState.image) return 1;
+  const viewportWidth = campaignUi.bannerCropViewport.clientWidth || 1;
+  const viewportHeight = campaignUi.bannerCropViewport.clientHeight || viewportWidth * .4;
+  const coverScale = Math.max(
+    viewportWidth / campaignBannerCropState.image.naturalWidth,
+    viewportHeight / campaignBannerCropState.image.naturalHeight,
+  );
+  return coverScale * campaignBannerCropState.zoom;
+}
+
+function clampCampaignBannerCropPosition() {
+  if (!campaignBannerCropState.image) return;
+  const viewportWidth = campaignUi.bannerCropViewport.clientWidth || 1;
+  const viewportHeight = campaignUi.bannerCropViewport.clientHeight || viewportWidth * .4;
+  const scale = getCampaignBannerCropScale();
+  const maximumX = Math.max(0, (campaignBannerCropState.image.naturalWidth * scale - viewportWidth) / 2);
+  const maximumY = Math.max(0, (campaignBannerCropState.image.naturalHeight * scale - viewportHeight) / 2);
+  campaignBannerCropState.x = Math.min(maximumX, Math.max(-maximumX, campaignBannerCropState.x));
+  campaignBannerCropState.y = Math.min(maximumY, Math.max(-maximumY, campaignBannerCropState.y));
+}
+
+function renderCampaignBannerCrop() {
+  if (!campaignBannerCropState.image) return;
+  clampCampaignBannerCropPosition();
+  const scale = getCampaignBannerCropScale();
+  const viewportWidth = campaignUi.bannerCropViewport.clientWidth || 1;
+  const viewportHeight = campaignUi.bannerCropViewport.clientHeight || viewportWidth * .4;
+  campaignUi.bannerCropImage.style.width = `${campaignBannerCropState.image.naturalWidth}px`;
+  campaignUi.bannerCropImage.style.height = `${campaignBannerCropState.image.naturalHeight}px`;
+  campaignUi.bannerCropImage.style.left = `${viewportWidth / 2 + campaignBannerCropState.x}px`;
+  campaignUi.bannerCropImage.style.top = `${viewportHeight / 2 + campaignBannerCropState.y}px`;
+  campaignUi.bannerCropImage.style.transform = `translate(-50%, -50%) scale(${scale})`;
+  campaignUi.bannerZoom.value = String(campaignBannerCropState.zoom);
+}
+
+function setCampaignBannerZoom(nextZoom) {
+  campaignBannerCropState.zoom = Math.min(4, Math.max(1, Number(nextZoom) || 1));
+  renderCampaignBannerCrop();
+}
+
+function centerCampaignBannerCrop() {
+  campaignBannerCropState.x = 0;
+  campaignBannerCropState.y = 0;
+  renderCampaignBannerCrop();
+}
+
+async function openCampaignBannerCrop(file) {
+  if (!file) return;
   if (!new Set(["image/png", "image/jpeg", "image/webp", "image/gif"]).has(file.type)) {
     throw new Error("Use um Banner em PNG, JPG, WEBP ou GIF.");
   }
   if (file.size > 10 * 1024 * 1024) throw new Error("O Banner deve ter no máximo 10 MB.");
   const source = await readFileAsDataUrl(file);
-  if (file.type === "image/gif") {
-    if (file.size > 580 * 1024 || source.length > 800000) {
-      throw new Error("Para preservar a animação, o Banner em GIF deve ter no máximo 580 KB.");
-    }
-    return source;
-  }
   const image = await loadImageElement(source);
+  campaignBannerCropState.source = source;
+  campaignBannerCropState.image = image;
+  campaignBannerCropState.inputType = file.type;
+  campaignBannerCropState.zoom = 1.04;
+  campaignBannerCropState.x = 0;
+  campaignBannerCropState.y = 0;
+  campaignBannerCropState.pointerId = null;
+  campaignUi.bannerCropImage.src = source;
+  campaignUi.bannerCropNote.textContent = file.type === "image/gif"
+    ? "O GIF será convertido em uma imagem estática ao aplicar o recorte. Arraste, use o zoom ou as setas do teclado."
+    : "Mouse ou toque: arraste diretamente. Teclado: use as setas. A moldura corresponde ao Banner final.";
+  setCampaignModal(campaignUi.bannerCropModal, campaignUi.bannerCropDialog, true);
+  requestAnimationFrame(() => {
+    renderCampaignBannerCrop();
+    campaignUi.bannerCropViewport.focus();
+  });
+}
+
+function closeCampaignBannerCrop({ restorePreview = true } = {}) {
+  const pointerId = campaignBannerCropState.pointerId;
+  campaignBannerCropState.pointerId = null;
+  if (pointerId !== null && campaignUi.bannerCropViewport.hasPointerCapture?.(pointerId)) {
+    campaignUi.bannerCropViewport.releasePointerCapture(pointerId);
+  }
+  campaignUi.bannerCropViewport.classList.remove("is-dragging");
+  campaignUi.bannerCropModal.hidden = true;
+  campaignUi.bannerFile.value = "";
+  if (restorePreview) updateCampaignBannerPreview();
+  document.body.classList.toggle(
+    "modal-open",
+    [...document.querySelectorAll(".campaign-modal")].some((item) => !item.hidden),
+  );
+  requestAnimationFrame(() => campaignUi.bannerFile.focus());
+}
+
+function applyCampaignBannerCrop() {
+  if (!campaignBannerCropState.image) return;
+  const viewportWidth = campaignUi.bannerCropViewport.clientWidth || 1;
+  const viewportHeight = campaignUi.bannerCropViewport.clientHeight || viewportWidth * .4;
+  const scale = getCampaignBannerCropScale();
+  const sourceWidth = viewportWidth / scale;
+  const sourceHeight = viewportHeight / scale;
+  const sourceX = campaignBannerCropState.image.naturalWidth / 2
+    - campaignBannerCropState.x / scale
+    - sourceWidth / 2;
+  const sourceY = campaignBannerCropState.image.naturalHeight / 2
+    - campaignBannerCropState.y / scale
+    - sourceHeight / 2;
   const canvas = document.createElement("canvas");
   canvas.width = 1400;
   canvas.height = 560;
   const context = canvas.getContext("2d");
-  const scale = Math.max(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight);
-  const width = image.naturalWidth * scale;
-  const height = image.naturalHeight * scale;
-  context.drawImage(image, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
-  let result = canvas.toDataURL("image/jpeg", .78);
-  if (result.length > 720000) result = canvas.toDataURL("image/jpeg", .58);
-  if (result.length > 850000) throw new Error("O Banner ficou grande demais. Tente uma imagem mais simples.");
-  return result;
+  if (!context) {
+    setCampaignFormError(campaignUi.editorError, "O navegador não conseguiu preparar o recorte do Banner.");
+    return;
+  }
+  context.fillStyle = "#090a0d";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  context.drawImage(
+    campaignBannerCropState.image,
+    sourceX,
+    sourceY,
+    sourceWidth,
+    sourceHeight,
+    0,
+    0,
+    canvas.width,
+    canvas.height,
+  );
+  let result = canvas.toDataURL("image/jpeg", .82);
+  if (result.length > 720000) result = canvas.toDataURL("image/jpeg", .62);
+  if (result.length > 850000) result = canvas.toDataURL("image/jpeg", .46);
+  if (result.length > 900000) {
+    setCampaignFormError(campaignUi.editorError, "O Banner ainda ficou grande demais. Escolha uma imagem mais simples.");
+    closeCampaignBannerCrop();
+    return;
+  }
+  campaignBannerCropped = result;
+  campaignUi.bannerUrl.value = "";
+  setCampaignFormError(campaignUi.editorError);
+  campaignUi.editorRulesLink.hidden = true;
+  setCampaignBanner(campaignUi.bannerPreview, result);
+  campaignUi.bannerPreview.classList.add("has-image");
+  closeCampaignBannerCrop({ restorePreview: false });
 }
 
-async function generateCampaignCode() {
+function generateCampaignCode() {
   const alphabet = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-  for (let attempt = 0; attempt < 12; attempt += 1) {
-    let code = "";
-    const random = crypto.getRandomValues(new Uint8Array(8));
-    random.forEach((value) => { code += alphabet[value % alphabet.length]; });
-    const snapshot = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "campaignCodes", code));
-    if (!snapshot.exists()) return code;
-  }
-  throw new Error("Não foi possível gerar um código único. Tente novamente.");
+  let code = "";
+  const random = crypto.getRandomValues(new Uint8Array(8));
+  random.forEach((value) => { code += alphabet[value % alphabet.length]; });
+  return code;
 }
 
 async function submitCampaignEditor(event) {
   event.preventDefault();
   if (!currentFirebaseUser || campaignBusy) return;
   setCampaignFormError(campaignUi.editorError);
+  campaignUi.editorRulesLink.hidden = true;
   const name = campaignUi.name.value.trim().replace(/\s+/g, " ").slice(0, 90);
   const synopsis = campaignUi.synopsis.value.trim().slice(0, 1800);
   if (!name) {
@@ -19133,11 +19345,10 @@ async function submitCampaignEditor(event) {
   campaignBusy = true;
   campaignUi.editorSubmit.disabled = true;
   campaignUi.editorSubmit.textContent = campaignEditorId ? "Salvando…" : "Criando…";
+  let creationStage = campaignEditorId ? "editar a Campanha" : "criar o registro da Campanha";
+  let orphanCampaignRef = null;
   try {
-    const uploadedBanner = campaignUi.bannerFile.files?.[0]
-      ? await compactCampaignBanner(campaignUi.bannerFile.files[0])
-      : "";
-    const banner = uploadedBanner || linkedBanner || campaignBannerDraft;
+    const banner = campaignBannerCropped || linkedBanner || campaignBannerDraft;
     if (campaignEditorId) {
       const existing = campaignRecords.find((record) => record.id === campaignEditorId) || activeCampaign;
       if (!existing || existing.ownerUid !== currentFirebaseUser.uid) throw new Error("Somente o Mestre pode editar esta Campanha.");
@@ -19156,13 +19367,12 @@ async function submitCampaignEditor(event) {
 
     const campaignRef = firestoreApi.doc(firestoreApi.collection(firestoreDb, "campaigns"));
     const campaignId = campaignRef.id;
-    const joinCode = await generateCampaignCode();
+    const joinCode = generateCampaignCode();
     const timestamp = firestoreApi.serverTimestamp();
     const memberRef = firestoreApi.doc(firestoreDb, "campaigns", campaignId, "members", currentFirebaseUser.uid);
     const indexRef = firestoreApi.doc(firestoreDb, "users", currentFirebaseUser.uid, "campaigns", campaignId);
     const codeRef = firestoreApi.doc(firestoreDb, "campaignCodes", joinCode);
-    const batch = firestoreApi.writeBatch(firestoreDb);
-    batch.set(campaignRef, {
+    await withCloudTimeout(firestoreApi.setDoc(campaignRef, {
       name,
       synopsis,
       banner,
@@ -19171,7 +19381,11 @@ async function submitCampaignEditor(event) {
       ownerName: currentFirebaseUser.displayName || "Mestre",
       createdAt: timestamp,
       updatedAt: timestamp,
-    });
+    }), 20000, "O registro da Campanha demorou demais para ser criado.");
+    orphanCampaignRef = campaignRef;
+
+    creationStage = "criar o Mestre e o código de convite";
+    const batch = firestoreApi.writeBatch(firestoreDb);
     batch.set(memberRef, {
       uid: currentFirebaseUser.uid,
       role: "master",
@@ -19183,12 +19397,24 @@ async function submitCampaignEditor(event) {
     batch.set(indexRef, { campaignId, role: "master", joinedAt: timestamp });
     batch.set(codeRef, { campaignId, ownerUid: currentFirebaseUser.uid, createdAt: timestamp });
     await withCloudTimeout(batch.commit(), 20000, "A Campanha demorou demais para ser criada.");
+    orphanCampaignRef = null;
     closeCampaignEditor();
     await loadCampaignRecords();
     renderCampaignDashboard();
     await openCampaignDetail(campaignId);
   } catch (error) {
-    setCampaignFormError(campaignUi.editorError, error?.message || describeFirebaseError(error));
+    const permissionDenied = String(error?.code || "").includes("permission-denied")
+      || /missing or insufficient permissions/i.test(String(error?.message || ""));
+    if (orphanCampaignRef && permissionDenied) {
+      await firestoreApi.deleteDoc(orphanCampaignRef).catch(() => {});
+    }
+    campaignUi.editorRulesLink.hidden = !permissionDenied;
+    setCampaignFormError(
+      campaignUi.editorError,
+      permissionDenied
+        ? `O Firestore recusou a etapa de ${creationStage}. As regras publicadas no Firebase estão ausentes ou desatualizadas. Abra as regras abaixo, copie o conteúdo completo e publique em Firestore Database → Rules.`
+        : (error?.message || describeFirebaseError(error)),
+    );
   } finally {
     campaignBusy = false;
     campaignUi.editorSubmit.disabled = false;
@@ -21337,10 +21563,10 @@ function campaignCardActivation(event) {
 
 function trapCampaignModalFocus(event) {
   if (event.key !== "Tab") return;
-  const modal = [...document.querySelectorAll(".campaign-modal")].find((item) => !item.hidden);
+  const modal = [...document.querySelectorAll(".campaign-modal")].filter((item) => !item.hidden).at(-1);
   if (!modal) return;
   const focusable = [...modal.querySelectorAll(
-    'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    'button:not([disabled]), input:not([disabled]), textarea:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])',
   )].filter((element) => !element.closest("[hidden]"));
   const first = focusable[0];
   const last = focusable.at(-1);
@@ -21369,6 +21595,7 @@ campaignUi.leave.addEventListener("click", () => leaveActiveCampaign(campaignUi.
 campaignUi.remove.addEventListener("click", () => deleteActiveCampaign(campaignUi.remove));
 campaignUi.copyCode.addEventListener("click", () => copyText(activeCampaign?.joinCode || "", "Código copiado", campaignUi.copyCode));
 campaignUi.rulesButton.addEventListener("click", openCampaignRules);
+campaignUi.editorRulesLink.addEventListener("click", openCampaignRules);
 campaignUi.copyRules.addEventListener("click", () => copyText(CAMPAIGN_FIRESTORE_RULES, "Regras copiadas", campaignUi.copyRules));
 campaignUi.editorForm.addEventListener("submit", submitCampaignEditor);
 campaignUi.joinForm.addEventListener("submit", submitCampaignJoin);
@@ -21379,23 +21606,96 @@ campaignUi.joinCode.addEventListener("input", () => {
   campaignUi.joinCode.value = normalizeCampaignCode(campaignUi.joinCode.value);
 });
 campaignUi.bannerUrl.addEventListener("input", () => {
-  if (!campaignUi.bannerFile.files?.length) updateCampaignBannerPreview(campaignUi.bannerUrl.value || campaignBannerDraft);
+  campaignBannerCropped = "";
+  campaignUi.bannerFile.value = "";
+  updateCampaignBannerPreview(campaignUi.bannerUrl.value || campaignBannerDraft);
 });
 campaignUi.bannerFile.addEventListener("change", async () => {
   const file = campaignUi.bannerFile.files?.[0];
   if (!file) {
-    updateCampaignBannerPreview(campaignUi.bannerUrl.value || campaignBannerDraft);
+    updateCampaignBannerPreview();
     return;
   }
   try {
-    const source = await readFileAsDataUrl(file);
-    setCampaignBanner(campaignUi.bannerPreview, source);
+    setCampaignFormError(campaignUi.editorError);
+    campaignUi.editorRulesLink.hidden = true;
+    await openCampaignBannerCrop(file);
   } catch (error) {
+    campaignUi.bannerFile.value = "";
     setCampaignFormError(campaignUi.editorError, error?.message || "Não foi possível abrir o Banner.");
   }
 });
 
+campaignUi.bannerCropApply.addEventListener("click", applyCampaignBannerCrop);
+campaignUi.bannerCenter.addEventListener("click", centerCampaignBannerCrop);
+campaignUi.bannerZoom.addEventListener("input", () => setCampaignBannerZoom(campaignUi.bannerZoom.value));
+campaignUi.bannerZoomOut.addEventListener("click", () => setCampaignBannerZoom(campaignBannerCropState.zoom - .1));
+campaignUi.bannerZoomIn.addEventListener("click", () => setCampaignBannerZoom(campaignBannerCropState.zoom + .1));
+
+campaignUi.bannerCropViewport.addEventListener("pointerdown", (event) => {
+  if (!campaignBannerCropState.image) return;
+  if (event.pointerType === "mouse" && event.button !== 0) return;
+  if (campaignBannerCropState.pointerId !== null) return;
+  event.preventDefault();
+  campaignBannerCropState.pointerId = event.pointerId;
+  campaignBannerCropState.dragStartX = event.clientX;
+  campaignBannerCropState.dragStartY = event.clientY;
+  campaignBannerCropState.originX = campaignBannerCropState.x;
+  campaignBannerCropState.originY = campaignBannerCropState.y;
+  campaignUi.bannerCropViewport.classList.add("is-dragging");
+  try {
+    campaignUi.bannerCropViewport.setPointerCapture(event.pointerId);
+  } catch {
+    // O acompanhamento global mantém o arraste em navegadores sem captura.
+  }
+});
+
+window.addEventListener("pointermove", (event) => {
+  if (campaignBannerCropState.pointerId !== event.pointerId) return;
+  event.preventDefault();
+  campaignBannerCropState.x = campaignBannerCropState.originX + event.clientX - campaignBannerCropState.dragStartX;
+  campaignBannerCropState.y = campaignBannerCropState.originY + event.clientY - campaignBannerCropState.dragStartY;
+  renderCampaignBannerCrop();
+}, { passive: false });
+
+function finishCampaignBannerDrag(event) {
+  if (campaignBannerCropState.pointerId !== event.pointerId) return;
+  const pointerId = campaignBannerCropState.pointerId;
+  campaignBannerCropState.pointerId = null;
+  campaignUi.bannerCropViewport.classList.remove("is-dragging");
+  if (campaignUi.bannerCropViewport.hasPointerCapture?.(pointerId)) {
+    campaignUi.bannerCropViewport.releasePointerCapture(pointerId);
+  }
+}
+
+window.addEventListener("pointerup", finishCampaignBannerDrag);
+window.addEventListener("pointercancel", finishCampaignBannerDrag);
+campaignUi.bannerCropViewport.addEventListener("lostpointercapture", finishCampaignBannerDrag);
+campaignUi.bannerCropImage.addEventListener("dragstart", (event) => event.preventDefault());
+campaignUi.bannerCropViewport.addEventListener("wheel", (event) => {
+  event.preventDefault();
+  setCampaignBannerZoom(campaignBannerCropState.zoom + (event.deltaY < 0 ? .08 : -.08));
+}, { passive: false });
+campaignUi.bannerCropViewport.addEventListener("keydown", (event) => {
+  const movement = event.shiftKey ? 20 : 8;
+  const direction = {
+    ArrowLeft: [-movement, 0],
+    ArrowRight: [movement, 0],
+    ArrowUp: [0, -movement],
+    ArrowDown: [0, movement],
+  }[event.key];
+  if (!direction) return;
+  event.preventDefault();
+  campaignBannerCropState.x += direction[0];
+  campaignBannerCropState.y += direction[1];
+  renderCampaignBannerCrop();
+});
+window.addEventListener("resize", () => {
+  if (!campaignUi.bannerCropModal.hidden) renderCampaignBannerCrop();
+});
+
 document.querySelectorAll("[data-close-campaign-editor]").forEach((button) => button.addEventListener("click", closeCampaignEditor));
+document.querySelectorAll("[data-close-campaign-banner-crop]").forEach((button) => button.addEventListener("click", () => closeCampaignBannerCrop()));
 document.querySelectorAll("[data-close-campaign-join]").forEach((button) => button.addEventListener("click", closeCampaignJoin));
 document.querySelectorAll("[data-close-campaign-slot]").forEach((button) => button.addEventListener("click", closeCampaignSlotPicker));
 document.querySelectorAll("[data-close-campaign-rules]").forEach((button) => button.addEventListener("click", closeCampaignRules));
@@ -21417,7 +21717,8 @@ campaignUi.sheetList.addEventListener("click", (event) => {
 
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
-    if (!campaignUi.rulesModal.hidden) closeCampaignRules();
+    if (!campaignUi.bannerCropModal.hidden) closeCampaignBannerCrop();
+    else if (!campaignUi.rulesModal.hidden) closeCampaignRules();
     else if (!campaignUi.slotModal.hidden) closeCampaignSlotPicker();
     else if (!campaignUi.joinModal.hidden) closeCampaignJoin();
     else if (!campaignUi.editorModal.hidden) closeCampaignEditor();
