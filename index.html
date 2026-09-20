@@ -380,6 +380,21 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 }
 .hex-shell input::-webkit-inner-spin-button, .hex-shell input::-webkit-outer-spin-button { margin: 0; appearance: none; }
 .attribute-name { margin-top: 8px; color: var(--dim); font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.attribute-die-button {
+  min-width: 54px;
+  margin-top: 4px;
+  padding: 2px 8px;
+  border: 0;
+  border-radius: 999px;
+  color: var(--theme-accent-bda66d, #bda66d);
+  background: transparent;
+  cursor: pointer;
+  font: 800 .66rem/1.35 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .08em;
+  transition: color .15s ease, background .15s ease, box-shadow .15s ease;
+}
+.attribute-die-button:hover,
+.attribute-die-button:focus-visible { color: var(--theme-accent-f0d58f, #f0d58f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .09); box-shadow: 0 0 15px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08); outline: 0; }
 
 .skills-title-zone { display: flex; align-items: flex-end; gap: clamp(20px, 3vw, 42px); min-width: 0; }
 
@@ -2571,6 +2586,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 
 .account-menu-actions {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   gap: 9px;
   padding: 16px 19px 19px;
@@ -2591,6 +2607,28 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .account-action:hover { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.5); color: var(--theme-accent-f0d58f, #f0d58f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.08); }
 .account-action.is-primary { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.42); color: var(--theme-accent-ddc683, #ddc683); }
 .account-action:disabled { cursor: wait; opacity: 0.55; }
+
+.sheet-transfer-dialog { width: min(760px, 100%); }
+.sheet-transfer-content { display: grid; gap: 13px; padding: 21px 24px 24px; }
+.sheet-transfer-code {
+  width: 100%;
+  min-height: 230px;
+  max-height: 48dvh;
+  resize: vertical;
+  border: 1px solid var(--theme-border-34353a, #34353a);
+  border-radius: 4px;
+  color: var(--theme-text-e6e0d4, #e6e0d4);
+  background: #08090c;
+  padding: 13px;
+  outline: 0;
+  font: .67rem/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
+  overflow-wrap: anywhere;
+}
+.sheet-transfer-code:focus { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .58); box-shadow: 0 0 0 3px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .07); }
+.sheet-transfer-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; color: var(--theme-muted-858179, #858179); font-size: .62rem; line-height: 1.45; }
+.sheet-transfer-meta strong { color: var(--theme-accent-cdb779, #cdb779); font: 750 .64rem ui-monospace, SFMono-Regular, Menlo, monospace; }
+.sheet-transfer-status { margin: 0; color: var(--theme-muted-a49e92, #a49e92); font-size: .68rem; line-height: 1.5; }
+.sheet-transfer-status.is-error { color: #e9929c; }
 
 @media (max-width: 900px) {
   body { background-size: auto, auto, 42px 42px, 42px 42px, auto; }
@@ -6710,6 +6748,102 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
   .campaign-form-actions { display: grid; grid-template-columns: 1fr 1fr; }
   .campaign-sheet-session-copy small { max-width: 53vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 }
+/* Dados derivados, Testes Especiais e retratos dos Slots */
+.block-value-row { grid-template-columns: minmax(64px, 1fr) auto 38px 38px; }
+.block-reset-button { width: 38px; min-width: 38px; padding: 0; }
+.derived-combat-stat { position: relative; overflow: hidden; }
+.derived-combat-stat::after {
+  position: absolute;
+  right: -23px;
+  bottom: -37px;
+  width: 110px;
+  height: 110px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08);
+  border-radius: 50%;
+  content: "";
+}
+.derived-combat-value {
+  display: block;
+  color: var(--theme-accent-efd486, #efd486);
+  font: 700 2.15rem/1 Georgia, "Times New Roman", serif;
+}
+.derived-combat-detail { position: relative; z-index: 1; margin: 8px 0 0; color: var(--theme-muted-858179, #858179); font-size: .65rem; line-height: 1.45; }
+.movement-value-row { display: grid; grid-template-columns: minmax(60px, 1fr) auto auto; align-items: center; gap: 8px; }
+.movement-value-row strong { color: var(--theme-accent-cdb779, #cdb779); font: 800 .78rem ui-monospace, SFMono-Regular, Menlo, monospace; }
+
+.special-tests-panel {
+  position: relative;
+  overflow: hidden;
+  margin-top: 18px;
+  padding: 28px 30px 30px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  background: linear-gradient(145deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04), transparent 35%), var(--surface);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .2);
+}
+.special-tests-panel::before { position: absolute; top: 0; right: 0; left: 0; height: 1px; content: ""; background: linear-gradient(90deg, transparent, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .55), transparent); }
+.special-tests-head { margin-bottom: 18px; }
+.special-tests-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
+.special-test-card { min-width: 0; padding: 18px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .14); border-radius: 4px; background: rgba(var(--theme-surface-060709-rgb, 6, 7, 9), .34); }
+.special-test-card > header { display: flex; align-items: center; gap: 11px; margin-bottom: 15px; }
+.special-test-card h3 { margin: 0; color: var(--theme-text-e9e3d6, #e9e3d6); font: 1.12rem Georgia, "Times New Roman", serif; }
+.special-test-card header p { margin: 3px 0 0; color: var(--theme-muted-858179, #858179); font-size: .64rem; }
+.special-test-icon { display: grid; flex: 0 0 36px; width: 36px; height: 36px; place-items: center; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .26); border-radius: 50%; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .055); }
+.luck-controls { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 8px; }
+.luck-controls label, .primary-sense-control { display: grid; gap: 5px; color: var(--theme-muted-858179, #858179); font-size: .6rem; font-weight: 780; letter-spacing: .08em; text-transform: uppercase; }
+.luck-controls select, .primary-sense-control select, .sense-value-input { width: 100%; height: 36px; border: 1px solid var(--theme-border-313238, #313238); border-radius: 3px; color: var(--theme-text-d7d1c5, #d7d1c5); background: var(--theme-surface-0b0c0f, #0b0c0f); }
+.luck-controls select, .primary-sense-control select { padding: 0 28px 0 10px; }
+.luck-controls > span { padding-bottom: 10px; color: var(--theme-muted-696761, #696761); }
+.special-roll-button { width: 100%; min-height: 38px; margin-top: 12px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .38); border-radius: 3px; color: var(--theme-accent-e3ca80, #e3ca80); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .07); cursor: pointer; font-size: .7rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.special-roll-button:hover { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .7); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .13); }
+.special-test-result { display: block; min-height: 21px; margin-top: 11px; color: var(--theme-muted-a49e92, #a49e92); font-size: .72rem; line-height: 1.45; }
+.special-test-result.is-success { color: #74d996; }
+.special-test-result.is-failure { color: #ef767d; }
+.wisdom-display { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 0 13px; border-left: 2px solid var(--theme-accent-b9954e, #b9954e); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04); color: var(--theme-muted-858179, #858179); font-size: .66rem; text-transform: uppercase; }
+.wisdom-display output { color: var(--theme-accent-efd486, #efd486); font: 700 1.7rem Georgia, "Times New Roman", serif; }
+.senses-card { grid-column: 1 / -1; }
+.senses-card-head { display: grid !important; grid-template-columns: 36px minmax(0, 1fr) minmax(150px, .3fr); }
+.primary-sense-control { min-width: 0; }
+.senses-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.sense-row { display: grid; grid-template-columns: minmax(0, 1fr) 68px auto auto; align-items: center; gap: 7px; padding: 10px; border: 1px solid var(--theme-border-292a2f, #292a2f); border-radius: 3px; background: rgba(255, 255, 255, .015); }
+.sense-row.is-primary { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .4); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .05); }
+.sense-copy { min-width: 0; }
+.sense-copy strong { display: flex; align-items: center; gap: 7px; color: var(--theme-text-e2dbce, #e2dbce); font: 600 .9rem Georgia, "Times New Roman", serif; }
+.sense-copy strong em { padding: 2px 5px; border-radius: 999px; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08); font: 700 .5rem ui-sans-serif, system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; }
+.sense-copy p { overflow: hidden; margin: 3px 0 0; color: var(--theme-muted-77756f, #77756f); font-size: .58rem; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+.sense-value-input { padding: 0 7px; text-align: center; appearance: textfield; }
+.sense-value-input::-webkit-inner-spin-button, .sense-value-input::-webkit-outer-spin-button { appearance: none; }
+.sense-test-button, .sense-reroll-button { display: grid; width: 34px; height: 34px; padding: 0; place-items: center; border: 1px solid var(--theme-border-313238, #313238); border-radius: 3px; color: var(--theme-muted-a49e92, #a49e92); background: rgba(255, 255, 255, .02); cursor: pointer; }
+.sense-test-button { width: auto; min-width: 58px; padding: 0 9px; color: var(--theme-accent-e3ca80, #e3ca80); font-size: .61rem; font-weight: 800; text-transform: uppercase; }
+.sense-reroll-button { font-size: 1rem; }
+.sense-reroll-button:disabled { cursor: default; opacity: .24; }
+.sense-inline-result { grid-column: 1 / -1; min-height: 0; margin: -1px 0 0; color: var(--theme-muted-858179, #858179); font-size: .61rem; }
+.sense-inline-result.is-success { color: #74d996; }
+.sense-inline-result.is-failure { color: #ef767d; }
+.senses-footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 11px; }
+.senses-footer p { margin: 0; color: var(--theme-muted-77756f, #77756f); font-size: .62rem; line-height: 1.5; }
+.senses-footer button { flex: 0 0 auto; }
+
+.slot-avatar, .slot-gate-avatar { display: grid; overflow: hidden; place-items: center; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .3); border-radius: 50%; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08); font: 700 .75rem Georgia, "Times New Roman", serif; }
+.slot-avatar { width: 30px; height: 30px; }
+.slot-gate-avatar { width: 42px; height: 42px; }
+.slot-avatar img, .slot-gate-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.slot-item { grid-template-columns: 30px minmax(0, 1fr) auto; }
+.slot-gate-choice { grid-template-columns: 50px minmax(0, 1fr) auto; }
+
+@media (max-width: 760px) {
+  .special-tests-panel { padding: 22px 16px; }
+  .special-tests-grid, .senses-list { grid-template-columns: 1fr; }
+  .senses-card-head { grid-template-columns: 36px minmax(0, 1fr); }
+  .primary-sense-control { grid-column: 1 / -1; }
+}
+@media (max-width: 480px) {
+  .sense-row { grid-template-columns: minmax(0, 1fr) 62px auto; }
+  .sense-test-button { grid-column: 1 / -1; width: 100%; }
+  .senses-footer { align-items: stretch; flex-direction: column; }
+  .sheet-transfer-content { padding-inline: 15px; }
+  .sheet-transfer-code { min-height: 190px; }
+}
 @media (prefers-reduced-motion: reduce) { .slot-gate-spinner { animation-duration: 1.8s; } }
     </style>
   </head>
@@ -6809,6 +6943,8 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
           <footer class="account-menu-actions">
             <button id="account-login" class="account-action is-primary" type="button" hidden>Entrar com Google</button>
             <button id="account-sync-now" class="account-action is-primary" type="button" hidden>Sincronizar agora</button>
+            <button id="account-export-sheet" class="account-action" type="button" hidden>Exportar ficha</button>
+            <button id="account-import-sheet" class="account-action" type="button" hidden>Importar ficha</button>
             <button id="account-reset-sheet" class="account-action is-danger" type="button" hidden>Resetar ficha</button>
             <button id="account-sign-out" class="account-action" type="button" hidden>Sair</button>
           </footer>
@@ -7044,49 +7180,54 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
               <p class="eyebrow">Núcleo</p>
               <h2 id="attributes-title">Atributos</h2>
             </div>
-            <p>Estes valores são somados às rolagens de perícia.</p>
+            <p>Cada valor define um Dado de Atributo, rolado junto ao Dado de Treinamento.</p>
           </div>
 
           <div class="attributes-row">
-            <label class="attribute" title="Força">
+            <div class="attribute" title="Força">
               <span class="hex-shell">
                 <span class="attribute-code">FOR</span>
-                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="FOR" aria-label="Valor de Força" />
+                <input type="number" value="1" min="1" max="5" inputmode="numeric" data-attribute="FOR" aria-label="Valor de Força" />
               </span>
               <span class="attribute-name">Força</span>
-            </label>
+              <button class="attribute-die-button" type="button" data-roll-attribute="FOR" aria-label="Rolar Dado de Força">1d4</button>
+            </div>
 
-            <label class="attribute" title="Agilidade">
+            <div class="attribute" title="Agilidade">
               <span class="hex-shell">
                 <span class="attribute-code">AGI</span>
-                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="AGI" aria-label="Valor de Agilidade" />
+                <input type="number" value="1" min="1" max="5" inputmode="numeric" data-attribute="AGI" aria-label="Valor de Agilidade" />
               </span>
               <span class="attribute-name">Agilidade</span>
-            </label>
+              <button class="attribute-die-button" type="button" data-roll-attribute="AGI" aria-label="Rolar Dado de Agilidade">1d4</button>
+            </div>
 
-            <label class="attribute" title="Intelecto">
+            <div class="attribute" title="Intelecto">
               <span class="hex-shell">
                 <span class="attribute-code">INT</span>
-                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="INT" aria-label="Valor de Intelecto" />
+                <input type="number" value="1" min="1" max="5" inputmode="numeric" data-attribute="INT" aria-label="Valor de Intelecto" />
               </span>
               <span class="attribute-name">Intelecto</span>
-            </label>
+              <button class="attribute-die-button" type="button" data-roll-attribute="INT" aria-label="Rolar Dado de Intelecto">1d4</button>
+            </div>
 
-            <label class="attribute" title="Constituição">
+            <div class="attribute" title="Constituição">
               <span class="hex-shell">
                 <span class="attribute-code">CON</span>
-                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="CON" aria-label="Valor de Constituição" />
+                <input type="number" value="1" min="1" max="5" inputmode="numeric" data-attribute="CON" aria-label="Valor de Constituição" />
               </span>
               <span class="attribute-name">Constituição</span>
-            </label>
+              <button class="attribute-die-button" type="button" data-roll-attribute="CON" aria-label="Rolar Dado de Constituição">1d4</button>
+            </div>
 
-            <label class="attribute" title="Poder">
+            <div class="attribute" title="Poder">
               <span class="hex-shell">
                 <span class="attribute-code">POD</span>
-                <input type="number" value="1" min="-99" max="99" inputmode="numeric" data-attribute="POD" aria-label="Valor de Poder" />
+                <input type="number" value="1" min="1" max="5" inputmode="numeric" data-attribute="POD" aria-label="Valor de Poder" />
               </span>
               <span class="attribute-name">Poder</span>
-            </label>
+              <button class="attribute-die-button" type="button" data-roll-attribute="POD" aria-label="Rolar Dado de Poder">1d4</button>
+            </div>
           </div>
         </section>
 
@@ -7275,6 +7416,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
             <article class="combat-stat is-block">
               <header class="combat-stat-head">
                 <h3>Bloqueio</h3>
+                <span id="block-base-value" class="defense-base-value">Base 4</span>
               </header>
               <div class="block-value-row">
                 <label>
@@ -7285,6 +7427,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
                   <input id="block-active" type="checkbox" />
                   <span>Ativo</span>
                 </label>
+                <button class="dt-auto-button block-reset-button" type="button" data-reset-block aria-label="Usar Bloqueio calculado" title="Usar 3 + CON">↺</button>
                 <button id="rd-manager-button" class="rd-manager-button" type="button" aria-expanded="false" aria-controls="rd-modal" aria-haspopup="dialog" aria-label="Abrir Reduções de Dano" title="Reduções de Dano">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M12 3 19 6v5c0 4.6-2.8 8-7 10-4.2-2-7-5.4-7-10V6l7-3Z"></path>
@@ -7296,6 +7439,26 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
             </article>
           </div>
           <div class="combat-dt-grid">
+            <article class="combat-stat derived-combat-stat">
+              <header class="combat-stat-head">
+                <h3>Iniciativa</h3>
+                <span id="initiative-formula" class="defense-base-value">4 + AGI</span>
+              </header>
+              <output id="initiative-value" class="derived-combat-value" aria-live="polite">5</output>
+              <p id="initiative-detail" class="derived-combat-detail">Leigo em Reflexos · metade de d8 + AGI</p>
+            </article>
+            <article class="combat-stat derived-combat-stat">
+              <header class="combat-stat-head">
+                <h3>Deslocamento</h3>
+                <span id="movement-base-value" class="defense-base-value">Base 6Q</span>
+              </header>
+              <div class="movement-value-row">
+                <input id="movement-value" class="block-input" type="number" value="6" min="0" max="999999" step="1" inputmode="numeric" aria-label="Deslocamento em quadrados" />
+                <strong aria-hidden="true">Q</strong>
+                <button class="dt-auto-button" type="button" data-reset-movement title="Usar Deslocamento padrão">Usar padrão</button>
+              </div>
+              <p class="derived-combat-detail">Por padrão, personagens possuem 6Q de Deslocamento.</p>
+            </article>
             <article class="combat-stat">
               <header class="combat-stat-head">
                 <h3>DT de Feitiçaria</h3>
@@ -7385,7 +7548,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
 
             <div class="difficulty-switch" role="group" aria-label="Zona de dificuldade">
               <button type="button" data-difficulty="easy" aria-pressed="false">Fácil</button>
-              <button class="is-active" type="button" data-difficulty="medium" aria-pressed="true">Média</button>
+              <button class="is-active" type="button" data-difficulty="medium" aria-pressed="true">Normal</button>
               <button type="button" data-difficulty="hard" aria-pressed="false">Difícil</button>
             </div>
           </div>
@@ -7401,14 +7564,14 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
           <div class="skills-panel-head">
             <div>
               <h2>Lista de perícias</h2>
-              <p>Nos dados principais, fica o maior resultado. Em extras, use formatos como 1d6 ou 2d4.</p>
+              <p>Role o melhor Dado de Treinamento, some o Dado de Atributo e os modificadores.</p>
             </div>
             <div class="skills-panel-actions">
               <span id="training-cap-status" class="training-cap-status" aria-live="polite">Escolha uma Classe no Perfil</span>
               <div class="roll-formula" aria-label="Fórmula da rolagem">
                 <span>Melhor dado</span>
                 <b>+</b>
-                <span>Atributo</span>
+                <span>Dado de Atributo</span>
                 <b>+</b>
                 <span>Modificadores</span>
               </div>
@@ -7489,6 +7652,49 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
             <span>Abra as Informações de uma perícia e acesse suas Competências.</span>
           </div>
           <div id="selected-features-list" class="selected-features-list"></div>
+        </section>
+
+        <section class="special-tests-panel" aria-labelledby="special-tests-title">
+          <header class="sheet-features-head special-tests-head">
+            <div>
+              <p class="eyebrow">Testes Especiais</p>
+              <h2 id="special-tests-title">Sorte, Sabedoria e Sentidos</h2>
+              <p>Testes independentes das Zonas de Dificuldade e dos treinamentos comuns.</p>
+            </div>
+          </header>
+
+          <div class="special-tests-grid">
+            <article class="special-test-card">
+              <header><span class="special-test-icon" aria-hidden="true">✦</span><div><h3>Sorte</h3><p>Dado de Sorte − Dado de Azar</p></div></header>
+              <div class="luck-controls">
+                <label><span>Sorte</span><select id="luck-die"><option value="4">d4</option><option value="6">d6</option><option value="8" selected>d8</option><option value="10">d10</option><option value="12">d12</option><option value="20">d20</option></select></label>
+                <span aria-hidden="true">−</span>
+                <label><span>Azar</span><select id="misfortune-die"><option value="4">d4</option><option value="6">d6</option><option value="8" selected>d8</option><option value="10">d10</option><option value="12">d12</option><option value="20">d20</option></select></label>
+              </div>
+              <button id="roll-luck-test" class="special-roll-button" type="button">Rolar Sorte</button>
+              <output id="luck-result" class="special-test-result" aria-live="polite">0 · Neutro</output>
+            </article>
+
+            <article class="special-test-card">
+              <header><span class="special-test-icon" aria-hidden="true">◇</span><div><h3>Sabedoria</h3><p>20 + (INT × 15)</p></div></header>
+              <div class="wisdom-display"><span>Valor atual</span><output id="wisdom-value">35</output></div>
+              <button id="roll-wisdom-test" class="special-roll-button" type="button">Rolar 1d100</button>
+              <output id="wisdom-result" class="special-test-result" aria-live="polite">Role para testar sua Sabedoria.</output>
+            </article>
+
+            <article class="special-test-card senses-card">
+              <header class="senses-card-head">
+                <span class="special-test-icon" aria-hidden="true">◉</span>
+                <div><h3>Sentidos</h3><p>Escolha um Sentido Principal e defina os demais individualmente.</p></div>
+                <label class="primary-sense-control"><span>Principal</span><select id="primary-sense"><option value="ver">Ver</option><option value="ouvir">Ouvir</option><option value="farejar">Farejar</option><option value="tatear">Tatear</option><option value="degustar">Degustar</option><option value="pressentir">Pressentir</option></select></label>
+              </header>
+              <div id="senses-list" class="senses-list"></div>
+              <div class="senses-footer">
+                <p>O principal usa 20 + (POD × 15); os outros usam 10 + (POD × 10) + 1d20.</p>
+                <button id="generate-senses" class="dialog-button" type="button">Gerar outros sentidos</button>
+              </div>
+            </article>
+          </div>
         </section>
       </section>
 
@@ -8145,6 +8351,33 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
         <footer class="system-prompt-footer">
           <button id="system-prompt-cancel" class="dialog-button" type="button">Cancelar</button>
           <button id="system-prompt-confirm" class="builder-submit" type="button">Confirmar</button>
+        </footer>
+      </section>
+    </div>
+
+    <div id="sheet-transfer-modal" class="ability-modal utility-modal" hidden>
+      <div class="roll-backdrop" data-close-sheet-transfer aria-hidden="true"></div>
+      <section id="sheet-transfer-dialog" class="ability-dialog sheet-transfer-dialog" role="dialog" aria-modal="true" aria-labelledby="sheet-transfer-title" tabindex="-1">
+        <header class="ability-dialog-head">
+          <div>
+            <p class="eyebrow">Portabilidade do personagem</p>
+            <h2 id="sheet-transfer-title">Exportar ficha</h2>
+            <p id="sheet-transfer-description">Copie o código para guardar ou transferir este Slot.</p>
+          </div>
+          <button class="result-close" type="button" data-close-sheet-transfer aria-label="Fechar exportação ou importação">×</button>
+        </header>
+        <div class="sheet-transfer-content">
+          <textarea id="sheet-transfer-code" class="sheet-transfer-code" spellcheck="false" autocomplete="off" aria-label="Código da ficha"></textarea>
+          <div class="sheet-transfer-meta">
+            <span>O código reúne todos os dados desta ficha e pode ser grande.</span>
+            <strong id="sheet-transfer-count">0 caracteres</strong>
+          </div>
+          <p id="sheet-transfer-status" class="sheet-transfer-status" aria-live="polite"></p>
+        </div>
+        <footer class="skill-info-dialog-footer">
+          <button id="sheet-transfer-copy" class="dialog-button" type="button">Copiar código</button>
+          <button id="sheet-transfer-primary" class="builder-submit" type="button">Gerar código</button>
+          <button class="dialog-button" type="button" data-close-sheet-transfer>Fechar</button>
         </footer>
       </section>
     </div>
@@ -9141,7 +9374,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
         <div id="result-summary" class="result-summary" aria-live="polite" hidden>
           <div class="result-outcome">
             <strong id="result-outcome-label">Sucesso Parcial</strong>
-            <span id="result-difficulty-label">Zona Média</span>
+            <span id="result-difficulty-label">Zona Normal</span>
           </div>
           <div class="result-total-block">
             <span>Total</span>
@@ -11968,25 +12201,34 @@ function renderThemeFields() {
 
 const COMBAT_ZONES = new Set(["easy", "medium", "hard"]);
 const COMBAT_MARGINS = new Set(["partial", "normal", "good", "extreme"]);
+const ATTRIBUTE_DICE = { 1: 4, 2: 6, 3: 8, 4: 10, 5: 12 };
+const SENSE_DEFINITIONS = {
+  ver: { name: "Ver", description: "Perceber movimentos, detalhes visuais, formas, alterações no ambiente ou elementos difíceis de distinguir através da visão." },
+  ouvir: { name: "Ouvir", description: "Perceber, distinguir e localizar sons, vozes, movimentações ou outros estímulos auditivos." },
+  farejar: { name: "Farejar", description: "Identificar, diferenciar, captar ou seguir odores específicos através do olfato." },
+  tatear: { name: "Tatear", description: "Identificar texturas, formas, irregularidades ou detalhes através do toque." },
+  degustar: { name: "Degustar", description: "Perceber sabores e diferenças através do paladar, podendo auxiliar na identificação de ingredientes, substâncias ou alterações incomuns." },
+  pressentir: { name: "Pressentir", description: "Perceber alterações incomuns no ambiente, presenças estranhas, ameaças iminentes ou outros estímulos que não dependam diretamente dos cinco sentidos convencionais." },
+};
 
 const DIFFICULTIES = {
   easy: {
     label: "Fácil",
-    failureMax: { 8: 4, 12: 4, 20: 5 },
-    partialMax: { 12: 6, 20: 8 },
-    normalMax: { 12: 9, 20: 13 },
+    failureMax: { 8: 4, 12: 6, 20: 7 },
+    partialMax: { 8: Infinity, 12: 8, 20: 10 },
+    normalMax: { 12: 11, 20: 13 },
   },
   medium: {
-    label: "Média",
-    failureMax: { 8: 6, 12: 6, 20: 8 },
-    partialMax: { 12: 8, 20: 11 },
-    normalMax: { 12: 11, 20: 16 },
+    label: "Normal",
+    failureMax: { 8: 8, 12: 8, 20: 10 },
+    partialMax: { 8: Infinity, 12: 10, 20: 13 },
+    normalMax: { 12: 13, 20: 16 },
   },
   hard: {
     label: "Difícil",
-    failureMax: { 8: 8, 12: 8, 20: 11 },
-    partialMax: { 12: 10, 20: 14 },
-    normalMax: { 12: 13, 20: 18 },
+    failureMax: { 8: 10, 12: 10, 20: 13 },
+    partialMax: { 8: Infinity, 12: 12, 20: 16 },
+    normalMax: { 12: 15, 20: 19 },
   },
 };
 
@@ -12080,6 +12322,12 @@ const evasionAttributeSelect = document.querySelector("#evasion-attribute");
 const evasionBaseValue = document.querySelector("#evasion-base-value");
 const blockValueInput = document.querySelector("#block-value");
 const blockActiveInput = document.querySelector("#block-active");
+const blockBaseValue = document.querySelector("#block-base-value");
+const initiativeValue = document.querySelector("#initiative-value");
+const initiativeFormula = document.querySelector("#initiative-formula");
+const initiativeDetail = document.querySelector("#initiative-detail");
+const movementValueInput = document.querySelector("#movement-value");
+const movementBaseValue = document.querySelector("#movement-base-value");
 const rdManagerButton = document.querySelector("#rd-manager-button");
 const rdModal = document.querySelector("#rd-modal");
 const rdDialog = document.querySelector("#rd-dialog");
@@ -12095,6 +12343,8 @@ const systemPromptMessage = document.querySelector("#system-prompt-message");
 const systemPromptMark = document.querySelector("#system-prompt-mark");
 const systemPromptCancel = document.querySelector("#system-prompt-cancel");
 const systemPromptConfirm = document.querySelector("#system-prompt-confirm");
+const sheetTransferModal = document.querySelector("#sheet-transfer-modal");
+const sheetTransferDialog = document.querySelector("#sheet-transfer-dialog");
 const echoSegments = document.querySelector("#echo-segments");
 const echoDecreaseButton = document.querySelector("#echo-decrease");
 const echoIncreaseButton = document.querySelector("#echo-increase");
@@ -12134,6 +12384,16 @@ const dtAttributeSelects = {
 };
 const dtManual = { spell: false, ability: false };
 const classCalculationNote = document.querySelector("#class-calculation-note");
+const luckDieSelect = document.querySelector("#luck-die");
+const misfortuneDieSelect = document.querySelector("#misfortune-die");
+const rollLuckTestButton = document.querySelector("#roll-luck-test");
+const luckResultOutput = document.querySelector("#luck-result");
+const wisdomValueOutput = document.querySelector("#wisdom-value");
+const rollWisdomTestButton = document.querySelector("#roll-wisdom-test");
+const wisdomResultOutput = document.querySelector("#wisdom-result");
+const primarySenseSelect = document.querySelector("#primary-sense");
+const sensesList = document.querySelector("#senses-list");
+const generateSensesButton = document.querySelector("#generate-senses");
 const trainingCapStatus = document.querySelector("#training-cap-status");
 const trainingLimitModal = document.querySelector("#training-limit-modal");
 const trainingLimitDialog = document.querySelector("#training-limit-dialog");
@@ -12334,6 +12594,10 @@ let systemPromptResolver = null;
 let systemPromptTrigger = null;
 const resourceMaxManual = { pv: false, pa: false, sa: false };
 let defenseWasManuallySet = false;
+let blockWasManuallySet = false;
+let movementWasManuallySet = false;
+const senseManual = { ver: false, ouvir: false, farejar: false, tatear: false, degustar: false, pressentir: false };
+const senseValues = { ver: null, ouvir: null, farejar: null, tatear: null, degustar: null, pressentir: null };
 const skillLimitApprovedKeys = new Set();
 const trainingLimitQueue = [];
 let activeTrainingLimitRequest = null;
@@ -12403,7 +12667,140 @@ function clampInteger(value, minimum = 0, maximum = 999999, fallback = minimum) 
 
 function getAttributeValue(attribute) {
   const input = document.querySelector(`[data-attribute="${attribute}"]`);
-  return clampInteger(input?.value, -99, 99, 1);
+  return clampInteger(input?.value, 1, 5, 1);
+}
+
+function getAttributeDieFaces(attributeOrValue) {
+  const value = typeof attributeOrValue === "string" && ATTRIBUTES[attributeOrValue]
+    ? getAttributeValue(attributeOrValue)
+    : clampInteger(attributeOrValue, 1, 5, 1);
+  return ATTRIBUTE_DICE[value] || 4;
+}
+
+function updateAttributeDice() {
+  document.querySelectorAll("[data-roll-attribute]").forEach((button) => {
+    const attribute = button.dataset.rollAttribute;
+    const faces = getAttributeDieFaces(attribute);
+    button.textContent = `1d${faces}`;
+    button.setAttribute("aria-label", `Rolar Dado de ${ATTRIBUTES[attribute]}: 1d${faces}`);
+  });
+}
+
+function getReflexesTraining() {
+  const skillIndex = SKILLS.findIndex((skill) => normalizeSearchTerm(skill.name) === "reflexos");
+  const trainingKey = document.querySelector(`[data-training-index="${skillIndex}"]`)?.value;
+  return TRAINING[trainingKey] || TRAINING.leigo;
+}
+
+function updateDerivedCombatStats() {
+  updateAttributeDice();
+  const blockBase = 3 + getAttributeValue("CON");
+  blockBaseValue.textContent = `Base ${blockBase}`;
+  if (!blockWasManuallySet) blockValueInput.value = String(blockBase);
+
+  const reflexesTraining = getReflexesTraining();
+  const initiativeDieHalf = Math.floor(reflexesTraining.die / 2);
+  const initiative = initiativeDieHalf + getAttributeValue("AGI");
+  initiativeValue.textContent = String(initiative);
+  initiativeFormula.textContent = `${initiativeDieHalf} + AGI`;
+  initiativeDetail.textContent = `${reflexesTraining.label} em Reflexos · metade de d${reflexesTraining.die} + AGI`;
+
+  movementBaseValue.textContent = "Base 6Q";
+  if (!movementWasManuallySet) movementValueInput.value = "6";
+}
+
+function getWisdomValue() {
+  return 20 + getAttributeValue("INT") * 15;
+}
+
+function getPrimarySenseValue() {
+  return 20 + getAttributeValue("POD") * 15;
+}
+
+function rollSecondarySenseValue() {
+  return 10 + getAttributeValue("POD") * 10 + rollDice(1, 20)[0];
+}
+
+function renderSpecialTests() {
+  const primaryKey = SENSE_DEFINITIONS[primarySenseSelect.value] ? primarySenseSelect.value : "ver";
+  primarySenseSelect.value = primaryKey;
+  wisdomValueOutput.textContent = String(getWisdomValue());
+  if (!senseManual[primaryKey]) senseValues[primaryKey] = getPrimarySenseValue();
+
+  sensesList.replaceChildren();
+  Object.entries(SENSE_DEFINITIONS).forEach(([key, definition]) => {
+    const row = document.createElement("article");
+    row.className = `sense-row${key === primaryKey ? " is-primary" : ""}`;
+    row.dataset.senseKey = key;
+
+    const copy = document.createElement("div");
+    copy.className = "sense-copy";
+    const title = document.createElement("strong");
+    title.textContent = definition.name;
+    if (key === primaryKey) {
+      const marker = document.createElement("em");
+      marker.textContent = "Principal";
+      title.append(marker);
+    }
+    const description = document.createElement("p");
+    description.textContent = definition.description;
+    description.title = definition.description;
+    copy.append(title, description);
+
+    const value = document.createElement("input");
+    value.type = "number";
+    value.min = "0";
+    value.max = "999";
+    value.step = "1";
+    value.inputMode = "numeric";
+    value.className = "sense-value-input";
+    value.dataset.senseValue = key;
+    value.value = senseValues[key] === null ? "" : String(senseValues[key]);
+    value.setAttribute("aria-label", `Valor de ${definition.name}`);
+
+    const test = document.createElement("button");
+    test.type = "button";
+    test.className = "sense-test-button";
+    test.dataset.testSense = key;
+    test.textContent = "Testar";
+
+    const reroll = document.createElement("button");
+    reroll.type = "button";
+    reroll.className = "sense-reroll-button";
+    reroll.dataset.rerollSense = key;
+    reroll.textContent = "↻";
+    reroll.disabled = key === primaryKey;
+    reroll.title = key === primaryKey ? "O Sentido Principal é calculado automaticamente" : `Refazer o valor de ${definition.name}`;
+    reroll.setAttribute("aria-label", reroll.title);
+
+    const result = document.createElement("output");
+    result.className = "sense-inline-result";
+    result.dataset.senseResult = key;
+    result.setAttribute("aria-live", "polite");
+    row.append(copy, value, test, reroll, result);
+    sensesList.append(row);
+  });
+  primarySenseSelect.dataset.previousValue = primaryKey;
+}
+
+function rollSenseTest(key) {
+  const value = senseValues[key];
+  if (!Number.isFinite(value)) {
+    showAbyssAlert({
+      eyebrow: "Teste de Sentidos",
+      title: `${SENSE_DEFINITIONS[key].name} ainda não possui valor`,
+      message: "Gere os valores dos Sentidos ou escreva um valor antes de realizar o teste.",
+      tone: "warning",
+    });
+    return;
+  }
+  playRollSound();
+  const rolled = rollDice(1, 100)[0];
+  const success = rolled <= value;
+  const output = sensesList.querySelector(`[data-sense-result="${key}"]`);
+  output.textContent = `1d100 → ${rolled} contra ${value} · ${success ? "Sucesso" : "Falha"}`;
+  output.classList.toggle("is-success", success);
+  output.classList.toggle("is-failure", !success);
 }
 
 function getCharacterLevel() {
@@ -12641,6 +13038,8 @@ function applyClassCalculations(options = {}) {
   const calculation = calculateClassStatistics();
   updateIdentityChoiceAppearance();
   updateDifficultyTargets();
+  updateDerivedCombatStats();
+  renderSpecialTests();
 
   if (!calculation) {
     defenseBaseValue.textContent = "Base —";
@@ -12903,6 +13302,7 @@ function resolveTrainingLimitRequest(keepTraining) {
   syncModalLock();
   filterSkills();
   updateTrainingCapStatus();
+  updateDerivedCombatStats();
   notifySheetChanged("training-limit");
   auditTrainingLimit();
   showNextTrainingLimitRequest();
@@ -12942,7 +13342,7 @@ function captureCompleteSheetState() {
   document.querySelectorAll("[data-attribute]").forEach((input) => {
     const parsed = Number.parseInt(input.value, 10);
     attributes[input.dataset.attribute] = Number.isFinite(parsed)
-      ? Math.min(99, Math.max(-99, parsed))
+      ? Math.min(5, Math.max(1, parsed))
       : 1;
   });
 
@@ -12959,7 +13359,7 @@ function captureCompleteSheetState() {
 
   const portraitPreview = document.querySelector("#portrait-preview");
   return {
-    schemaVersion: 11,
+    schemaVersion: 12,
     profile: {
       name: document.querySelector("#character-name").value.trim().slice(0, 120),
       background: document.querySelector("#character-background").value.trim().slice(0, 240),
@@ -12995,10 +13395,25 @@ function captureCompleteSheetState() {
           attribute: ATTRIBUTES[evasionAttributeSelect.value] ? evasionAttributeSelect.value : "AGI",
         },
         block: clampInteger(blockValueInput.value, 0, 999999, 0),
+        blockManual: blockWasManuallySet,
+        movement: clampInteger(movementValueInput.value, 0, 999999, 6),
+        movementManual: movementWasManuallySet,
         spellDt: captureDifficultyTarget("spell"),
         abilityDt: captureDifficultyTarget("ability"),
         blockActive: blockActiveInput.checked,
         reductions: damageReductions.map((reduction) => ({ ...reduction })),
+      },
+      specialTests: {
+        luckDie: clampInteger(luckDieSelect.value, 2, 1000, 8),
+        misfortuneDie: clampInteger(misfortuneDieSelect.value, 2, 1000, 8),
+        primarySense: SENSE_DEFINITIONS[primarySenseSelect.value] ? primarySenseSelect.value : "ver",
+        senses: Object.fromEntries(Object.keys(SENSE_DEFINITIONS).map((key) => [
+          key,
+          {
+            value: Number.isFinite(senseValues[key]) ? clampInteger(senseValues[key], 0, 999, 0) : null,
+            manual: Boolean(senseManual[key]),
+          },
+        ])),
       },
     },
     sheet: {
@@ -13065,7 +13480,7 @@ function sanitizeStoredRowState(rawState) {
 
 function createCleanSheetState() {
   return {
-    schemaVersion: 11,
+    schemaVersion: 12,
     profile: {
       name: "",
       background: "",
@@ -13086,11 +13501,20 @@ function createCleanSheetState() {
       combat: {
         defense: { zone: "medium", margin: "normal", manual: false, attribute: "AGI" },
         evasion: { zone: "medium", margin: "normal", attribute: "AGI" },
-        block: 0,
+        block: 4,
+        blockManual: false,
+        movement: 6,
+        movementManual: false,
         spellDt: { zone: "medium", margin: "partial", manual: false, attribute: "POD" },
         abilityDt: { zone: "medium", margin: "partial", manual: false, attribute: "POD" },
         blockActive: false,
         reductions: [],
+      },
+      specialTests: {
+        luckDie: 8,
+        misfortuneDie: 8,
+        primarySense: "ver",
+        senses: Object.fromEntries(Object.keys(SENSE_DEFINITIONS).map((key) => [key, { value: null, manual: false }])),
       },
     },
     sheet: {
@@ -13250,7 +13674,7 @@ function applyCompleteSheetState(rawState, options = {}) {
     characterLevelInput.value = String(clampInteger(profile.level, 1, 15, 1));
     document.querySelectorAll("[data-attribute]").forEach((input) => {
       const parsed = Number.parseInt(profile.attributes?.[input.dataset.attribute], 10);
-      input.value = String(Number.isFinite(parsed) ? Math.min(99, Math.max(-99, parsed)) : 1);
+      input.value = String(Number.isFinite(parsed) ? Math.min(5, Math.max(1, parsed)) : 1);
     });
 
     const storedResources = profile.resources && typeof profile.resources === "object"
@@ -13284,7 +13708,16 @@ function applyCompleteSheetState(rawState, options = {}) {
       ? storedCombat.evasion
       : {};
     evasionAttributeSelect.value = ATTRIBUTES[storedEvasion.attribute] ? storedEvasion.attribute : "AGI";
-    blockValueInput.value = String(clampInteger(storedCombat.block, 0, 999999, 0));
+    const storedBlock = clampInteger(storedCombat.block, 0, 999999, 4);
+    blockWasManuallySet = typeof storedCombat.blockManual === "boolean"
+      ? storedCombat.blockManual
+      : storedBlock > 0 && clampInteger(rawState.schemaVersion, 0, 999, 0) < 12;
+    blockValueInput.value = String(storedBlock);
+    const storedMovement = clampInteger(storedCombat.movement, 0, 999999, 6);
+    movementWasManuallySet = typeof storedCombat.movementManual === "boolean"
+      ? storedCombat.movementManual
+      : storedMovement !== 6;
+    movementValueInput.value = String(storedMovement);
     blockActiveInput.checked = Boolean(storedCombat.blockActive);
     Object.entries(dtFields).forEach(([key, fields]) => {
       const stored = storedCombat[key + "Dt"] || {};
@@ -13300,6 +13733,24 @@ function applyCompleteSheetState(rawState, options = {}) {
       .map(sanitizeDamageReduction)
       .filter(Boolean);
     renderDamageReductions();
+
+    const storedSpecialTests = profile.specialTests && typeof profile.specialTests === "object"
+      ? profile.specialTests
+      : {};
+    const supportedSpecialDice = new Set([4, 6, 8, 10, 12, 20]);
+    const storedLuckDie = clampInteger(storedSpecialTests.luckDie, 2, 1000, 8);
+    const storedMisfortuneDie = clampInteger(storedSpecialTests.misfortuneDie, 2, 1000, 8);
+    luckDieSelect.value = String(supportedSpecialDice.has(storedLuckDie) ? storedLuckDie : 8);
+    misfortuneDieSelect.value = String(supportedSpecialDice.has(storedMisfortuneDie) ? storedMisfortuneDie : 8);
+    primarySenseSelect.value = SENSE_DEFINITIONS[storedSpecialTests.primarySense]
+      ? storedSpecialTests.primarySense
+      : "ver";
+    Object.keys(SENSE_DEFINITIONS).forEach((key) => {
+      const storedSense = storedSpecialTests.senses?.[key];
+      const parsedValue = Number.parseInt(storedSense?.value, 10);
+      senseValues[key] = Number.isFinite(parsedValue) ? clampInteger(parsedValue, 0, 999, 0) : null;
+      senseManual[key] = Boolean(storedSense?.manual);
+    });
 
     skillLimitApprovedKeys.clear();
     (Array.isArray(sheet.skillLimitApprovedIds) ? sheet.skillLimitApprovedIds : []).forEach((key) => {
@@ -13488,6 +13939,7 @@ function renderSkills(rowStates = captureSkillRowState()) {
     updateTrainingIndicator(row, training);
   });
   updateTrainingCapStatus();
+  updateDerivedCombatStats();
 }
 
 function hydrateLegendDice() {
@@ -14427,7 +14879,7 @@ function adjustDirectModifierTarget(modifier, direction) {
   }
   if (modifier.type === "attribute") {
     const input = document.querySelector(`[data-attribute="${modifier.target}"]`);
-    if (input) input.value = String(clampInteger(clampInteger(input.value, -99, 99, 1) + delta, -99, 99, 1));
+    if (input) input.value = String(clampInteger(clampInteger(input.value, 1, 5, 1) + delta, 1, 5, 1));
     return;
   }
 }
@@ -16538,6 +16990,7 @@ function syncModalLock() {
     shopHistoryModal,
     rdModal,
     systemPromptModal,
+    sheetTransferModal,
   ]
     .some((modal) => !modal.hidden);
   document.body.classList.toggle("modal-open", hasOpenModal);
@@ -16960,7 +17413,7 @@ function changeView(viewName) {
 function getAttributeValue(attribute) {
   const input = document.querySelector(`[data-attribute="${attribute}"]`);
   const parsed = Number.parseInt(input?.value, 10);
-  return Number.isFinite(parsed) ? parsed : 0;
+  return Number.isFinite(parsed) ? Math.min(5, Math.max(1, parsed)) : 1;
 }
 
 function parseDiceModifier(rawValue) {
@@ -17006,7 +17459,6 @@ function evaluateOutcome(faces, naturalResult, total, difficultyKey) {
   const difficulty = DIFFICULTIES[difficultyKey] || DIFFICULTIES.medium;
 
   if (naturalResult === 1) return OUTCOMES.criticalFailure;
-  if (faces === 20 && naturalResult === 20) return OUTCOMES.extremeCritical;
   if (faces === 8 && naturalResult === 8) return OUTCOMES.normal;
 
   let outcome;
@@ -17098,6 +17550,8 @@ function rollSkill(skillIndex, triggerButton) {
   const training = TRAINING[trainingSelect.value];
   const attribute = attributeSelect.value;
   const attributeValue = getAttributeValue(attribute);
+  const attributeDie = getAttributeDieFaces(attributeValue);
+  const attributeResult = rollDice(1, attributeDie)[0];
   const parsedFixed = Number.parseInt(fixedInput.value, 10);
   const fixedModifier = Number.isFinite(parsedFixed) ? parsedFixed : 0;
   const mainDiceCount = normalizeMainDiceCount(mainDiceInput);
@@ -17106,7 +17560,7 @@ function rollSkill(skillIndex, triggerButton) {
   const extraResults = diceModifier.count ? rollDice(diceModifier.count, diceModifier.faces) : [];
   const extraTotal = sum(extraResults);
   const grantedModifiers = rollActiveCreationModifiers("skill", getSkillKey(skill));
-  const total = mainResult + attributeValue + extraTotal + fixedModifier + grantedModifiers.total;
+  const total = mainResult + attributeResult + extraTotal + fixedModifier + grantedModifiers.total;
   const difficulty = DIFFICULTIES[selectedDifficulty];
   const outcome = evaluateOutcome(training.die, mainResult, total, selectedDifficulty);
 
@@ -17114,7 +17568,7 @@ function rollSkill(skillIndex, triggerButton) {
   clearOutcomeStyle();
   activeRollButton = triggerButton;
   document.querySelector("#result-skill").textContent = skill.name;
-  document.querySelector("#result-context").textContent = `${training.label} · ${mainDiceCount}d${training.die} (melhor) · ${ATTRIBUTES[attribute]} (${attribute})`;
+  document.querySelector("#result-context").textContent = `${training.label} · ${mainDiceCount}d${training.die} (melhor) + 1d${attributeDie} de ${attribute}`;
   document.querySelector("#roll-status").textContent = `Rolando ${mainDiceCount}d${training.die}...`;
   resultOutcomeLabel.textContent = outcome.label;
   resultDifficultyLabel.textContent = `Zona ${difficulty.label}`;
@@ -17150,7 +17604,7 @@ function rollSkill(skillIndex, triggerButton) {
       ? `${training.label} · ${mainDiceCount}d${training.die} → ${mainResults.join(" · ")} · melhor`
       : `${training.label} · 1d${training.die}`;
     addBreakdownLine(mainDiceCount > 1 ? "Dados principais" : "Dado principal", mainDiceDetail, mainResult, false);
-    addBreakdownLine("Atributo", `${attribute} · ${ATTRIBUTES[attribute]}`, attributeValue);
+    addBreakdownLine("Dado de Atributo", `${attribute} · ${ATTRIBUTES[attribute]} · 1d${attributeDie}`, attributeResult, false);
     if (extraResults.length) {
       addBreakdownLine("Dados extras", `${diceModifier.formula} → ${extraResults.join(" + ")}`, extraTotal);
     }
@@ -17990,6 +18444,7 @@ skillsList.addEventListener("change", (event) => {
     }
     updateTrainingCapStatus();
     auditTrainingLimit();
+    updateDerivedCombatStats();
   }
 
   if (event.target.matches("[data-skill-attribute]")) {
@@ -18028,10 +18483,26 @@ document.querySelectorAll("[data-attribute]").forEach((input) => {
     notifySheetChanged("profile");
   });
   input.addEventListener("change", () => {
-    input.value = String(clampInteger(input.value, -99, 99, 1));
+    input.value = String(clampInteger(input.value, 1, 5, 1));
     applyClassCalculations();
     if (input.dataset.attribute === "INT") auditTrainingLimit();
     notifySheetChanged("profile");
+  });
+});
+
+document.querySelectorAll("[data-roll-attribute]").forEach((button) => {
+  button.addEventListener("click", () => {
+    const attribute = button.dataset.rollAttribute;
+    const faces = getAttributeDieFaces(attribute);
+    const result = rollDice(1, faces)[0];
+    playRollSound();
+    showAbyssAlert({
+      eyebrow: `Dado de Atributo · ${attribute}`,
+      title: `${ATTRIBUTES[attribute]}: ${result}`,
+      message: `1d${faces} → ${result}`,
+      tone: "info",
+      trigger: button,
+    });
   });
 });
 
@@ -18111,10 +18582,33 @@ document.querySelector("[data-reset-defense]").addEventListener("click", () => {
   applyClassCalculations();
   notifySheetChanged("defense");
 });
-blockValueInput.addEventListener("input", () => notifySheetChanged("block"));
+blockValueInput.addEventListener("input", () => {
+  blockWasManuallySet = true;
+  notifySheetChanged("block");
+});
 blockValueInput.addEventListener("change", () => {
   blockValueInput.value = String(clampInteger(blockValueInput.value, 0, 999999, 0));
+  blockWasManuallySet = true;
   notifySheetChanged("block");
+});
+document.querySelector("[data-reset-block]").addEventListener("click", () => {
+  blockWasManuallySet = false;
+  updateDerivedCombatStats();
+  notifySheetChanged("block");
+});
+movementValueInput.addEventListener("input", () => {
+  movementWasManuallySet = true;
+  notifySheetChanged("movement");
+});
+movementValueInput.addEventListener("change", () => {
+  movementValueInput.value = String(clampInteger(movementValueInput.value, 0, 999999, 6));
+  movementWasManuallySet = true;
+  notifySheetChanged("movement");
+});
+document.querySelector("[data-reset-movement]").addEventListener("click", () => {
+  movementWasManuallySet = false;
+  updateDerivedCombatStats();
+  notifySheetChanged("movement");
 });
 blockActiveInput.addEventListener("change", () => notifySheetChanged("block"));
 Object.entries(dtFields).forEach(([key, fields]) => {
@@ -18138,6 +18632,90 @@ document.querySelectorAll("[data-reset-dt]").forEach((button) => {
     updateDifficultyTargets();
     notifySheetChanged("difficulty-targets");
   });
+});
+
+[luckDieSelect, misfortuneDieSelect].forEach((select) => {
+  select.addEventListener("change", () => notifySheetChanged("special-tests"));
+});
+rollLuckTestButton.addEventListener("click", () => {
+  const luckFaces = clampInteger(luckDieSelect.value, 2, 1000, 8);
+  const misfortuneFaces = clampInteger(misfortuneDieSelect.value, 2, 1000, 8);
+  const luckRoll = rollDice(1, luckFaces)[0];
+  const misfortuneRoll = rollDice(1, misfortuneFaces)[0];
+  const total = luckRoll - misfortuneRoll;
+  const state = total > 0 ? "Sorte" : total < 0 ? "Azar" : "Neutro";
+  playRollSound();
+  luckResultOutput.textContent = `d${luckFaces} (${luckRoll}) − d${misfortuneFaces} (${misfortuneRoll}) = ${formatSigned(total)} · ${state}`;
+  luckResultOutput.classList.toggle("is-success", total > 0);
+  luckResultOutput.classList.toggle("is-failure", total < 0);
+});
+rollWisdomTestButton.addEventListener("click", () => {
+  const value = getWisdomValue();
+  const rolled = rollDice(1, 100)[0];
+  const success = rolled <= value;
+  playRollSound();
+  wisdomResultOutput.textContent = `1d100 → ${rolled} contra ${value} · ${success ? "Sucesso" : "Falha"}`;
+  wisdomResultOutput.classList.toggle("is-success", success);
+  wisdomResultOutput.classList.toggle("is-failure", !success);
+});
+primarySenseSelect.addEventListener("change", () => {
+  const previousKey = SENSE_DEFINITIONS[primarySenseSelect.dataset.previousValue]
+    ? primarySenseSelect.dataset.previousValue
+    : "ver";
+  const nextKey = SENSE_DEFINITIONS[primarySenseSelect.value] ? primarySenseSelect.value : "ver";
+  if (previousKey !== nextKey && !senseManual[previousKey]) {
+    senseValues[previousKey] = rollSecondarySenseValue();
+  }
+  senseManual[nextKey] = false;
+  senseValues[nextKey] = getPrimarySenseValue();
+  renderSpecialTests();
+  notifySheetChanged("special-tests");
+});
+generateSensesButton.addEventListener("click", () => {
+  const primaryKey = primarySenseSelect.value;
+  Object.keys(SENSE_DEFINITIONS).forEach((key) => {
+    if (key === primaryKey) {
+      if (!senseManual[key]) senseValues[key] = getPrimarySenseValue();
+      return;
+    }
+    senseValues[key] = rollSecondarySenseValue();
+    senseManual[key] = false;
+  });
+  playRollSound();
+  renderSpecialTests();
+  notifySheetChanged("special-tests");
+});
+sensesList.addEventListener("input", (event) => {
+  const key = event.target.dataset.senseValue;
+  if (!SENSE_DEFINITIONS[key]) return;
+  const parsed = Number.parseInt(event.target.value, 10);
+  senseValues[key] = Number.isFinite(parsed) ? parsed : null;
+  senseManual[key] = true;
+  notifySheetChanged("special-tests");
+});
+sensesList.addEventListener("change", (event) => {
+  const key = event.target.dataset.senseValue;
+  if (!SENSE_DEFINITIONS[key]) return;
+  const parsed = Number.parseInt(event.target.value, 10);
+  senseValues[key] = Number.isFinite(parsed) ? clampInteger(parsed, 0, 999, 0) : null;
+  event.target.value = senseValues[key] === null ? "" : String(senseValues[key]);
+  senseManual[key] = true;
+  notifySheetChanged("special-tests");
+});
+sensesList.addEventListener("click", (event) => {
+  const test = event.target.closest("[data-test-sense]");
+  if (test) {
+    rollSenseTest(test.dataset.testSense);
+    return;
+  }
+  const reroll = event.target.closest("[data-reroll-sense]");
+  if (!reroll || reroll.disabled) return;
+  const key = reroll.dataset.rerollSense;
+  senseValues[key] = rollSecondarySenseValue();
+  senseManual[key] = false;
+  playRollSound();
+  renderSpecialTests();
+  notifySheetChanged("special-tests");
 });
 
 rdManagerButton.addEventListener("click", openRdManager);
@@ -18381,6 +18959,7 @@ document.addEventListener("keydown", (event) => {
   trapInteractiveModalFocus(event, shopHistoryModal, shopHistoryDialog);
   trapInteractiveModalFocus(event, rdModal, rdDialog);
   trapInteractiveModalFocus(event, systemPromptModal, systemPromptDialog);
+  trapInteractiveModalFocus(event, sheetTransferModal, sheetTransferDialog);
 });
 
 applyTheme();
@@ -18415,6 +18994,7 @@ window.AbyssSheet = Object.freeze({
   setLocalOwner: () => {},
   createCleanState: createCleanSheetState,
   resetState: () => applyCompleteSheetState(createCleanSheetState(), { persistLocal: false }),
+  syncModalLock,
 });
 window.AbyssAbilities = Object.freeze({
   refreshGrimoire: refreshGrimoireFromCloud,
@@ -18474,6 +19054,8 @@ const firebaseUi = {
   setupHint: document.querySelector("#firebase-setup-hint"),
   login: document.querySelector("#account-login"),
   syncNow: document.querySelector("#account-sync-now"),
+  exportSheet: document.querySelector("#account-export-sheet"),
+  importSheet: document.querySelector("#account-import-sheet"),
   reset: document.querySelector("#account-reset-sheet"),
   signOut: document.querySelector("#account-sign-out"),
   slotCard: document.querySelector("#account-slot-card"),
@@ -18492,6 +19074,15 @@ const firebaseUi = {
   startupGateActions: document.querySelector("#startup-slot-actions"),
   startupGateRetry: document.querySelector("#startup-slot-retry"),
   startupGateSignOut: document.querySelector("#startup-slot-sign-out"),
+  transferModal: document.querySelector("#sheet-transfer-modal"),
+  transferDialog: document.querySelector("#sheet-transfer-dialog"),
+  transferTitle: document.querySelector("#sheet-transfer-title"),
+  transferDescription: document.querySelector("#sheet-transfer-description"),
+  transferCode: document.querySelector("#sheet-transfer-code"),
+  transferCount: document.querySelector("#sheet-transfer-count"),
+  transferStatus: document.querySelector("#sheet-transfer-status"),
+  transferCopy: document.querySelector("#sheet-transfer-copy"),
+  transferPrimary: document.querySelector("#sheet-transfer-primary"),
 };
 
 let firebaseAuth = null;
@@ -18499,6 +19090,7 @@ let firestoreDb = null;
 let authApi = null;
 let firestoreApi = null;
 let currentFirebaseUser = null;
+let sheetTransferMode = "export";
 let currentSlotId = null;
 let currentSlots = [];
 let authChangeSequence = 0;
@@ -20504,9 +21096,7 @@ function renderStartupSlotChoices() {
     button.type = "button";
     button.className = "slot-gate-choice";
     button.dataset.startupSlot = slot.id;
-    const marker = document.createElement("span");
-    marker.setAttribute("aria-hidden", "true");
-    marker.textContent = slot.id === preferredStartupSlotId ? "✦" : "◇";
+    const marker = createSlotAvatar(slot, "slot-gate-avatar");
     const copy = document.createElement("span");
     const name = document.createElement("strong");
     name.textContent = slot.name;
@@ -20583,6 +21173,8 @@ function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") 
   firebaseUi.setupHint.hidden = state !== "missing";
   firebaseUi.login.hidden = signedIn || state === "missing" || state === "loading" || state === "signing-in";
   firebaseUi.syncNow.hidden = !signedIn;
+  firebaseUi.exportSheet.hidden = !signedIn || !currentSlotId;
+  firebaseUi.importSheet.hidden = !signedIn || !currentSlotId;
   firebaseUi.reset.hidden = !signedIn;
   firebaseUi.signOut.hidden = !signedIn;
   firebaseUi.slotCard.hidden = !signedIn || !currentSlotId;
@@ -20590,6 +21182,235 @@ function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") 
   firebaseUi.slotsLoginNote.hidden = signedIn;
   firebaseUi.createSlotForm.hidden = !signedIn;
   renderCampaignIdentity();
+}
+
+function bytesToBase64Url(bytes) {
+  let binary = "";
+  const chunkSize = 0x8000;
+  for (let index = 0; index < bytes.length; index += chunkSize) {
+    binary += String.fromCharCode(...bytes.subarray(index, index + chunkSize));
+  }
+  return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/g, "");
+}
+
+function base64UrlToBytes(value) {
+  const normalized = String(value || "").replaceAll("-", "+").replaceAll("_", "/");
+  const padded = normalized + "=".repeat((4 - normalized.length % 4) % 4);
+  const binary = atob(padded);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+  return bytes;
+}
+
+async function streamBytes(bytes, StreamConstructor) {
+  const stream = new Blob([bytes]).stream().pipeThrough(new StreamConstructor("gzip"));
+  return new Uint8Array(await new Response(stream).arrayBuffer());
+}
+
+async function encodeSheetTransferCode(state) {
+  const payload = {
+    type: "abyss-rpg-sheet",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    state,
+  };
+  const raw = new TextEncoder().encode(JSON.stringify(payload));
+  let method = "J";
+  let bytes = raw;
+  if (typeof CompressionStream === "function") {
+    const compressed = await streamBytes(raw, CompressionStream);
+    if (compressed.length < raw.length) {
+      method = "G";
+      bytes = compressed;
+    }
+  }
+  return `ABYSS1-${method}-${bytesToBase64Url(bytes)}`;
+}
+
+async function decodeSheetTransferCode(code) {
+  const compact = String(code || "").replace(/\s+/g, "");
+  if (compact.length < 20 || compact.length > 50 * 1024 * 1024) {
+    throw new Error("O código está vazio ou ultrapassa o tamanho aceito.");
+  }
+  const match = compact.match(/^ABYSS1-([GJ])-([A-Za-z0-9_-]+)$/);
+  if (!match) throw new Error("Este não parece ser um código de ficha do Abyss RPG.");
+  let bytes = base64UrlToBytes(match[2]);
+  if (match[1] === "G") {
+    if (typeof DecompressionStream !== "function") {
+      throw new Error("Este navegador não consegue descompactar o código. Atualize-o ou use outro navegador.");
+    }
+    bytes = await streamBytes(bytes, DecompressionStream);
+  }
+  const payload = JSON.parse(new TextDecoder().decode(bytes));
+  if (payload?.type !== "abyss-rpg-sheet" || !payload.state || typeof payload.state !== "object") {
+    throw new Error("O conteúdo do código não é uma ficha válida.");
+  }
+  return payload.state;
+}
+
+function dataUrlToImageFile(dataUrl, name = "imagem-importada") {
+  const match = String(dataUrl || "").match(/^data:(image\/(?:png|jpeg|webp|gif));base64,([A-Za-z0-9+/=]+)$/i);
+  if (!match) return null;
+  const binary = atob(match[2]);
+  if (binary.length > MAX_ABILITY_MEDIA_BYTES) throw new Error("Uma imagem da ficha ultrapassa 8 MB.");
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) bytes[index] = binary.charCodeAt(index);
+  const extension = match[1].split("/")[1].replace("jpeg", "jpg");
+  return new File([bytes], `${name}.${extension}`, { type: match[1].toLowerCase() });
+}
+
+function updateSheetTransferCount() {
+  const count = firebaseUi.transferCode.value.length;
+  firebaseUi.transferCount.textContent = `${count.toLocaleString("pt-BR")} ${count === 1 ? "caractere" : "caracteres"}`;
+}
+
+function setSheetTransferStatus(message = "", isError = false) {
+  firebaseUi.transferStatus.textContent = message;
+  firebaseUi.transferStatus.classList.toggle("is-error", isError);
+}
+
+function closeSheetTransfer() {
+  firebaseUi.transferModal.hidden = true;
+  sheetBridge.syncModalLock?.();
+  const trigger = sheetTransferMode === "import" ? firebaseUi.importSheet : firebaseUi.exportSheet;
+  if (trigger?.isConnected) trigger.focus();
+}
+
+async function generateSheetTransferCode() {
+  firebaseUi.transferPrimary.disabled = true;
+  firebaseUi.transferCopy.disabled = true;
+  firebaseUi.transferCode.value = "Gerando código…";
+  updateSheetTransferCount();
+  setSheetTransferStatus("Reunindo e compactando os dados deste Slot.");
+  try {
+    const code = await encodeSheetTransferCode(sheetBridge.captureState());
+    firebaseUi.transferCode.value = code;
+    updateSheetTransferCount();
+    setSheetTransferStatus("Código pronto. Guarde-o inteiro; qualquer caractere ausente invalida a importação.");
+  } catch (error) {
+    firebaseUi.transferCode.value = "";
+    updateSheetTransferCount();
+    setSheetTransferStatus(error?.message || "Não foi possível gerar o código.", true);
+  } finally {
+    firebaseUi.transferPrimary.disabled = false;
+    firebaseUi.transferCopy.disabled = false;
+  }
+}
+
+function openSheetTransfer(mode) {
+  if (!currentFirebaseUser || !currentSlotId) return;
+  sheetTransferMode = mode === "import" ? "import" : "export";
+  const importing = sheetTransferMode === "import";
+  firebaseUi.transferTitle.textContent = importing ? "Importar ficha" : "Exportar ficha";
+  firebaseUi.transferDescription.textContent = importing
+    ? "Cole um código para substituir somente o Slot aberto. Os outros Slots não serão alterados."
+    : "Copie o código para guardar ou transferir este Slot.";
+  firebaseUi.transferCode.value = "";
+  firebaseUi.transferCode.readOnly = !importing;
+  firebaseUi.transferCode.placeholder = importing ? "Cole aqui o código ABYSS1-…" : "";
+  firebaseUi.transferCopy.hidden = importing;
+  firebaseUi.transferPrimary.textContent = importing ? "Importar neste Slot" : "Gerar novamente";
+  setSheetTransferStatus(importing ? "A importação exige confirmação antes de substituir a ficha." : "");
+  updateSheetTransferCount();
+  closeAccountMenu();
+  firebaseUi.transferModal.hidden = false;
+  sheetBridge.syncModalLock?.();
+  requestAnimationFrame(() => firebaseUi.transferDialog.focus());
+  if (!importing) generateSheetTransferCode();
+}
+
+async function prepareImportedAbilityMedia(state) {
+  const uploadedReferences = [];
+  const importedAbilities = Array.isArray(state.abilities) ? state.abilities : [];
+  for (let index = 0; index < importedAbilities.length; index += 1) {
+    const ability = importedAbilities[index];
+    if (!ability || typeof ability !== "object") continue;
+    if (ability.mediaOwner === "minerva" && ability.mediaRefId) continue;
+    const file = dataUrlToImageFile(ability.mediaUrl, `habilidade-${index + 1}`);
+    if (file) {
+      setSheetTransferStatus(`Transferindo mídia ${index + 1} de ${importedAbilities.length}…`);
+      const uploaded = await uploadAbilityMedia({ scope: "sheet", abilityId: ability.id || `import-${index}`, file });
+      ability.mediaUrl = uploaded.url;
+      ability.mediaOwner = "slot";
+      ability.mediaRefId = uploaded.refId;
+      uploadedReferences.push(uploaded);
+    } else {
+      ability.mediaUrl = safeRemoteImageUrlForTransfer(ability.mediaUrl);
+      ability.mediaOwner = "link";
+      ability.mediaRefId = "";
+    }
+  }
+  return uploadedReferences;
+}
+
+function safeRemoteImageUrlForTransfer(value) {
+  try {
+    const url = new URL(String(value || ""));
+    return ["http:", "https:"].includes(url.protocol) ? url.href : "";
+  } catch {
+    return "";
+  }
+}
+
+async function importSheetTransferCode() {
+  if (!currentFirebaseUser || !currentSlotId) return;
+  const slot = currentSlots.find((entry) => entry.id === currentSlotId);
+  let importedState;
+  try {
+    setSheetTransferStatus("Validando o código…");
+    importedState = await decodeSheetTransferCode(firebaseUi.transferCode.value);
+  } catch (error) {
+    setSheetTransferStatus(error?.message || "O código não pôde ser lido.", true);
+    return;
+  }
+  const confirmed = await window.showAbyssConfirm({
+    eyebrow: "Importação de ficha",
+    title: `Substituir “${slot?.name || "Personagem"}”?`,
+    message: "A ficha atual deste Slot será substituída pelo conteúdo do código. Os demais Slots permanecerão intactos.",
+    confirmLabel: "Importar ficha",
+    tone: "warning",
+    trigger: firebaseUi.transferPrimary,
+  });
+  if (!confirmed) return;
+
+  window.clearTimeout(cloudSaveTimer);
+  if (cloudSavePromise) await cloudSavePromise;
+  const previousState = sheetBridge.captureState();
+  const oldMediaReferences = (previousState.abilities || [])
+    .filter((ability) => ability.mediaOwner === "slot" && ability.mediaRefId)
+    .map((ability) => ({ scope: "sheet", refId: ability.mediaRefId, uid: currentFirebaseUser.uid, slotId: currentSlotId }));
+  let uploadedReferences = [];
+  firebaseUi.transferPrimary.disabled = true;
+  firebaseUi.transferCode.readOnly = true;
+  isHydratingCloudState = true;
+  try {
+    uploadedReferences = await prepareImportedAbilityMedia(importedState);
+    if (!sheetBridge.applyState(importedState, { persistLocal: false })) {
+      throw new Error("A ficha do código não contém dados aplicáveis.");
+    }
+    const normalizedState = sheetBridge.captureState();
+    stateRevision += 1;
+    setSheetTransferStatus("Salvando a ficha importada na conta…");
+    await writeCloudSheet(currentFirebaseUser, currentSlotId, normalizedState, { slotName: slot?.name });
+    lastSavedRevision = stateRevision;
+    await Promise.allSettled(oldMediaReferences.map((reference) => deleteMedia(reference)));
+    setSyncStatus("saved", "Ficha importada", "Importação concluída", `O Slot “${slot?.name || "Personagem"}” foi atualizado e salvo.`);
+    closeSheetTransfer();
+    await window.showAbyssAlert({
+      eyebrow: "Importação concluída",
+      title: "Ficha aplicada ao Slot",
+      message: "Todos os dados válidos do código já estão na ficha e foram sincronizados.",
+      tone: "info",
+    });
+  } catch (error) {
+    sheetBridge.applyState(previousState, { persistLocal: false });
+    await Promise.allSettled(uploadedReferences.map((reference) => deleteMedia(reference)));
+    setSheetTransferStatus(error?.message || describeFirebaseError(error), true);
+  } finally {
+    isHydratingCloudState = false;
+    firebaseUi.transferPrimary.disabled = false;
+    firebaseUi.transferCode.readOnly = false;
+  }
 }
 
 function describeFirebaseError(error) {
@@ -20615,7 +21436,7 @@ function describeFirebaseError(error) {
 
 function finiteAttributeValue(value) {
   const parsed = Number.parseInt(value, 10);
-  return Number.isFinite(parsed) ? Math.min(99, Math.max(-99, parsed)) : 1;
+  return Number.isFinite(parsed) ? Math.min(5, Math.max(1, parsed)) : 1;
 }
 
 async function compactPortraitForFirestore(source) {
@@ -20960,6 +21781,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
           options.slotName || currentSlots.find((slot) => slot.id === slotId)?.name,
           "Personagem",
         ),
+        portrait,
         updatedAt: timestamp,
         ...(options.created ? { createdAt: timestamp } : {}),
       },
@@ -20967,7 +21789,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     );
   }
   batch.set(refs.profile, {
-    schemaVersion: 11,
+    schemaVersion: 12,
     name: String(state.profile?.name || "").slice(0, 120),
     background: String(state.profile?.background || "").slice(0, 240),
     portrait,
@@ -20986,10 +21808,11 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     },
     purchaseHistory: cloudPurchaseHistory,
     combat: state.profile?.combat || {},
+    specialTests: state.profile?.specialTests || {},
     updatedAt: timestamp,
   });
   batch.set(refs.sheet, {
-    schemaVersion: 11,
+    schemaVersion: 12,
     difficulty: ["easy", "medium", "hard"].includes(state.sheet?.difficulty)
       ? state.sheet.difficulty
       : "medium",
@@ -21003,17 +21826,28 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     updatedAt: timestamp,
   });
   batch.set(refs.customSkills, {
-    schemaVersion: 11,
+    schemaVersion: 12,
     items: Array.isArray(state.customSkills) ? state.customSkills : [],
     updatedAt: timestamp,
   });
   batch.set(refs.abilities, {
-    schemaVersion: 11,
+    schemaVersion: 12,
     items: cloudAbilities,
     inventoryItems: cloudInventory,
     updatedAt: timestamp,
   });
   await batch.commit();
+  if (!options.skipDirectoryWrites && currentFirebaseUser?.uid === user.uid) {
+    const slot = currentSlots.find((entry) => entry.id === slotId);
+    if (slot) {
+      slot.portrait = portrait;
+      slot.updatedAt = Date.now();
+      const row = [...firebaseUi.slotsList.querySelectorAll("[data-slot-id]")]
+        .find((entry) => entry.dataset.slotId === slotId);
+      row?.querySelector(".slot-avatar")?.replaceWith(createSlotAvatar(slot, "slot-avatar"));
+    }
+    updateActiveSlotDisplay();
+  }
 }
 
 function slotTimestampValue(value) {
@@ -21025,11 +21859,29 @@ function updateActiveSlotDisplay() {
   const active = currentSlots.find((slot) => slot.id === currentSlotId);
   firebaseUi.slotName.textContent = active?.name || "Nenhum Slot";
   firebaseUi.slotCard.hidden = !currentFirebaseUser || !active;
+  firebaseUi.exportSheet.hidden = !currentFirebaseUser || !active;
+  firebaseUi.importSheet.hidden = !currentFirebaseUser || !active;
 
   document.querySelector("#slots-button")?.setAttribute(
     "title",
     active ? `Slot atual: ${active.name}` : "Organizar Slots",
   );
+}
+
+function createSlotAvatar(slot, className) {
+  const avatar = document.createElement("span");
+  avatar.className = className;
+  const portrait = String(slot?.portrait || "");
+  if (/^data:image\/(?:png|jpe?g|webp);base64,/i.test(portrait)) {
+    const image = document.createElement("img");
+    image.src = portrait;
+    image.alt = "";
+    avatar.append(image);
+  } else {
+    avatar.textContent = String(slot?.name || "P").trim().charAt(0).toUpperCase() || "P";
+    avatar.setAttribute("aria-hidden", "true");
+  }
+  return avatar;
 }
 
 function renderSlots() {
@@ -21048,10 +21900,7 @@ function renderSlots() {
     row.classList.toggle("is-active", slot.id === currentSlotId);
     row.dataset.slotId = slot.id;
 
-    const marker = document.createElement("span");
-    marker.className = "slot-marker";
-    marker.setAttribute("aria-hidden", "true");
-    marker.textContent = slot.id === currentSlotId ? "✦" : "◇";
+    const marker = createSlotAvatar(slot, "slot-avatar");
 
     const copy = document.createElement("div");
     copy.className = "slot-name-editor";
@@ -21105,6 +21954,7 @@ async function loadSlotDirectory(user) {
       return {
         id: snapshot.id,
         name: normalizeSlotName(data.name, "Personagem"),
+        portrait: String(data.portrait || ""),
         createdAt: slotTimestampValue(data.createdAt),
         updatedAt: slotTimestampValue(data.updatedAt),
       };
@@ -21114,6 +21964,17 @@ async function loadSlotDirectory(user) {
         (a.createdAt || a.updatedAt) - (b.createdAt || b.updatedAt) ||
         a.name.localeCompare(b.name, "pt-BR"),
     );
+
+  await Promise.all(currentSlots.map(async (slot) => {
+    try {
+      const profileSnapshot = await firestoreApi.getDoc(
+        firestoreApi.doc(firestoreDb, "users", user.uid, "slots", slot.id, "data", "profile"),
+      );
+      if (profileSnapshot.exists()) slot.portrait = String(profileSnapshot.data().portrait || "");
+    } catch {
+      slot.portrait = slot.portrait || "";
+    }
+  }));
 
   return {
     activeSlotId: userSnapshot.exists()
@@ -21133,6 +21994,7 @@ async function createCloudSlot(name, { announce = true } = {}) {
   const slot = {
     id: slotRef.id,
     name: normalizeSlotName(name, `Personagem ${currentSlots.length + 1}`),
+    portrait: "",
     createdAt: Date.now(),
     updatedAt: Date.now(),
   };
@@ -21909,6 +22771,37 @@ async function requestFirebaseSignOut() {
 }
 
 firebaseUi.reset.addEventListener("click", requestResetConfirmation);
+firebaseUi.exportSheet.addEventListener("click", () => openSheetTransfer("export"));
+firebaseUi.importSheet.addEventListener("click", () => openSheetTransfer("import"));
+firebaseUi.transferPrimary.addEventListener("click", () => {
+  if (sheetTransferMode === "import") importSheetTransferCode();
+  else generateSheetTransferCode();
+});
+firebaseUi.transferCopy.addEventListener("click", async () => {
+  const code = firebaseUi.transferCode.value;
+  if (!code || code === "Gerando código…") return;
+  try {
+    await navigator.clipboard.writeText(code);
+    setSheetTransferStatus("Código copiado para a área de transferência.");
+  } catch {
+    firebaseUi.transferCode.focus();
+    firebaseUi.transferCode.select();
+    setSheetTransferStatus("O código foi selecionado. Use Ctrl+C ou toque em Copiar.");
+  }
+});
+firebaseUi.transferCode.addEventListener("input", () => {
+  updateSheetTransferCount();
+  if (sheetTransferMode === "import") setSheetTransferStatus("Pronto para validar e importar.");
+});
+document.querySelectorAll("[data-close-sheet-transfer]").forEach((button) => {
+  button.addEventListener("click", closeSheetTransfer);
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key !== "Escape" || firebaseUi.transferModal.hidden) return;
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  closeSheetTransfer();
+}, true);
 
 firebaseUi.createSlotForm.addEventListener("submit", async (event) => {
   event.preventDefault();
