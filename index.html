@@ -6237,10 +6237,11 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
 .wallet-balance-line output { color: #8ee8a8; font: 700 clamp(1.8rem, 5vw, 2.6rem) Georgia, "Times New Roman", serif; }
 .wallet-balance-line span { color: #75b988; font-size: .71rem; font-weight: 750; letter-spacing: .09em; text-transform: uppercase; }
 .wallet-tools { position: relative; z-index: 1; display: grid; justify-items: end; gap: 9px; }
-.wallet-adjust-form { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(110px, 170px) auto auto; gap: 7px; }
-.wallet-amount-field { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; min-width: 0; height: 42px; overflow: hidden; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 3px; color: #75b988; background: rgba(0, 0, 0, .25); }
-.wallet-amount-field > span { padding-left: 11px; font-size: .72rem; }
-.wallet-adjust-form input { min-width: 0; width: 100%; height: 40px; border: 0; color: var(--theme-text-eee8dc, #eee8dc); background: transparent; padding: 0 11px 0 7px; outline: 0; }
+.wallet-adjust-form { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(126px, 186px) auto auto; gap: 7px; }
+.wallet-amount-control { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; min-width: 0; gap: 9px; }
+.wallet-input-symbol { flex: 0 0 auto; color: #8ee8a8; font-size: 1.08rem; filter: drop-shadow(0 0 7px rgba(83, 210, 121, .2)); }
+.wallet-amount-field { display: block; min-width: 0; height: 42px; overflow: hidden; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 3px; color: #75b988; background: rgba(0, 0, 0, .25); }
+.wallet-adjust-form input { min-width: 0; width: 100%; height: 40px; border: 0; color: var(--theme-text-eee8dc, #eee8dc); background: transparent; padding: 0 11px; outline: 0; }
 .wallet-amount-field:focus-within { border-color: rgba(83, 210, 121, .52); box-shadow: 0 0 0 2px rgba(83, 210, 121, .06); }
 .wallet-adjust-form button { min-height: 42px; padding: 0 13px; border: 1px solid rgba(83, 210, 121, .33); border-radius: 3px; color: #8ee8a8; background: rgba(55, 153, 84, .08); cursor: pointer; font-weight: 750; }
 .wallet-adjust-form button[data-wallet-action="remove"] { border-color: rgba(216, 90, 103, .32); color: #e9909a; background: rgba(151, 44, 56, .08); }
@@ -6324,7 +6325,7 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
   .nav-item span, .slots-button span { font-size: .52rem; }
   .nav-item svg, .slots-button svg { width: 19px; height: 19px; }
   .wallet-adjust-form { grid-template-columns: 1fr 1fr; }
-  .wallet-amount-field { grid-column: 1 / -1; }
+  .wallet-amount-control { grid-column: 1 / -1; }
   .shop-history-entry { grid-template-columns: 34px minmax(0, 1fr); }
   .shop-history-entry-price { grid-column: 2; }
 }
@@ -6333,8 +6334,10 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
 .topbar > .brand-copy { margin-left: 24px; padding-left: 0; }
 .verdeon-symbol {
   position: relative;
-  display: inline-block;
-  width: .83em;
+  display: inline-grid;
+  width: 1.08em;
+  height: 1.12em;
+  place-items: center;
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 800;
   letter-spacing: 0;
@@ -6344,15 +6347,17 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
 .verdeon-symbol::before,
 .verdeon-symbol::after {
   position: absolute;
-  left: -.08em;
-  width: 1em;
-  height: .075em;
+  left: 50%;
+  z-index: 1;
+  width: 1.04em;
+  height: .072em;
   content: "";
   background: currentColor;
   border-radius: 999px;
   pointer-events: none;
+  transform: translateX(-50%);
 }
-.verdeon-symbol::before { top: 42%; }
+.verdeon-symbol::before { top: 41%; }
 .verdeon-symbol::after { top: 57%; }
 .verdeon-value { display: inline-flex; align-items: baseline; gap: .24em; white-space: nowrap; }
 
@@ -6775,54 +6780,73 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
   position: relative;
   overflow: hidden;
   margin-top: 18px;
-  padding: 28px 30px 30px;
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  background: linear-gradient(145deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04), transparent 35%), var(--surface);
-  box-shadow: 0 18px 50px rgba(0, 0, 0, .2);
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .18);
+  border-radius: 8px;
+  background:
+    radial-gradient(circle at 8% 0, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .09), transparent 24rem),
+    linear-gradient(150deg, var(--palette-panel, #0d0e12), var(--palette-container, #111217));
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .27), inset 0 1px rgba(255, 255, 255, .018);
 }
 .special-tests-panel::before { position: absolute; top: 0; right: 0; left: 0; height: 1px; content: ""; background: linear-gradient(90deg, transparent, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .55), transparent); }
-.special-tests-head { margin-bottom: 18px; }
-.special-tests-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; }
-.special-test-card { min-width: 0; padding: 18px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .14); border-radius: 4px; background: rgba(var(--theme-surface-060709-rgb, 6, 7, 9), .34); }
-.special-test-card > header { display: flex; align-items: center; gap: 11px; margin-bottom: 15px; }
-.special-test-card h3 { margin: 0; color: var(--theme-text-e9e3d6, #e9e3d6); font: 1.12rem Georgia, "Times New Roman", serif; }
-.special-test-card header p { margin: 3px 0 0; color: var(--theme-muted-858179, #858179); font-size: .64rem; }
-.special-test-icon { display: grid; flex: 0 0 36px; width: 36px; height: 36px; place-items: center; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .26); border-radius: 50%; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .055); }
+.special-tests-panel::after { position: absolute; right: -70px; bottom: -95px; width: 240px; height: 240px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .06); border-radius: 50%; content: ""; box-shadow: 0 0 0 38px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .018); pointer-events: none; }
+.special-tests-head { position: relative; z-index: 1; margin: 0; padding: 24px 28px 18px; border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .11); }
+.special-tests-head h2 { margin: 0; font: 500 clamp(1.35rem, 3vw, 1.72rem) Georgia, "Times New Roman", serif; }
+.special-tests-grid { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 13px; padding: 16px 18px 20px; }
+.special-test-card {
+  --special-rgb: var(--theme-accent-cfad62-rgb, 207, 173, 98);
+  --special-color: var(--theme-accent-dfc77f, #dfc77f);
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid rgba(var(--special-rgb), .22);
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 0 0, rgba(var(--special-rgb), .11), transparent 13rem),
+    linear-gradient(145deg, rgba(var(--theme-surface-17181d-rgb, 23, 24, 29), .88), rgba(var(--theme-surface-08090b-rgb, 8, 9, 11), .72));
+  box-shadow: inset 0 1px rgba(255, 255, 255, .025), 0 14px 32px rgba(0, 0, 0, .16);
+}
+.special-test-card::before { position: absolute; top: 0; bottom: 0; left: 0; width: 2px; content: ""; background: linear-gradient(180deg, transparent, rgba(var(--special-rgb), .9), transparent); }
+.special-test-card[data-special-test="luck"] { --special-rgb: 105, 210, 133; --special-color: #83e3a0; }
+.special-test-card[data-special-test="wisdom"] { --special-rgb: 179, 142, 236; --special-color: #c7a7f2; }
+.special-test-card[data-special-test="senses"] { --special-rgb: 105, 194, 229; --special-color: #83d4f1; }
+.special-test-card > header { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-bottom: 16px; }
+.special-test-card h3 { margin: 0; color: var(--theme-text-e9e3d6, #e9e3d6); font: 1.14rem Georgia, "Times New Roman", serif; }
+.special-test-card header p { margin: 4px 0 0; color: var(--theme-muted-858179, #858179); font-size: .64rem; line-height: 1.4; }
+.special-test-icon { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid rgba(var(--special-rgb), .34); border-radius: 50%; background: radial-gradient(circle, rgba(var(--special-rgb), .15), rgba(var(--special-rgb), .035)); box-shadow: 0 0 22px rgba(var(--special-rgb), .08); font-size: 1.1rem; }
 .luck-controls { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 8px; }
 .luck-controls label, .primary-sense-control { display: grid; gap: 5px; color: var(--theme-muted-858179, #858179); font-size: .6rem; font-weight: 780; letter-spacing: .08em; text-transform: uppercase; }
-.luck-controls select, .primary-sense-control select, .sense-value-input { width: 100%; height: 36px; border: 1px solid var(--theme-border-313238, #313238); border-radius: 3px; color: var(--theme-text-d7d1c5, #d7d1c5); background: var(--theme-surface-0b0c0f, #0b0c0f); }
+.luck-controls select, .primary-sense-control select, .sense-value-input { width: 100%; height: 38px; border: 1px solid var(--theme-border-313238, #313238); border-radius: 4px; color: var(--theme-text-d7d1c5, #d7d1c5); background: rgba(var(--theme-surface-060709-rgb, 6, 7, 9), .72); }
 .luck-controls select, .primary-sense-control select { padding: 0 28px 0 10px; }
 .luck-controls > span { padding-bottom: 10px; color: var(--theme-muted-696761, #696761); }
-.special-roll-button { width: 100%; min-height: 38px; margin-top: 12px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .38); border-radius: 3px; color: var(--theme-accent-e3ca80, #e3ca80); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .07); cursor: pointer; font-size: .7rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.special-roll-button:hover { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .7); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .13); }
-.special-test-result { display: block; min-height: 21px; margin-top: 11px; color: var(--theme-muted-a49e92, #a49e92); font-size: .72rem; line-height: 1.45; }
-.special-test-result.is-success { color: #74d996; }
-.special-test-result.is-failure { color: #ef767d; }
-.wisdom-display { display: flex; align-items: center; justify-content: space-between; min-height: 48px; padding: 0 13px; border-left: 2px solid var(--theme-accent-b9954e, #b9954e); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04); color: var(--theme-muted-858179, #858179); font-size: .66rem; text-transform: uppercase; }
-.wisdom-display output { color: var(--theme-accent-efd486, #efd486); font: 700 1.7rem Georgia, "Times New Roman", serif; }
+.special-test-card .special-roll-button { position: static; width: 42px; min-width: 42px; height: 42px; margin: 0; border-color: rgba(var(--special-rgb), .42); border-radius: 4px; color: var(--special-color); background: rgba(var(--special-rgb), .08); box-shadow: 0 0 18px rgba(var(--special-rgb), .05); }
+.special-test-card .special-roll-button:hover { border-color: rgba(var(--special-rgb), .78); color: var(--special-color); background: rgba(var(--special-rgb), .15); box-shadow: 0 0 24px rgba(var(--special-rgb), .13); }
+.special-test-card .special-roll-button svg { width: 24px; height: 24px; }
+.wisdom-display { display: flex; align-items: center; justify-content: space-between; min-height: 58px; padding: 0 15px; border: 1px solid rgba(var(--special-rgb), .16); border-left: 2px solid rgba(var(--special-rgb), .72); border-radius: 4px; background: linear-gradient(90deg, rgba(var(--special-rgb), .07), transparent); color: var(--theme-muted-858179, #858179); font-size: .64rem; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
+.wisdom-display output { color: var(--special-color); font: 700 1.85rem Georgia, "Times New Roman", serif; text-shadow: 0 0 18px rgba(var(--special-rgb), .16); }
 .senses-card { grid-column: 1 / -1; }
-.senses-card-head { display: grid !important; grid-template-columns: 36px minmax(0, 1fr) minmax(150px, .3fr); }
+.senses-card-head { grid-template-columns: 42px minmax(0, 1fr) minmax(160px, .32fr) !important; }
 .primary-sense-control { min-width: 0; }
 .senses-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
-.sense-row { display: grid; grid-template-columns: minmax(0, 1fr) 68px auto auto; align-items: center; gap: 7px; padding: 10px; border: 1px solid var(--theme-border-292a2f, #292a2f); border-radius: 3px; background: rgba(255, 255, 255, .015); }
-.sense-row.is-primary { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .4); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .05); }
+.sense-row { display: grid; grid-template-columns: minmax(0, 1fr) 68px 38px 34px; align-items: center; gap: 7px; min-width: 0; padding: 10px; border: 1px solid rgba(var(--special-rgb), .13); border-radius: 4px; background: linear-gradient(100deg, rgba(var(--special-rgb), .035), rgba(255, 255, 255, .01)); transition: border-color .16s ease, background .16s ease; }
+.sense-row:hover { border-color: rgba(var(--special-rgb), .27); background: linear-gradient(100deg, rgba(var(--special-rgb), .065), rgba(255, 255, 255, .012)); }
+.sense-row.is-primary { border-color: rgba(var(--special-rgb), .46); background: linear-gradient(100deg, rgba(var(--special-rgb), .12), rgba(var(--special-rgb), .025)); box-shadow: inset 2px 0 rgba(var(--special-rgb), .72); }
 .sense-copy { min-width: 0; }
 .sense-copy strong { display: flex; align-items: center; gap: 7px; color: var(--theme-text-e2dbce, #e2dbce); font: 600 .9rem Georgia, "Times New Roman", serif; }
-.sense-copy strong em { padding: 2px 5px; border-radius: 999px; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08); font: 700 .5rem ui-sans-serif, system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; }
-.sense-copy p { overflow: hidden; margin: 3px 0 0; color: var(--theme-muted-77756f, #77756f); font-size: .58rem; line-height: 1.4; text-overflow: ellipsis; white-space: nowrap; }
+.sense-copy strong em { padding: 3px 6px; border-radius: 999px; color: var(--special-color); background: rgba(var(--special-rgb), .1); font: 700 .48rem ui-sans-serif, system-ui, sans-serif; letter-spacing: .06em; text-transform: uppercase; }
 .sense-value-input { padding: 0 7px; text-align: center; appearance: textfield; }
 .sense-value-input::-webkit-inner-spin-button, .sense-value-input::-webkit-outer-spin-button { appearance: none; }
-.sense-test-button, .sense-reroll-button { display: grid; width: 34px; height: 34px; padding: 0; place-items: center; border: 1px solid var(--theme-border-313238, #313238); border-radius: 3px; color: var(--theme-muted-a49e92, #a49e92); background: rgba(255, 255, 255, .02); cursor: pointer; }
-.sense-test-button { width: auto; min-width: 58px; padding: 0 9px; color: var(--theme-accent-e3ca80, #e3ca80); font-size: .61rem; font-weight: 800; text-transform: uppercase; }
+.special-tests-panel .sense-test-button, .sense-reroll-button { position: static; display: grid; width: 34px; height: 34px; padding: 0; place-items: center; border: 1px solid var(--theme-border-313238, #313238); border-radius: 3px; color: var(--theme-muted-a49e92, #a49e92); background: rgba(255, 255, 255, .02); cursor: pointer; }
+.special-tests-panel .sense-test-button { width: 38px; height: 38px; border-color: rgba(var(--special-rgb), .36); color: var(--special-color); background: rgba(var(--special-rgb), .07); }
+.special-tests-panel .sense-test-button:hover { border-color: rgba(var(--special-rgb), .72); color: var(--special-color); background: rgba(var(--special-rgb), .14); }
+.special-tests-panel .sense-test-button svg { width: 21px; height: 21px; }
 .sense-reroll-button { font-size: 1rem; }
 .sense-reroll-button:disabled { cursor: default; opacity: .24; }
-.sense-inline-result { grid-column: 1 / -1; min-height: 0; margin: -1px 0 0; color: var(--theme-muted-858179, #858179); font-size: .61rem; }
-.sense-inline-result.is-success { color: #74d996; }
-.sense-inline-result.is-failure { color: #ef767d; }
-.senses-footer { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 11px; }
-.senses-footer p { margin: 0; color: var(--theme-muted-77756f, #77756f); font-size: .62rem; line-height: 1.5; }
+.senses-footer { display: flex; justify-content: flex-end; margin-top: 12px; }
 .senses-footer button { flex: 0 0 auto; }
+
+.roll-dialog.is-special-result .roll-stage { display: none; }
+.roll-dialog.is-special-result .result-summary { padding-top: 25px; }
 
 .slot-avatar, .slot-gate-avatar { display: grid; overflow: hidden; place-items: center; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .3); border-radius: 50%; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08); font: 700 .75rem Georgia, "Times New Roman", serif; }
 .slot-avatar { width: 30px; height: 30px; }
@@ -6832,15 +6856,20 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
 .slot-gate-choice { grid-template-columns: 50px minmax(0, 1fr) auto; }
 
 @media (max-width: 760px) {
-  .special-tests-panel { padding: 22px 16px; }
+  .special-tests-head { padding: 21px 17px 16px; }
+  .special-tests-grid { padding: 13px; }
   .special-tests-grid, .senses-list { grid-template-columns: 1fr; }
-  .senses-card-head { grid-template-columns: 36px minmax(0, 1fr); }
+  .senses-card-head { grid-template-columns: 42px minmax(0, 1fr) !important; }
   .primary-sense-control { grid-column: 1 / -1; }
 }
 @media (max-width: 480px) {
-  .sense-row { grid-template-columns: minmax(0, 1fr) 62px auto; }
-  .sense-test-button { grid-column: 1 / -1; width: 100%; }
-  .senses-footer { align-items: stretch; flex-direction: column; }
+  .special-test-card { padding: 15px 13px; }
+  .special-test-card > header { grid-template-columns: 40px minmax(0, 1fr) auto; gap: 10px; }
+  .special-test-icon { width: 40px; height: 40px; }
+  .sense-row { grid-template-columns: minmax(0, 1fr) 58px 38px 34px; gap: 5px; padding: 9px 8px; }
+  .sense-copy strong { font-size: .82rem; }
+  .sense-copy strong em { display: none; }
+  .senses-footer button { width: 100%; }
   .sheet-transfer-content { padding-inline: 15px; }
   .sheet-transfer-code { min-height: 190px; }
 }
@@ -7657,40 +7686,41 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
         <section class="special-tests-panel" aria-labelledby="special-tests-title">
           <header class="sheet-features-head special-tests-head">
             <div>
-              <p class="eyebrow">Testes Especiais</p>
-              <h2 id="special-tests-title">Sorte, Sabedoria e Sentidos</h2>
-              <p>Testes independentes das Zonas de Dificuldade e dos treinamentos comuns.</p>
+              <h2 id="special-tests-title">Testes Especiais</h2>
             </div>
           </header>
 
           <div class="special-tests-grid">
-            <article class="special-test-card">
-              <header><span class="special-test-icon" aria-hidden="true">✦</span><div><h3>Sorte</h3><p>Dado de Sorte − Dado de Azar</p></div></header>
+            <article class="special-test-card" data-special-test="luck">
+              <header>
+                <span class="special-test-icon" aria-hidden="true">🍀</span>
+                <div><h3>Sorte</h3><p>Dado de Sorte − Dado de Azar</p></div>
+                <button id="roll-luck-test" class="roll-button special-roll-button" type="button" aria-label="Rolar Sorte" title="Rolar Sorte"><span data-static-die="20" data-die-empty aria-hidden="true"></span></button>
+              </header>
               <div class="luck-controls">
                 <label><span>Sorte</span><select id="luck-die"><option value="4">d4</option><option value="6">d6</option><option value="8" selected>d8</option><option value="10">d10</option><option value="12">d12</option><option value="20">d20</option></select></label>
                 <span aria-hidden="true">−</span>
                 <label><span>Azar</span><select id="misfortune-die"><option value="4">d4</option><option value="6">d6</option><option value="8" selected>d8</option><option value="10">d10</option><option value="12">d12</option><option value="20">d20</option></select></label>
               </div>
-              <button id="roll-luck-test" class="special-roll-button" type="button">Rolar Sorte</button>
-              <output id="luck-result" class="special-test-result" aria-live="polite">0 · Neutro</output>
             </article>
 
-            <article class="special-test-card">
-              <header><span class="special-test-icon" aria-hidden="true">◇</span><div><h3>Sabedoria</h3><p>20 + (INT × 15)</p></div></header>
+            <article class="special-test-card" data-special-test="wisdom">
+              <header>
+                <span class="special-test-icon" aria-hidden="true">🧠</span>
+                <div><h3>Sabedoria</h3><p>20 + (INT × 15)</p></div>
+                <button id="roll-wisdom-test" class="roll-button special-roll-button" type="button" aria-label="Testar Sabedoria" title="Testar Sabedoria"><span data-static-die="20" data-die-empty aria-hidden="true"></span></button>
+              </header>
               <div class="wisdom-display"><span>Valor atual</span><output id="wisdom-value">35</output></div>
-              <button id="roll-wisdom-test" class="special-roll-button" type="button">Rolar 1d100</button>
-              <output id="wisdom-result" class="special-test-result" aria-live="polite">Role para testar sua Sabedoria.</output>
             </article>
 
-            <article class="special-test-card senses-card">
+            <article class="special-test-card senses-card" data-special-test="senses">
               <header class="senses-card-head">
-                <span class="special-test-icon" aria-hidden="true">◉</span>
-                <div><h3>Sentidos</h3><p>Escolha um Sentido Principal e defina os demais individualmente.</p></div>
+                <span class="special-test-icon" aria-hidden="true">👁️</span>
+                <div><h3>Sentidos</h3></div>
                 <label class="primary-sense-control"><span>Principal</span><select id="primary-sense"><option value="ver">Ver</option><option value="ouvir">Ouvir</option><option value="farejar">Farejar</option><option value="tatear">Tatear</option><option value="degustar">Degustar</option><option value="pressentir">Pressentir</option></select></label>
               </header>
               <div id="senses-list" class="senses-list"></div>
               <div class="senses-footer">
-                <p>O principal usa 20 + (POD × 15); os outros usam 10 + (POD × 10) + 1d20.</p>
                 <button id="generate-senses" class="dialog-button" type="button">Gerar outros sentidos</button>
               </div>
             </article>
@@ -7746,6 +7776,9 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
                 aria-selected="false"
               >
                 Feitiços
+              </button>
+              <button type="button" role="tab" data-ability-section="tricks" aria-selected="false">
+                Truques
               </button>
               <button type="button" role="tab" data-ability-section="echoes" aria-selected="false">
                 Ecos
@@ -7889,10 +7922,12 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
           </div>
           <div class="wallet-tools">
             <form id="wallet-adjust-form" class="wallet-adjust-form">
-              <label class="wallet-amount-field">
-                <span class="verdeon-symbol" aria-hidden="true">V</span>
-                <input id="wallet-adjust-amount" type="number" min="1" max="999999999" step="1" value="1" inputmode="numeric" aria-label="Quantidade de Verdeons" required />
-              </label>
+              <div class="wallet-amount-control">
+                <span class="verdeon-symbol wallet-input-symbol" aria-hidden="true">V</span>
+                <label class="wallet-amount-field">
+                  <input id="wallet-adjust-amount" type="number" min="1" max="999999999" step="1" value="1" inputmode="numeric" aria-label="Quantidade de Verdeons" required />
+                </label>
+              </div>
               <button type="submit" data-wallet-action="add" aria-label="Adicionar Verdeons">+ Adicionar</button>
               <button type="submit" data-wallet-action="remove" aria-label="Remover Verdeons">− Remover</button>
             </form>
@@ -8809,6 +8844,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
                   <option value="styles">Estilos de Luta</option>
                   <option value="powers">Poderes</option>
                   <option value="spells">Feitiços</option>
+                  <option value="tricks">Truques</option>
                   <option value="echoes">Ecos</option>
                   <option value="classes">Classes</option>
                   <option value="tree">Árvore</option>
@@ -9025,6 +9061,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
                   <option value="styles">Habilidades · Estilos de Luta</option>
                   <option value="powers">Habilidades · Poderes</option>
                   <option value="spells">Habilidades · Feitiços</option>
+                  <option value="tricks">Habilidades · Truques</option>
                   <option value="echoes">Habilidades · Ecos</option>
                   <option value="classes">Habilidades · Classes</option>
                   <option value="tree">Habilidades · Árvore</option>
@@ -9221,6 +9258,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
           <button type="button" role="tab" data-minerva-section="styles" aria-selected="false">Estilos de Luta</button>
           <button type="button" role="tab" data-minerva-section="powers" aria-selected="false">Poderes</button>
           <button type="button" role="tab" data-minerva-section="spells" aria-selected="false">Feitiços</button>
+          <button type="button" role="tab" data-minerva-section="tricks" aria-selected="false">Truques</button>
           <button type="button" role="tab" data-minerva-section="echoes" aria-selected="false">Ecos</button>
           <button type="button" role="tab" data-minerva-section="classes" aria-selected="false">Classes</button>
           <button type="button" role="tab" data-minerva-section="tree" aria-selected="false">Árvore</button>
@@ -9355,7 +9393,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
 
         <header class="roll-dialog-head">
           <div>
-            <p class="eyebrow">Teste de perícia</p>
+            <p id="result-eyebrow" class="eyebrow">Teste de perícia</p>
             <h2 id="result-skill">Perícia</h2>
             <p id="result-context" class="result-context">Leigo · Intelecto</p>
           </div>
@@ -11363,6 +11401,7 @@ const ABILITY_SECTIONS = {
   styles: { label: "Estilos de Luta", eyebrow: "Técnicas de combate" },
   powers: { label: "Poderes", eyebrow: "Dons e técnicas" },
   spells: { label: "Feitiços", eyebrow: "Feitiçaria" },
+  tricks: { label: "Truques", eyebrow: "Pequenas manifestações" },
   echoes: { label: "Ecos", eyebrow: "Essência do personagem" },
   classes: { label: "Classes", eyebrow: "Arquétipo" },
   tree: { label: "Árvore", eyebrow: "Progressão" },
@@ -12266,6 +12305,7 @@ const rollModal = document.querySelector("#roll-modal");
 const rollDialog = document.querySelector("#roll-dialog");
 const rollingDie = document.querySelector("#rolling-die");
 const resultSummary = document.querySelector("#result-summary");
+const resultEyebrow = document.querySelector("#result-eyebrow");
 const resultOutcomeLabel = document.querySelector("#result-outcome-label");
 const resultDifficultyLabel = document.querySelector("#result-difficulty-label");
 const difficultyButtons = [...document.querySelectorAll("[data-difficulty]")];
@@ -12387,10 +12427,8 @@ const classCalculationNote = document.querySelector("#class-calculation-note");
 const luckDieSelect = document.querySelector("#luck-die");
 const misfortuneDieSelect = document.querySelector("#misfortune-die");
 const rollLuckTestButton = document.querySelector("#roll-luck-test");
-const luckResultOutput = document.querySelector("#luck-result");
 const wisdomValueOutput = document.querySelector("#wisdom-value");
 const rollWisdomTestButton = document.querySelector("#roll-wisdom-test");
-const wisdomResultOutput = document.querySelector("#wisdom-result");
 const primarySenseSelect = document.querySelector("#primary-sense");
 const sensesList = document.querySelector("#senses-list");
 const generateSensesButton = document.querySelector("#generate-senses");
@@ -12742,10 +12780,7 @@ function renderSpecialTests() {
       marker.textContent = "Principal";
       title.append(marker);
     }
-    const description = document.createElement("p");
-    description.textContent = definition.description;
-    description.title = definition.description;
-    copy.append(title, description);
+    copy.append(title);
 
     const value = document.createElement("input");
     value.type = "number";
@@ -12760,9 +12795,11 @@ function renderSpecialTests() {
 
     const test = document.createElement("button");
     test.type = "button";
-    test.className = "sense-test-button";
+    test.className = "roll-button sense-test-button";
     test.dataset.testSense = key;
-    test.textContent = "Testar";
+    test.innerHTML = dieSvg(20, null);
+    test.title = `Testar ${definition.name}`;
+    test.setAttribute("aria-label", test.title);
 
     const reroll = document.createElement("button");
     reroll.type = "button";
@@ -12773,17 +12810,13 @@ function renderSpecialTests() {
     reroll.title = key === primaryKey ? "O Sentido Principal é calculado automaticamente" : `Refazer o valor de ${definition.name}`;
     reroll.setAttribute("aria-label", reroll.title);
 
-    const result = document.createElement("output");
-    result.className = "sense-inline-result";
-    result.dataset.senseResult = key;
-    result.setAttribute("aria-live", "polite");
-    row.append(copy, value, test, reroll, result);
+    row.append(copy, value, test, reroll);
     sensesList.append(row);
   });
   primarySenseSelect.dataset.previousValue = primaryKey;
 }
 
-function rollSenseTest(key) {
+function rollSenseTest(key, triggerButton) {
   const value = senseValues[key];
   if (!Number.isFinite(value)) {
     showAbyssAlert({
@@ -12797,10 +12830,18 @@ function rollSenseTest(key) {
   playRollSound();
   const rolled = rollDice(1, 100)[0];
   const success = rolled <= value;
-  const output = sensesList.querySelector(`[data-sense-result="${key}"]`);
-  output.textContent = `1d100 → ${rolled} contra ${value} · ${success ? "Sucesso" : "Falha"}`;
-  output.classList.toggle("is-success", success);
-  output.classList.toggle("is-failure", !success);
+  showSpecialTestResult({
+    title: SENSE_DEFINITIONS[key].name,
+    context: "👁️ Sentidos · 1d100",
+    outcome: success ? "Sucesso" : "Falha",
+    outcomeDetail: `Resultado ${success ? "igual ou inferior" : "superior"} a ${value}`,
+    outcomeKey: success ? "normal" : "failure",
+    total: rolled,
+    trigger: triggerButton,
+    breakdown: [
+      { label: `Valor de ${SENSE_DEFINITIONS[key].name}`, detail: "Limite do teste", value, signed: false },
+    ],
+  });
 }
 
 function getCharacterLevel() {
@@ -13944,7 +13985,7 @@ function renderSkills(rowStates = captureSkillRowState()) {
 
 function hydrateLegendDice() {
   document.querySelectorAll("[data-static-die]").forEach((icon) => {
-    icon.innerHTML = dieSvg(Number(icon.dataset.staticDie));
+    icon.innerHTML = dieSvg(Number(icon.dataset.staticDie), icon.hasAttribute("data-die-empty") ? null : undefined);
   });
 }
 
@@ -17491,6 +17532,7 @@ function selectDifficulty(difficultyKey) {
 
 function clearOutcomeStyle() {
   rollDialog.classList.remove(...OUTCOME_CLASS_NAMES);
+  rollDialog.classList.remove("is-special-result");
 }
 
 function setRollingDie(faces, value) {
@@ -17514,6 +17556,35 @@ function addBreakdownLine(label, detail, value, signed = true) {
 
   line.append(copy, amount);
   document.querySelector("#result-breakdown").append(line);
+}
+
+function showSpecialTestResult({
+  title,
+  context,
+  outcome,
+  outcomeDetail,
+  outcomeKey = "",
+  total,
+  breakdown = [],
+  trigger,
+}) {
+  clearRollTimers();
+  clearOutcomeStyle();
+  rollDialog.classList.add("is-special-result");
+  if (outcomeKey) rollDialog.classList.add(`outcome-${outcomeKey}`);
+  activeRollButton = trigger;
+  resultEyebrow.textContent = "Teste Especial";
+  document.querySelector("#result-skill").textContent = title;
+  document.querySelector("#result-context").textContent = context;
+  resultOutcomeLabel.textContent = outcome;
+  resultDifficultyLabel.textContent = outcomeDetail;
+  document.querySelector("#result-total").textContent = String(total);
+  document.querySelector("#result-breakdown").replaceChildren();
+  breakdown.forEach((line) => addBreakdownLine(line.label, line.detail, line.value, line.signed));
+  resultSummary.hidden = false;
+  rollModal.hidden = false;
+  syncModalLock();
+  rollDialog.focus();
 }
 
 function clearRollTimers() {
@@ -17567,6 +17638,7 @@ function rollSkill(skillIndex, triggerButton) {
   clearRollTimers();
   clearOutcomeStyle();
   activeRollButton = triggerButton;
+  resultEyebrow.textContent = "Teste de perícia";
   document.querySelector("#result-skill").textContent = skill.name;
   document.querySelector("#result-context").textContent = `${training.label} · ${mainDiceCount}d${training.die} (melhor) + 1d${attributeDie} de ${attribute}`;
   document.querySelector("#roll-status").textContent = `Rolando ${mainDiceCount}d${training.die}...`;
@@ -18645,18 +18717,37 @@ rollLuckTestButton.addEventListener("click", () => {
   const total = luckRoll - misfortuneRoll;
   const state = total > 0 ? "Sorte" : total < 0 ? "Azar" : "Neutro";
   playRollSound();
-  luckResultOutput.textContent = `d${luckFaces} (${luckRoll}) − d${misfortuneFaces} (${misfortuneRoll}) = ${formatSigned(total)} · ${state}`;
-  luckResultOutput.classList.toggle("is-success", total > 0);
-  luckResultOutput.classList.toggle("is-failure", total < 0);
+  showSpecialTestResult({
+    title: "Sorte",
+    context: `🍀 d${luckFaces} − d${misfortuneFaces}`,
+    outcome: state,
+    outcomeDetail: "Dado de Sorte − Dado de Azar",
+    outcomeKey: total > 0 ? "good" : total < 0 ? "failure" : "",
+    total: formatSigned(total),
+    trigger: rollLuckTestButton,
+    breakdown: [
+      { label: "Dado de Sorte", detail: `1d${luckFaces}`, value: luckRoll, signed: false },
+      { label: "Dado de Azar", detail: `1d${misfortuneFaces} subtraído`, value: -misfortuneRoll },
+    ],
+  });
 });
 rollWisdomTestButton.addEventListener("click", () => {
   const value = getWisdomValue();
   const rolled = rollDice(1, 100)[0];
   const success = rolled <= value;
   playRollSound();
-  wisdomResultOutput.textContent = `1d100 → ${rolled} contra ${value} · ${success ? "Sucesso" : "Falha"}`;
-  wisdomResultOutput.classList.toggle("is-success", success);
-  wisdomResultOutput.classList.toggle("is-failure", !success);
+  showSpecialTestResult({
+    title: "Sabedoria",
+    context: "🧠 Teste Especial · 1d100",
+    outcome: success ? "Sucesso" : "Falha",
+    outcomeDetail: `Resultado ${success ? "igual ou inferior" : "superior"} a ${value}`,
+    outcomeKey: success ? "normal" : "failure",
+    total: rolled,
+    trigger: rollWisdomTestButton,
+    breakdown: [
+      { label: "Valor de Sabedoria", detail: "20 + (INT × 15)", value, signed: false },
+    ],
+  });
 });
 primarySenseSelect.addEventListener("change", () => {
   const previousKey = SENSE_DEFINITIONS[primarySenseSelect.dataset.previousValue]
@@ -18705,7 +18796,7 @@ sensesList.addEventListener("change", (event) => {
 sensesList.addEventListener("click", (event) => {
   const test = event.target.closest("[data-test-sense]");
   if (test) {
-    rollSenseTest(test.dataset.testSense);
+    rollSenseTest(test.dataset.testSense, test);
     return;
   }
   const reroll = event.target.closest("[data-reroll-sense]");
