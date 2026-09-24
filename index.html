@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- Abyss RPG — ficha, constelações, habilidades, Grimório e Slots Firebase — revisão 2026-09-10 -->
+<!-- Abyss RPG — ficha, constelações, habilidades, Grimório e Slots Firebase — revisão 2026-09-24 -->
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
@@ -2629,6 +2629,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .sheet-transfer-meta strong { color: var(--theme-accent-cdb779, #cdb779); font: 750 .64rem ui-monospace, SFMono-Regular, Menlo, monospace; }
 .sheet-transfer-status { margin: 0; color: var(--theme-muted-a49e92, #a49e92); font-size: .68rem; line-height: 1.5; }
 .sheet-transfer-status.is-error { color: #e9929c; }
+.sheet-transfer-slot-field { max-width: 420px; }
+.sheet-transfer-slot-field[hidden] { display: none; }
 
 @media (max-width: 900px) {
   body { background-size: auto, auto, 42px 42px, 42px 42px, auto; }
@@ -3670,6 +3672,41 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   padding: 20px 23px 12px;
 }
 
+.slots-manager-tools { display: grid; }
+
+.slots-transfer-panel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  margin: 2px 23px 12px;
+  padding: 13px 14px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .18);
+  border-radius: 4px;
+  background:
+    radial-gradient(circle at 0 50%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .075), transparent 15rem),
+    rgba(255, 255, 255, .014);
+}
+
+.slots-transfer-panel[hidden] { display: none; }
+.slots-transfer-copy { min-width: 0; }
+.slots-transfer-copy strong { display: block; color: var(--theme-text-e2dbce, #e2dbce); font: 600 .9rem Georgia, "Times New Roman", serif; }
+.slots-transfer-copy small { display: block; margin-top: 4px; color: var(--theme-muted-7e7a72, #7e7a72); font-size: .64rem; line-height: 1.45; }
+.slots-transfer-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 7px; }
+.slots-transfer-action {
+  min-height: 36px;
+  padding: 0 11px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .3);
+  border-radius: 3px;
+  color: var(--theme-accent-dfca86, #dfca86);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .055);
+  cursor: pointer;
+  font-size: .67rem;
+  font-weight: 760;
+}
+.slots-transfer-action:hover { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .62); color: var(--theme-accent-ffe7a1, #ffe7a1); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .11); }
+.slots-transfer-action:disabled { cursor: not-allowed; opacity: .42; }
+
 .slots-login-note {
   margin: 0 23px 14px;
   padding: 12px 13px;
@@ -4027,6 +4064,10 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   .create-slot-form {
     grid-template-columns: 1fr;
   }
+
+  .slots-transfer-panel { grid-template-columns: 1fr; }
+  .slots-transfer-actions { display: grid; grid-template-columns: 1fr; }
+  .slots-transfer-action { min-height: 42px; }
 
   .slot-item {
     grid-template-columns: 22px minmax(0, 1fr);
@@ -8402,6 +8443,11 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
           <button class="result-close" type="button" data-close-sheet-transfer aria-label="Fechar exportação ou importação">×</button>
         </header>
         <div class="sheet-transfer-content">
+          <label id="sheet-transfer-slot-field" class="builder-field sheet-transfer-slot-field" hidden>
+            <span>Nome do novo Slot</span>
+            <input id="sheet-transfer-slot-name" type="text" maxlength="60" autocomplete="off" placeholder="Usar o nome recebido no código" />
+            <small class="ability-field-help">Se ficar vazio, será usado o nome do personagem ou do Slot exportado.</small>
+          </label>
           <textarea id="sheet-transfer-code" class="sheet-transfer-code" spellcheck="false" autocomplete="off" aria-label="Código da ficha"></textarea>
           <div class="sheet-transfer-meta">
             <span>O código reúne todos os dados desta ficha e pode ser grande.</span>
@@ -9306,6 +9352,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
           </button>
         </header>
 
+        <div class="slots-manager-tools">
         <form id="create-slot-form" class="create-slot-form" hidden>
           <label class="builder-field">
             <span>Novo Slot</span>
@@ -9325,9 +9372,21 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
           </button>
         </form>
 
+        <section id="slots-transfer-panel" class="slots-transfer-panel" aria-label="Transferência de fichas" hidden>
+          <div class="slots-transfer-copy">
+            <strong>Compartilhar fichas</strong>
+            <small>Exporte o Slot atual ou crie uma ficha independente usando o código de outra pessoa.</small>
+          </div>
+          <div class="slots-transfer-actions">
+            <button id="slots-export-current" class="slots-transfer-action" type="button">Exportar atual</button>
+            <button id="slots-import-code" class="slots-transfer-action" type="button">Importar código</button>
+          </div>
+        </section>
+
         <p id="slots-login-note" class="slots-login-note">
           Entre com o Google para criar e organizar seus Slots.
         </p>
+        </div>
         <div id="slots-list" class="slots-list"></div>
         <footer class="ability-dialog-footer">
           <button class="dialog-button" type="button" data-close-slots>Fechar</button>
@@ -19156,6 +19215,9 @@ const firebaseUi = {
   slotsLoginNote: document.querySelector("#slots-login-note"),
   createSlotForm: document.querySelector("#create-slot-form"),
   newSlotName: document.querySelector("#new-slot-name"),
+  slotsTransferPanel: document.querySelector("#slots-transfer-panel"),
+  slotsExportCurrent: document.querySelector("#slots-export-current"),
+  slotsImportCode: document.querySelector("#slots-import-code"),
   startupGate: document.querySelector("#startup-slot-gate"),
   startupGateDialog: document.querySelector("#startup-slot-gate .slot-gate-dialog"),
   startupGateDescription: document.querySelector("#startup-slot-description"),
@@ -19174,6 +19236,8 @@ const firebaseUi = {
   transferStatus: document.querySelector("#sheet-transfer-status"),
   transferCopy: document.querySelector("#sheet-transfer-copy"),
   transferPrimary: document.querySelector("#sheet-transfer-primary"),
+  transferSlotField: document.querySelector("#sheet-transfer-slot-field"),
+  transferSlotName: document.querySelector("#sheet-transfer-slot-name"),
 };
 
 let firebaseAuth = null;
@@ -19182,6 +19246,8 @@ let authApi = null;
 let firestoreApi = null;
 let currentFirebaseUser = null;
 let sheetTransferMode = "export";
+let sheetTransferSlotId = "";
+let sheetTransferTrigger = null;
 let currentSlotId = null;
 let currentSlots = [];
 let authChangeSequence = 0;
@@ -21272,6 +21338,7 @@ function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") 
   firebaseUi.minervaButton.hidden = !signedIn || !isMinervaAdmin(user);
   firebaseUi.slotsLoginNote.hidden = signedIn;
   firebaseUi.createSlotForm.hidden = !signedIn;
+  firebaseUi.slotsTransferPanel.hidden = !signedIn;
   renderCampaignIdentity();
 }
 
@@ -21298,11 +21365,12 @@ async function streamBytes(bytes, StreamConstructor) {
   return new Uint8Array(await new Response(stream).arrayBuffer());
 }
 
-async function encodeSheetTransferCode(state) {
+async function encodeSheetTransferCode(state, options = {}) {
   const payload = {
     type: "abyss-rpg-sheet",
     version: 1,
     exportedAt: new Date().toISOString(),
+    slotName: normalizeSlotName(options.slotName, ""),
     state,
   };
   const raw = new TextEncoder().encode(JSON.stringify(payload));
@@ -21336,7 +21404,10 @@ async function decodeSheetTransferCode(code) {
   if (payload?.type !== "abyss-rpg-sheet" || !payload.state || typeof payload.state !== "object") {
     throw new Error("O conteúdo do código não é uma ficha válida.");
   }
-  return payload.state;
+  return {
+    state: payload.state,
+    slotName: normalizeSlotName(payload.slotName, ""),
+  };
 }
 
 function dataUrlToImageFile(dataUrl, name = "imagem-importada") {
@@ -21363,7 +21434,9 @@ function setSheetTransferStatus(message = "", isError = false) {
 function closeSheetTransfer() {
   firebaseUi.transferModal.hidden = true;
   sheetBridge.syncModalLock?.();
-  const trigger = sheetTransferMode === "import" ? firebaseUi.importSheet : firebaseUi.exportSheet;
+  const trigger = sheetTransferTrigger || (sheetTransferMode === "import" ? firebaseUi.importSheet : firebaseUi.exportSheet);
+  sheetTransferTrigger = null;
+  sheetTransferSlotId = "";
   if (trigger?.isConnected) trigger.focus();
 }
 
@@ -21374,10 +21447,27 @@ async function generateSheetTransferCode() {
   updateSheetTransferCount();
   setSheetTransferStatus("Reunindo e compactando os dados deste Slot.");
   try {
-    const code = await encodeSheetTransferCode(sheetBridge.captureState());
+    const targetSlotId = sheetTransferSlotId || currentSlotId;
+    const targetSlot = currentSlots.find((entry) => entry.id === targetSlotId);
+    if (!targetSlotId || !targetSlot) throw new Error("Escolha um Slot válido para exportar.");
+
+    let state;
+    if (targetSlotId === currentSlotId) {
+      if (cloudSavePromise && !(await cloudSavePromise)) {
+        throw new Error("As alterações pendentes ainda não puderam ser salvas.");
+      }
+      if (stateRevision > lastSavedRevision && !(await flushCloudSave())) {
+        throw new Error("Salve as alterações do Slot antes de exportá-lo.");
+      }
+      state = sheetBridge.captureState();
+    } else {
+      state = await readCloudSheet(currentFirebaseUser, targetSlotId);
+    }
+
+    const code = await encodeSheetTransferCode(state, { slotName: targetSlot.name });
     firebaseUi.transferCode.value = code;
     updateSheetTransferCount();
-    setSheetTransferStatus("Código pronto. Guarde-o inteiro; qualquer caractere ausente invalida a importação.");
+    setSheetTransferStatus(`Código de “${targetSlot.name}” pronto. Guarde-o inteiro; qualquer caractere ausente invalida a importação.`);
   } catch (error) {
     firebaseUi.transferCode.value = "";
     updateSheetTransferCount();
@@ -21388,20 +21478,40 @@ async function generateSheetTransferCode() {
   }
 }
 
-function openSheetTransfer(mode) {
+function openSheetTransfer(mode, options = {}) {
   if (!currentFirebaseUser || !currentSlotId) return;
-  sheetTransferMode = mode === "import" ? "import" : "export";
-  const importing = sheetTransferMode === "import";
-  firebaseUi.transferTitle.textContent = importing ? "Importar ficha" : "Exportar ficha";
-  firebaseUi.transferDescription.textContent = importing
-    ? "Cole um código para substituir somente o Slot aberto. Os outros Slots não serão alterados."
-    : "Copie o código para guardar ou transferir este Slot.";
+  sheetTransferMode = mode === "import-new" ? "import-new" : mode === "import" ? "import" : "export";
+  sheetTransferSlotId = options.slotId || currentSlotId;
+  const importing = sheetTransferMode !== "export";
+  const creatingSlot = sheetTransferMode === "import-new";
+  const targetSlot = currentSlots.find((entry) => entry.id === sheetTransferSlotId);
+  sheetTransferTrigger = options.trigger || (creatingSlot ? firebaseUi.slotsImportCode : importing ? firebaseUi.importSheet : firebaseUi.exportSheet);
+  firebaseUi.transferTitle.textContent = creatingSlot
+    ? "Importar novo Slot"
+    : importing
+      ? "Importar ficha"
+      : `Exportar ${targetSlot?.name || "ficha"}`;
+  firebaseUi.transferDescription.textContent = creatingSlot
+    ? "Cole o código recebido para criar uma nova ficha independente na sua conta."
+    : importing
+      ? "Cole um código para substituir somente o Slot aberto. Os outros Slots não serão alterados."
+      : "Copie o código para guardar ou entregar esta ficha a outra pessoa.";
   firebaseUi.transferCode.value = "";
   firebaseUi.transferCode.readOnly = !importing;
   firebaseUi.transferCode.placeholder = importing ? "Cole aqui o código ABYSS1-…" : "";
+  firebaseUi.transferSlotField.hidden = !creatingSlot;
+  firebaseUi.transferSlotName.value = "";
   firebaseUi.transferCopy.hidden = importing;
-  firebaseUi.transferPrimary.textContent = importing ? "Importar neste Slot" : "Gerar novamente";
-  setSheetTransferStatus(importing ? "A importação exige confirmação antes de substituir a ficha." : "");
+  firebaseUi.transferPrimary.textContent = creatingSlot
+    ? "Criar Slot com o código"
+    : importing
+      ? "Importar neste Slot"
+      : "Gerar novamente";
+  setSheetTransferStatus(creatingSlot
+    ? "A ficha recebida será adicionada como um novo Slot; nenhuma ficha existente será substituída."
+    : importing
+      ? "A importação exige confirmação antes de substituir a ficha."
+      : "");
   updateSheetTransferCount();
   closeAccountMenu();
   firebaseUi.transferModal.hidden = false;
@@ -21410,7 +21520,7 @@ function openSheetTransfer(mode) {
   if (!importing) generateSheetTransferCode();
 }
 
-async function prepareImportedAbilityMedia(state) {
+async function prepareImportedAbilityMedia(state, target = {}) {
   const uploadedReferences = [];
   const importedAbilities = Array.isArray(state.abilities) ? state.abilities : [];
   for (let index = 0; index < importedAbilities.length; index += 1) {
@@ -21420,7 +21530,13 @@ async function prepareImportedAbilityMedia(state) {
     const file = dataUrlToImageFile(ability.mediaUrl, `habilidade-${index + 1}`);
     if (file) {
       setSheetTransferStatus(`Transferindo mídia ${index + 1} de ${importedAbilities.length}…`);
-      const uploaded = await uploadAbilityMedia({ scope: "sheet", abilityId: ability.id || `import-${index}`, file });
+      const uploaded = await uploadAbilityMedia({
+        scope: "sheet",
+        abilityId: ability.id || `import-${index}`,
+        file,
+        ownerUid: target.uid,
+        slotId: target.slotId,
+      });
       ability.mediaUrl = uploaded.url;
       ability.mediaOwner = "slot";
       ability.mediaRefId = uploaded.refId;
@@ -21449,7 +21565,8 @@ async function importSheetTransferCode() {
   let importedState;
   try {
     setSheetTransferStatus("Validando o código…");
-    importedState = await decodeSheetTransferCode(firebaseUi.transferCode.value);
+    const decoded = await decodeSheetTransferCode(firebaseUi.transferCode.value);
+    importedState = decoded.state;
   } catch (error) {
     setSheetTransferStatus(error?.message || "O código não pôde ser lido.", true);
     return;
@@ -21502,6 +21619,136 @@ async function importSheetTransferCode() {
     firebaseUi.transferPrimary.disabled = false;
     firebaseUi.transferCode.readOnly = false;
   }
+}
+
+function normalizeImportedSheetState(importedState) {
+  const previousState = sheetBridge.captureState();
+  const wasHydrating = isHydratingCloudState;
+  isHydratingCloudState = true;
+  try {
+    if (!sheetBridge.applyState(importedState, { persistLocal: false })) {
+      throw new Error("A ficha do código não contém dados aplicáveis.");
+    }
+    return sheetBridge.captureState();
+  } finally {
+    sheetBridge.applyState(previousState, { persistLocal: false });
+    isHydratingCloudState = wasHydrating;
+  }
+}
+
+async function importSheetTransferAsNewSlot() {
+  if (!currentFirebaseUser || !currentSlotId) return;
+
+  let decoded;
+  try {
+    setSheetTransferStatus("Validando o código…");
+    decoded = await decodeSheetTransferCode(firebaseUi.transferCode.value);
+  } catch (error) {
+    setSheetTransferStatus(error?.message || "O código não pôde ser lido.", true);
+    return;
+  }
+
+  const suggestedName = normalizeSlotName(
+    firebaseUi.transferSlotName.value || decoded.slotName || decoded.state?.profile?.name,
+    `Ficha importada ${currentSlots.length + 1}`,
+  );
+  firebaseUi.transferSlotName.value = suggestedName;
+  const confirmed = await window.showAbyssConfirm({
+    eyebrow: "Importar por código",
+    title: `Criar “${suggestedName}”?`,
+    message: "Um novo Slot independente será criado com os dados recebidos. Nenhuma das suas fichas atuais será substituída.",
+    confirmLabel: "Criar novo Slot",
+    tone: "info",
+    trigger: firebaseUi.transferPrimary,
+  });
+  if (!confirmed) return;
+
+  window.clearTimeout(cloudSaveTimer);
+  if (cloudSavePromise && !(await cloudSavePromise)) {
+    setSheetTransferStatus("As alterações do Slot atual ainda não puderam ser salvas.", true);
+    return;
+  }
+  if (stateRevision > lastSavedRevision && !(await flushCloudSave())) {
+    setSheetTransferStatus("Salve as alterações do Slot atual antes de importar outra ficha.", true);
+    return;
+  }
+
+  const previousSlotId = currentSlotId;
+  const previousState = sheetBridge.captureState();
+  const previousRevision = stateRevision;
+  const previousSavedRevision = lastSavedRevision;
+  const slotRef = firestoreApi.doc(
+    firestoreApi.collection(firestoreDb, "users", currentFirebaseUser.uid, "slots"),
+  );
+  const slot = {
+    id: slotRef.id,
+    name: suggestedName,
+    portrait: "",
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  };
+  let uploadedReferences = [];
+  let slotCommitted = false;
+
+  firebaseUi.transferPrimary.disabled = true;
+  firebaseUi.transferCode.readOnly = true;
+  firebaseUi.transferSlotName.disabled = true;
+  isHydratingCloudState = true;
+  try {
+    setSheetTransferStatus("Preparando os dados da ficha recebida…");
+    const normalizedState = normalizeImportedSheetState(decoded.state);
+    uploadedReferences = await prepareImportedAbilityMedia(normalizedState, {
+      uid: currentFirebaseUser.uid,
+      slotId: slot.id,
+    });
+
+    currentSlots.push(slot);
+    currentSlotId = slot.id;
+    if (!sheetBridge.applyState(normalizedState, { persistLocal: false })) {
+      throw new Error("A ficha do código não contém dados aplicáveis.");
+    }
+    stateRevision = previousRevision + 1;
+    setSheetTransferStatus("Criando e salvando o novo Slot…");
+    await writeCloudSheet(currentFirebaseUser, slot.id, normalizedState, {
+      slotName: slot.name,
+      created: true,
+    });
+    slotCommitted = true;
+    lastSavedRevision = stateRevision;
+    renderSlots();
+    setSyncStatus(
+      "saved",
+      "Ficha importada",
+      "Novo Slot criado",
+      `“${slot.name}” foi adicionado à sua conta e já está aberto.`,
+    );
+    closeSheetTransfer();
+  } catch (error) {
+    currentSlots = currentSlots.filter((entry) => entry.id !== slot.id);
+    currentSlotId = previousSlotId;
+    stateRevision = previousRevision;
+    lastSavedRevision = previousSavedRevision;
+    sheetBridge.applyState(previousState, { persistLocal: false });
+    if (slotCommitted) {
+      await deleteKnownSlotDocuments(currentFirebaseUser, slot.id).catch(() => {});
+    }
+    await Promise.allSettled(uploadedReferences.map((reference) => deleteMedia(reference)));
+    renderSlots();
+    setSheetTransferStatus(error?.message || describeFirebaseError(error), true);
+    return;
+  } finally {
+    isHydratingCloudState = false;
+    firebaseUi.transferPrimary.disabled = false;
+    firebaseUi.transferCode.readOnly = false;
+    firebaseUi.transferSlotName.disabled = false;
+  }
+
+  await window.showAbyssAlert({
+    eyebrow: "Importação concluída",
+    title: "Ficha adicionada aos Slots",
+    message: `“${slot.name}” agora é uma ficha independente. Alterações nela não afetam a ficha de quem enviou o código.`,
+    tone: "info",
+  });
 }
 
 function describeFirebaseError(error) {
@@ -21952,6 +22199,8 @@ function updateActiveSlotDisplay() {
   firebaseUi.slotCard.hidden = !currentFirebaseUser || !active;
   firebaseUi.exportSheet.hidden = !currentFirebaseUser || !active;
   firebaseUi.importSheet.hidden = !currentFirebaseUser || !active;
+  firebaseUi.slotsExportCurrent.disabled = !currentFirebaseUser || !active;
+  firebaseUi.slotsImportCode.disabled = !currentFirebaseUser;
 
   document.querySelector("#slots-button")?.setAttribute(
     "title",
@@ -21979,6 +22228,7 @@ function renderSlots() {
   firebaseUi.slotsList.replaceChildren();
   firebaseUi.slotsLoginNote.hidden = Boolean(currentFirebaseUser);
   firebaseUi.createSlotForm.hidden = !currentFirebaseUser;
+  firebaseUi.slotsTransferPanel.hidden = !currentFirebaseUser;
 
   if (!currentFirebaseUser) {
     updateActiveSlotDisplay();
@@ -22019,12 +22269,17 @@ function renderSlots() {
     rename.dataset.renameSlot = slot.id;
     rename.textContent = "Renomear";
 
+    const exportSlot = document.createElement("button");
+    exportSlot.type = "button";
+    exportSlot.dataset.exportSlot = slot.id;
+    exportSlot.textContent = "Exportar";
+
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "slot-delete";
     remove.dataset.deleteSlot = slot.id;
     remove.textContent = "Excluir";
-    actions.append(rename, remove);
+    actions.append(exportSlot, rename, remove);
 
     row.append(marker, copy, actions);
     firebaseUi.slotsList.append(row);
@@ -22391,7 +22646,7 @@ async function requestResetConfirmation() {
   }
 }
 
-async function uploadAbilityMedia({ scope, abilityId, file }) {
+async function uploadAbilityMedia({ scope, abilityId, file, ownerUid = "", slotId = "" }) {
   if (!currentFirebaseUser || !firestoreDb || !firestoreApi) {
     throw new Error("Entre com o Google antes de enviar um arquivo.");
   }
@@ -22401,8 +22656,8 @@ async function uploadAbilityMedia({ scope, abilityId, file }) {
   ) {
     throw new Error("Escolha uma imagem ou GIF de até 8 MB.");
   }
-  const targetSlotId = campaignSheetSession?.slotId || currentSlotId;
-  const targetOwnerUid = campaignSheetSession?.ownerUid || currentFirebaseUser.uid;
+  const targetSlotId = slotId || campaignSheetSession?.slotId || currentSlotId;
+  const targetOwnerUid = ownerUid || campaignSheetSession?.ownerUid || currentFirebaseUser.uid;
   if (scope !== "minerva" && !targetSlotId) {
     throw new Error("Nenhum Slot está ativo.");
   }
@@ -22864,8 +23119,16 @@ async function requestFirebaseSignOut() {
 firebaseUi.reset.addEventListener("click", requestResetConfirmation);
 firebaseUi.exportSheet.addEventListener("click", () => openSheetTransfer("export"));
 firebaseUi.importSheet.addEventListener("click", () => openSheetTransfer("import"));
+firebaseUi.slotsExportCurrent.addEventListener("click", () => openSheetTransfer("export", {
+  slotId: currentSlotId,
+  trigger: firebaseUi.slotsExportCurrent,
+}));
+firebaseUi.slotsImportCode.addEventListener("click", () => openSheetTransfer("import-new", {
+  trigger: firebaseUi.slotsImportCode,
+}));
 firebaseUi.transferPrimary.addEventListener("click", () => {
-  if (sheetTransferMode === "import") importSheetTransferCode();
+  if (sheetTransferMode === "import-new") importSheetTransferAsNewSlot();
+  else if (sheetTransferMode === "import") importSheetTransferCode();
   else generateSheetTransferCode();
 });
 firebaseUi.transferCopy.addEventListener("click", async () => {
@@ -22882,7 +23145,7 @@ firebaseUi.transferCopy.addEventListener("click", async () => {
 });
 firebaseUi.transferCode.addEventListener("input", () => {
   updateSheetTransferCount();
-  if (sheetTransferMode === "import") setSheetTransferStatus("Pronto para validar e importar.");
+  if (sheetTransferMode.startsWith("import")) setSheetTransferStatus("Pronto para validar e importar.");
 });
 document.querySelectorAll("[data-close-sheet-transfer]").forEach((button) => {
   button.addEventListener("click", closeSheetTransfer);
@@ -22923,14 +23186,19 @@ firebaseUi.createSlotForm.addEventListener("submit", async (event) => {
 
 firebaseUi.slotsList.addEventListener("click", async (event) => {
   const open = event.target.closest("[data-open-slot]");
+  const exportSlot = event.target.closest("[data-export-slot]");
   const rename = event.target.closest("[data-rename-slot]");
   const remove = event.target.closest("[data-delete-slot]");
-  const action = open || rename || remove;
+  const action = open || exportSlot || rename || remove;
   if (!action) return;
 
   action.disabled = true;
   try {
     if (open) await switchCloudSlot(open.dataset.openSlot);
+    else if (exportSlot) openSheetTransfer("export", {
+      slotId: exportSlot.dataset.exportSlot,
+      trigger: exportSlot,
+    });
     else if (rename) beginSlotRename(rename.dataset.renameSlot);
     else await deleteCloudSlot(remove.dataset.deleteSlot);
   } catch (error) {
