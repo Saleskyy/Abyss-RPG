@@ -6916,6 +6916,42 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
   .sheet-transfer-code { min-height: 190px; }
 }
 @media (prefers-reduced-motion: reduce) { .slot-gate-spinner { animation-duration: 1.8s; } }
+/* Eco e Classe compartilham o mesmo menu, independente da aparência nativa do navegador. */
+.identity-choice-control { position: relative; min-width: 0; }
+.identity-choice-native { position: absolute !important; width: 1px !important; height: 1px !important; min-height: 0 !important; padding: 0 !important; opacity: 0 !important; pointer-events: none !important; clip-path: inset(50%) !important; }
+.identity-choice-trigger { display: flex; align-items: center; justify-content: space-between; gap: 9px; width: 100%; min-height: 34px; padding: 5px 11px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .21); border-radius: 3px; color: var(--theme-muted-b9b3a7, #b9b3a7); background: linear-gradient(145deg, rgba(var(--theme-surfaceRaised-191c21-rgb, 25, 28, 33), .48), rgba(var(--theme-surface-0d0f12-rgb, 13, 15, 18), .48)); cursor: pointer; text-align: left; font: .88rem Georgia, "Times New Roman", serif; transition: border-color .16s ease, color .16s ease, background .16s ease, box-shadow .16s ease; }
+.identity-choice-trigger:hover, .identity-choice-trigger.is-open { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .65); color: var(--theme-text-eee8dc, #eee8dc); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .075); }
+.identity-choice-trigger:focus-visible { outline: 2px solid var(--theme-accent-cfad62, #cfad62); outline-offset: 3px; }
+.identity-choice-trigger-label { min-width: 0; white-space: nowrap; }
+.identity-choice-trigger svg { flex: 0 0 16px; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.6; opacity: .7; transition: transform .16s ease; }
+.identity-choice-trigger.is-open svg { transform: rotate(180deg); }
+#echo-choice-wrap .identity-choice-control { width: 100%; }
+#echo-choice-wrap .identity-choice-trigger { min-height: 42px; padding: 5px 16px; font: 1.32rem/1.35 Georgia, "Times New Roman", serif; }
+#echo-choice-wrap.has-value .identity-choice-trigger { padding-inline: 17px 23px; border-color: transparent; color: var(--identity-echo-ink); background: transparent; font-weight: 650; }
+#echo-choice-wrap.has-value .identity-choice-trigger:hover, #echo-choice-wrap.has-value .identity-choice-trigger.is-open { background: rgba(255,255,255,.06); }
+#class-choice-wrap > .identity-choice-control { flex: 0 1 190px; }
+#class-choice-wrap.has-value .identity-choice-trigger { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .52); color: var(--theme-accent-f2d88f, #f2d88f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); }
+.identity-options-menu { position: fixed; z-index: 1100; width: min(290px, calc(100vw - 24px)); max-height: min(385px, calc(100dvh - 24px)); overflow-y: auto; overscroll-behavior: contain; padding: 7px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .4); border-radius: 7px; color: var(--theme-text-eee8dc, #eee8dc); background: linear-gradient(155deg, var(--palette-containerRaised, #1b1d22), var(--palette-container, #0e1014)); box-shadow: 0 16px 42px rgba(0,0,0,.62), inset 0 1px rgba(255,255,255,.075); }
+.identity-options-menu[hidden] { display: none; }
+.identity-options-menu::before { position: absolute; top: 0; right: 16px; left: 16px; height: 1px; content: ""; background: linear-gradient(90deg, transparent, var(--theme-accent-cfad62, #cfad62), transparent); opacity: .85; }
+.identity-options-heading { margin: 3px 5px 7px; padding: 5px 8px 9px; border-bottom: 1px solid var(--theme-border-34353a, #34353a); color: var(--theme-accent-dfc77f, #dfc77f); font: 750 .57rem ui-sans-serif, system-ui, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+.identity-option { display: flex; align-items: center; gap: 11px; width: 100%; min-height: 41px; margin: 2px 0; padding: 8px 10px; border: 1px solid transparent; border-radius: 4px; color: var(--theme-text-e2dbce, #e2dbce); background: transparent; cursor: pointer; text-align: left; font: 600 .87rem ui-sans-serif, system-ui, sans-serif; transition: border-color .13s ease, color .13s ease, background .13s ease; }
+.identity-option:hover, .identity-option:focus-visible { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .27); outline: none; color: var(--theme-text-f7f2e8, #f7f2e8); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .085); }
+.identity-option[aria-selected="true"] { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .35); color: var(--theme-text-f7f2e8, #f7f2e8); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .12); }
+.identity-option-mark { flex: 0 0 14px; width: 14px; height: 14px; border: 1px solid var(--option-color, var(--theme-accent-cfad62, #cfad62)); border-radius: 50%; background: color-mix(in srgb, var(--option-color, var(--theme-accent-cfad62, #cfad62)) 22%, transparent); box-shadow: 0 0 11px color-mix(in srgb, var(--option-color, var(--theme-accent-cfad62, #cfad62)) 24%, transparent); }
+.identity-option[data-empty="true"] { color: var(--theme-muted-99958d, #99958d); font-weight: 500; }
+.identity-option[data-empty="true"] .identity-option-mark { border-style: dashed; background: transparent; box-shadow: none; opacity: .65; }
+.identity-option[data-value="determinado"] { --option-color: #f13d49; }
+.identity-option[data-value="justo"] { --option-color: #efd149; }
+.identity-option[data-value="bondoso"] { --option-color: #8bea75; }
+.identity-option[data-value="paciente"] { --option-color: #72cff0; }
+.identity-option[data-value="integro"] { --option-color: #4876de; }
+.identity-option[data-value="bravo"] { --option-color: #f18b3d; }
+.identity-option[data-value="perseverante"] { --option-color: #ad67e4; }
+.identity-option[data-value="indiferente"] { --option-color: #f1f1ed; }
+.identity-options-menu[data-kind="class"] .identity-option-mark { border-radius: 3px; transform: rotate(45deg) scale(.76); }
+@media (max-width: 900px) { #class-choice-wrap > .identity-choice-control { flex: 1 1 175px; } }
+@media (max-width: 760px) { #echo-choice-wrap .identity-choice-trigger { min-height: 46px; } #class-choice-wrap .identity-choice-trigger { min-height: 44px; } }
 /* Caderno do personagem: blocos de texto editáveis dentro de cada Slot. */
 .notes-panel { overflow: hidden; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 5px; background: linear-gradient(140deg, var(--palette-containerRaised, #191a20), var(--palette-container, #111217)); box-shadow: 0 18px 45px rgba(0,0,0,.18); }
 .notes-panel-head { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 21px 24px; border-bottom: 1px solid var(--theme-border-34353a, #34353a); }
@@ -7227,22 +7263,29 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
                   <span id="character-name-sizer" class="identity-width-sizer" aria-hidden="true">Nome do personagem</span>
                 </label>
 
-                <label id="echo-choice-wrap" class="identity-choice-wrap" title="Escolher Eco">
+                <div id="echo-choice-wrap" class="identity-choice-wrap">
                   <span class="identity-separator" aria-hidden="true">,</span>
-                  <span class="sr-only">Eco</span>
                   <span id="echo-tag-sizer" class="identity-width-sizer echo-tag-sizer" aria-hidden="true">Escolher Eco</span>
-                  <select id="character-echo" class="identity-choice-select" aria-label="Eco do personagem">
-                    <option value="">Escolher Eco</option>
-                    <option value="determinado">O Determinado</option>
-                    <option value="justo">O Justo</option>
-                    <option value="bondoso">O Bondoso</option>
-                    <option value="paciente">O Paciente</option>
-                    <option value="integro">O Íntegro</option>
-                    <option value="bravo">O Bravo</option>
-                    <option value="perseverante">O Perseverante</option>
-                    <option value="indiferente">O Indiferente</option>
-                  </select>
-                </label>
+                  <div class="identity-choice-control">
+                    <select id="character-echo" class="identity-choice-select identity-choice-native" tabindex="-1" aria-hidden="true">
+                      <option value="">Escolher Eco</option>
+                      <option value="determinado">O Determinado</option>
+                      <option value="justo">O Justo</option>
+                      <option value="bondoso">O Bondoso</option>
+                      <option value="paciente">O Paciente</option>
+                      <option value="integro">O Íntegro</option>
+                      <option value="bravo">O Bravo</option>
+                      <option value="perseverante">O Perseverante</option>
+                      <option value="indiferente">O Indiferente</option>
+                    </select>
+                    <button id="echo-choice-trigger" class="identity-choice-trigger" type="button"
+                      aria-label="Eco do personagem" aria-haspopup="listbox" aria-expanded="false"
+                      aria-controls="identity-options-menu">
+                      <span class="identity-choice-trigger-label">Escolher Eco</span>
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"></path></svg>
+                    </button>
+                  </div>
+                </div>
               </div>
 
               <div class="identity-field-composite">
@@ -7258,15 +7301,20 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
 
                 <div id="class-choice-wrap" class="identity-choice-wrap is-class">
                   <span class="identity-separator" aria-hidden="true">•</span>
-                  <label>
-                    <span class="sr-only">Classe</span>
-                    <select id="character-class" class="identity-choice-select" aria-label="Classe do personagem">
+                  <div class="identity-choice-control">
+                    <select id="character-class" class="identity-choice-select identity-choice-native" tabindex="-1" aria-hidden="true">
                       <option value="">Escolher Classe</option>
-                      <option value="vanguardista">[Vanguardista]</option>
-                      <option value="especialista">[Especialista]</option>
-                      <option value="arcanista">[Arcanista]</option>
+                      <option value="vanguardista">Vanguardista</option>
+                      <option value="especialista">Especialista</option>
+                      <option value="arcanista">Arcanista</option>
                     </select>
-                  </label>
+                    <button id="class-choice-trigger" class="identity-choice-trigger" type="button"
+                      aria-label="Classe do personagem" aria-haspopup="listbox" aria-expanded="false"
+                      aria-controls="identity-options-menu">
+                      <span class="identity-choice-trigger-label">Escolher Classe</span>
+                      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"></path></svg>
+                    </button>
+                  </div>
                   <label class="character-level-field">
                     <span>Nível</span>
                     <select id="character-level" aria-label="Nível do personagem">
@@ -9589,6 +9637,8 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
         </footer>
       </section>
     </div>
+
+    <div id="identity-options-menu" class="identity-options-menu" role="listbox" hidden></div>
 
     <!-- JavaScript incorporado: nenhum arquivo adicional é necessário. -->
     <script>
@@ -11919,6 +11969,14 @@ const characterClassSelect = document.querySelector("#character-class");
 const characterLevelInput = document.querySelector("#character-level");
 const echoChoiceWrap = document.querySelector("#echo-choice-wrap");
 const classChoiceWrap = document.querySelector("#class-choice-wrap");
+const echoChoiceTrigger = document.querySelector("#echo-choice-trigger");
+const classChoiceTrigger = document.querySelector("#class-choice-trigger");
+const identityOptionsMenu = document.querySelector("#identity-options-menu");
+let activeIdentityChoice = null;
+const identityChoices = [
+  { kind: "echo", select: characterEchoSelect, trigger: echoChoiceTrigger, title: "Eco do personagem", empty: "Nenhum Eco" },
+  { kind: "class", select: characterClassSelect, trigger: classChoiceTrigger, title: "Classe do personagem", empty: "Nenhuma Classe" },
+];
 const conditionAlerts = document.querySelector("#condition-alerts");
 const defenseZoneSelect = document.querySelector("#defense-zone");
 const defenseMarginSelect = document.querySelector("#defense-margin");
@@ -12945,6 +13003,94 @@ function scheduleCharacterIdentityWidths() {
   });
 }
 
+function syncIdentityChoiceControls() {
+  identityChoices.forEach(({ select, trigger }) => {
+    const option = select.selectedOptions[0] || select.options[0];
+    trigger.querySelector(".identity-choice-trigger-label").textContent = option?.textContent || "";
+  });
+}
+
+function closeIdentityOptions({ returnFocus = false } = {}) {
+  if (!activeIdentityChoice) return;
+  const trigger = activeIdentityChoice.trigger;
+  trigger.setAttribute("aria-expanded", "false");
+  trigger.classList.remove("is-open");
+  identityOptionsMenu.hidden = true;
+  identityOptionsMenu.replaceChildren();
+  activeIdentityChoice = null;
+  if (returnFocus) trigger.focus();
+}
+
+function positionIdentityOptions() {
+  if (!activeIdentityChoice) return;
+  const rect = activeIdentityChoice.trigger.getBoundingClientRect();
+  const viewportWidth = document.documentElement.clientWidth;
+  const viewportHeight = window.visualViewport?.height || window.innerHeight;
+  const width = Math.min(viewportWidth - 20, Math.max(226, rect.width + 28));
+  identityOptionsMenu.style.width = `${Math.max(150, width)}px`;
+  const below = viewportHeight - rect.bottom - 12;
+  const above = rect.top - 12;
+  const desiredHeight = Math.min(385, identityOptionsMenu.scrollHeight);
+  const openAbove = below < Math.min(260, desiredHeight) && above > below;
+  const availableHeight = Math.max(90, openAbove ? above : below);
+  const menuHeight = Math.min(desiredHeight, availableHeight);
+  identityOptionsMenu.style.maxHeight = `${menuHeight}px`;
+  identityOptionsMenu.style.left = `${Math.max(10, Math.min(rect.left, viewportWidth - width - 10))}px`;
+  identityOptionsMenu.style.top = `${Math.max(10, openAbove ? rect.top - menuHeight - 7 : rect.bottom + 7)}px`;
+}
+
+function openIdentityOptions(choice, focusEnd = false) {
+  if (activeIdentityChoice?.kind === choice.kind) { closeIdentityOptions({ returnFocus: true }); return; }
+  closeIdentityOptions();
+  activeIdentityChoice = choice;
+  identityOptionsMenu.replaceChildren();
+  identityOptionsMenu.dataset.kind = choice.kind;
+  identityOptionsMenu.setAttribute("aria-label", choice.title);
+
+  const heading = document.createElement("p");
+  heading.className = "identity-options-heading";
+  heading.setAttribute("role", "presentation");
+  heading.textContent = choice.title;
+  identityOptionsMenu.append(heading);
+  [...choice.select.options].forEach((option) => {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = "identity-option";
+    item.setAttribute("role", "option");
+    item.setAttribute("aria-selected", String(option.value === choice.select.value));
+    item.tabIndex = -1;
+    item.dataset.value = option.value;
+    if (!option.value) item.dataset.empty = "true";
+    const marker = document.createElement("span");
+    marker.className = "identity-option-mark";
+    marker.setAttribute("aria-hidden", "true");
+    const label = document.createElement("span");
+    label.textContent = option.value ? option.textContent : choice.empty;
+    item.append(marker, label);
+    identityOptionsMenu.append(item);
+  });
+  choice.trigger.classList.add("is-open");
+  choice.trigger.setAttribute("aria-expanded", "true");
+  identityOptionsMenu.hidden = false;
+  positionIdentityOptions();
+  const options = [...identityOptionsMenu.querySelectorAll(".identity-option")];
+  const selected = options.find((item) => item.dataset.value === choice.select.value);
+  (focusEnd ? options.at(-1) : selected || options[0])?.focus({ preventScroll: true });
+}
+
+function chooseIdentityOption(value) {
+  const choice = activeIdentityChoice;
+  if (!choice) return;
+  const valid = [...choice.select.options].some((option) => option.value === value);
+  if (!valid) return;
+  closeIdentityOptions();
+  if (choice.select.value !== value) {
+    choice.select.value = value;
+    choice.select.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+  choice.trigger.focus();
+}
+
 function updateIdentityChoiceAppearance() {
   const echo = ECHOES[characterEchoSelect.value] ? characterEchoSelect.value : "";
   const classKey = CHARACTER_CLASSES[characterClassSelect.value] ? characterClassSelect.value : "";
@@ -12952,6 +13098,7 @@ function updateIdentityChoiceAppearance() {
   echoChoiceWrap.dataset.echo = echo;
   classChoiceWrap.classList.toggle("has-value", Boolean(classKey));
   classChoiceWrap.dataset.characterClass = classKey;
+  syncIdentityChoiceControls();
   updateCharacterIdentityWidths();
   renderEchoPanel();
 }
@@ -18646,6 +18793,66 @@ document.querySelectorAll("#character-name, #character-background").forEach((inp
   input.addEventListener("change", () => notifySheetChanged("profile"));
 });
 characterNameInput.addEventListener("input", scheduleCharacterIdentityWidths);
+
+identityChoices.forEach((choice) => {
+  choice.trigger.addEventListener("click", () => openIdentityOptions(choice));
+  choice.trigger.addEventListener("keydown", (event) => {
+    if (!["ArrowDown", "ArrowUp"].includes(event.key)) return;
+    event.preventDefault();
+    openIdentityOptions(choice, event.key === "ArrowUp");
+  });
+});
+
+identityOptionsMenu.addEventListener("click", (event) => {
+  const option = event.target.closest(".identity-option");
+  if (option) chooseIdentityOption(option.dataset.value);
+});
+
+identityOptionsMenu.addEventListener("keydown", (event) => {
+  const options = [...identityOptionsMenu.querySelectorAll(".identity-option")];
+  const current = options.indexOf(document.activeElement);
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeIdentityOptions({ returnFocus: true });
+    return;
+  }
+  if (event.key === "Tab") {
+    event.preventDefault();
+    const target = activeIdentityChoice?.kind === "echo"
+      ? document.querySelector(event.shiftKey ? "#character-name" : "#character-background")
+      : document.querySelector(event.shiftKey ? "#character-background" : "#character-level");
+    closeIdentityOptions();
+    target?.focus();
+    return;
+  }
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    const option = options[current];
+    if (option) chooseIdentityOption(option.dataset.value);
+    return;
+  }
+  let next = current;
+  if (event.key === "ArrowDown") next = (current + 1) % options.length;
+  else if (event.key === "ArrowUp") next = (current - 1 + options.length) % options.length;
+  else if (event.key === "Home") next = 0;
+  else if (event.key === "End") next = options.length - 1;
+  else return;
+  event.preventDefault();
+  options[next]?.focus({ preventScroll: true });
+  options[next]?.scrollIntoView({ block: "nearest" });
+});
+
+document.addEventListener("pointerdown", (event) => {
+  if (!activeIdentityChoice) return;
+  if (identityOptionsMenu.contains(event.target) || activeIdentityChoice.trigger.contains(event.target)) return;
+  closeIdentityOptions();
+});
+window.addEventListener("scroll", (event) => {
+  if (activeIdentityChoice && !identityOptionsMenu.contains(event.target)) closeIdentityOptions();
+}, true);
+window.addEventListener("resize", () => {
+  if (activeIdentityChoice) positionIdentityOptions();
+});
 
 document.querySelectorAll("[data-attribute]").forEach((input) => {
   input.addEventListener("input", () => {
