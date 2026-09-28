@@ -4261,8 +4261,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .resource-card[data-resource="pa"] { --resource-color: var(--theme-pa-e4bd3e, #e4bd3e); --resource-rgb: 228, 189, 62; }
 .resource-card[data-resource="sa"] { --resource-color: var(--theme-sa-69c8ed, #69c8ed); --resource-rgb: 105, 200, 237; }
 .resource-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
-.resource-card-head h3 { margin: 0; color: var(--theme-text-eee9df, #eee9df); font: 1rem Georgia, "Times New Roman", serif; }
-.resource-code { color: var(--resource-color); font-size: 0.67rem; font-weight: 850; letter-spacing: 0.13em; }
+.resource-card-head h3 { margin: 0; color: var(--resource-color); font: 700 1.05rem Georgia, "Times New Roman", serif; text-shadow: 0 0 14px rgba(var(--resource-rgb), 0.2); }
+.resource-code { color: var(--resource-color); font-size: 0.72rem; font-weight: 850; letter-spacing: 0.13em; text-shadow: 0 0 12px rgba(var(--resource-rgb), 0.2); }
 .temporary-points {
   min-height: 20px;
   padding: 2px 7px;
@@ -7510,11 +7510,11 @@ h1, h2, h3, h4, h5, h6,
               <div class="resource-adjuster">
                 <button type="button" class="resource-limit-button" data-resource-limit="pv" data-limit="zero" aria-label="Zerar Pontos de Vida" title="Zerar Pontos de Vida">↓</button>
                 <button type="button" data-resource-adjust="pv" data-direction="-1" aria-label="Diminuir Pontos de Vida">−</button>
-                <input type="number" value="1" min="0" max="999999" step="1" inputmode="numeric" data-resource-delta="pv" aria-label="Quantidade para ajustar Pontos de Vida" />
+                <input type="number" min="-999999" max="999999" step="1" inputmode="text" placeholder="±" data-resource-delta="pv" aria-label="Valor de adição ou subtração de Pontos de Vida; pressione Enter para aplicar" />
                 <button type="button" data-resource-adjust="pv" data-direction="1" aria-label="Adicionar Pontos de Vida">+</button>
                 <button type="button" class="resource-limit-button" data-resource-limit="pv" data-limit="max" aria-label="Restaurar Pontos de Vida ao máximo" title="Restaurar Pontos de Vida ao máximo">↑</button>
               </div>
-              <p class="resource-adjust-label">Diminuir · Ajuste · Adicionar</p>
+              <p class="resource-adjust-label">Insira o valor de adição/subtração</p>
               <p class="resource-adjust-feedback" data-resource-feedback="pv" aria-live="polite" hidden></p>
             </article>
 
@@ -7537,11 +7537,11 @@ h1, h2, h3, h4, h5, h6,
               <div class="resource-adjuster">
                 <button type="button" class="resource-limit-button" data-resource-limit="pa" data-limit="zero" aria-label="Zerar Pontos de Ação" title="Zerar Pontos de Ação">↓</button>
                 <button type="button" data-resource-adjust="pa" data-direction="-1" aria-label="Diminuir Pontos de Ação">−</button>
-                <input type="number" value="1" min="0" max="999999" step="1" inputmode="numeric" data-resource-delta="pa" aria-label="Quantidade para ajustar Pontos de Ação" />
+                <input type="number" min="-999999" max="999999" step="1" inputmode="text" placeholder="±" data-resource-delta="pa" aria-label="Valor de adição ou subtração de Pontos de Ação; pressione Enter para aplicar" />
                 <button type="button" data-resource-adjust="pa" data-direction="1" aria-label="Adicionar Pontos de Ação">+</button>
                 <button type="button" class="resource-limit-button" data-resource-limit="pa" data-limit="max" aria-label="Restaurar Pontos de Ação ao máximo" title="Restaurar Pontos de Ação ao máximo">↑</button>
               </div>
-              <p class="resource-adjust-label">Diminuir · Ajuste · Adicionar</p>
+              <p class="resource-adjust-label">Insira o valor de adição/subtração</p>
               <p class="resource-adjust-feedback" data-resource-feedback="pa" aria-live="polite" hidden></p>
             </article>
 
@@ -7563,11 +7563,11 @@ h1, h2, h3, h4, h5, h6,
               <div class="resource-adjuster">
                 <button type="button" class="resource-limit-button" data-resource-limit="sa" data-limit="zero" aria-label="Zerar Sanidade" title="Zerar Sanidade">↓</button>
                 <button type="button" data-resource-adjust="sa" data-direction="-1" aria-label="Diminuir Sanidade">−</button>
-                <input type="number" value="1" min="0" max="999999" step="1" inputmode="numeric" data-resource-delta="sa" aria-label="Quantidade para ajustar Sanidade" />
+                <input type="number" min="-999999" max="999999" step="1" inputmode="text" placeholder="±" data-resource-delta="sa" aria-label="Valor de adição ou subtração de Sanidade; pressione Enter para aplicar" />
                 <button type="button" data-resource-adjust="sa" data-direction="1" aria-label="Adicionar Sanidade">+</button>
                 <button type="button" class="resource-limit-button" data-resource-limit="sa" data-limit="max" aria-label="Restaurar Sanidade ao máximo" title="Restaurar Sanidade ao máximo">↑</button>
               </div>
-              <p class="resource-adjust-label">Diminuir · Ajuste · Adicionar</p>
+              <p class="resource-adjust-label">Insira o valor de adição/subtração</p>
               <p class="resource-adjust-feedback" data-resource-feedback="sa" aria-live="polite" hidden></p>
             </article>
           </div>
@@ -13341,13 +13341,14 @@ function showResourceAdjustment(resource, requested, absorbed, actualLoss) {
   feedback.textContent = `${requested} de perda − ${absorbed} de proteção = ${actualLoss}`;
 }
 
-function adjustResource(resource, direction) {
+function adjustResource(resource, amount) {
+  if (!Number.isInteger(amount) || amount === 0) return;
   const inputs = getResourceInputs(resource);
-  const delta = Math.abs(clampInteger(inputs.delta.value, 0, 999999, 0));
+  const delta = Math.abs(amount);
   const maximum = clampInteger(inputs.maximum.value, 0, 999999, 0);
   const current = clampInteger(inputs.current.value, 0, 999999, 0);
   const upperBound = resource === "sa" ? maximum : 999999;
-  if (direction < 0) {
+  if (amount < 0) {
     const protection = getActiveProtection(resource);
     const absorbed = Math.min(delta, protection);
     const actualLoss = Math.max(0, delta - protection);
@@ -18995,8 +18996,17 @@ document.querySelectorAll("[data-resource-current], [data-resource-max]").forEac
 });
 
 document.querySelectorAll("[data-resource-delta]").forEach((input) => {
-  input.addEventListener("change", () => {
-    input.value = String(Math.abs(clampInteger(input.value, 0, 999999, 0)));
+  input.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    if (!input.value) return;
+    if (!input.checkValidity()) {
+      input.reportValidity();
+      return;
+    }
+    const amount = Number(input.value);
+    input.value = "";
+    adjustResource(input.dataset.resourceDelta, amount);
   });
 });
 
