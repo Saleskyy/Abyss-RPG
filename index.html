@@ -6999,6 +6999,52 @@ h1, h2, h3, h4, h5, h6,
 .notes-card-title {
   font-family: var(--font-title) !important;
 }
+
+/* Hierarquia visual das estatísticas do painel Outros. */
+.combat-stat.is-defense { --combat-rgb: 219, 183, 106; }
+.combat-stat.is-evasion { --combat-rgb: 112, 197, 224; }
+.combat-stat.is-block { --combat-rgb: 174, 157, 220; }
+.combat-stat.is-initiative { --combat-rgb: 233, 166, 113; }
+.combat-stat.is-movement { --combat-rgb: 117, 205, 170; }
+.combat-stat.is-spell-dt { --combat-rgb: 185, 149, 231; }
+.combat-stat.is-ability-dt { --combat-rgb: 177, 215, 121; }
+.combat-panel .combat-stat {
+  border-color: rgba(var(--combat-rgb, 207, 173, 98), .22);
+  box-shadow: inset 2px 0 0 rgba(var(--combat-rgb, 207, 173, 98), .52);
+}
+.combat-panel .combat-stat-head h3 {
+  color: rgb(var(--combat-rgb, 207, 173, 98));
+}
+.combat-panel .combat-phrase {
+  width: min(100%, 299px);
+  grid-template-columns: minmax(78px, 108px) 9px minmax(128px, 168px);
+  align-items: center;
+  gap: 7px;
+}
+.combat-panel .combat-phrase > span {
+  display: inline;
+  color: rgba(var(--combat-rgb, 207, 173, 98), .65);
+  text-align: center;
+}
+.combat-panel .combat-phrase select {
+  min-height: 34px;
+  height: 34px;
+  padding: 0 23px 0 11px;
+  border: 1px solid rgba(var(--combat-rgb, 207, 173, 98), .28);
+  border-radius: 999px;
+  color: var(--theme-text-e9e3d6, #e9e3d6);
+  background-color: rgba(var(--theme-surface-0b0c0f-rgb, 11, 12, 15), .86);
+  font-size: .78rem;
+  font-weight: 600;
+}
+.combat-panel .combat-phrase select:hover,
+.combat-panel .combat-phrase select:focus-visible {
+  border-color: rgba(var(--combat-rgb, 207, 173, 98), .7);
+  box-shadow: 0 0 0 2px rgba(var(--combat-rgb, 207, 173, 98), .1);
+}
+@media (max-width: 600px) {
+  .combat-panel .combat-phrase select { min-height: 38px; height: 38px; }
+}
     </style>
   </head>
   <body class="slot-gate-open">
@@ -7514,7 +7560,7 @@ h1, h2, h3, h4, h5, h6,
           </header>
 
           <div class="combat-grid">
-            <article class="combat-stat">
+            <article class="combat-stat is-defense">
               <header class="combat-stat-head">
                 <h3>Defesa</h3>
                 <span id="defense-base-value" class="defense-base-value">Base —</span>
@@ -7619,7 +7665,7 @@ h1, h2, h3, h4, h5, h6,
             </article>
           </div>
           <div class="combat-derived-grid">
-            <article class="combat-stat derived-combat-stat">
+            <article class="combat-stat derived-combat-stat is-initiative">
               <header class="combat-stat-head">
                 <h3>Iniciativa</h3>
                 <span id="initiative-formula" class="defense-base-value">4 + AGI</span>
@@ -7627,7 +7673,7 @@ h1, h2, h3, h4, h5, h6,
               <output id="initiative-value" class="derived-combat-value" aria-live="polite">5</output>
               <p id="initiative-detail" class="derived-combat-detail">Leigo em Reflexos · metade de d8 + AGI</p>
             </article>
-            <article class="combat-stat derived-combat-stat">
+            <article class="combat-stat derived-combat-stat is-movement">
               <header class="combat-stat-head">
                 <h3>Deslocamento</h3>
                 <span id="movement-base-value" class="defense-base-value">Base 6Q</span>
@@ -7641,7 +7687,7 @@ h1, h2, h3, h4, h5, h6,
             </article>
           </div>
           <div class="combat-dt-grid">
-            <article class="combat-stat">
+            <article class="combat-stat is-spell-dt">
               <header class="combat-stat-head">
                 <h3>DT de Feitiçaria</h3>
                 <span id="spell-dt-base" class="defense-base-value">Base 13</span>
@@ -7659,7 +7705,7 @@ h1, h2, h3, h4, h5, h6,
       <option value="FOR">FOR</option><option value="AGI">AGI</option><option value="INT">INT</option><option value="CON">CON</option><option value="POD" selected>POD</option>
     </select></label><button class="dt-auto-button" type="button" data-reset-dt="spell" title="Usar a DT calculada">Usar cálculo</button></div>
             </article>
-            <article class="combat-stat">
+            <article class="combat-stat is-ability-dt">
               <header class="combat-stat-head">
                 <h3>DT de Habilidades</h3>
                 <span id="ability-dt-base" class="defense-base-value">Base 11</span>
