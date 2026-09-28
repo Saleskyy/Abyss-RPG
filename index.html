@@ -4682,7 +4682,17 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 #echo-choice-wrap[data-echo="bravo"] { --identity-echo-color: #f18b3d; }
 #echo-choice-wrap[data-echo="perseverante"] { --identity-echo-color: #ad67e4; }
 #echo-choice-wrap[data-echo="indiferente"] { --identity-echo-color: #f1f1ed; }
-#echo-choice-wrap.has-value::before { content: ""; position: absolute; z-index: -1; inset: -2px -4px 8px 12px; background: var(--identity-echo-color); transform: rotate(-1deg); clip-path: polygon(5% 7%, 23% 9%, 24% 3%, 53% 8%, 70% 0, 96% 6%, 94% 16%, 100% 22%, 97% 34%, 98% 63%, 94% 88%, 97% 97%, 68% 93%, 66% 100%, 38% 94%, 15% 98%, 0 90%, 3% 66%, 1% 61%); }
+#echo-choice-wrap.has-value::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: -2px -4px 8px 12px;
+  border-radius: 12px 15px 13px 14px / 11px 13px 12px 14px;
+  background: var(--identity-echo-color);
+  transform: rotate(-0.7deg);
+  clip-path: polygon(4% 13%, 12% 9%, 22% 11%, 31% 7%, 43% 10%, 55% 6%, 68% 9%, 80% 7%, 92% 10%, 97% 17%, 95% 29%, 98% 42%, 96% 55%, 98% 69%, 95% 82%, 90% 91%, 77% 89%, 67% 94%, 52% 91%, 40% 95%, 27% 91%, 17% 94%, 7% 87%, 4% 76%, 6% 62%, 3% 49%, 5% 34%);
+  filter: blur(0.35px);
+}
 #echo-choice-wrap.has-value .identity-choice-select { color: var(--identity-echo-ink); background-color: transparent; border-color: transparent; border-width: 0; box-shadow: none; font-weight: 650; padding-inline: 12px 25px; }
 #echo-choice-wrap .identity-choice-select:focus-visible { outline: 1px solid var(--identity-echo-color); box-shadow: none; }
 @media(max-width: 760px) { .combat-derived-grid, .combat-dt-grid { grid-template-columns: 1fr; } }
@@ -4743,7 +4753,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   display: flex;
   align-items: flex-end;
   flex-wrap: nowrap;
-  gap: clamp(12px, 2.2vw, 22px);
+  gap: 4px;
   max-width: 100%;
 }
 .character-name-field {
@@ -4757,6 +4767,9 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   max-width: min(420px, 48vw);
   font-size: 1.32rem;
   line-height: 1.35;
+}
+#character-background {
+  width: min(100%, max(136px, calc(var(--identity-name-line-width, 210px) - 24px)));
 }
 .identity-width-sizer {
   position: fixed !important;
@@ -4775,7 +4788,9 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   padding: 0 0 8px;
 }
 #echo-choice-wrap .identity-separator {
-  margin-right: 0;
+  position: relative;
+  top: 6px;
+  margin-right: 3px;
   color: var(--text);
   font: 1.32rem/1.35 Georgia, "Times New Roman", serif;
 }
@@ -5070,6 +5085,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
     min-width: 0;
     max-width: 100%;
   }
+
+  #character-background { width: calc(100% - 24px); }
 
   #echo-choice-wrap {
     width: min(var(--echo-tag-width, 210px), 100%);
@@ -6919,7 +6936,9 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
 #echo-choice-wrap .identity-choice-trigger { min-height: 42px; padding: 5px 16px; font: 1.32rem/1.35 Georgia, "Times New Roman", serif; }
 #echo-choice-wrap.has-value .identity-choice-trigger { padding-inline: 17px 23px; border-color: transparent; color: var(--identity-echo-ink); background: transparent; font-weight: 650; }
 #echo-choice-wrap.has-value .identity-choice-trigger:hover, #echo-choice-wrap.has-value .identity-choice-trigger.is-open { background: rgba(255,255,255,.06); }
+#class-choice-wrap { gap: 11px; }
 #class-choice-wrap > .identity-choice-control { flex: 0 1 190px; }
+#class-choice-wrap .character-level-field { margin-left: 0; }
 #class-choice-wrap.has-value .identity-choice-trigger { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .52); color: var(--theme-accent-f2d88f, #f2d88f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); }
 .identity-options-menu { position: fixed; z-index: 1100; width: min(290px, calc(100vw - 24px)); max-height: min(385px, calc(100dvh - 24px)); overflow-y: auto; overscroll-behavior: contain; padding: 7px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .4); border-radius: 7px; color: var(--theme-text-eee8dc, #eee8dc); background: linear-gradient(155deg, var(--palette-containerRaised, #1b1d22), var(--palette-container, #0e1014)); box-shadow: 0 16px 42px rgba(0,0,0,.62), inset 0 1px rgba(255,255,255,.075); }
 .identity-options-menu[hidden] { display: none; }
@@ -7359,12 +7378,11 @@ h1, h2, h3, h4, h5, h6,
                     id="character-background"
                     type="text"
                     autocomplete="off"
-                    placeholder="Origem, ofício ou história"
+                    placeholder="Sua Origem"
                   />
                 </label>
 
                 <div id="class-choice-wrap" class="identity-choice-wrap is-class">
-                  <span class="identity-separator" aria-hidden="true">•</span>
                   <div class="identity-choice-control">
                     <select id="character-class" class="identity-choice-select identity-choice-native" tabindex="-1" aria-hidden="true">
                       <option value="">Escolher Classe</option>
@@ -12028,6 +12046,7 @@ const selectedFeaturesCount = document.querySelector("#selected-features-count")
 const selectedFeaturesEmpty = document.querySelector("#selected-features-empty");
 const selectedFeaturesList = document.querySelector("#selected-features-list");
 const characterNameInput = document.querySelector("#character-name");
+const identityFields = document.querySelector(".identity-fields");
 const characterNameSizer = document.querySelector("#character-name-sizer");
 const echoTagSizer = document.querySelector("#echo-tag-sizer");
 const characterEchoSelect = document.querySelector("#character-echo");
@@ -13056,6 +13075,7 @@ function updateCharacterIdentityWidths() {
   const nameWidth = Math.min(420, Math.max(160, Math.ceil(measuredNameWidth + 4)));
   const echoWidth = Math.min(360, Math.max(190, Math.ceil(measuredEchoWidth + 76)));
   characterNameInput.style.setProperty("--character-name-width", nameWidth + "px");
+  identityFields.style.setProperty("--identity-name-line-width", nameWidth + "px");
   characterNameInput.size = Math.min(40, Math.max(8, [...nameText].length + 1));
   echoChoiceWrap.style.setProperty("--echo-tag-width", echoWidth + "px");
 }
