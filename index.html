@@ -4687,10 +4687,10 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   position: absolute;
   z-index: -1;
   inset: -2px -4px 8px 12px;
-  border-radius: 12px 15px 13px 14px / 11px 13px 12px 14px;
+  border-radius: 5px 7px 6px 5px / 7px 5px 6px 6px;
   background: var(--identity-echo-color);
   transform: rotate(-0.7deg);
-  clip-path: polygon(4% 13%, 12% 9%, 22% 11%, 31% 7%, 43% 10%, 55% 6%, 68% 9%, 80% 7%, 92% 10%, 97% 17%, 95% 29%, 98% 42%, 96% 55%, 98% 69%, 95% 82%, 90% 91%, 77% 89%, 67% 94%, 52% 91%, 40% 95%, 27% 91%, 17% 94%, 7% 87%, 4% 76%, 6% 62%, 3% 49%, 5% 34%);
+  clip-path: polygon(3% 14%, 9% 8%, 17% 10%, 26% 6%, 38% 8%, 49% 4%, 61% 7%, 72% 5%, 83% 9%, 93% 7%, 98% 14%, 96% 26%, 99% 39%, 97% 51%, 99% 64%, 96% 75%, 98% 84%, 92% 92%, 80% 90%, 68% 96%, 55% 92%, 42% 96%, 29% 92%, 17% 95%, 7% 89%, 2% 80%, 4% 66%, 1% 56%, 3% 43%, 2% 29%);
   filter: blur(0.35px);
 }
 #echo-choice-wrap.has-value .identity-choice-select { color: var(--identity-echo-ink); background-color: transparent; border-color: transparent; border-width: 0; box-shadow: none; font-weight: 650; padding-inline: 12px 25px; }
@@ -4769,7 +4769,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   line-height: 1.35;
 }
 #character-background {
-  width: min(100%, max(136px, calc(var(--identity-name-line-width, 210px) - 24px)));
+  width: var(--character-background-width, 186px);
+  max-width: 100%;
 }
 .identity-width-sizer {
   position: fixed !important;
@@ -5086,7 +5087,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
     max-width: 100%;
   }
 
-  #character-background { width: calc(100% - 24px); }
+  #character-background { width: min(100%, max(calc(100% - 24px), var(--character-background-width, 186px))); }
 
   #echo-choice-wrap {
     width: min(var(--echo-tag-width, 210px), 100%);
@@ -7380,6 +7381,7 @@ h1, h2, h3, h4, h5, h6,
                     autocomplete="off"
                     placeholder="Sua Origem"
                   />
+                  <span id="character-background-sizer" class="identity-width-sizer" aria-hidden="true">Sua Origem</span>
                 </label>
 
                 <div id="class-choice-wrap" class="identity-choice-wrap is-class">
@@ -12046,8 +12048,9 @@ const selectedFeaturesCount = document.querySelector("#selected-features-count")
 const selectedFeaturesEmpty = document.querySelector("#selected-features-empty");
 const selectedFeaturesList = document.querySelector("#selected-features-list");
 const characterNameInput = document.querySelector("#character-name");
-const identityFields = document.querySelector(".identity-fields");
+const characterBackgroundInput = document.querySelector("#character-background");
 const characterNameSizer = document.querySelector("#character-name-sizer");
+const characterBackgroundSizer = document.querySelector("#character-background-sizer");
 const echoTagSizer = document.querySelector("#echo-tag-sizer");
 const characterEchoSelect = document.querySelector("#character-echo");
 const characterClassSelect = document.querySelector("#character-class");
@@ -13066,16 +13069,20 @@ function renderEchoPanel() {
 
 function updateCharacterIdentityWidths() {
   const nameText = characterNameInput.value || characterNameInput.placeholder || "Nome";
+  const backgroundText = characterBackgroundInput.value || characterBackgroundInput.placeholder || "Sua Origem";
   const selectedEcho = ECHOES[characterEchoSelect.value] || "Escolher Eco";
-  // Complete DOM writes before measuring either label to avoid repeated layout.
+  // Complete DOM writes before measuring the labels to avoid repeated layout.
   characterNameSizer.textContent = nameText;
+  characterBackgroundSizer.textContent = backgroundText;
   echoTagSizer.textContent = selectedEcho;
   const measuredNameWidth = characterNameSizer.getBoundingClientRect?.().width || nameText.length * 12;
+  const measuredBackgroundWidth = characterBackgroundSizer.getBoundingClientRect?.().width || backgroundText.length * 12;
   const measuredEchoWidth = echoTagSizer.getBoundingClientRect?.().width || selectedEcho.length * 12;
   const nameWidth = Math.min(420, Math.max(160, Math.ceil(measuredNameWidth + 4)));
+  const backgroundWidth = Math.min(560, Math.max(nameWidth - 24, Math.ceil(measuredBackgroundWidth + 16)));
   const echoWidth = Math.min(360, Math.max(190, Math.ceil(measuredEchoWidth + 76)));
   characterNameInput.style.setProperty("--character-name-width", nameWidth + "px");
-  identityFields.style.setProperty("--identity-name-line-width", nameWidth + "px");
+  characterBackgroundInput.style.setProperty("--character-background-width", backgroundWidth + "px");
   characterNameInput.size = Math.min(40, Math.max(8, [...nameText].length + 1));
   echoChoiceWrap.style.setProperty("--echo-tag-width", echoWidth + "px");
 }
@@ -18880,6 +18887,7 @@ document.querySelectorAll("#character-name, #character-background").forEach((inp
   input.addEventListener("change", () => notifySheetChanged("profile"));
 });
 characterNameInput.addEventListener("input", scheduleCharacterIdentityWidths);
+characterBackgroundInput.addEventListener("input", scheduleCharacterIdentityWidths);
 
 identityChoices.forEach((choice) => {
   choice.trigger.addEventListener("click", () => openIdentityOptions(choice));
