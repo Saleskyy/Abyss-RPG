@@ -7000,14 +7000,8 @@ h1, h2, h3, h4, h5, h6,
   font-family: var(--font-title) !important;
 }
 
-/* Hierarquia visual das estatísticas do painel Outros. */
-.combat-stat.is-defense { --combat-rgb: 219, 183, 106; }
-.combat-stat.is-evasion { --combat-rgb: 112, 197, 224; }
-.combat-stat.is-block { --combat-rgb: 174, 157, 220; }
-.combat-stat.is-initiative { --combat-rgb: 233, 166, 113; }
-.combat-stat.is-movement { --combat-rgb: 117, 205, 170; }
-.combat-stat.is-spell-dt { --combat-rgb: 185, 149, 231; }
-.combat-stat.is-ability-dt { --combat-rgb: 177, 215, 121; }
+/* Um único destaque do tema para todas as estatísticas do painel Outros. */
+.combat-panel { --combat-rgb: var(--theme-accent-cfad62-rgb, 207, 173, 98); }
 .combat-panel .combat-stat {
   border-color: rgba(var(--combat-rgb, 207, 173, 98), .22);
   box-shadow: inset 2px 0 0 rgba(var(--combat-rgb, 207, 173, 98), .52);
@@ -7042,8 +7036,36 @@ h1, h2, h3, h4, h5, h6,
   border-color: rgba(var(--combat-rgb, 207, 173, 98), .7);
   box-shadow: 0 0 0 2px rgba(var(--combat-rgb, 207, 173, 98), .1);
 }
+.combat-panel .combat-stat.is-evasion .combat-phrase select:disabled {
+  border-color: rgba(var(--combat-rgb, 207, 173, 98), .28);
+  color: var(--theme-text-e9e3d6, #e9e3d6);
+  background: rgba(var(--theme-surface-0b0c0f-rgb, 11, 12, 15), .86);
+}
+.combat-panel .movement-value-row [data-reset-movement] {
+  min-height: 34px;
+  margin-left: 0;
+  padding: 0 12px;
+  border: 1px solid rgba(var(--combat-rgb, 207, 173, 98), .4);
+  border-radius: 999px;
+  color: var(--accent-bright);
+  background: rgba(var(--combat-rgb, 207, 173, 98), .08);
+  font-size: .68rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: border-color .16s ease, background-color .16s ease, box-shadow .16s ease;
+}
+.combat-panel .movement-value-row [data-reset-movement]:hover,
+.combat-panel .movement-value-row [data-reset-movement]:focus-visible {
+  border-color: var(--accent-bright);
+  color: var(--accent-bright);
+  background: rgba(var(--combat-rgb, 207, 173, 98), .16);
+  box-shadow: 0 0 0 2px rgba(var(--combat-rgb, 207, 173, 98), .08);
+}
 @media (max-width: 600px) {
   .combat-panel .combat-phrase select { min-height: 38px; height: 38px; }
+  .combat-panel .movement-value-row [data-reset-movement] { min-height: 40px; }
 }
     </style>
   </head>
