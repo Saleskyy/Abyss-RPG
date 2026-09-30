@@ -774,6 +774,7 @@ body.modal-open { overflow: hidden; }
 .roll-dialog-head h2 { margin: 0 0 4px; font-size: 1.55rem; }
 .roll-dialog-head .eyebrow { margin-bottom: 5px; }
 .result-context { margin: 0; color: var(--muted); font-size: 0.78rem; }
+.result-context .special-line-icon { display: inline-block; width: 17px; height: 17px; margin-right: 7px; vertical-align: -3px; }
 
 .result-close {
   display: grid;
@@ -5558,6 +5559,9 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   font-weight: 760;
 }
 
+.creation-quick-roll-label { display: inline-flex; align-items: center; gap: 7px; }
+.creation-quick-roll-label > span { display: inline-flex; flex: 0 0 18px; }
+.creation-quick-roll-label svg { width: 18px; height: 18px; }
 .creation-quick-roll small {
   color: var(--theme-muted-8d877c, #8d877c);
   font: 650 0.61rem ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -6863,7 +6867,8 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
 .special-test-card > header { display: grid; grid-template-columns: 42px minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-bottom: 16px; }
 .special-test-card h3 { margin: 0; color: var(--theme-text-e9e3d6, #e9e3d6); font: 1.14rem Georgia, "Times New Roman", serif; }
 .special-test-card header p { margin: 4px 0 0; color: var(--theme-muted-858179, #858179); font-size: .64rem; line-height: 1.4; }
-.special-test-icon { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid rgba(var(--special-rgb), .34); border-radius: 50%; background: radial-gradient(circle, rgba(var(--special-rgb), .15), rgba(var(--special-rgb), .035)); box-shadow: 0 0 22px rgba(var(--special-rgb), .08); font-size: 1.1rem; }
+.special-test-icon { display: grid; width: 42px; height: 42px; place-items: center; border: 1px solid rgba(var(--special-rgb), .34); border-radius: 50%; color: var(--special-color); background: radial-gradient(circle, rgba(var(--special-rgb), .15), rgba(var(--special-rgb), .035)); box-shadow: 0 0 22px rgba(var(--special-rgb), .08); }
+.special-line-icon { display: block; width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; }
 .luck-controls { display: grid; grid-template-columns: 1fr auto 1fr; align-items: end; gap: 8px; }
 .luck-controls label, .primary-sense-control { display: grid; gap: 5px; color: var(--theme-muted-858179, #858179); font-size: .6rem; font-weight: 780; letter-spacing: .08em; text-transform: uppercase; }
 .luck-controls select, .primary-sense-control select, .sense-value-input { width: 100%; height: 38px; border: 1px solid var(--theme-border-313238, #313238); border-radius: 4px; color: var(--theme-text-d7d1c5, #d7d1c5); background: rgba(var(--theme-surface-060709-rgb, 6, 7, 9), .72); }
@@ -7934,7 +7939,15 @@ h1, h2, h3, h4, h5, h6,
           <div class="special-tests-grid">
             <article class="special-test-card" data-special-test="luck">
               <header>
-                <span class="special-test-icon" aria-hidden="true">🍀</span>
+                <span class="special-test-icon" aria-hidden="true">
+                  <svg class="special-line-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 12C10.4 10.9 7 8.2 7 5.7a2.7 2.7 0 0 1 5-1.4 2.7 2.7 0 0 1 5 1.4c0 2.5-3.4 5.2-5 6.3Z"></path>
+                    <path d="M12 12C10.4 10.9 7 8.2 7 5.7a2.7 2.7 0 0 1 5-1.4 2.7 2.7 0 0 1 5 1.4c0 2.5-3.4 5.2-5 6.3Z" transform="rotate(90 12 12)"></path>
+                    <path d="M12 12C10.4 10.9 7 8.2 7 5.7a2.7 2.7 0 0 1 5-1.4 2.7 2.7 0 0 1 5 1.4c0 2.5-3.4 5.2-5 6.3Z" transform="rotate(180 12 12)"></path>
+                    <path d="M12 12C10.4 10.9 7 8.2 7 5.7a2.7 2.7 0 0 1 5-1.4 2.7 2.7 0 0 1 5 1.4c0 2.5-3.4 5.2-5 6.3Z" transform="rotate(270 12 12)"></path>
+                    <path d="M15.5 17.5c1.2 1.3 2 2.7 2.3 4"></path>
+                  </svg>
+                </span>
                 <div><h3>Sorte</h3><p>Dado de Sorte − Dado de Azar</p></div>
                 <button id="roll-luck-test" class="roll-button special-roll-button" type="button" aria-label="Rolar Sorte" title="Rolar Sorte"><span data-static-die="20" data-die-empty aria-hidden="true"></span></button>
               </header>
@@ -7947,7 +7960,13 @@ h1, h2, h3, h4, h5, h6,
 
             <article class="special-test-card" data-special-test="wisdom">
               <header>
-                <span class="special-test-icon" aria-hidden="true">🧠</span>
+                <span class="special-test-icon" aria-hidden="true">
+                  <svg class="special-line-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M12 5.2C11.4 3.8 10.2 3 8.8 3A3.3 3.3 0 0 0 5.5 6.3v.3A3.7 3.7 0 0 0 4 13.4a3.5 3.5 0 0 0 2.3 3.3A3.3 3.3 0 0 0 9.5 21c1 0 1.9-.5 2.5-1.2"></path>
+                    <path d="M12 5.2C12.6 3.8 13.8 3 15.2 3a3.3 3.3 0 0 1 3.3 3.3v.3a3.7 3.7 0 0 1 1.5 6.8 3.5 3.5 0 0 1-2.3 3.3 3.3 3.3 0 0 1-3.2 4.3c-1 0-1.9-.5-2.5-1.2V5.2Z"></path>
+                    <path d="M8 8.2c1.3 0 2.3.9 2.3 2.1M16 8.2c-1.3 0-2.3.9-2.3 2.1M7.2 14c1.5-.4 2.8.3 3.3 1.6M16.8 14c-1.5-.4-2.8.3-3.3 1.6"></path>
+                  </svg>
+                </span>
                 <div><h3>Sabedoria</h3><p>20 + (INT × 15)</p></div>
                 <button id="roll-wisdom-test" class="roll-button special-roll-button" type="button" aria-label="Testar Sabedoria" title="Testar Sabedoria"><span data-static-die="20" data-die-empty aria-hidden="true"></span></button>
               </header>
@@ -7956,7 +7975,13 @@ h1, h2, h3, h4, h5, h6,
 
             <article class="special-test-card senses-card" data-special-test="senses">
               <header class="senses-card-head">
-                <span class="special-test-icon" aria-hidden="true">👁️</span>
+                <span class="special-test-icon" aria-hidden="true">
+                  <svg class="special-line-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                    <circle cx="12" cy="12" r=".6" fill="currentColor" stroke="none"></circle>
+                  </svg>
+                </span>
                 <div><h3>Sentidos</h3></div>
                 <label class="primary-sense-control"><span>Principal</span><select id="primary-sense"><option value="ver">Ver</option><option value="ouvir">Ouvir</option><option value="farejar">Farejar</option><option value="tatear">Tatear</option><option value="degustar">Degustar</option><option value="pressentir">Pressentir</option></select></label>
               </header>
@@ -12890,7 +12915,8 @@ function rollSenseTest(key, triggerButton) {
   const success = rolled <= value;
   showSpecialTestResult({
     title: SENSE_DEFINITIONS[key].name,
-    context: "👁️ Sentidos · 1d100",
+    context: "Sentidos · 1d100",
+    icon: "senses",
     outcome: success ? "Sucesso" : "Falha",
     outcomeDetail: `Resultado ${success ? "igual ou inferior" : "superior"} a ${value}`,
     outcomeKey: success ? "normal" : "failure",
@@ -15315,8 +15341,14 @@ function appendCreationQuickRolls(container, creation, scope, allowRolls = true)
     button.dataset.creationScope = scope;
     button.dataset.creationId = creation.id;
     button.setAttribute("aria-label", `Rolar ${roll.name} de ${creation.name}: ${roll.formula}`);
+    const rollLabel = document.createElement("span");
+    rollLabel.className = "creation-quick-roll-label";
+    const rollIcon = document.createElement("span");
+    rollIcon.setAttribute("aria-hidden", "true");
+    rollIcon.innerHTML = dieSvg(20, null);
+    rollLabel.append(rollIcon, document.createTextNode(roll.name));
     button.append(
-      Object.assign(document.createElement("span"), { textContent: `🎲 ${roll.name}` }),
+      rollLabel,
       Object.assign(document.createElement("small"), { textContent: roll.formula }),
     );
     rolls.append(button);
@@ -17734,6 +17766,7 @@ function addBreakdownLine(label, detail, value, signed = true) {
 function showSpecialTestResult({
   title,
   context,
+  icon = "",
   outcome,
   outcomeDetail,
   outcomeKey = "",
@@ -17748,7 +17781,14 @@ function showSpecialTestResult({
   activeRollButton = trigger;
   resultEyebrow.textContent = "Teste Especial";
   document.querySelector("#result-skill").textContent = title;
-  document.querySelector("#result-context").textContent = context;
+  const contextElement = document.querySelector("#result-context");
+  contextElement.textContent = context;
+  const sourceIcon = icon ? document.querySelector(`[data-special-test="${icon}"] .special-test-icon svg`) : null;
+  if (sourceIcon) {
+    const drawing = sourceIcon.cloneNode(true);
+    drawing.style.color = getComputedStyle(sourceIcon).color;
+    contextElement.prepend(drawing);
+  }
   resultOutcomeLabel.textContent = outcome;
   resultDifficultyLabel.textContent = outcomeDetail;
   document.querySelector("#result-total").textContent = String(total);
@@ -17795,7 +17835,10 @@ function rollSkill(skillIndex, triggerButton) {
   const attribute = attributeSelect.value;
   const attributeValue = getAttributeValue(attribute);
   const attributeRoll = rollAttributeDice(attributeValue);
-  const attributeResult = attributeRoll.total;
+  const attributeMagnitude = Math.abs(attributeRoll.total);
+  const attributePenalty = attributeValue <= 0 ? attributeMagnitude : 0;
+  const attributeBonus = attributeValue > 0 ? attributeMagnitude : 0;
+  const attributeResult = attributeBonus - attributePenalty;
   const attributeFormula = attributeRoll.formula;
   const attributeBreakdown = attributeRoll.breakdown;
   const parsedFixed = Number.parseInt(fixedInput.value, 10);
@@ -17806,7 +17849,7 @@ function rollSkill(skillIndex, triggerButton) {
   const extraResults = diceModifier.count ? rollDice(diceModifier.count, diceModifier.faces) : [];
   const extraTotal = sum(extraResults);
   const grantedModifiers = rollActiveCreationModifiers("skill", getSkillKey(skill));
-  const total = mainResult + attributeResult + extraTotal + fixedModifier + grantedModifiers.total;
+  const total = mainResult + attributeBonus - attributePenalty + extraTotal + fixedModifier + grantedModifiers.total;
   const difficulty = DIFFICULTIES[selectedDifficulty];
   const outcome = evaluateOutcome(training.die, mainResult, total, selectedDifficulty);
 
@@ -17815,7 +17858,7 @@ function rollSkill(skillIndex, triggerButton) {
   activeRollButton = triggerButton;
   resultEyebrow.textContent = "Teste de perícia";
   document.querySelector("#result-skill").textContent = skill.name;
-  document.querySelector("#result-context").textContent = `${training.label} · ${mainDiceCount}d${training.die} (melhor) ${attributeValue <= 0 ? "" : "+ "}${attributeFormula} de ${attribute}`;
+  document.querySelector("#result-context").textContent = `${training.label} · ${mainDiceCount}d${training.die} (melhor) ${attributeValue <= 0 ? "" : "+ "}${attributeFormula} de ${attribute} (${attributeValue})`;
   document.querySelector("#roll-status").textContent = `Rolando ${mainDiceCount}d${training.die}...`;
   resultOutcomeLabel.textContent = outcome.label;
   resultDifficultyLabel.textContent = `Zona ${difficulty.label}`;
@@ -17851,7 +17894,7 @@ function rollSkill(skillIndex, triggerButton) {
       ? `${training.label} · ${mainDiceCount}d${training.die} → ${mainResults.join(" · ")} · melhor`
       : `${training.label} · 1d${training.die}`;
     addBreakdownLine(mainDiceCount > 1 ? "Dados principais" : "Dado principal", mainDiceDetail, mainResult, false);
-    addBreakdownLine("Dado de Atributo", `${attribute} · ${ATTRIBUTES[attribute]} · ${attributeBreakdown}`, attributeResult, false);
+    addBreakdownLine("Dado de Atributo", `${attribute} · ${ATTRIBUTES[attribute]} · ${attributeBreakdown}${attributePenalty ? " · subtraído do total" : ""}`, attributeResult);
     if (extraResults.length) {
       addBreakdownLine("Dados extras", `${diceModifier.formula} → ${extraResults.join(" + ")}`, extraTotal);
     }
@@ -19160,7 +19203,8 @@ rollLuckTestButton.addEventListener("click", () => {
   playRollSound();
   showSpecialTestResult({
     title: "Sorte",
-    context: `🍀 d${luckFaces} − d${misfortuneFaces}`,
+    context: `d${luckFaces} − d${misfortuneFaces}`,
+    icon: "luck",
     outcome: state,
     outcomeDetail: "Dado de Sorte − Dado de Azar",
     outcomeKey: total > 0 ? "good" : total < 0 ? "failure" : "",
@@ -19179,7 +19223,8 @@ rollWisdomTestButton.addEventListener("click", () => {
   playRollSound();
   showSpecialTestResult({
     title: "Sabedoria",
-    context: "🧠 Teste Especial · 1d100",
+    context: "Teste Especial · 1d100",
+    icon: "wisdom",
     outcome: success ? "Sucesso" : "Falha",
     outcomeDetail: `Resultado ${success ? "igual ou inferior" : "superior"} a ${value}`,
     outcomeKey: success ? "normal" : "failure",
