@@ -7448,14 +7448,14 @@ h1, h2, h3, h4, h5, h6,
               <p class="eyebrow">Núcleo</p>
               <h2 id="attributes-title">Atributos</h2>
             </div>
-            <p>Cada valor define os Dados de Atributo somados ao teste: de 6 a 9, soma-se 1d12 ao dado extra; no 10, são 2d12.</p>
+            <p>Em 0, subtraia 1d4; cada ponto abaixo de 0 subtrai mais 1d4. De 6 a 9, soma-se 1d12 ao dado extra; no 10, são 2d12.</p>
           </div>
 
           <div class="attributes-row">
             <div class="attribute" title="Força">
               <span class="hex-shell">
                 <span class="attribute-code">FOR</span>
-                <input type="number" value="1" min="1" max="10" inputmode="numeric" data-attribute="FOR" aria-label="Valor de Força" />
+                <input type="number" value="1" min="-999999" max="10" step="1" inputmode="text" data-attribute="FOR" aria-label="Valor de Força" />
               </span>
               <span class="attribute-name">Força</span>
               <button class="attribute-die-button" type="button" data-roll-attribute="FOR" aria-label="Rolar Dado de Força">1d4</button>
@@ -7464,7 +7464,7 @@ h1, h2, h3, h4, h5, h6,
             <div class="attribute" title="Agilidade">
               <span class="hex-shell">
                 <span class="attribute-code">AGI</span>
-                <input type="number" value="1" min="1" max="10" inputmode="numeric" data-attribute="AGI" aria-label="Valor de Agilidade" />
+                <input type="number" value="1" min="-999999" max="10" step="1" inputmode="text" data-attribute="AGI" aria-label="Valor de Agilidade" />
               </span>
               <span class="attribute-name">Agilidade</span>
               <button class="attribute-die-button" type="button" data-roll-attribute="AGI" aria-label="Rolar Dado de Agilidade">1d4</button>
@@ -7473,7 +7473,7 @@ h1, h2, h3, h4, h5, h6,
             <div class="attribute" title="Intelecto">
               <span class="hex-shell">
                 <span class="attribute-code">INT</span>
-                <input type="number" value="1" min="1" max="10" inputmode="numeric" data-attribute="INT" aria-label="Valor de Intelecto" />
+                <input type="number" value="1" min="-999999" max="10" step="1" inputmode="text" data-attribute="INT" aria-label="Valor de Intelecto" />
               </span>
               <span class="attribute-name">Intelecto</span>
               <button class="attribute-die-button" type="button" data-roll-attribute="INT" aria-label="Rolar Dado de Intelecto">1d4</button>
@@ -7482,7 +7482,7 @@ h1, h2, h3, h4, h5, h6,
             <div class="attribute" title="Constituição">
               <span class="hex-shell">
                 <span class="attribute-code">CON</span>
-                <input type="number" value="1" min="1" max="10" inputmode="numeric" data-attribute="CON" aria-label="Valor de Constituição" />
+                <input type="number" value="1" min="-999999" max="10" step="1" inputmode="text" data-attribute="CON" aria-label="Valor de Constituição" />
               </span>
               <span class="attribute-name">Constituição</span>
               <button class="attribute-die-button" type="button" data-roll-attribute="CON" aria-label="Rolar Dado de Constituição">1d4</button>
@@ -7491,7 +7491,7 @@ h1, h2, h3, h4, h5, h6,
             <div class="attribute" title="Poder">
               <span class="hex-shell">
                 <span class="attribute-code">POD</span>
-                <input type="number" value="1" min="1" max="10" inputmode="numeric" data-attribute="POD" aria-label="Valor de Poder" />
+                <input type="number" value="1" min="-999999" max="10" step="1" inputmode="text" data-attribute="POD" aria-label="Valor de Poder" />
               </span>
               <span class="attribute-name">Poder</span>
               <button class="attribute-die-button" type="button" data-roll-attribute="POD" aria-label="Rolar Dado de Poder">1d4</button>
@@ -7834,13 +7834,13 @@ h1, h2, h3, h4, h5, h6,
           <div class="skills-panel-head">
             <div>
               <h2>Lista de perícias</h2>
-              <p>Role o melhor Dado de Treinamento, some o Dado de Atributo e os modificadores.</p>
+              <p>Role o melhor Dado de Treinamento, aplique o Dado de Atributo e os modificadores. Atributos em 0 ou abaixo subtraem dados.</p>
             </div>
             <div class="skills-panel-actions">
               <span id="training-cap-status" class="training-cap-status" aria-live="polite">Escolha uma Classe no Perfil</span>
               <div class="roll-formula" aria-label="Fórmula da rolagem">
                 <span>Melhor dado</span>
-                <b>+</b>
+                <b>±</b>
                 <span>Dado de Atributo</span>
                 <b>+</b>
                 <span>Modificadores</span>
@@ -11923,7 +11923,7 @@ function renderThemeFields() {
 
 const COMBAT_ZONES = new Set(["easy", "medium", "hard"]);
 const COMBAT_MARGINS = new Set(["partial", "normal", "good", "extreme"]);
-// Progressão do Dado de Atributo: valores 6–9 somam um segundo dado ao d12.
+// Progressão positiva; em 0 ou abaixo, subtraem-se (1 - valor)d4.
 const ATTRIBUTE_DICE = {
   1: [4],
   2: [6],
@@ -12717,20 +12717,60 @@ function clampInteger(value, minimum = 0, maximum = 999999, fallback = minimum) 
   return Number.isFinite(parsed) ? Math.min(maximum, Math.max(minimum, parsed)) : fallback;
 }
 
+function normalizeAttributeValue(value) {
+  return clampInteger(value, -999999, 10, 1);
+}
+
 function getAttributeValue(attribute) {
   const input = document.querySelector(`[data-attribute="${attribute}"]`);
-  return clampInteger(input?.value, 1, 10, 1);
+  return normalizeAttributeValue(input?.value);
 }
 
 function getAttributeDice(attributeOrValue) {
   const value = typeof attributeOrValue === "string" && ATTRIBUTES[attributeOrValue]
     ? getAttributeValue(attributeOrValue)
-    : clampInteger(attributeOrValue, 1, 10, 1);
-  return [...(ATTRIBUTE_DICE[value] || ATTRIBUTE_DICE[1])];
+    : normalizeAttributeValue(attributeOrValue);
+  if (value <= 0) return [{ count: 1 - value, faces: 4, sign: -1 }];
+  return ATTRIBUTE_DICE[value].map((faces) => ({ count: 1, faces, sign: 1 }));
+}
+
+function formatAttributeDice(dice, results) {
+  return dice.map(({ count, faces, sign }, index) => {
+    const prefix = sign < 0 ? "− " : index > 0 ? "+ " : "";
+    const detail = results ? ` → [${results[index]}]` : "";
+    return `${prefix}${count}d${faces}${detail}`;
+  }).join(" ");
 }
 
 function getAttributeDieFormula(attributeOrValue) {
-  return getAttributeDice(attributeOrValue).map((faces) => `1d${faces}`).join(" + ");
+  return formatAttributeDice(getAttributeDice(attributeOrValue));
+}
+
+function rollAttributeDice(attributeOrValue) {
+  const dice = getAttributeDice(attributeOrValue);
+  const results = dice.map(({ count, faces }) => {
+    if (count <= 20) {
+      const rolls = rollDice(count, faces);
+      return { total: sum(rolls), detail: rolls.join(", ") };
+    }
+    // Group large penalties by face instead of storing or displaying every die.
+    const frequencies = Array(faces).fill(0);
+    let total = 0;
+    for (let index = 0; index < count; index += 1) {
+      const value = Math.floor(Math.random() * faces) + 1;
+      frequencies[value - 1] += 1;
+      total += value;
+    }
+    const detail = frequencies.map((frequency, index) => frequency ? `${frequency}×${index + 1}` : "")
+      .filter(Boolean).join(", ");
+    return { total, detail };
+  });
+  const total = dice.reduce((subtotal, { sign }, index) => subtotal + results[index].total * sign, 0);
+  return {
+    total,
+    formula: formatAttributeDice(dice),
+    breakdown: formatAttributeDice(dice, results.map((result) => result.detail)),
+  };
 }
 
 function updateAttributeDice() {
@@ -12750,7 +12790,7 @@ function getReflexesTraining() {
 
 function updateDerivedCombatStats() {
   updateAttributeDice();
-  const blockBase = 3 + getAttributeValue("CON");
+  const blockBase = Math.max(0, 3 + getAttributeValue("CON"));
   blockBaseValue.textContent = `Base ${blockBase}`;
   if (!blockWasManuallySet) blockValueInput.value = String(blockBase);
 
@@ -12770,11 +12810,11 @@ function getWisdomValue() {
 }
 
 function getPrimarySenseValue() {
-  return 20 + getAttributeValue("POD") * 15;
+  return Math.max(0, 20 + getAttributeValue("POD") * 15);
 }
 
 function rollSecondarySenseValue() {
-  return 10 + getAttributeValue("POD") * 10 + rollDice(1, 20)[0];
+  return Math.max(0, 10 + getAttributeValue("POD") * 10 + rollDice(1, 20)[0]);
 }
 
 function renderSpecialTests() {
@@ -13503,10 +13543,7 @@ function auditTrainingLimit() {
 function captureCompleteSheetState() {
   const attributes = {};
   document.querySelectorAll("[data-attribute]").forEach((input) => {
-    const parsed = Number.parseInt(input.value, 10);
-    attributes[input.dataset.attribute] = Number.isFinite(parsed)
-      ? Math.min(10, Math.max(1, parsed))
-      : 1;
+    attributes[input.dataset.attribute] = normalizeAttributeValue(input.value);
   });
 
   const skillRows = {};
@@ -13842,8 +13879,7 @@ function applyCompleteSheetState(rawState, options = {}) {
     characterClassSelect.value = CHARACTER_CLASSES[profile.classKey] ? profile.classKey : "";
     characterLevelInput.value = String(clampInteger(profile.level, 1, 15, 1));
     document.querySelectorAll("[data-attribute]").forEach((input) => {
-      const parsed = Number.parseInt(profile.attributes?.[input.dataset.attribute], 10);
-      input.value = String(Number.isFinite(parsed) ? Math.min(10, Math.max(1, parsed)) : 1);
+      input.value = String(normalizeAttributeValue(profile.attributes?.[input.dataset.attribute]));
     });
 
     const storedResources = profile.resources && typeof profile.resources === "object"
@@ -15051,7 +15087,7 @@ function adjustDirectModifierTarget(modifier, direction) {
   }
   if (modifier.type === "attribute") {
     const input = document.querySelector(`[data-attribute="${modifier.target}"]`);
-    if (input) input.value = String(clampInteger(clampInteger(input.value, 1, 10, 1) + delta, 1, 10, 1));
+    if (input) input.value = String(normalizeAttributeValue(normalizeAttributeValue(input.value) + delta));
     return;
   }
 }
@@ -17758,13 +17794,10 @@ function rollSkill(skillIndex, triggerButton) {
   const training = TRAINING[trainingSelect.value];
   const attribute = attributeSelect.value;
   const attributeValue = getAttributeValue(attribute);
-  const attributeDice = getAttributeDice(attributeValue);
-  const attributeResults = attributeDice.map((faces) => rollDice(1, faces)[0]);
-  const attributeResult = sum(attributeResults);
-  const attributeFormula = attributeDice.map((faces) => `1d${faces}`).join(" + ");
-  const attributeBreakdown = attributeDice
-    .map((faces, index) => `1d${faces} → ${attributeResults[index]}`)
-    .join(" + ");
+  const attributeRoll = rollAttributeDice(attributeValue);
+  const attributeResult = attributeRoll.total;
+  const attributeFormula = attributeRoll.formula;
+  const attributeBreakdown = attributeRoll.breakdown;
   const parsedFixed = Number.parseInt(fixedInput.value, 10);
   const fixedModifier = Number.isFinite(parsedFixed) ? parsedFixed : 0;
   const mainDiceCount = normalizeMainDiceCount(mainDiceInput);
@@ -17782,7 +17815,7 @@ function rollSkill(skillIndex, triggerButton) {
   activeRollButton = triggerButton;
   resultEyebrow.textContent = "Teste de perícia";
   document.querySelector("#result-skill").textContent = skill.name;
-  document.querySelector("#result-context").textContent = `${training.label} · ${mainDiceCount}d${training.die} (melhor) + ${attributeFormula} de ${attribute}`;
+  document.querySelector("#result-context").textContent = `${training.label} · ${mainDiceCount}d${training.die} (melhor) ${attributeValue <= 0 ? "" : "+ "}${attributeFormula} de ${attribute}`;
   document.querySelector("#roll-status").textContent = `Rolando ${mainDiceCount}d${training.die}...`;
   resultOutcomeLabel.textContent = outcome.label;
   resultDifficultyLabel.textContent = `Zona ${difficulty.label}`;
@@ -18955,7 +18988,7 @@ document.querySelectorAll("[data-attribute]").forEach((input) => {
     notifySheetChanged("profile");
   });
   input.addEventListener("change", () => {
-    input.value = String(clampInteger(input.value, 1, 10, 1));
+    input.value = String(normalizeAttributeValue(input.value));
     applyClassCalculations();
     if (input.dataset.attribute === "INT") auditTrainingLimit();
     notifySheetChanged("profile");
@@ -18965,10 +18998,7 @@ document.querySelectorAll("[data-attribute]").forEach((input) => {
 document.querySelectorAll("[data-roll-attribute]").forEach((button) => {
   button.addEventListener("click", () => {
     const attribute = button.dataset.rollAttribute;
-    const dice = getAttributeDice(attribute);
-    const results = dice.map((faces) => rollDice(1, faces)[0]);
-    const result = sum(results);
-    const breakdown = dice.map((faces, index) => `1d${faces} → ${results[index]}`).join(" + ");
+    const { total: result, breakdown } = rollAttributeDice(attribute);
     playRollSound();
     showAbyssAlert({
       eyebrow: `Dado de Atributo · ${attribute}`,
@@ -19490,6 +19520,7 @@ if (document.fonts?.ready) {
 window.AbyssSheet = Object.freeze({
   captureState: captureCompleteSheetState,
   applyState: applyCompleteSheetState,
+  normalizeAttributeValue,
   serializeAbility: serializeAbilityForCloud,
   serializeItem: serializeInventoryItemForCloud,
   persistLocalNow: writeLocalSheetCache,
@@ -22126,8 +22157,7 @@ function describeFirebaseError(error) {
 }
 
 function finiteAttributeValue(value) {
-  const parsed = Number.parseInt(value, 10);
-  return Number.isFinite(parsed) ? Math.min(10, Math.max(1, parsed)) : 1;
+  return sheetBridge.normalizeAttributeValue(value);
 }
 
 let portraitCompressionCache = null;
