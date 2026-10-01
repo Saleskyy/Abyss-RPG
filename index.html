@@ -2567,19 +2567,6 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .account-sync-card strong { display: block; color: var(--theme-muted-cfc7b7, #cfc7b7); font-size: 0.77rem; }
 .account-sync-card p { margin: 3px 0 0; color: var(--theme-muted-74736e, #74736e); font-size: 0.7rem; line-height: 1.45; }
 
-.firebase-setup-hint {
-  margin: 13px 19px 0;
-  padding: 13px 14px;
-  border-left: 2px solid var(--theme-accent-c5a052, #c5a052);
-  color: var(--theme-muted-9c9587, #9c9587);
-  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.055);
-  font-size: 0.72rem;
-  line-height: 1.55;
-}
-
-.firebase-setup-hint strong { color: var(--theme-accent-dac584, #dac584); }
-.firebase-setup-hint code { color: var(--theme-accent-e8d59e, #e8d59e); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
-
 .account-menu-actions {
   display: flex;
   flex-wrap: wrap;
@@ -6738,8 +6725,6 @@ body.campaign-mode > :is(.skip-link, .topbar, .sidebar, .main-content) { display
 .campaign-banner-preview.has-image span { display: none; }
 .campaign-form-actions { display: flex; justify-content: flex-end; gap: 8px; padding-top: 4px; }
 .campaign-form-error { margin: 0; color: #e98b95; font-size: .67rem; line-height: 1.5; }
-.campaign-permission-help { justify-self: start; min-height: 34px; padding: 0 11px; border: 1px solid rgba(211,72,85,.34); border-radius: 3px; color: #efabb2; background: rgba(133,35,45,.1); cursor: pointer; font-size: .62rem; font-weight: 800; }
-.campaign-permission-help:hover { border-color: rgba(239,150,159,.62); background: rgba(133,35,45,.18); }
 .campaign-code-input { text-align: center; font: 800 1.15rem ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .2em; text-transform: uppercase; }
 .campaign-slot-list { display: grid; gap: 7px; max-height: 360px; overflow: auto; }
 .campaign-slot-choice { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 4px; cursor: pointer; background: rgba(255,255,255,.018); }
@@ -6747,8 +6732,6 @@ body.campaign-mode > :is(.skip-link, .topbar, .sidebar, .main-content) { display
 .campaign-slot-choice input { accent-color: var(--theme-accent-dfc77f, #dfc77f); }
 .campaign-slot-choice strong { display: block; color: var(--theme-text-ece6d8, #ece6d8); font-size: .76rem; }
 .campaign-slot-choice small { display: block; margin-top: 3px; color: var(--theme-muted-77736c, #77736c); font-size: .58rem; }
-.campaign-rules-copy { padding: 20px 22px 23px; }
-.campaign-rules-copy pre { max-height: 55dvh; margin: 0 0 12px; overflow: auto; border: 1px solid var(--theme-border-292a30, #292a30); border-radius: 4px; color: #c8c3b8; background: #08090b; padding: 15px; font: .65rem/1.55 ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre; }
 
 /* Recorte do Banner da Campanha. */
 .campaign-banner-crop-dialog { width: min(940px, 100%); }
@@ -7131,9 +7114,9 @@ h1, h2, h3, h4, h5, h6,
     </style>
     <style id="roll-settings-styles">
 .skills-heading { flex-wrap: wrap; gap: 16px 24px; }
-#open-roll-history, #account-settings-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+#open-roll-history, #account-settings-button, #account-sync-now { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
 #open-roll-history { flex: 0 0 auto; min-height: 38px; margin-left: auto; }
-#open-roll-history svg, #account-settings-button svg { display: block; flex: 0 0 17px; width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+#open-roll-history svg, #account-settings-button svg, #account-sync-now svg { display: block; flex: 0 0 17px; width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 #account-settings-modal, #roll-history-modal { z-index: 154; }
 #account-settings-dialog { width: min(760px, 100%); }
 #roll-history-dialog { width: min(820px, 100%); }
@@ -7161,6 +7144,10 @@ h1, h2, h3, h4, h5, h6,
 .settings-sound-copy { min-width: 0; }
 .settings-sound-copy strong { display: block; color: var(--theme-text-e2dbce, #e2dbce); font-size: .78rem; }
 .settings-sound-copy output { display: block; max-width: 100%; overflow-wrap: anywhere; margin-top: 4px; color: var(--theme-muted-858179, #858179); font-size: .68rem; }
+.settings-sound-feedback { grid-column: 1 / -1; margin: 0; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .71rem; line-height: 1.6; overflow-wrap: anywhere; }
+.settings-sound-feedback[data-state="selected"], .settings-sound-feedback[data-state="uploading"] { color: var(--theme-accent-dfca86, #dfca86); }
+.settings-sound-feedback[data-state="saved"] { color: #82d2a0; }
+.settings-sound-feedback[data-state="error"] { color: #ef8c98; }
 .settings-sound-row[data-outcome="extreme"] { border-left: 2px solid #72c990; }
 .settings-sound-row[data-outcome="failure"] { border-left: 2px solid #d7ad68; }
 .settings-sound-row[data-outcome="criticalFailure"] { border-left: 2px solid #d57785; }
@@ -7261,7 +7248,7 @@ h1, h2, h3, h4, h5, h6,
           <img id="account-avatar" class="account-avatar" alt="" referrerpolicy="no-referrer" hidden />
           <span class="account-button-copy">
             <strong id="account-label">Conta</strong>
-            <small><i class="account-status-dot" aria-hidden="true"></i><span id="account-status">Carregando Firebase…</span></small>
+            <small><i class="account-status-dot" aria-hidden="true"></i><span id="account-status">Carregando conta…</span></small>
           </span>
           <svg class="account-chevron" viewBox="0 0 24 24" aria-hidden="true">
             <path d="m7 10 5 5 5-5"></path>
@@ -7293,7 +7280,7 @@ h1, h2, h3, h4, h5, h6,
             <i class="account-status-dot" aria-hidden="true"></i>
             <div>
               <strong id="account-sync-title">Preparando salvamento</strong>
-              <p id="account-sync-message" aria-live="polite">Aguardando o Firebase para abrir os Slots da sua conta.</p>
+              <p id="account-sync-message" aria-live="polite">Aguardando a conexão para abrir os Slots da sua conta.</p>
             </div>
           </div>
 
@@ -7302,18 +7289,16 @@ h1, h2, h3, h4, h5, h6,
             <strong id="account-slot-name">Nenhum Slot</strong>
           </div>
 
-          <div id="firebase-setup-hint" class="firebase-setup-hint" hidden>
-            <strong>Falta conectar o seu projeto.</strong><br />
-            Procure por <code>FIREBASE_CONFIG</code> no fim deste index e substitua os valores marcados por aqueles do seu aplicativo Web no Firebase.
-          </div>
-
           <footer class="account-menu-actions">
             <button id="account-settings-button" class="account-action is-primary" type="button" aria-haspopup="dialog" aria-controls="account-settings-modal" hidden>
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 3-.7 2.7-2.4 1.4-2.7-.7-2.5 4.3 2 2-.1 2.7-1.9 2 2.5 4.3 2.7-.7 2.4 1.4.7 2.6h5l.7-2.6 2.4-1.4 2.7.7 2.5-4.3-2-2 .1-2.7 1.9-2-2.5-4.3-2.7.7-2.4-1.4L14.5 3Z" transform="translate(2 -2) scale(.85)"></path><circle cx="12" cy="12" r="3.4"></circle></svg>
-              Configurações
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.67 4.14a2.34 2.34 0 0 1 4.66 0 2.34 2.34 0 0 0 3.32 1.91 2.34 2.34 0 0 1 2.33 4.04 2.34 2.34 0 0 0 0 3.82 2.34 2.34 0 0 1-2.33 4.04 2.34 2.34 0 0 0-3.32 1.91 2.34 2.34 0 0 1-4.66 0 2.34 2.34 0 0 0-3.32-1.91 2.34 2.34 0 0 1-2.33-4.04 2.34 2.34 0 0 0 0-3.82 2.34 2.34 0 0 1 2.33-4.04 2.34 2.34 0 0 0 3.32-1.91Z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <span>Configurações</span>
             </button>
             <button id="account-login" class="account-action is-primary" type="button" hidden>Entrar com Google</button>
-            <button id="account-sync-now" class="account-action is-primary" type="button" hidden>Sincronizar agora</button>
+            <button id="account-sync-now" class="account-action is-primary" type="button" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 3v5h-5M3 21v-5h5"></path><path d="M3 12a9 9 0 0 1 15.36-6.36L21 8M21 12a9 9 0 0 1-15.36 6.36L3 16"></path></svg>
+              <span>Sincronizar agora</span>
+            </button>
             <button id="account-export-sheet" class="account-action" type="button" hidden>Exportar ficha</button>
             <button id="account-import-sheet" class="account-action" type="button" hidden>Importar ficha</button>
             <button id="account-reset-sheet" class="account-action is-danger" type="button" hidden>Resetar ficha</button>
@@ -8414,9 +8399,6 @@ h1, h2, h3, h4, h5, h6,
             <img id="campaign-user-avatar" alt="" referrerpolicy="no-referrer" hidden />
             <span id="campaign-user-name">Conta Google</span>
           </div>
-          <button id="campaign-rules-button" class="campaign-icon-button" type="button" aria-label="Configuração do Firebase" title="Configuração do Firebase">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15.3a3.3 3.3 0 1 0 0-6.6 3.3 3.3 0 0 0 0 6.6Z"></path><path d="m19 13.3 1.4 1.1-2 3.5-1.8-.7a7.8 7.8 0 0 1-2.3 1.3L14 20.5h-4l-.3-2a7.8 7.8 0 0 1-2.3-1.3l-1.8.7-2-3.5L5 13.3a7.8 7.8 0 0 1 0-2.6L3.6 9.6l2-3.5 1.8.7a7.8 7.8 0 0 1 2.3-1.3l.3-2h4l.3 2a7.8 7.8 0 0 1 2.3 1.3l1.8-.7 2 3.5-1.4 1.1a7.8 7.8 0 0 1 0 2.6Z"></path></svg>
-          </button>
           <button id="campaign-exit" class="campaign-exit-button" type="button">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
             <span>Voltar à ficha</span>
@@ -8586,9 +8568,7 @@ h1, h2, h3, h4, h5, h6,
               <label class="campaign-field"><span>Arquivo do Banner <small>(opcional)</small></span><input id="campaign-banner-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /><small class="ability-field-help">Ao escolher uma imagem, você poderá arrastar, centralizar e ajustar o zoom.</small></label>
               <div class="campaign-field"><span>Prévia</span><div id="campaign-banner-preview" class="campaign-banner-preview"><span>Banner da Campanha</span></div></div>
             </div>
-            <p id="campaign-editor-error" class="campaign-form-error" role="alert" hidden></p>
-            <button id="campaign-editor-rules-link" class="campaign-permission-help" type="button" hidden>Abrir regras do Firestore</button>
-            <div class="campaign-form-actions">
+            <p id="campaign-editor-error" class="campaign-form-error" role="alert" hidden></p>            <div class="campaign-form-actions">
               <button class="campaign-ghost-button" type="button" data-close-campaign-editor>Cancelar</button>
               <button id="campaign-editor-submit" class="campaign-primary-button" type="submit">Criar Campanha</button>
             </div>
@@ -8667,23 +8647,7 @@ h1, h2, h3, h4, h5, h6,
         </section>
       </div>
 
-      <div id="campaign-rules-modal" class="campaign-modal" hidden>
-        <button class="campaign-modal-backdrop" type="button" data-close-campaign-rules aria-label="Fechar"></button>
-        <section id="campaign-rules-dialog" class="campaign-dialog is-wide" role="dialog" aria-modal="true" aria-labelledby="campaign-rules-title" tabindex="-1">
-          <header class="campaign-dialog-head">
-            <div><p class="eyebrow">Firebase</p><h2 id="campaign-rules-title">Regras do Firestore</h2><p>Substitua o conteúdo atual por estas regras completas e publique para liberar Campanhas.</p></div>
-            <button class="campaign-dialog-close" type="button" data-close-campaign-rules aria-label="Fechar">×</button>
-          </header>
-          <div class="campaign-rules-copy">
-            <pre id="campaign-rules-code"></pre>
-            <div class="campaign-form-actions">
-              <button class="campaign-ghost-button" type="button" data-close-campaign-rules>Fechar</button>
-              <a class="campaign-ghost-button" href="https://console.firebase.google.com/project/abyssrpg/firestore/rules" target="_blank" rel="noreferrer">Abrir Firebase</a>
-              <button id="campaign-copy-rules" class="campaign-primary-button" type="button">Copiar regras</button>
-            </div>
-          </div>
-        </section>
-      </div>
+
     </section>
 
     <div id="startup-slot-gate" class="slot-gate" role="dialog" aria-modal="true" aria-labelledby="startup-slot-title" aria-busy="true">
@@ -9444,8 +9408,7 @@ h1, h2, h3, h4, h5, h6,
                   Remover mídia
                 </button>
                 <p id="ability-file-name" class="ability-file-name">
-                  PNG, JPG, WEBP ou GIF · até 8 MB. O arquivo será salvo com a conta, sem
-                  Firebase Storage.
+                  PNG, JPG, WEBP ou GIF · até 8 MB. O arquivo será salvo com a conta.
                 </p>
               </div>
             </section>
@@ -9923,31 +9886,34 @@ h1, h2, h3, h4, h5, h6,
             </section>
             <section class="settings-section" aria-labelledby="settings-sounds-title">
               <h3 id="settings-sounds-title">Sons das suas rolagens</h3>
-              <p class="settings-section-copy">Escolha um áudio para cada resultado. Os participantes da mesma Campanha podem ouvi-lo nas suas rolagens públicas.</p>
+              <p class="settings-section-copy">Escolha um áudio para cada resultado. MP3, WAV, OGG, WebM ou M4A · até 2 MB. Depois clique em “Salvar configurações”. Os participantes da mesma Campanha podem ouvi-lo nas suas rolagens públicas.</p>
               <div class="settings-sound-list">
                 <div class="settings-sound-row" data-outcome="extreme">
                   <div class="settings-sound-copy"><strong>Sucesso Extremo</strong><output id="settings-sound-name-extreme">Som padrão</output></div>
                   <div class="settings-sound-actions">
-                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-extreme" type="file" accept="audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Sucesso Extremo" /></label>
+                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-extreme" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Sucesso Extremo" aria-describedby="settings-sound-status-extreme" /></label>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="extreme"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="extreme">Padrão</button>
                   </div>
+                  <p id="settings-sound-status-extreme" class="settings-sound-feedback" data-state="default" role="status" aria-live="polite" aria-atomic="true">Som padrão ativo.</p>
                 </div>
                 <div class="settings-sound-row" data-outcome="failure">
                   <div class="settings-sound-copy"><strong>Falha</strong><output id="settings-sound-name-failure">Som padrão</output></div>
                   <div class="settings-sound-actions">
-                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-failure" type="file" accept="audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha" /></label>
+                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-failure" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha" aria-describedby="settings-sound-status-failure" /></label>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="failure"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="failure">Padrão</button>
                   </div>
+                  <p id="settings-sound-status-failure" class="settings-sound-feedback" data-state="default" role="status" aria-live="polite" aria-atomic="true">Som padrão ativo.</p>
                 </div>
                 <div class="settings-sound-row" data-outcome="criticalFailure">
                   <div class="settings-sound-copy"><strong>Falha Crítica</strong><output id="settings-sound-name-critical-failure">Som padrão</output></div>
                   <div class="settings-sound-actions">
-                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-critical-failure" type="file" accept="audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha Crítica" /></label>
+                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-critical-failure" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha Crítica" aria-describedby="settings-sound-status-critical-failure" /></label>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="criticalFailure"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="criticalFailure">Padrão</button>
                   </div>
+                  <p id="settings-sound-status-critical-failure" class="settings-sound-feedback" data-state="default" role="status" aria-live="polite" aria-atomic="true">Som padrão ativo.</p>
                 </div>
               </div>
               <label class="settings-volume"><span class="settings-volume-label">Volume das suas rolagens</span><input id="settings-own-volume" type="range" min="0" max="100" step="1" value="70" aria-describedby="settings-own-volume-value" /><output id="settings-own-volume-value" for="settings-own-volume">70%</output></label>
@@ -11321,6 +11287,14 @@ const COMPETENCY_TREES = {
 const ROLL_SOUND_BASE64 = "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VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kGRBD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kGRBD/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uQZEEP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVMQU1FMy4xMDBVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX/+5JkQI/wAABpAAAACAAADSAAAAEAAAGkAAAAIAAANIAAAARVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVTEFNRTMuMTAwVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV//uSZECP8AAAaQAAAAgAAA0gAAABAAABpAAAACAAADSAAAAEVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/7kmRAj/AAAGkAAAAIAAANIAAAAQAAAaQAAAAgAAA0gAAABFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVU=";
 
 let rollSound = null;
+
+function userFacingErrorMessage(error) {
+  const message = typeof error?.message === "string" ? error.message.trim() : "";
+  const code = String(error?.code || "");
+  if (error?.name === "FirebaseError" || /^(?:auth|firestore)\//i.test(code)
+    || /firebase|firestore|missing or insufficient permissions/i.test(message)) return "";
+  return message;
+}
 
 function playRollSound() {
   if (!rollSound) {
@@ -12815,7 +12789,7 @@ function warnNoteCapacity(trigger) {
   showAbyssAlert({
     eyebrow: "Caderno do personagem",
     title: "Limite de imagens e texto atingido",
-    message: "Este Slot atingiu o espaço disponível para notas no Firestore. Reduza o tamanho das imagens, use um link para a imagem ou exclua parte do conteúdo.",
+    message: "Este Slot atingiu o espaço disponível para notas. Reduza o tamanho das imagens, use um link para a imagem ou exclua parte do conteúdo.",
     tone: "warning",
     trigger,
   });
@@ -12952,7 +12926,7 @@ async function insertNoteFile(card, file) {
     image.alt = String(file.name || "Imagem da nota").slice(0, 120);
     insertNodeIntoNote(card, image);
   } catch (error) {
-    showAbyssAlert({ eyebrow: "Imagem da nota", title: "Não foi possível inserir", message: error.message, tone: "warning", trigger: card.querySelector('[data-note-action="image-file"]') });
+    showAbyssAlert({ eyebrow: "Imagem da nota", title: "Não foi possível inserir", message: userFacingErrorMessage(error) || "Não foi possível inserir a imagem.", tone: "warning", trigger: card.querySelector('[data-note-action="image-file"]') });
   }
 }
 
@@ -14792,7 +14766,7 @@ function submitCustomSkill(event) {
     }
     notifySheetChanged("custom-skill-created");
   } catch (error) {
-    setBuilderError(error?.message || "Não foi possível criar a Perícia. Revise os campos.", error?.field);
+    setBuilderError(userFacingErrorMessage(error) || "Não foi possível criar a Perícia. Revise os campos.", error?.field);
   }
 }
 
@@ -16063,7 +16037,7 @@ function openAbilityEditor(scope, ability = null, trigger = null) {
   abilityEditorForm.dataset.sourceId = ability?.sourceId || "";
   abilityEditorForm.dataset.mediaCleared = "false";
   abilityFileName.textContent =
-    "PNG, JPG, WEBP ou GIF · até 8 MB. O arquivo será salvo com a conta, sem Firebase Storage.";
+    "PNG, JPG, WEBP ou GIF · até 8 MB. O arquivo será salvo com a conta.";
   setAbilityEditorError("");
   renderAbilityMediaPreview(ability?.mediaUrl || "");
   abilityEditorEyebrow.textContent =
@@ -16268,7 +16242,7 @@ async function submitAbilityEditor(event) {
       ? window.AbyssCloud?.describeError?.(error)
       : "";
     setAbilityEditorError(
-      friendlyCloudError || error?.message || "Não foi possível salvar a Habilidade.",
+      friendlyCloudError || userFacingErrorMessage(error) || "Não foi possível salvar a Habilidade.",
     );
   } finally {
     saveAbilityButton.disabled = false;
@@ -16474,7 +16448,7 @@ async function submitItemEditor(event) {
       selectMinervaSection("inventory");
       closeItemEditor();
     } catch (error) {
-      setItemEditorError(error?.message || "Não foi possível publicar este Item.");
+      setItemEditorError(userFacingErrorMessage(error) || "Não foi possível publicar este Item.");
     } finally {
       saveItemButton.disabled = false;
       saveItemButton.textContent = existing ? "Salvar Alterações" : "Publicar Item";
@@ -17274,7 +17248,7 @@ function selectMinervaSection(sectionKey) {
 
 async function refreshGrimoireFromCloud() {
   if (!window.AbyssCloud?.loadGrimoire) {
-    throw new Error("O Firebase ainda não terminou de carregar.");
+    throw new Error("A conexão ainda não terminou de carregar.");
   }
 
   const loaded = await window.AbyssCloud.loadGrimoire();
@@ -17302,7 +17276,7 @@ async function openGrimoirePicker() {
   } catch {
     grimoirePickerList.replaceChildren();
     grimoirePickerEmpty.textContent =
-      "Não foi possível abrir o Grimório. Confira as regras do Firestore e tente novamente.";
+      "Não foi possível abrir o Grimório. Verifique sua conexão e tente novamente.";
     grimoirePickerEmpty.hidden = false;
   } finally {
     grimoirePickerList.removeAttribute("aria-busy");
@@ -17350,7 +17324,7 @@ async function openMinervaGrimoire() {
   } catch {
     minervaList.replaceChildren();
     minervaEmpty.textContent =
-      "Não foi possível abrir o Grimório. Confira as regras do Firestore e tente novamente.";
+      "Não foi possível abrir o Grimório. Verifique sua conexão e tente novamente.";
     minervaEmpty.hidden = false;
   } finally {
     minervaList.removeAttribute("aria-busy");
@@ -18428,7 +18402,7 @@ viewButtons.forEach((button) => {
         shopCount.textContent = "0 produtos";
         shopEmpty.hidden = false;
         shopEmpty.querySelector("strong").textContent = "Não foi possível carregar a Loja";
-        shopEmpty.querySelector("p").textContent = "Confira sua conexão e as regras do Firestore.";
+        shopEmpty.querySelector("p").textContent = "Verifique sua conexão e tente novamente.";
       } finally {
         shopList.removeAttribute("aria-busy");
       }
@@ -18994,7 +18968,7 @@ minervaList.addEventListener("click", async (event) => {
       await showAbyssAlert({
         eyebrow: "Loja de Minerva",
         title: "Exclusão não concluída",
-        message: error?.message || "Não foi possível excluir o produto.",
+        message: userFacingErrorMessage(error) || "Não foi possível excluir o produto.",
         tone: "danger",
         trigger: removeItem,
       });
@@ -19042,7 +19016,7 @@ minervaList.addEventListener("click", async (event) => {
     await showAbyssAlert({
       eyebrow: "Grimório de Minerva",
       title: "Exclusão não concluída",
-      message: error?.message || "Não foi possível excluir a Habilidade do Grimório.",
+      message: userFacingErrorMessage(error) || "Não foi possível excluir a Habilidade do Grimório.",
       tone: "danger",
       trigger: remove,
     });
@@ -19888,7 +19862,6 @@ const firebaseUi = {
   syncCard: document.querySelector("#account-sync-card"),
   syncTitle: document.querySelector("#account-sync-title"),
   syncMessage: document.querySelector("#account-sync-message"),
-  setupHint: document.querySelector("#firebase-setup-hint"),
   login: document.querySelector("#account-login"),
   syncNow: document.querySelector("#account-sync-now"),
   exportSheet: document.querySelector("#account-export-sheet"),
@@ -20007,7 +19980,6 @@ const campaignUi = {
   editorTitle: document.querySelector("#campaign-editor-title"),
   editorSubmit: document.querySelector("#campaign-editor-submit"),
   editorError: document.querySelector("#campaign-editor-error"),
-  editorRulesLink: document.querySelector("#campaign-editor-rules-link"),
   name: document.querySelector("#campaign-name"),
   synopsis: document.querySelector("#campaign-synopsis"),
   bannerUrl: document.querySelector("#campaign-banner-url"),
@@ -20036,11 +20008,6 @@ const campaignUi = {
   slotPrivate: document.querySelector("#campaign-slot-private"),
   slotError: document.querySelector("#campaign-slot-error"),
   slotSubmit: document.querySelector("#campaign-slot-submit"),
-  rulesButton: document.querySelector("#campaign-rules-button"),
-  rulesModal: document.querySelector("#campaign-rules-modal"),
-  rulesDialog: document.querySelector("#campaign-rules-dialog"),
-  rulesCode: document.querySelector("#campaign-rules-code"),
-  copyRules: document.querySelector("#campaign-copy-rules"),
   sheetSessionBar: document.querySelector("#campaign-sheet-session-bar"),
   sheetSessionTitle: document.querySelector("#campaign-sheet-session-title"),
   sheetSessionStatus: document.querySelector("#campaign-sheet-session-status"),
@@ -20072,245 +20039,7 @@ const campaignBannerCropState = {
   inputType: "",
 };
 
-const CAMPAIGN_FIRESTORE_RULES = String.raw`rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    function signedIn() { return request.auth != null; }
-    function mine(uid) { return signedIn() && request.auth.uid == uid; }
-    function minervaAdmin() {
-      return signedIn()
-        && request.auth.token.email_verified == true
-        && request.auth.token.email in [
-          'zkyokoo007@gmail.com',
-          'anthonysousabr002@gmail.com',
-          'annysousa314@gmail.com'
-        ];
-    }
-    function campaignMember(campaignId) {
-      return signedIn()
-        && exists(/databases/$(database)/documents/campaigns/$(campaignId)/members/$(request.auth.uid));
-    }
-    function campaignMaster(campaignId) {
-      return signedIn()
-        && get(/databases/$(database)/documents/campaigns/$(campaignId)).data.ownerUid == request.auth.uid;
-    }
-    function actorSharesRolls(actorUid) {
-      return exists(/databases/$(database)/documents/users/$(actorUid))
-        && get(/databases/$(database)/documents/users/$(actorUid)).data.get('appSettings', {}).get('hideRolls', false) == false;
-    }
-    function access(ownerUid, slotId) {
-      return get(/databases/$(database)/documents/users/$(ownerUid)/slots/$(slotId)/campaignAccess/$(request.auth.uid));
-    }
-    function hasViewGrant(ownerUid, slotId) {
-      return signedIn()
-        && exists(/databases/$(database)/documents/users/$(ownerUid)/slots/$(slotId)/campaignAccess/$(request.auth.uid))
-        && (
-          access(ownerUid, slotId).data.get('viewCampaignIds', []).size() > 0
-          || access(ownerUid, slotId).data.get('editCampaignIds', []).size() > 0
-        );
-    }
-    function hasEditGrant(ownerUid, slotId) {
-      return signedIn()
-        && exists(/databases/$(database)/documents/users/$(ownerUid)/slots/$(slotId)/campaignAccess/$(request.auth.uid))
-        && access(ownerUid, slotId).data.get('editCampaignIds', []).size() > 0;
-    }
-    function canViewSlot(ownerUid, slotId) { return mine(ownerUid) || hasViewGrant(ownerUid, slotId); }
-    function canEditSlot(ownerUid, slotId) { return mine(ownerUid) || hasEditGrant(ownerUid, slotId); }
-    function publicGrantIsValid(ownerUid, slotId, granteeUid, campaignId) {
-      return signedIn()
-        && request.auth.uid == granteeUid
-        && campaignMember(campaignId)
-        && exists(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(ownerUid + '_' + slotId))
-        && get(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(ownerUid + '_' + slotId)).data.privateToPlayers == false;
-    }
-    function masterGrantIsValid(ownerUid, slotId, campaignId) {
-      return campaignMaster(campaignId)
-        && exists(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(ownerUid + '_' + slotId));
-    }
-    function accessDocumentMatches(ownerUid, slotId, granteeUid) {
-      return request.resource.data.ownerUid == ownerUid
-        && request.resource.data.slotId == slotId
-        && request.resource.data.granteeUid == granteeUid;
-    }
 
-    match /users/{uid} {
-      allow read, create, update, delete: if mine(uid);
-      match /rollHistory/{rollId} {
-        allow read, create, update, delete: if mine(uid);
-      }
-      match /rollSounds/{soundId} {
-        allow read: if signedIn();
-        allow create, update: if mine(uid)
-          && request.resource.data.ownerUid == uid
-          && request.resource.data.name is string
-          && request.resource.data.name.size() > 0
-          && request.resource.data.name.size() <= 120
-          && request.resource.data.mimeType in [
-            'audio/mpeg', 'audio/wav', 'audio/x-wav',
-            'audio/ogg', 'audio/webm', 'audio/mp4'
-          ]
-          && request.resource.data.chunkCount is int
-          && request.resource.data.chunkCount >= 1
-          && request.resource.data.chunkCount <= 10;
-        allow delete: if mine(uid);
-        match /chunks/{chunkId} {
-          allow read: if signedIn();
-          allow create, update: if mine(uid)
-            && chunkId.matches('^[0-9]$')
-            && request.resource.data.keys().hasOnly(['data'])
-            && request.resource.data.data is string
-            && request.resource.data.data.size() > 0
-            && request.resource.data.data.size() <= 266664
-            && request.resource.data.data.matches('^[A-Za-z0-9+/=]+$');
-          allow delete: if mine(uid);
-        }
-      }
-      match /campaigns/{campaignId} {
-        allow read: if mine(uid);
-        allow delete: if mine(uid) || campaignMaster(campaignId);
-        allow create, update: if mine(uid)
-          && request.resource.data.campaignId == campaignId;
-      }
-      match /slots/{slotId} {
-        allow read: if canViewSlot(uid, slotId);
-        allow create, update, delete: if mine(uid);
-        match /data/{dataId} {
-          allow read: if canViewSlot(uid, slotId);
-          allow create, update, delete: if canEditSlot(uid, slotId);
-        }
-        match /abilityMedia/{mediaId} {
-          allow read: if canViewSlot(uid, slotId);
-          allow create, update, delete: if canEditSlot(uid, slotId);
-          match /chunks/{chunkId} {
-            allow read: if canViewSlot(uid, slotId);
-            allow create, update, delete: if canEditSlot(uid, slotId);
-          }
-        }
-        match /campaignAccess/{granteeUid} {
-          allow read: if mine(uid) || request.auth.uid == granteeUid;
-          allow create: if accessDocumentMatches(uid, slotId, granteeUid) && (
-            mine(uid)
-            || publicGrantIsValid(uid, slotId, granteeUid, request.resource.data.grantCampaignId)
-            || masterGrantIsValid(uid, slotId, request.resource.data.grantCampaignId)
-          );
-          allow update: if accessDocumentMatches(uid, slotId, granteeUid) && (
-            mine(uid)
-            || publicGrantIsValid(uid, slotId, granteeUid, request.resource.data.grantCampaignId)
-            || masterGrantIsValid(uid, slotId, request.resource.data.grantCampaignId)
-          );
-          allow delete: if mine(uid) || request.auth.uid == granteeUid;
-        }
-      }
-    }
-
-    match /campaignCodes/{code} {
-      allow get: if signedIn();
-      allow list: if false;
-      allow create: if signedIn()
-        && request.resource.data.ownerUid == request.auth.uid
-        && get(/databases/$(database)/documents/campaigns/$(request.resource.data.campaignId)).data.ownerUid == request.auth.uid
-        && get(/databases/$(database)/documents/campaigns/$(request.resource.data.campaignId)).data.joinCode == code;
-      allow update: if false;
-      allow delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
-    }
-
-    match /campaigns/{campaignId} {
-      allow get: if signedIn();
-      allow list: if false;
-      allow create: if signedIn()
-        && request.resource.data.ownerUid == request.auth.uid
-        && request.resource.data.name is string
-        && request.resource.data.joinCode is string;
-      allow update: if signedIn()
-        && resource.data.ownerUid == request.auth.uid
-        && request.resource.data.ownerUid == resource.data.ownerUid
-        && request.resource.data.joinCode == resource.data.joinCode
-        && request.resource.data.name is string;
-      allow delete: if signedIn() && resource.data.ownerUid == request.auth.uid;
-
-      match /members/{memberUid} {
-        allow read: if campaignMember(campaignId)
-          || (signedIn() && memberUid == request.auth.uid);
-        allow create: if signedIn() && (
-          (memberUid == request.auth.uid
-            && request.resource.data.role == 'master'
-            && get(/databases/$(database)/documents/campaigns/$(campaignId)).data.ownerUid == request.auth.uid)
-          ||
-          (memberUid == request.auth.uid
-            && request.resource.data.role == 'player'
-            && exists(/databases/$(database)/documents/campaignCodes/$(request.resource.data.joinCode))
-            && get(/databases/$(database)/documents/campaignCodes/$(request.resource.data.joinCode)).data.campaignId == campaignId)
-        );
-        allow update: if request.resource.data.uid == resource.data.uid
-          && request.resource.data.role == resource.data.role
-          && (
-            campaignMaster(campaignId)
-            || (memberUid == request.auth.uid
-              && (resource.data.role == 'master' || request.resource.data.get('sheetIds', []).size() <= 4))
-          );
-        allow delete: if campaignMaster(campaignId) || memberUid == request.auth.uid;
-      }
-
-      match /sheets/{sheetId} {
-        allow read: if campaignMember(campaignId) && (
-          campaignMaster(campaignId)
-          || resource.data.ownerUid == request.auth.uid
-          || resource.data.privateToPlayers == false
-        );
-        allow create: if campaignMember(campaignId)
-          && request.resource.data.ownerUid == request.auth.uid
-          && request.resource.data.slotId is string
-          && request.resource.data.privateToPlayers is bool
-          && sheetId == request.resource.data.ownerUid + '_' + request.resource.data.slotId
-          && getAfter(/databases/$(database)/documents/campaigns/$(campaignId)/members/$(request.auth.uid)).data.get('sheetIds', []).hasAny([sheetId]);
-        allow update: if (campaignMaster(campaignId) || resource.data.ownerUid == request.auth.uid)
-          && request.resource.data.ownerUid == resource.data.ownerUid
-          && request.resource.data.slotId == resource.data.slotId;
-        allow delete: if campaignMaster(campaignId) || resource.data.ownerUid == request.auth.uid;
-      }
-
-      match /rollHistory/{actorUid}/entries/{rollId} {
-        allow read: if campaignMember(campaignId)
-          && (actorUid == request.auth.uid || actorSharesRolls(actorUid));
-        allow create: if signedIn()
-          && actorUid == request.auth.uid
-          && campaignMember(campaignId)
-          && actorSharesRolls(actorUid)
-          && request.resource.data.actorUid == actorUid
-          && request.resource.data.visibility == 'public'
-          && request.resource.data.sheetOwnerUid is string
-          && request.resource.data.slotId is string
-          && request.resource.data.sheetId is string
-          && request.resource.data.sheetId == request.resource.data.sheetOwnerUid + '_' + request.resource.data.slotId
-          && request.resource.data.title is string
-          && request.resource.data.title.size() > 0
-          && request.resource.data.title.size() <= 160
-          && request.resource.data.total is number
-          && request.resource.data.createdAt == request.time
-          && exists(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(request.resource.data.sheetId))
-          && get(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(request.resource.data.sheetId)).data.ownerUid == request.resource.data.sheetOwnerUid
-          && get(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(request.resource.data.sheetId)).data.slotId == request.resource.data.slotId
-          && get(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(request.resource.data.sheetId)).data.privateToPlayers == false
-          && (request.resource.data.sheetOwnerUid == actorUid || campaignMaster(campaignId));
-        allow update: if false;
-        allow delete: if signedIn() && actorUid == request.auth.uid;
-      }
-    }
-
-    match /minervaAbilities/{abilityId} {
-      allow read: if signedIn();
-      allow create, update, delete: if minervaAdmin();
-    }
-    match /minervaAbilityMedia/{mediaId} {
-      allow read: if signedIn();
-      allow create, update, delete: if minervaAdmin();
-      match /chunks/{chunkId} {
-        allow read: if signedIn();
-        allow create, update, delete: if minervaAdmin();
-      }
-    }
-  }
-}`;
 
 function normalizeCampaignCode(value) {
   return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12);
@@ -21027,7 +20756,7 @@ async function openCampaignDetail(campaignId) {
     campaignUi.detail.hidden = false;
     campaignUi.app.scrollTo({ top: 0, behavior: "smooth" });
   } catch (error) {
-    campaignUi.loading.textContent = error?.message || describeFirebaseError(error);
+    campaignUi.loading.textContent = userFacingErrorMessage(error) || describeFirebaseError(error);
     campaignUi.loading.classList.add("is-error");
   } finally {
     campaignBusy = false;
@@ -21053,7 +20782,7 @@ function openCampaignEditor(record = null) {
   campaignUi.editorTitle.textContent = record ? "Editar Campanha" : "Criar Campanha";
   campaignUi.editorSubmit.textContent = record ? "Salvar Alterações" : "Criar Campanha";
   setCampaignFormError(campaignUi.editorError);
-  campaignUi.editorRulesLink.hidden = true;
+
   updateCampaignBannerPreview(campaignBannerDraft);
   setCampaignModal(campaignUi.editorModal, campaignUi.editorDialog, true);
   requestAnimationFrame(() => campaignUi.name.focus());
@@ -21076,15 +20805,6 @@ function openCampaignJoin() {
 
 function closeCampaignJoin() {
   setCampaignModal(campaignUi.joinModal, campaignUi.joinDialog, false);
-}
-
-function openCampaignRules() {
-  campaignUi.rulesCode.textContent = CAMPAIGN_FIRESTORE_RULES;
-  setCampaignModal(campaignUi.rulesModal, campaignUi.rulesDialog, true);
-}
-
-function closeCampaignRules() {
-  setCampaignModal(campaignUi.rulesModal, campaignUi.rulesDialog, false);
 }
 
 async function copyText(value, successMessage, trigger) {
@@ -21248,7 +20968,7 @@ function applyCampaignBannerCrop() {
   campaignBannerCropped = result;
   campaignUi.bannerUrl.value = "";
   setCampaignFormError(campaignUi.editorError);
-  campaignUi.editorRulesLink.hidden = true;
+
   setCampaignBanner(campaignUi.bannerPreview, result);
   campaignUi.bannerPreview.classList.add("has-image");
   closeCampaignBannerCrop({ restorePreview: false });
@@ -21266,7 +20986,7 @@ async function submitCampaignEditor(event) {
   event.preventDefault();
   if (!currentFirebaseUser || campaignBusy) return;
   setCampaignFormError(campaignUi.editorError);
-  campaignUi.editorRulesLink.hidden = true;
+
   const name = campaignUi.name.value.trim().replace(/\s+/g, " ").slice(0, 90);
   const synopsis = campaignUi.synopsis.value.trim().slice(0, 1800);
   if (!name) {
@@ -21353,12 +21073,12 @@ async function submitCampaignEditor(event) {
     if (orphanCampaignRef && permissionDenied) {
       await firestoreApi.deleteDoc(orphanCampaignRef).catch(() => {});
     }
-    campaignUi.editorRulesLink.hidden = !permissionDenied;
+
     setCampaignFormError(
       campaignUi.editorError,
       permissionDenied
-        ? `O Firestore recusou a etapa de ${creationStage}. As regras publicadas no Firebase estão ausentes ou desatualizadas. Abra as regras abaixo, copie o conteúdo completo e publique em Firestore Database → Rules.`
-        : (error?.message || describeFirebaseError(error)),
+        ? `Não foi possível concluir a etapa de ${creationStage}. Tente novamente mais tarde.`
+        : (userFacingErrorMessage(error) || describeFirebaseError(error)),
     );
   } finally {
     campaignBusy = false;
@@ -21413,7 +21133,7 @@ async function submitCampaignJoin(event) {
     renderCampaignDashboard();
     await openCampaignDetail(campaignId);
   } catch (error) {
-    setCampaignFormError(campaignUi.joinError, error?.message || describeFirebaseError(error));
+    setCampaignFormError(campaignUi.joinError, userFacingErrorMessage(error) || describeFirebaseError(error));
   } finally {
     campaignBusy = false;
     campaignUi.joinSubmit.disabled = false;
@@ -21676,7 +21396,7 @@ async function submitCampaignSlot(event) {
     closeCampaignSlotPicker();
     await openCampaignDetail(activeCampaign.id);
   } catch (error) {
-    setCampaignFormError(campaignUi.slotError, error?.message || describeFirebaseError(error));
+    setCampaignFormError(campaignUi.slotError, userFacingErrorMessage(error) || describeFirebaseError(error));
   } finally {
     campaignBusy = false;
     campaignUi.slotSubmit.disabled = false;
@@ -21932,7 +21652,7 @@ async function openCampaignSheet(sheetId, trigger) {
     await window.showAbyssAlert?.({
       eyebrow: "Ficha da Campanha",
       title: "Não foi possível abrir",
-      message: error?.message || describeFirebaseError(error),
+      message: userFacingErrorMessage(error) || describeFirebaseError(error),
       tone: "warning",
       trigger,
     });
@@ -21966,7 +21686,7 @@ async function closeCampaignSheetSession() {
     await window.showAbyssAlert?.({
       eyebrow: "Ficha da Campanha",
       title: "Não foi possível voltar",
-      message: error?.message || describeFirebaseError(error),
+      message: userFacingErrorMessage(error) || describeFirebaseError(error),
       tone: "warning",
       trigger: campaignUi.sheetSessionBack,
     });
@@ -22113,7 +21833,7 @@ function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") 
   setAvatar(firebaseUi.menuAvatar, firebaseUi.placeholder, identity.photoURL, displayName);
   firebaseUi.name.textContent = signedIn ? displayName : "Nenhuma conta conectada";
   firebaseUi.email.textContent = signedIn ? (user.email || "Conta Google") : "Entre para sincronizar esta ficha.";
-  firebaseUi.setupHint.hidden = state !== "missing";
+
   firebaseUi.login.hidden = signedIn || state === "missing" || state === "loading" || state === "signing-in";
   firebaseUi.syncNow.hidden = !signedIn;
   firebaseUi.exportSheet.hidden = !signedIn || !currentSlotId;
@@ -22260,7 +21980,7 @@ async function generateSheetTransferCode() {
   } catch (error) {
     firebaseUi.transferCode.value = "";
     updateSheetTransferCount();
-    setSheetTransferStatus(error?.message || "Não foi possível gerar o código.", true);
+    setSheetTransferStatus(userFacingErrorMessage(error) || "Não foi possível gerar o código.", true);
   } finally {
     firebaseUi.transferPrimary.disabled = false;
     firebaseUi.transferCopy.disabled = false;
@@ -22357,7 +22077,7 @@ async function importSheetTransferCode() {
     const decoded = await decodeSheetTransferCode(firebaseUi.transferCode.value);
     importedState = decoded.state;
   } catch (error) {
-    setSheetTransferStatus(error?.message || "O código não pôde ser lido.", true);
+    setSheetTransferStatus(userFacingErrorMessage(error) || "O código não pôde ser lido.", true);
     return;
   }
   const confirmed = await window.showAbyssConfirm({
@@ -22402,7 +22122,7 @@ async function importSheetTransferCode() {
   } catch (error) {
     sheetBridge.applyState(previousState, { persistLocal: false });
     await Promise.allSettled(uploadedReferences.map((reference) => deleteMedia(reference)));
-    setSheetTransferStatus(error?.message || describeFirebaseError(error), true);
+    setSheetTransferStatus(userFacingErrorMessage(error) || describeFirebaseError(error), true);
   } finally {
     isHydratingCloudState = false;
     firebaseUi.transferPrimary.disabled = false;
@@ -22433,7 +22153,7 @@ async function importSheetTransferAsNewSlot() {
     setSheetTransferStatus("Validando o código…");
     decoded = await decodeSheetTransferCode(firebaseUi.transferCode.value);
   } catch (error) {
-    setSheetTransferStatus(error?.message || "O código não pôde ser lido.", true);
+    setSheetTransferStatus(userFacingErrorMessage(error) || "O código não pôde ser lido.", true);
     return;
   }
 
@@ -22526,7 +22246,7 @@ async function importSheetTransferAsNewSlot() {
     }
     await Promise.allSettled(uploadedReferences.map((reference) => deleteMedia(reference)));
     renderSlots();
-    setSheetTransferStatus(error?.message || describeFirebaseError(error), true);
+    setSheetTransferStatus(userFacingErrorMessage(error) || describeFirebaseError(error), true);
     return;
   } finally {
     isHydratingCloudState = false;
@@ -22546,22 +22266,22 @@ async function importSheetTransferAsNewSlot() {
 function describeFirebaseError(error) {
   const code = String(error?.code || "");
   if (code.includes("unauthorized-domain")) {
-    return "Este domínio não está autorizado. Adicione o domínio do GitHub Pages em Authentication > Settings > Authorized domains.";
+    return "Não foi possível conectar sua conta neste endereço. Tente novamente mais tarde.";
   }
   if (code.includes("popup-blocked")) return "O navegador bloqueou a janela do Google. Libere pop-ups para este site e tente novamente.";
   if (code.includes("popup-closed-by-user")) return "A entrada foi cancelada antes de escolher uma conta.";
   if (code.includes("permission-denied")) {
-    return "O Firebase recusou o acesso. Publique as regras atualizadas do Firestore fornecidas junto deste index.";
+    return "Não foi possível acessar estes dados. Tente entrar novamente.";
   }
-  if (code.includes("not-found") || code.includes("failed-precondition")) return "Crie o banco Cloud Firestore no projeto e tente novamente.";
+  if (code.includes("not-found") || code.includes("failed-precondition")) return "O serviço está indisponível. Tente novamente mais tarde.";
   if (code.includes("invalid-api-key") || code.includes("invalid-app-id")) {
-    return "A configuração do aplicativo Web não é válida. Confira o bloco FIREBASE_CONFIG.";
+    return "Não foi possível conectar sua conta. Tente novamente mais tarde.";
   }
   if (code.includes("unavailable") || !navigator.onLine) {
-    return "Sem conexão com o Firebase. Alterações feitas agora ainda não foram salvas.";
+    return "Sem conexão. Alterações feitas agora ainda não foram salvas.";
   }
   if (code === "abyss/bridge-missing") return "A ficha não terminou de carregar. Atualize a página e tente novamente.";
-  return "Não foi possível concluir a sincronização. Confira a configuração, o login e as regras do Firestore.";
+  return "Não foi possível concluir a sincronização. Verifique sua conexão e tente novamente.";
 }
 
 function finiteAttributeValue(value) {
@@ -23268,7 +22988,7 @@ function beginSlotFolderRename(id) {
     event.preventDefault();
     save.disabled = true;
     try { await renameCloudSlotFolder(id, input.value); }
-    catch (error) { setSlotFolderStatus(error?.message || describeFirebaseError(error), true); }
+    catch (error) { setSlotFolderStatus(userFacingErrorMessage(error) || describeFirebaseError(error), true); }
     finally { if (save.isConnected) save.disabled = false; }
   });
 }
@@ -23297,7 +23017,7 @@ function beginSlotMove(id) {
     event.preventDefault();
     save.disabled = true;
     try { await moveCloudSlot(id, select.value); }
-    catch (error) { setSlotFolderStatus(error?.message || describeFirebaseError(error), true); }
+    catch (error) { setSlotFolderStatus(userFacingErrorMessage(error) || describeFirebaseError(error), true); }
     finally { if (save.isConnected) save.disabled = false; }
   });
 }
@@ -24082,9 +23802,9 @@ function getEffectiveIdentity(user = currentFirebaseUser) {
 
 function rollFeatureError(error) {
   if (String(error?.code || "").includes("permission-denied")) {
-    return "Atualize as Regras do Firestore disponíveis em Campanhas para liberar o histórico e os áudios.";
+    return "Não foi possível acessar o histórico ou os áudios. Tente novamente mais tarde.";
   }
-  return error?.message || "Não foi possível sincronizar. Verifique sua conexão e tente novamente.";
+  return userFacingErrorMessage(error) || "Não foi possível sincronizar. Verifique sua conexão e tente novamente.";
 }
 
 function setRollFeatureStatus(element, message = "", error = false) {
@@ -24550,28 +24270,34 @@ function readFileDataUrl(file) {
     const reader = new FileReader();
     reader.onload = () => resolve(String(reader.result || ""));
     reader.onerror = () => reject(new Error("Não foi possível ler o arquivo."));
+    reader.onabort = () => reject(new Error("A leitura do arquivo foi interrompida. Escolha o arquivo novamente."));
     reader.readAsDataURL(file);
   });
 }
 
 function getRollSoundMimeType(file) {
-  const aliases = { "audio/mp3": "audio/mpeg", "audio/x-m4a": "audio/mp4", "audio/vnd.wave": "audio/wav", "audio/wave": "audio/wav" };
-  return aliases[file.type] || file.type || ({ mp3: "audio/mpeg", wav: "audio/wav", ogg: "audio/ogg", webm: "audio/webm", m4a: "audio/mp4", mp4: "audio/mp4" }[file.name.split(".").at(-1)?.toLowerCase()] || "");
+  const aliases = { "audio/mp3": "audio/mpeg", "audio/x-m4a": "audio/mp4", "audio/m4a": "audio/mp4", "audio/vnd.wave": "audio/wav", "audio/wave": "audio/wav", "application/ogg": "audio/ogg", "audio/x-ogg": "audio/ogg", "video/webm": "audio/webm", "video/mp4": "audio/mp4" };
+  const declared = String(file?.type || "").toLowerCase().split(";")[0].trim();
+  const mimeType = aliases[declared] || declared;
+  if (ROLL_AUDIO_TYPES.has(mimeType)) return mimeType;
+  const extension = String(file?.name || "").split(".").at(-1)?.toLowerCase();
+  return { mp3: "audio/mpeg", wav: "audio/wav", ogg: "audio/ogg", webm: "audio/webm", m4a: "audio/mp4", mp4: "audio/mp4" }[extension] || "";
 }
 
 async function stageRollSound(key, file) {
-  if (!file || !accountSettingsDraft) return;
+  if (!file || !accountSettingsDraft) return false;
   const version = settingsSoundReadVersions[key] = (settingsSoundReadVersions[key] || 0) + 1;
   const mimeType = getRollSoundMimeType(file);
   if (!ROLL_AUDIO_TYPES.has(mimeType)) throw new Error("Escolha um áudio MP3, WAV, OGG, WebM ou M4A.");
   if (!file.size || file.size > MAX_ROLL_SOUND_BYTES) throw new Error("O áudio precisa ter até 2 MB.");
   const draft = accountSettingsDraft;
   const source = await readFileDataUrl(file);
-  if (accountSettingsDraft !== draft || version !== settingsSoundReadVersions[key]) return;
+  if (accountSettingsDraft !== draft || version !== settingsSoundReadVersions[key]) return false;
   const data = source.slice(source.indexOf(",") + 1);
   if (!data || data.length > ROLL_SOUND_CHUNK_SIZE * 10 || !/^[A-Za-z0-9+/=]+$/.test(data)) throw new Error("O arquivo de áudio é inválido ou muito grande.");
   stagedRollSounds[key] = { name: file.name.slice(0, 120), mimeType, data, source: `data:${mimeType};base64,${data}` };
   renderSettingsSoundNames();
+  return true;
 }
 
 async function uploadRollSound(clip, user) {
@@ -24603,6 +24329,40 @@ async function compactAccountAvatar(file) {
 }
 
 function settingsSoundFieldKey(key) { return key === "criticalFailure" ? "critical-failure" : key; }
+
+function setSettingsSoundFeedback(key, state, message) {
+  const feedback = document.querySelector(`#settings-sound-status-${settingsSoundFieldKey(key)}`);
+  if (!feedback) return;
+  feedback.dataset.state = state;
+  feedback.textContent = message;
+  feedback.setAttribute("role", state === "error" ? "alert" : "status");
+  feedback.setAttribute("aria-live", state === "error" ? "assertive" : "polite");
+}
+
+function audioAdditionErrorMessage(error) {
+  if (String(error?.code || "").includes("permission-denied")) return "Sua conta não tem permissão para salvar este áudio.";
+  if (String(error?.code || "").includes("unavailable") || !navigator.onLine) return "Sem conexão. Reconecte-se e tente salvar novamente.";
+  return userFacingErrorMessage(error) || "Não foi possível salvar o áudio na sua conta. Tente novamente.";
+}
+
+async function handleSettingsSoundSelection(key, input) {
+  const file = input.files?.[0];
+  const draft = accountSettingsDraft;
+  if (!file || !draft || settingsBusy) return;
+  setSettingsSoundFeedback(key, "loading", `Carregando “${file.name}”…`);
+  try {
+    const loaded = await readSettingsMedia(() => stageRollSound(key, file));
+    if (!loaded || accountSettingsDraft !== draft || input.files?.[0] !== file) return;
+    setSettingsSoundFeedback(key, "selected", "Áudio carregado! Clique em “Ouvir” para testar e em “Salvar configurações” para adicioná-lo.");
+    setRollFeatureStatus(rollAccountUi.settingsStatus, "Áudio carregado. Falta salvar as configurações para usar o som nas rolagens.");
+  } catch (error) {
+    if (accountSettingsDraft !== draft || input.files?.[0] !== file) return;
+    input.value = "";
+    const message = `Áudio não adicionado: ${audioAdditionErrorMessage(error)}`;
+    setSettingsSoundFeedback(key, "error", message);
+    setRollFeatureStatus(rollAccountUi.settingsStatus, message, true);
+  }
+}
 
 function renderSettingsSoundNames() {
   ROLL_SOUND_KEYS.forEach((key) => {
@@ -24646,7 +24406,10 @@ function openAccountSettings() {
   rollAccountUi.nickname.value = accountSettingsDraft.nickname || getEffectiveIdentity().displayName;
   rollAccountUi.avatarUrl.value = accountSettingsDraft.avatar.startsWith("data:") ? "" : accountSettingsDraft.avatar;
   rollAccountUi.avatarFile.value = "";
-  ROLL_SOUND_KEYS.forEach((key) => { document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).value = ""; });
+  ROLL_SOUND_KEYS.forEach((key) => {
+    document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).value = "";
+    setSettingsSoundFeedback(key, accountSettingsDraft.sounds[key] ? "saved" : "default", accountSettingsDraft.sounds[key] ? "Som personalizado salvo na sua conta." : "Som padrão ativo.");
+  });
   rollAccountUi.ownVolume.value = String(Math.round(accountSettingsDraft.ownVolume * 100));
   rollAccountUi.ownVolumeValue.textContent = `${rollAccountUi.ownVolume.value}%`;
   rollAccountUi.othersEnabled.checked = accountSettingsDraft.othersEnabled;
@@ -24721,6 +24484,9 @@ async function saveAccountSettings(event) {
   if (!nickname) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Digite seu nick.", true); rollAccountUi.nickname.focus(); return; }
   const typedAvatar = rollAccountUi.avatarUrl.value.trim();
   if (typedAvatar && !normalizeAccountAvatar(typedAvatar)) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Use um link de imagem que comece com https:// ou http://.", true); return; }
+  const pendingSoundKeys = ROLL_SOUND_KEYS.filter((key) => Boolean(stagedRollSounds[key]));
+  const hasSoundChanges = pendingSoundKeys.length > 0 || ROLL_SOUND_KEYS.some((key) => JSON.stringify(accountSettingsDraft.sounds[key]) !== JSON.stringify(currentAccountSettings.sounds[key]));
+  let uploadingSoundKey = "";
   settingsBusy = true; rollAccountUi.save.disabled = true;
   updateSettingsFormAvailability();
   rollAccountUi.save.textContent = "Salvando…";
@@ -24728,7 +24494,14 @@ async function saveAccountSettings(event) {
   setRollFeatureStatus(rollAccountUi.settingsStatus, "Salvando perfil e preferências…");
   try {
     const settings = normalizeAccountSettings({ ...accountSettingsDraft, nickname, hideRolls: currentAccountSettings.hideRolls });
-    for (const key of ROLL_SOUND_KEYS) if (stagedRollSounds[key]) settings.sounds[key] = await uploadRollSound(stagedRollSounds[key], user);
+    for (const key of pendingSoundKeys) {
+      uploadingSoundKey = key;
+      setSettingsSoundFeedback(key, "uploading", "Enviando áudio para sua conta…");
+      settings.sounds[key] = await uploadRollSound(stagedRollSounds[key], user);
+      if (epoch !== accountRollEpoch) return;
+      setSettingsSoundFeedback(key, "uploading", "Arquivo enviado. Finalizando o salvamento…");
+    }
+    uploadingSoundKey = "";
     if (epoch !== accountRollEpoch) return;
     // A privacidade tem sua própria gravação; um salvamento de volume não pode desfazê-la.
     const { hideRolls: ignoredPrivacy, ...savedSettings } = settings;
@@ -24738,14 +24511,26 @@ async function saveAccountSettings(event) {
     currentAccountSettings = settings;
     accountSettingsDraft = normalizeAccountSettings(settings); stagedRollSounds = {};
     renderAccountIdentity(user); renderSettingsSoundNames(); renderRollHistory();
+    ROLL_SOUND_KEYS.forEach((key) => setSettingsSoundFeedback(key, settings.sounds[key] ? "saved" : "default",
+      settings.sounds[key] ? "Som adicionado e salvo com sucesso! Já pode ser usado nas suas rolagens." : "Som padrão ativo.",
+    ));
+    const savedMessage = hasSoundChanges ? "Sons salvos com sucesso! Suas rolagens já usarão as escolhas que você fez." : "Configurações salvas.";
+    setRollFeatureStatus(rollAccountUi.settingsStatus, savedMessage);
     try {
       await propagateAccountIdentity(user, settings);
-      setRollFeatureStatus(rollAccountUi.settingsStatus, "Configurações salvas.");
+      if (epoch === accountRollEpoch) setRollFeatureStatus(rollAccountUi.settingsStatus, savedMessage);
     } catch (error) {
-      setRollFeatureStatus(rollAccountUi.settingsStatus, `Salvo na conta. A atualização nas Campanhas está pendente: ${rollFeatureError(error)}`, true);
+      if (epoch === accountRollEpoch) setRollFeatureStatus(rollAccountUi.settingsStatus, `${savedMessage} A atualização do perfil nas Campanhas está pendente. Tente salvar novamente.`, true);
     }
   } catch (error) {
-    if (epoch === accountRollEpoch) setRollFeatureStatus(rollAccountUi.settingsStatus, rollFeatureError(error), true);
+    if (epoch === accountRollEpoch) {
+      const reason = audioAdditionErrorMessage(error);
+      pendingSoundKeys.forEach((key) => setSettingsSoundFeedback(key, "error", key === uploadingSoundKey
+        ? `Áudio não adicionado: ${reason}`
+        : `Áudio ainda não salvo: ${reason} Tente salvar novamente.`,
+      ));
+      setRollFeatureStatus(rollAccountUi.settingsStatus, hasSoundChanges ? `Os sons não foram salvos. ${reason}` : rollFeatureError(error), true);
+    }
   } finally {
     if (epoch === accountRollEpoch) {
       settingsBusy = false; rollAccountUi.save.disabled = false;
@@ -24856,16 +24641,28 @@ document.querySelector("#account-settings-avatar-reset").addEventListener("click
   accountSettingsDraft.avatar = ""; rollAccountUi.avatarUrl.value = ""; rollAccountUi.avatarFile.value = ""; renderSettingsAvatarPreview();
 });
 ROLL_SOUND_KEYS.forEach((key) => {
-  document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).addEventListener("change", async (event) => {
-    try { await readSettingsMedia(() => stageRollSound(key, event.target.files?.[0])); setRollFeatureStatus(rollAccountUi.settingsStatus, "Áudio selecionado. Salve para usar nas suas rolagens."); }
-    catch (error) { event.target.value = ""; setRollFeatureStatus(rollAccountUi.settingsStatus, rollFeatureError(error), true); }
+  document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).addEventListener("change", (event) => {
+    handleSettingsSoundSelection(key, event.target);
   });
 });
 document.querySelectorAll("[data-preview-outcome]").forEach((button) => button.addEventListener("click", () => {
   if (!accountSettingsDraft) return;
   const key = button.dataset.previewOutcome;
   activeOutcomeAudio.forEach((audio) => audio.pause()); activeOutcomeAudio.clear();
-  unlockOutcomeAudio().then(() => playOutcomeSound(key, accountSettingsDraft.sounds[key], accountSettingsDraft.ownVolume, stagedRollSounds[key]?.source || "")).catch(reportOutcomeAudioError);
+  const draft = accountSettingsDraft;
+  unlockOutcomeAudio().then(() => {
+    if (accountSettingsDraft !== draft) return;
+    return playOutcomeSound(key, draft.sounds[key], draft.ownVolume, stagedRollSounds[key]?.source || "");
+  }).catch((error) => {
+    if (accountSettingsDraft !== draft) return;
+    const message = error?.name === "NotSupportedError"
+      ? "Não foi possível ouvir esse arquivo. Tente um áudio em MP3 ou WAV."
+      : error?.name === "NotAllowedError"
+        ? "O navegador bloqueou o som. Clique em “Ouvir” novamente para liberar."
+        : `Não foi possível ouvir o som: ${audioAdditionErrorMessage(error)}`;
+    setSettingsSoundFeedback(key, "error", message);
+    setRollFeatureStatus(rollAccountUi.settingsStatus, message, true);
+  });
 }));
 document.querySelectorAll("[data-reset-outcome]").forEach((button) => button.addEventListener("click", () => {
   if (!accountSettingsDraft) return;
@@ -24873,6 +24670,7 @@ document.querySelectorAll("[data-reset-outcome]").forEach((button) => button.add
   settingsSoundReadVersions[key] = (settingsSoundReadVersions[key] || 0) + 1;
   accountSettingsDraft.sounds[key] = null; delete stagedRollSounds[key];
   document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).value = ""; renderSettingsSoundNames();
+  setSettingsSoundFeedback(key, "selected", "Som padrão escolhido. Clique em “Salvar configurações” para confirmar.");
 }));
 document.addEventListener("pointerdown", () => unlockOutcomeAudio().catch(() => {}), { passive: true });
 document.addEventListener("keydown", (event) => {
@@ -25216,7 +25014,7 @@ firebaseUi.createSlotFolderForm.addEventListener("submit", async (event) => {
     firebaseUi.newSlotFolderName.value = "";
     firebaseUi.newSlotName.focus();
   } catch (error) {
-    setSlotFolderStatus(error?.message || describeFirebaseError(error), true);
+    setSlotFolderStatus(userFacingErrorMessage(error) || describeFirebaseError(error), true);
   } finally {
     submit.disabled = false;
   }
@@ -25274,7 +25072,7 @@ firebaseUi.slotsList.addEventListener("click", async (event) => {
   if (folderDelete) {
     folderDelete.disabled = true;
     try { await deleteCloudSlotFolder(folderDelete.dataset.deleteSlotFolder); }
-    catch (error) { setSlotFolderStatus(error?.message || describeFirebaseError(error), true); }
+    catch (error) { setSlotFolderStatus(userFacingErrorMessage(error) || describeFirebaseError(error), true); }
     finally { if (folderDelete.isConnected) folderDelete.disabled = false; }
     return;
   }
@@ -25377,9 +25175,6 @@ campaignUi.edit.addEventListener("click", () => openCampaignEditor(activeCampaig
 campaignUi.leave.addEventListener("click", () => leaveActiveCampaign(campaignUi.leave));
 campaignUi.remove.addEventListener("click", () => deleteActiveCampaign(campaignUi.remove));
 campaignUi.copyCode.addEventListener("click", () => copyText(activeCampaign?.joinCode || "", "Código copiado", campaignUi.copyCode));
-campaignUi.rulesButton.addEventListener("click", openCampaignRules);
-campaignUi.editorRulesLink.addEventListener("click", openCampaignRules);
-campaignUi.copyRules.addEventListener("click", () => copyText(CAMPAIGN_FIRESTORE_RULES, "Regras copiadas", campaignUi.copyRules));
 campaignUi.editorForm.addEventListener("submit", submitCampaignEditor);
 campaignUi.joinForm.addEventListener("submit", submitCampaignJoin);
 campaignUi.slotForm.addEventListener("submit", submitCampaignSlot);
@@ -25401,11 +25196,11 @@ campaignUi.bannerFile.addEventListener("change", async () => {
   }
   try {
     setCampaignFormError(campaignUi.editorError);
-    campaignUi.editorRulesLink.hidden = true;
+
     await openCampaignBannerCrop(file);
   } catch (error) {
     campaignUi.bannerFile.value = "";
-    setCampaignFormError(campaignUi.editorError, error?.message || "Não foi possível abrir o Banner.");
+    setCampaignFormError(campaignUi.editorError, userFacingErrorMessage(error) || "Não foi possível abrir o Banner.");
   }
 });
 
@@ -25481,7 +25276,6 @@ document.querySelectorAll("[data-close-campaign-editor]").forEach((button) => bu
 document.querySelectorAll("[data-close-campaign-banner-crop]").forEach((button) => button.addEventListener("click", () => closeCampaignBannerCrop()));
 document.querySelectorAll("[data-close-campaign-join]").forEach((button) => button.addEventListener("click", closeCampaignJoin));
 document.querySelectorAll("[data-close-campaign-slot]").forEach((button) => button.addEventListener("click", closeCampaignSlotPicker));
-document.querySelectorAll("[data-close-campaign-rules]").forEach((button) => button.addEventListener("click", closeCampaignRules));
 
 campaignUi.sheetList.addEventListener("click", (event) => {
   const open = event.target.closest("[data-open-campaign-sheet]");
@@ -25506,7 +25300,6 @@ campaignUi.shieldRoster.addEventListener("click", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     if (!campaignUi.bannerCropModal.hidden) closeCampaignBannerCrop();
-    else if (!campaignUi.rulesModal.hidden) closeCampaignRules();
     else if (!campaignUi.slotModal.hidden) closeCampaignSlotPicker();
     else if (!campaignUi.joinModal.hidden) closeCampaignJoin();
     else if (!campaignUi.editorModal.hidden) closeCampaignEditor();
@@ -25531,9 +25324,9 @@ async function initializeFirebaseSync() {
     renderAccountIdentity(null, "missing");
     setSyncStatus(
       "idle",
-      "Firebase pendente",
-      "Configuração necessária",
-      "Cole a configuração do seu projeto. Sem login, a ficha atual é apenas temporária.",
+      "Conexão pendente",
+      "Conta indisponível",
+      "Não foi possível conectar sua conta. Sem login, a ficha atual é apenas temporária.",
     );
     return;
   }
@@ -25603,8 +25396,8 @@ async function initializeFirebaseSync() {
     renderAccountIdentity(null, "error");
     setSyncStatus(
       "error",
-      "Firebase indisponível",
-      "Não foi possível iniciar o Firebase",
+      "Serviço indisponível",
+      "Não foi possível iniciar a conexão",
       describeFirebaseError(error),
     );
     openAccountMenu();
