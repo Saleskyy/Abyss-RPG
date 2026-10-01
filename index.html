@@ -7151,6 +7151,7 @@ h1, h2, h3, h4, h5, h6,
 .settings-sound-row[data-outcome="extreme"] { border-left: 2px solid #72c990; }
 .settings-sound-row[data-outcome="failure"] { border-left: 2px solid #d7ad68; }
 .settings-sound-row[data-outcome="criticalFailure"] { border-left: 2px solid #d57785; }
+.settings-sound-row[data-outcome="criticalDamage"] { border-left: 2px solid #e4b267; }
 .settings-sound-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .settings-sound-actions .dialog-button, .settings-avatar-actions .dialog-button { min-height: 34px; padding: 0 10px; font-size: .68rem; }
 .settings-preview-button { display: inline-flex; justify-content: center; align-items: center; gap: 5px; }
@@ -7183,6 +7184,7 @@ h1, h2, h3, h4, h5, h6,
 .roll-history-outcome { color: var(--theme-accent-dfca86, #dfca86); font-size: .72rem; font-weight: 750; }
 .roll-history-outcome[data-outcome="extreme"] { color: #82d2a0; }
 .roll-history-outcome[data-outcome="failure"], .roll-history-outcome[data-outcome="criticalFailure"] { color: #eb939e; }
+.roll-history-outcome[data-outcome="criticalDamage"] { color: #e4b267; }
 .roll-history-empty { padding: 26px 16px; color: var(--theme-muted-aaa69d, #aaa69d); border: 1px dashed var(--theme-border-3a3b41, #3a3b41); border-radius: 4px; text-align: center; font-size: .76rem; line-height: 1.65; }
 @media (max-width: 1100px) { #open-roll-history { margin-left: 0; } }
 @media (max-width: 760px) {
@@ -9886,7 +9888,7 @@ h1, h2, h3, h4, h5, h6,
             </section>
             <section class="settings-section" aria-labelledby="settings-sounds-title">
               <h3 id="settings-sounds-title">Sons das suas rolagens</h3>
-              <p class="settings-section-copy">Escolha um áudio para cada resultado. MP3, WAV, OGG, WebM ou M4A · até 2 MB. Depois clique em “Salvar configurações”. Os participantes da mesma Campanha podem ouvi-lo nas suas rolagens públicas.</p>
+              <p class="settings-section-copy">Escolha um áudio para cada resultado. MP3, WAV, OGG, WebM ou M4A · até 20 MB por áudio. Depois clique em “Salvar configurações”. Os participantes da mesma Campanha podem ouvi-lo nas suas rolagens públicas. O som de Dano Crítico toca quando o crítico é ativado na rolagem de dano.</p>
               <div class="settings-sound-list">
                 <div class="settings-sound-row" data-outcome="extreme">
                   <div class="settings-sound-copy"><strong>Sucesso Extremo</strong><output id="settings-sound-name-extreme">Som padrão</output></div>
@@ -9914,6 +9916,15 @@ h1, h2, h3, h4, h5, h6,
                     <button class="dialog-button" type="button" data-reset-outcome="criticalFailure">Padrão</button>
                   </div>
                   <p id="settings-sound-status-critical-failure" class="settings-sound-feedback" data-state="default" role="status" aria-live="polite" aria-atomic="true">Som padrão ativo.</p>
+                </div>
+                <div class="settings-sound-row" data-outcome="criticalDamage">
+                  <div class="settings-sound-copy"><strong>Dano Crítico</strong><output id="settings-sound-name-critical-damage">Som padrão</output></div>
+                  <div class="settings-sound-actions">
+                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-critical-damage" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Dano Crítico" aria-describedby="settings-sound-status-critical-damage" /></label>
+                    <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="criticalDamage"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
+                    <button class="dialog-button" type="button" data-reset-outcome="criticalDamage">Padrão</button>
+                  </div>
+                  <p id="settings-sound-status-critical-damage" class="settings-sound-feedback" data-state="default" role="status" aria-live="polite" aria-atomic="true">Som padrão ativo.</p>
                 </div>
               </div>
               <label class="settings-volume"><span class="settings-volume-label">Volume das suas rolagens</span><input id="settings-own-volume" type="range" min="0" max="100" step="1" value="70" aria-describedby="settings-own-volume-value" /><output id="settings-own-volume-value" for="settings-own-volume">70%</output></label>
@@ -15466,7 +15477,7 @@ async function applyCreationCosts(creation, trigger = null) {
   return true;
 }
 
-function showCreationRollResult(title, context, parsed, result, trigger) {
+function showCreationRollResult(title, context, parsed, result, trigger, options = {}) {
   playRollSound();
   activeAbilityTrigger = trigger;
   abilityRollDialog.querySelector(".eyebrow").textContent = context;
@@ -15477,7 +15488,7 @@ function showCreationRollResult(title, context, parsed, result, trigger) {
   abilityRollModal.hidden = false;
   syncModalLock();
   abilityRollDialog.focus();
-  window.AbyssCloud?.recordRoll?.({ kind: "creation", title, total: result.total, formula: parsed.formula, breakdown: result.breakdown, context: window.AbyssCloud?.getRollContext?.() });
+  window.AbyssCloud?.recordRoll?.({ kind: options.kind || "creation", title, total: result.total, formula: parsed.formula, breakdown: result.breakdown, outcome: options.criticalDamage ? "critical-damage" : "", outcomeLabel: options.criticalDamage ? "Dano Crítico" : "", context: window.AbyssCloud?.getRollContext?.() });
 }
 
 async function rollNamedCreation(scope, creationId, rollId, trigger, chargeCosts = false) {
@@ -15539,6 +15550,7 @@ async function rollCreationDamage(scope, creationId, trigger, chargeCosts = fals
     { formula: formulas.join(" + ") },
     { total, breakdown: breakdown.join(" · ") },
     trigger,
+    { kind: "damage", criticalDamage: criticalTriggered },
   );
 }
 
@@ -23700,9 +23712,10 @@ async function deleteMinervaItem(item) {
 
 // Perfil, preferências de áudio e histórico de rolagens da conta.
 const ROLL_SOUND_CHUNK_SIZE = 266664;
-const MAX_ROLL_SOUND_BYTES = 1999980;
+const MAX_ROLL_SOUND_BYTES = 20000000;
+const MAX_ROLL_SOUND_CHUNKS = 101;
 const ROLL_AUDIO_TYPES = new Set(["audio/mpeg", "audio/wav", "audio/x-wav", "audio/ogg", "audio/webm", "audio/mp4"]);
-const ROLL_SOUND_KEYS = ["extreme", "failure", "criticalFailure"];
+const ROLL_SOUND_KEYS = ["extreme", "failure", "criticalFailure", "criticalDamage"];
 const rollAccountUi = {
   settingsButton: document.querySelector("#account-settings-button"),
   settingsModal: document.querySelector("#account-settings-modal"),
@@ -23888,6 +23901,7 @@ function getRollContext() {
 function outcomeSoundKey(outcome) {
   if (outcome === "extreme" || outcome === "extreme-critical") return "extreme";
   if (outcome === "criticalFailure" || outcome === "critical-failure") return "criticalFailure";
+  if (outcome === "criticalDamage" || outcome === "critical-damage") return "criticalDamage";
   return outcome === "failure" ? "failure" : "";
 }
 
@@ -23898,7 +23912,7 @@ function normalizeCompletedRoll(raw = {}) {
   const actorUid = String(raw.actorUid || context.actorUid || "").slice(0, 128);
   const sheetOwnerUid = String(raw.sheetOwnerUid || context.sheetOwnerUid || "").slice(0, 128);
   const slotId = String(raw.slotId || context.slotId || "").slice(0, 128);
-  const knownOutcomes = ["extreme", "extreme-critical", "failure", "critical-failure", "criticalFailure", "partial", "normal", "good"];
+  const knownOutcomes = ["extreme", "extreme-critical", "failure", "critical-failure", "criticalFailure", "critical-damage", "partial", "normal", "good"];
   const outcome = knownOutcomes.includes(raw.outcome || raw.outcomeKey) ? (raw.outcome || raw.outcomeKey) : "";
   const soundRef = normalizeRollSoundRef(raw.soundRef);
   return {
@@ -24158,7 +24172,7 @@ function renderRollHistory() {
     const title = document.createElement("strong"); title.textContent = `${record.title} · ${record.total}`;
     const outcome = document.createElement("span"); outcome.className = "roll-history-outcome";
     outcome.dataset.outcome = outcomeSoundKey(record.outcome) || record.outcome;
-    outcome.textContent = record.outcomeLabel || ({ "critical-failure": "Falha Crítica", failure: "Falha", extreme: "Sucesso Extremo", "extreme-critical": "Sucesso Extremo (Crítico)", partial: "Sucesso Parcial", normal: "Sucesso Normal", good: "Sucesso Bom" }[record.outcome] || "Rolagem");
+    outcome.textContent = record.outcomeLabel || ({ "critical-failure": "Falha Crítica", "critical-damage": "Dano Crítico", failure: "Falha", extreme: "Sucesso Extremo", "extreme-critical": "Sucesso Extremo (Crítico)", partial: "Sucesso Parcial", normal: "Sucesso Normal", good: "Sucesso Bom" }[record.outcome] || "Rolagem");
     head.append(title, outcome);
     const meta = document.createElement("p"); meta.className = "roll-history-meta";
     const name = record.actorUid === currentFirebaseUser?.uid ? getEffectiveIdentity().displayName : subscription?.members.get(record.actorUid)?.displayName || record.actorNickname;
@@ -24212,11 +24226,11 @@ function reportOutcomeAudioError(error) {
 
 function playDefaultOutcomeSound(key, volume) {
   if (!outcomeAudioContext || volume <= 0) return;
-  const frequencies = key === "extreme" ? [523.25, 659.25, 783.99] : key === "criticalFailure" ? [220, 164.81, 110] : [293.66, 220];
+  const frequencies = key === "extreme" ? [523.25, 659.25, 783.99] : key === "criticalDamage" ? [110, 440, 880, 660] : key === "criticalFailure" ? [220, 164.81, 110] : [293.66, 220];
   frequencies.forEach((frequency, index) => {
     const oscillator = outcomeAudioContext.createOscillator();
     const gain = outcomeAudioContext.createGain();
-    const start = outcomeAudioContext.currentTime + index * .12;
+    const start = outcomeAudioContext.currentTime + index * (key === "criticalDamage" ? .075 : .12);
     oscillator.type = key === "extreme" ? "sine" : "triangle";
     oscillator.frequency.value = frequency;
     gain.gain.setValueAtTime(0, start);
@@ -24238,13 +24252,17 @@ async function readSharedRollAudio(ref) {
     const metaSnapshot = await firestoreApi.getDoc(metaRef);
     if (!metaSnapshot.exists()) throw new Error("O áudio selecionado não está disponível.");
     const meta = metaSnapshot.data();
-    if (meta.ownerUid !== ref.uid || !ROLL_AUDIO_TYPES.has(meta.mimeType) || !Number.isInteger(meta.chunkCount) || meta.chunkCount < 1 || meta.chunkCount > 10) throw new Error("Áudio inválido.");
+    if (meta.ownerUid !== ref.uid || !ROLL_AUDIO_TYPES.has(meta.mimeType) || !Number.isInteger(meta.chunkCount) || meta.chunkCount < 1 || meta.chunkCount > MAX_ROLL_SOUND_CHUNKS || (meta.byteSize != null && (!Number.isInteger(meta.byteSize) || meta.byteSize < 1 || meta.byteSize > MAX_ROLL_SOUND_BYTES))) throw new Error("Áudio inválido.");
     const chunks = await Promise.all(Array.from({ length: meta.chunkCount }, (_, index) => firestoreApi.getDoc(firestoreApi.doc(metaRef, "chunks", String(index)))));
-    const data = chunks.map((snapshot) => {
+    const data = chunks.map((snapshot, index) => {
       const text = snapshot.data()?.data;
-      if (!snapshot.exists() || typeof text !== "string" || text.length > ROLL_SOUND_CHUNK_SIZE || !/^[A-Za-z0-9+/=]+$/.test(text)) throw new Error("Áudio incompleto.");
+      const maxLength = index === MAX_ROLL_SOUND_CHUNKS - 1 ? 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3) - index * ROLL_SOUND_CHUNK_SIZE : ROLL_SOUND_CHUNK_SIZE;
+      if (!snapshot.exists() || typeof text !== "string" || !text.length || text.length > maxLength || !/^[A-Za-z0-9+/=]+$/.test(text)) throw new Error("Áudio incompleto.");
       return text;
     }).join("");
+    if (data.length % 4 || data.length > 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3) || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) throw new Error("Áudio inválido.");
+    const byteSize = data.length * 3 / 4 - (data.endsWith("==") ? 2 : data.endsWith("=") ? 1 : 0);
+    if (byteSize > MAX_ROLL_SOUND_BYTES || (meta.byteSize != null && meta.byteSize !== byteSize)) throw new Error("Áudio inválido.");
     return `data:${meta.mimeType};base64,${data}`;
   })();
   rollAudioCache.set(key, loading);
@@ -24289,25 +24307,35 @@ async function stageRollSound(key, file) {
   const version = settingsSoundReadVersions[key] = (settingsSoundReadVersions[key] || 0) + 1;
   const mimeType = getRollSoundMimeType(file);
   if (!ROLL_AUDIO_TYPES.has(mimeType)) throw new Error("Escolha um áudio MP3, WAV, OGG, WebM ou M4A.");
-  if (!file.size || file.size > MAX_ROLL_SOUND_BYTES) throw new Error("O áudio precisa ter até 2 MB.");
+  if (!file.size || file.size > MAX_ROLL_SOUND_BYTES) throw new Error("O áudio precisa ter até 20 MB.");
   const draft = accountSettingsDraft;
   const source = await readFileDataUrl(file);
   if (accountSettingsDraft !== draft || version !== settingsSoundReadVersions[key]) return false;
   const data = source.slice(source.indexOf(",") + 1);
-  if (!data || data.length > ROLL_SOUND_CHUNK_SIZE * 10 || !/^[A-Za-z0-9+/=]+$/.test(data)) throw new Error("O arquivo de áudio é inválido ou muito grande.");
-  stagedRollSounds[key] = { name: file.name.slice(0, 120), mimeType, data, source: `data:${mimeType};base64,${data}` };
+  if (!data || data.length % 4 || data.length > 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3) || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) throw new Error("O arquivo de áudio é inválido ou muito grande.");
+  const byteSize = data.length * 3 / 4 - (data.endsWith("==") ? 2 : data.endsWith("=") ? 1 : 0);
+  if (byteSize > MAX_ROLL_SOUND_BYTES) throw new Error("O áudio precisa ter até 20 MB.");
+  stagedRollSounds[key] = { name: file.name.slice(0, 120), mimeType, byteSize, data, source: `data:${mimeType};base64,${data}` };
   renderSettingsSoundNames();
   return true;
 }
 
-async function uploadRollSound(clip, user) {
+async function uploadRollSound(clip, user, onProgress = () => {}) {
+  const data = clip.data;
+  if (typeof data !== "string" || !data.length || data.length % 4 || data.length > 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3) || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) throw new Error("O áudio é inválido ou ultrapassa o limite de 20 MB.");
+  const byteSize = data.length * 3 / 4 - (data.endsWith("==") ? 2 : data.endsWith("=") ? 1 : 0);
+  if (byteSize > MAX_ROLL_SOUND_BYTES) throw new Error("O áudio precisa ter até 20 MB.");
   const ref = firestoreApi.doc(firestoreApi.collection(firestoreDb, "users", user.uid, "rollSounds"));
   const chunks = Array.from({ length: Math.ceil(clip.data.length / ROLL_SOUND_CHUNK_SIZE) }, (_, index) => clip.data.slice(index * ROLL_SOUND_CHUNK_SIZE, (index + 1) * ROLL_SOUND_CHUNK_SIZE));
-  if (!chunks.length || chunks.length > 10) throw new Error("O áudio precisa ter até 2 MB.");
-  const batch = firestoreApi.writeBatch(firestoreDb);
-  batch.set(ref, { ownerUid: user.uid, name: clip.name, mimeType: clip.mimeType, chunkCount: chunks.length, createdAt: firestoreApi.serverTimestamp() });
-  chunks.forEach((data, index) => batch.set(firestoreApi.doc(ref, "chunks", String(index)), { data }));
-  await withCloudTimeout(batch.commit(), 25000, "O envio do áudio demorou demais. Tente novamente.");
+  if (!chunks.length || chunks.length > MAX_ROLL_SOUND_CHUNKS) throw new Error("O áudio precisa ter até 20 MB.");
+  for (let offset = 0; offset < chunks.length; offset += 8) {
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    const end = Math.min(offset + 8, chunks.length);
+    for (let index = offset; index < end; index += 1) batch.set(firestoreApi.doc(ref, "chunks", String(index)), { data: chunks[index] });
+    if (end === chunks.length) batch.set(ref, { ownerUid: user.uid, name: clip.name, mimeType: clip.mimeType, byteSize, chunkCount: chunks.length, createdAt: firestoreApi.serverTimestamp() });
+    await withCloudTimeout(batch.commit(), 45000, "O envio do áudio demorou demais. Tente novamente.");
+    onProgress(Math.round(end / chunks.length * 100));
+  }
   const soundRef = { uid: user.uid, id: ref.id, name: clip.name, mimeType: clip.mimeType };
   rollAudioCache.set(`${user.uid}/${ref.id}`, clip.source);
   return soundRef;
@@ -24328,7 +24356,7 @@ async function compactAccountAvatar(file) {
   return compact;
 }
 
-function settingsSoundFieldKey(key) { return key === "criticalFailure" ? "critical-failure" : key; }
+function settingsSoundFieldKey(key) { return key === "criticalFailure" ? "critical-failure" : key === "criticalDamage" ? "critical-damage" : key; }
 
 function setSettingsSoundFeedback(key, state, message) {
   const feedback = document.querySelector(`#settings-sound-status-${settingsSoundFieldKey(key)}`);
@@ -24497,7 +24525,9 @@ async function saveAccountSettings(event) {
     for (const key of pendingSoundKeys) {
       uploadingSoundKey = key;
       setSettingsSoundFeedback(key, "uploading", "Enviando áudio para sua conta…");
-      settings.sounds[key] = await uploadRollSound(stagedRollSounds[key], user);
+      settings.sounds[key] = await uploadRollSound(stagedRollSounds[key], user, (progress) => {
+        if (epoch === accountRollEpoch) setSettingsSoundFeedback(key, "uploading", `Enviando áudio para sua conta… ${progress}%`);
+      });
       if (epoch !== accountRollEpoch) return;
       setSettingsSoundFeedback(key, "uploading", "Arquivo enviado. Finalizando o salvamento…");
     }
