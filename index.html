@@ -7129,6 +7129,90 @@ h1, h2, h3, h4, h5, h6,
   .combat-panel .movement-value-row [data-reset-movement] { min-height: 40px; }
 }
     </style>
+    <style id="roll-settings-styles">
+.skills-heading { flex-wrap: wrap; gap: 16px 24px; }
+#open-roll-history, #account-settings-button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+#open-roll-history { flex: 0 0 auto; min-height: 38px; margin-left: auto; }
+#open-roll-history svg, #account-settings-button svg { display: block; flex: 0 0 17px; width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+#account-settings-modal, #roll-history-modal { z-index: 154; }
+#account-settings-dialog { width: min(760px, 100%); }
+#roll-history-dialog { width: min(820px, 100%); }
+#account-settings-form { display: contents; }
+.account-settings-content, .roll-history-content { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 22px 27px; }
+.account-settings-content { display: grid; gap: 22px; }
+.settings-section { display: grid; gap: 14px; margin: 0; padding: 0 0 22px; border: 0; border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .16); min-width: 0; }
+.settings-section:last-of-type { padding-bottom: 0; border-bottom: 0; }
+.settings-section h3 { margin: 0; color: var(--theme-text-e2dbce, #e2dbce); font: 600 1.12rem Georgia, "Times New Roman", serif; }
+.settings-section-copy, .settings-note { margin: 0; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .73rem; line-height: 1.65; }
+.settings-profile-grid { display: grid; grid-template-columns: 86px minmax(0, 1fr); gap: 16px; align-items: start; }
+.settings-avatar { width: 86px; height: 86px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .4); border-radius: 50%; background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .06); overflow: hidden; display: grid; place-items: center; }
+#account-settings-avatar-preview { display: block; width: 100%; height: 100%; object-fit: cover; }
+.settings-profile-fields { display: grid; gap: 12px; min-width: 0; }
+.settings-field { display: grid; gap: 7px; min-width: 0; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .72rem; }
+.settings-field > span:first-child, .settings-volume-label { color: var(--theme-accent-dfca86, #dfca86); font-size: .65rem; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
+.settings-field input:not([type="file"]), #roll-history-scope { min-width: 0; width: 100%; height: 40px; padding: 0 11px; border: 1px solid var(--theme-border-3a3b41, #3a3b41); border-radius: 3px; background: var(--theme-surface-090a0d, #090a0d); color: var(--theme-text-e2dbce, #e2dbce); font: inherit; }
+.settings-field input:focus-visible, #roll-history-scope:focus-visible { outline: 2px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .55); outline-offset: 2px; }
+.settings-avatar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.settings-file-button { display: inline-flex; align-items: center; justify-content: center; position: relative; cursor: pointer; overflow: hidden; }
+.settings-file-button input[type="file"] { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.settings-file-button:focus-within { outline: 2px solid var(--theme-accent-dfca86, #dfca86); outline-offset: 2px; }
+.settings-sound-list { display: grid; gap: 9px; }
+.settings-sound-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 13px 14px; border: 1px solid var(--theme-border-303137, #303137); border-radius: 4px; background: rgba(255, 255, 255, .015); }
+.settings-sound-copy { min-width: 0; }
+.settings-sound-copy strong { display: block; color: var(--theme-text-e2dbce, #e2dbce); font-size: .78rem; }
+.settings-sound-copy output { display: block; max-width: 100%; overflow-wrap: anywhere; margin-top: 4px; color: var(--theme-muted-858179, #858179); font-size: .68rem; }
+.settings-sound-row[data-outcome="extreme"] { border-left: 2px solid #72c990; }
+.settings-sound-row[data-outcome="failure"] { border-left: 2px solid #d7ad68; }
+.settings-sound-row[data-outcome="criticalFailure"] { border-left: 2px solid #d57785; }
+.settings-sound-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.settings-sound-actions .dialog-button, .settings-avatar-actions .dialog-button { min-height: 34px; padding: 0 10px; font-size: .68rem; }
+.settings-preview-button { display: inline-flex; justify-content: center; align-items: center; gap: 5px; }
+.settings-preview-button svg { display: block; width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.settings-volume { display: grid; grid-template-columns: minmax(0, 1fr) 42px; gap: 8px 12px; align-items: center; }
+.settings-volume-label { grid-column: 1 / -1; }
+.settings-volume input[type="range"], .settings-player-volume input[type="range"] { width: 100%; min-width: 0; height: 24px; margin: 0; accent-color: var(--theme-accent-dfca86, #dfca86); cursor: pointer; }
+.settings-volume output, .settings-player-volume output { color: var(--theme-text-e2dbce, #e2dbce); font-size: .73rem; font-variant-numeric: tabular-nums; text-align: right; }
+.settings-check { display: flex; align-items: flex-start; gap: 10px; color: var(--theme-text-e2dbce, #e2dbce); font-size: .77rem; line-height: 1.55; cursor: pointer; }
+.settings-check input[type="checkbox"] { flex: 0 0 16px; width: 16px; height: 16px; margin: 3px 0 0; accent-color: var(--theme-accent-dfca86, #dfca86); cursor: pointer; }
+#settings-player-volumes { display: grid; gap: 10px; }
+#settings-player-volumes:empty { display: none; }
+.settings-player-volume { display: grid; grid-template-columns: minmax(110px, 1fr) minmax(80px, 1.2fr) 42px; gap: 10px; align-items: center; padding-top: 10px; border-top: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); font-size: .73rem; color: var(--theme-text-e2dbce, #e2dbce); }
+.settings-player-volume label, .settings-player-volume > span { min-width: 0; overflow-wrap: anywhere; }
+#settings-status, #roll-history-status { margin: 0; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .73rem; line-height: 1.6; }
+#settings-status:empty { display: none; }
+#settings-status.is-error, #roll-history-status.is-error { color: #ef8c98; }
+#account-settings-dialog .ability-dialog-footer, #roll-history-dialog .ability-dialog-footer { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 9px; }
+.roll-history-content { display: flex; flex-direction: column; gap: 17px; min-height: 240px; }
+.roll-history-tools { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: end; }
+.roll-history-tools .dialog-button { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.roll-history-tools .dialog-button svg { display: block; width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.roll-history-privacy { display: grid; gap: 5px; padding: 13px 14px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .21); border-radius: 4px; background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04); }
+.roll-history-privacy .settings-note { margin-left: 26px; font-size: .68rem; }
+#roll-history-list { display: grid; gap: 10px; }
+.roll-history-entry { min-width: 0; padding: 14px 15px; border: 1px solid var(--theme-border-303137, #303137); border-radius: 4px; background: rgba(255, 255, 255, .018); }
+.roll-history-entry-head { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 7px 14px; }
+.roll-history-entry-head strong { color: var(--theme-text-e2dbce, #e2dbce); font: 600 1rem Georgia, "Times New Roman", serif; overflow-wrap: anywhere; }
+.roll-history-meta, .roll-history-detail { margin: 7px 0 0; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .7rem; line-height: 1.6; overflow-wrap: anywhere; }
+.roll-history-outcome { color: var(--theme-accent-dfca86, #dfca86); font-size: .72rem; font-weight: 750; }
+.roll-history-outcome[data-outcome="extreme"] { color: #82d2a0; }
+.roll-history-outcome[data-outcome="failure"], .roll-history-outcome[data-outcome="criticalFailure"] { color: #eb939e; }
+.roll-history-empty { padding: 26px 16px; color: var(--theme-muted-aaa69d, #aaa69d); border: 1px dashed var(--theme-border-3a3b41, #3a3b41); border-radius: 4px; text-align: center; font-size: .76rem; line-height: 1.65; }
+@media (max-width: 1100px) { #open-roll-history { margin-left: 0; } }
+@media (max-width: 760px) {
+  #open-roll-history { width: 100%; min-height: 42px; }
+  .account-settings-content, .roll-history-content { padding: 18px; }
+  .settings-sound-row { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .settings-sound-actions { justify-content: flex-start; }
+}
+@media (max-width: 480px) {
+  .settings-profile-grid { grid-template-columns: 60px minmax(0, 1fr); gap: 12px; }
+  .settings-avatar { width: 60px; height: 60px; }
+  .settings-player-volume { grid-template-columns: minmax(0, 1fr) 42px; }
+  .settings-player-volume label, .settings-player-volume > span { grid-column: 1 / -1; }
+  .roll-history-tools { grid-template-columns: minmax(0, 1fr); }
+  #account-settings-dialog .ability-dialog-footer > button { flex: 1; }
+}
+    </style>
   </head>
   <body class="slot-gate-open">
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
@@ -7224,6 +7308,10 @@ h1, h2, h3, h4, h5, h6,
           </div>
 
           <footer class="account-menu-actions">
+            <button id="account-settings-button" class="account-action is-primary" type="button" aria-haspopup="dialog" aria-controls="account-settings-modal" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9.5 3-.7 2.7-2.4 1.4-2.7-.7-2.5 4.3 2 2-.1 2.7-1.9 2 2.5 4.3 2.7-.7 2.4 1.4.7 2.6h5l.7-2.6 2.4-1.4 2.7.7 2.5-4.3-2-2 .1-2.7 1.9-2-2.5-4.3-2.7.7-2.4-1.4L14.5 3Z" transform="translate(2 -2) scale(.85)"></path><circle cx="12" cy="12" r="3.4"></circle></svg>
+              Configurações
+            </button>
             <button id="account-login" class="account-action is-primary" type="button" hidden>Entrar com Google</button>
             <button id="account-sync-now" class="account-action is-primary" type="button" hidden>Sincronizar agora</button>
             <button id="account-export-sheet" class="account-action" type="button" hidden>Exportar ficha</button>
@@ -7864,6 +7952,10 @@ h1, h2, h3, h4, h5, h6,
             </div>
           </div>
 
+          <button id="open-roll-history" class="dialog-button" type="button" aria-haspopup="dialog" aria-controls="roll-history-modal">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 .9 7.8M4 4v6h6"></path><path d="M12 7v5l3 2"></path></svg>
+            Histórico de rolagens
+          </button>
           <div class="training-key" aria-label="Níveis de treinamento">
             <span><i class="legend-die" data-static-die="8" aria-hidden="true"></i> Leigo</span>
             <span><i class="legend-die" data-static-die="12" aria-hidden="true"></i> Adepto</span>
@@ -9801,6 +9893,105 @@ h1, h2, h3, h4, h5, h6,
       </section>
     </div>
 
+    <div id="account-settings-modal" class="ability-modal utility-modal" hidden>
+      <div class="roll-backdrop" data-close-account-settings aria-hidden="true"></div>
+      <section id="account-settings-dialog" class="ability-dialog" role="dialog" aria-modal="true" aria-labelledby="account-settings-title" tabindex="-1">
+        <header class="ability-dialog-head">
+          <div>
+            <p class="eyebrow">Sua conta</p>
+            <h2 id="account-settings-title">Configurações</h2>
+            <p>Escolha como aparece nas Campanhas e quais sons quer ouvir.</p>
+          </div>
+          <button class="result-close" type="button" data-close-account-settings aria-label="Fechar configurações"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg></button>
+        </header>
+        <form id="account-settings-form">
+          <div class="account-settings-content">
+            <section class="settings-section" aria-labelledby="settings-profile-title">
+              <h3 id="settings-profile-title">Perfil público</h3>
+              <p class="settings-section-copy">Seu nick e avatar aparecem no site e para os participantes das suas Campanhas.</p>
+              <div class="settings-profile-grid">
+                <div class="settings-avatar"><img id="account-settings-avatar-preview" alt="Prévia do seu avatar" referrerpolicy="no-referrer" hidden /></div>
+                <div class="settings-profile-fields">
+                  <label class="settings-field"><span>Nick</span><input id="account-settings-nickname" type="text" maxlength="40" autocomplete="nickname" placeholder="Como quer ser chamado" /></label>
+                  <label class="settings-field"><span>Link do avatar</span><input id="account-settings-avatar-url" type="url" inputmode="url" autocomplete="off" placeholder="https://…" /></label>
+                  <div class="settings-avatar-actions">
+                    <label class="dialog-button settings-file-button">Enviar imagem<input id="account-settings-avatar-file" type="file" accept="image/*" aria-label="Enviar imagem para seu avatar" /></label>
+                    <button id="account-settings-avatar-reset" class="dialog-button" type="button">Usar avatar do Google</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section class="settings-section" aria-labelledby="settings-sounds-title">
+              <h3 id="settings-sounds-title">Sons das suas rolagens</h3>
+              <p class="settings-section-copy">Escolha um áudio para cada resultado. Os participantes da mesma Campanha podem ouvi-lo nas suas rolagens públicas.</p>
+              <div class="settings-sound-list">
+                <div class="settings-sound-row" data-outcome="extreme">
+                  <div class="settings-sound-copy"><strong>Sucesso Extremo</strong><output id="settings-sound-name-extreme">Som padrão</output></div>
+                  <div class="settings-sound-actions">
+                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-extreme" type="file" accept="audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Sucesso Extremo" /></label>
+                    <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="extreme"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
+                    <button class="dialog-button" type="button" data-reset-outcome="extreme">Padrão</button>
+                  </div>
+                </div>
+                <div class="settings-sound-row" data-outcome="failure">
+                  <div class="settings-sound-copy"><strong>Falha</strong><output id="settings-sound-name-failure">Som padrão</output></div>
+                  <div class="settings-sound-actions">
+                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-failure" type="file" accept="audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha" /></label>
+                    <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="failure"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
+                    <button class="dialog-button" type="button" data-reset-outcome="failure">Padrão</button>
+                  </div>
+                </div>
+                <div class="settings-sound-row" data-outcome="criticalFailure">
+                  <div class="settings-sound-copy"><strong>Falha Crítica</strong><output id="settings-sound-name-critical-failure">Som padrão</output></div>
+                  <div class="settings-sound-actions">
+                    <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-critical-failure" type="file" accept="audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha Crítica" /></label>
+                    <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="criticalFailure"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
+                    <button class="dialog-button" type="button" data-reset-outcome="criticalFailure">Padrão</button>
+                  </div>
+                </div>
+              </div>
+              <label class="settings-volume"><span class="settings-volume-label">Volume das suas rolagens</span><input id="settings-own-volume" type="range" min="0" max="100" step="1" value="70" aria-describedby="settings-own-volume-value" /><output id="settings-own-volume-value" for="settings-own-volume">70%</output></label>
+            </section>
+            <section class="settings-section" aria-labelledby="settings-others-title">
+              <h3 id="settings-others-title">Sons dos outros participantes</h3>
+              <label class="settings-check"><input id="settings-others-enabled" type="checkbox" /><span>Ouvir os sons de rolagens dos participantes das minhas Campanhas</span></label>
+              <label class="settings-volume"><span class="settings-volume-label">Volume dos outros participantes</span><input id="settings-others-volume" type="range" min="0" max="100" step="1" value="70" aria-describedby="settings-others-volume-value" /><output id="settings-others-volume-value" for="settings-others-volume">70%</output></label>
+              <div id="settings-player-volumes" aria-label="Volume de cada participante"></div>
+              <p class="settings-note">Você também pode ajustar cada participante. Seus ajustes de volume valem apenas para o que você ouve. Para liberar o áudio, o navegador pode pedir um primeiro clique em “Ouvir”.</p>
+            </section>
+            <p id="settings-status" role="status" aria-live="polite"></p>
+          </div>
+          <footer class="ability-dialog-footer">
+            <button class="dialog-button" type="button" data-close-account-settings>Cancelar</button>
+            <button id="account-settings-save" class="dialog-button is-primary" type="submit">Salvar configurações</button>
+          </footer>
+        </form>
+      </section>
+    </div>
+
+    <div id="roll-history-modal" class="ability-modal utility-modal" hidden>
+      <div class="roll-backdrop" data-close-roll-history aria-hidden="true"></div>
+      <section id="roll-history-dialog" class="ability-dialog" role="dialog" aria-modal="true" aria-labelledby="roll-history-title" tabindex="-1">
+        <header class="ability-dialog-head">
+          <div><p class="eyebrow">Registro de testes</p><h2 id="roll-history-title">Histórico de rolagens</h2><p>Consulte suas rolagens e as das suas Campanhas.</p></div>
+          <button class="result-close" type="button" data-close-roll-history aria-label="Fechar histórico de rolagens"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg></button>
+        </header>
+        <div class="roll-history-content">
+          <div class="roll-history-tools">
+            <label class="settings-field"><span>Mostrar</span><select id="roll-history-scope"><option value="personal">Minhas rolagens</option></select></label>
+            <button id="roll-history-refresh" class="dialog-button" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"></path><path d="M6.2 7a7 7 0 0 1 11.5-.8L20 9M4 15l2.3 2.8A7 7 0 0 0 17.8 17"></path></svg>Atualizar</button>
+          </div>
+          <div class="roll-history-privacy">
+            <label class="settings-check"><input id="roll-history-hidden" type="checkbox" /><span>Ocultar minhas rolagens nas Campanhas</span></label>
+            <p class="settings-note">Quando ativado, suas rolagens e os sons delas ficam privados.</p>
+          </div>
+          <p id="roll-history-status" role="status" aria-live="polite"></p>
+          <div id="roll-history-list" aria-label="Rolagens registradas"></div>
+        </div>
+        <footer class="ability-dialog-footer"><button class="dialog-button" type="button" data-close-roll-history>Fechar</button></footer>
+      </section>
+    </div>
+
     <div id="identity-options-menu" class="identity-options-menu" role="listbox" hidden></div>
 
     <!-- JavaScript incorporado: nenhum arquivo adicional é necessário. -->
@@ -11138,6 +11329,7 @@ function playRollSound() {
     rollSound.volume = 0.78;
   }
 
+  rollSound.volume = .78 * (window.AbyssCloud?.getOwnRollVolume?.() ?? 1);
   rollSound.pause();
   rollSound.currentTime = 0;
   const playback = rollSound.play();
@@ -15311,6 +15503,7 @@ function showCreationRollResult(title, context, parsed, result, trigger) {
   abilityRollModal.hidden = false;
   syncModalLock();
   abilityRollDialog.focus();
+  window.AbyssCloud?.recordRoll?.({ kind: "creation", title, total: result.total, formula: parsed.formula, breakdown: result.breakdown, context: window.AbyssCloud?.getRollContext?.() });
 }
 
 async function rollNamedCreation(scope, creationId, rollId, trigger, chargeCosts = false) {
@@ -17291,6 +17484,8 @@ function syncModalLock() {
     rdModal,
     systemPromptModal,
     sheetTransferModal,
+    document.querySelector("#account-settings-modal"),
+    document.querySelector("#roll-history-modal"),
   ]
     .some((modal) => !modal.hidden);
   document.body.classList.toggle("modal-open", hasOpenModal);
@@ -17850,6 +18045,7 @@ function showSpecialTestResult({
   rollModal.hidden = false;
   syncModalLock();
   rollDialog.focus();
+  window.AbyssCloud?.recordRoll?.({ kind: "special", title, total, formula: context, breakdown, outcome: outcomeKey, outcomeLabel: outcome, context: window.AbyssCloud?.getRollContext?.() });
 }
 
 function clearRollTimers() {
@@ -17902,6 +18098,7 @@ function rollSkill(skillIndex, triggerButton) {
   const extraTotal = sum(extraResults);
   const grantedModifiers = rollActiveCreationModifiers("skill", getSkillKey(skill));
   const total = mainResult + attributeBonus - attributePenalty + extraTotal + fixedModifier + grantedModifiers.total;
+  const rollContext = window.AbyssCloud?.getRollContext?.();
   const difficulty = DIFFICULTIES[selectedDifficulty];
   const outcome = evaluateOutcome(training.die, mainResult, total, selectedDifficulty);
 
@@ -17963,6 +18160,14 @@ function rollSkill(skillIndex, triggerButton) {
 
     resultSummary.hidden = false;
   }, reducedMotion ? 120 : 920);
+  window.AbyssCloud?.recordRoll?.({
+      kind: "skill", title: skill.name, total, natural: mainResult, outcome: outcome.key, outcomeLabel: outcome.label,
+      difficulty: difficulty.label, context: rollContext,
+      soundDelay: reducedMotion ? 120 : 920,
+      formula: `${mainDiceCount}d${training.die} (melhor) ${attributeValue <= 0 ? "" : "+ "}${attributeFormula}`,
+      breakdown: [`Treinamento: ${mainResults.join(" · ")} → ${mainResult}`, `Atributo ${attribute}: ${attributeBreakdown} → ${attributeResult}`,
+        `Dados extras: ${extraResults.join(" + ") || "0"} → ${extraTotal}`, `Modificador fixo: ${fixedModifier}`, ...grantedModifiers.breakdown, `Total: ${total}`],
+  });
 }
 
 function clamp(value, minimum, maximum) {
@@ -19093,7 +19298,8 @@ document.querySelectorAll("[data-attribute]").forEach((input) => {
 document.querySelectorAll("[data-roll-attribute]").forEach((button) => {
   button.addEventListener("click", () => {
     const attribute = button.dataset.rollAttribute;
-    const { total: result, breakdown } = rollAttributeDice(attribute);
+    const { total: result, breakdown, formula } = rollAttributeDice(attribute);
+    window.AbyssCloud?.recordRoll?.({ kind: "attribute", title: ATTRIBUTES[attribute], total: result, formula, breakdown, context: window.AbyssCloud?.getRollContext?.() });
     playRollSound();
     showAbyssAlert({
       eyebrow: `Dado de Atributo · ${attribute}`,
@@ -19888,6 +20094,10 @@ service cloud.firestore {
       return signedIn()
         && get(/databases/$(database)/documents/campaigns/$(campaignId)).data.ownerUid == request.auth.uid;
     }
+    function actorSharesRolls(actorUid) {
+      return exists(/databases/$(database)/documents/users/$(actorUid))
+        && get(/databases/$(database)/documents/users/$(actorUid)).data.get('appSettings', {}).get('hideRolls', false) == false;
+    }
     function access(ownerUid, slotId) {
       return get(/databases/$(database)/documents/users/$(ownerUid)/slots/$(slotId)/campaignAccess/$(request.auth.uid));
     }
@@ -19925,6 +20135,36 @@ service cloud.firestore {
 
     match /users/{uid} {
       allow read, create, update, delete: if mine(uid);
+      match /rollHistory/{rollId} {
+        allow read, create, update, delete: if mine(uid);
+      }
+      match /rollSounds/{soundId} {
+        allow read: if signedIn();
+        allow create, update: if mine(uid)
+          && request.resource.data.ownerUid == uid
+          && request.resource.data.name is string
+          && request.resource.data.name.size() > 0
+          && request.resource.data.name.size() <= 120
+          && request.resource.data.mimeType in [
+            'audio/mpeg', 'audio/wav', 'audio/x-wav',
+            'audio/ogg', 'audio/webm', 'audio/mp4'
+          ]
+          && request.resource.data.chunkCount is int
+          && request.resource.data.chunkCount >= 1
+          && request.resource.data.chunkCount <= 10;
+        allow delete: if mine(uid);
+        match /chunks/{chunkId} {
+          allow read: if signedIn();
+          allow create, update: if mine(uid)
+            && chunkId.matches('^[0-9]$')
+            && request.resource.data.keys().hasOnly(['data'])
+            && request.resource.data.data is string
+            && request.resource.data.data.size() > 0
+            && request.resource.data.data.size() <= 266664
+            && request.resource.data.data.matches('^[A-Za-z0-9+/=]+$');
+          allow delete: if mine(uid);
+        }
+      }
       match /campaigns/{campaignId} {
         allow read: if mine(uid);
         allow delete: if mine(uid) || campaignMaster(campaignId);
@@ -20028,6 +20268,33 @@ service cloud.firestore {
           && request.resource.data.slotId == resource.data.slotId;
         allow delete: if campaignMaster(campaignId) || resource.data.ownerUid == request.auth.uid;
       }
+
+      match /rollHistory/{actorUid}/entries/{rollId} {
+        allow read: if campaignMember(campaignId)
+          && (actorUid == request.auth.uid || actorSharesRolls(actorUid));
+        allow create: if signedIn()
+          && actorUid == request.auth.uid
+          && campaignMember(campaignId)
+          && actorSharesRolls(actorUid)
+          && request.resource.data.actorUid == actorUid
+          && request.resource.data.visibility == 'public'
+          && request.resource.data.sheetOwnerUid is string
+          && request.resource.data.slotId is string
+          && request.resource.data.sheetId is string
+          && request.resource.data.sheetId == request.resource.data.sheetOwnerUid + '_' + request.resource.data.slotId
+          && request.resource.data.title is string
+          && request.resource.data.title.size() > 0
+          && request.resource.data.title.size() <= 160
+          && request.resource.data.total is number
+          && request.resource.data.createdAt == request.time
+          && exists(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(request.resource.data.sheetId))
+          && get(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(request.resource.data.sheetId)).data.ownerUid == request.resource.data.sheetOwnerUid
+          && get(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(request.resource.data.sheetId)).data.slotId == request.resource.data.slotId
+          && get(/databases/$(database)/documents/campaigns/$(campaignId)/sheets/$(request.resource.data.sheetId)).data.privateToPlayers == false
+          && (request.resource.data.sheetOwnerUid == actorUid || campaignMaster(campaignId));
+        allow update: if false;
+        allow delete: if signedIn() && actorUid == request.auth.uid;
+      }
     }
 
     match /minervaAbilities/{abilityId} {
@@ -20105,12 +20372,13 @@ function closeAllCampaignModals() {
 
 function renderCampaignIdentity() {
   const user = currentFirebaseUser;
-  const name = user?.displayName || user?.email || "Conta Google";
+  const identity = getEffectiveIdentity(user);
+  const name = identity.displayName;
   campaignUi.userName.textContent = name;
   campaignUi.userFallback.textContent = name.trim().charAt(0).toUpperCase() || "A";
-  campaignUi.userAvatar.hidden = !user?.photoURL;
-  campaignUi.userFallback.hidden = Boolean(user?.photoURL);
-  if (user?.photoURL) campaignUi.userAvatar.src = user.photoURL;
+  campaignUi.userAvatar.hidden = !identity.photoURL;
+  campaignUi.userFallback.hidden = Boolean(identity.photoURL);
+  if (identity.photoURL) campaignUi.userAvatar.src = identity.photoURL;
   else campaignUi.userAvatar.removeAttribute("src");
 }
 
@@ -20179,6 +20447,8 @@ function renderCampaignDashboard() {
 
 async function loadCampaignRecords() {
   if (!currentFirebaseUser || !firestoreDb || !firestoreApi) return [];
+  const recordsUid = currentFirebaseUser.uid;
+  const recordsEpoch = accountRollEpoch;
   const indexRef = firestoreApi.collection(
     firestoreDb,
     "users",
@@ -20200,15 +20470,17 @@ async function loadCampaignRecords() {
     return {
       id: campaignSnapshot.id,
       ...data,
-      role: indexData.role === "master" || data.ownerUid === currentFirebaseUser.uid
+      role: indexData.role === "master" || data.ownerUid === recordsUid
         ? "master"
         : "player",
       joinedAt: indexData.joinedAt || data.createdAt,
     };
   }));
+  if (currentFirebaseUser?.uid !== recordsUid || accountRollEpoch !== recordsEpoch) return [];
   campaignRecords = records
     .filter(Boolean)
     .sort((a, b) => campaignTimestamp(b.updatedAt || b.createdAt) - campaignTimestamp(a.updatedAt || a.createdAt));
+  syncRollCampaignSubscriptions();
   return campaignRecords;
 }
 
@@ -21049,7 +21321,7 @@ async function submitCampaignEditor(event) {
       banner,
       joinCode,
       ownerUid: currentFirebaseUser.uid,
-      ownerName: currentFirebaseUser.displayName || "Mestre",
+      ownerName: getEffectiveIdentity().displayName,
       hideShieldStats: false,
       createdAt: timestamp,
       updatedAt: timestamp,
@@ -21061,8 +21333,9 @@ async function submitCampaignEditor(event) {
     batch.set(memberRef, {
       uid: currentFirebaseUser.uid,
       role: "master",
-      displayName: currentFirebaseUser.displayName || "Mestre",
-      photoURL: currentFirebaseUser.photoURL || "",
+      displayName: getEffectiveIdentity().displayName,
+      photoURL: getEffectiveIdentity().photoURL,
+      hideRolls: currentAccountSettings.hideRolls,
       sheetIds: [],
       joinedAt: timestamp,
     });
@@ -21126,8 +21399,9 @@ async function submitCampaignJoin(event) {
       uid: currentFirebaseUser.uid,
       role: "player",
       joinCode: code,
-      displayName: currentFirebaseUser.displayName || "Jogador",
-      photoURL: currentFirebaseUser.photoURL || "",
+      displayName: getEffectiveIdentity().displayName,
+      photoURL: getEffectiveIdentity().photoURL,
+      hideRolls: currentAccountSettings.hideRolls,
       sheetIds: [],
       joinedAt: timestamp,
     });
@@ -21382,8 +21656,8 @@ async function submitCampaignSlot(event) {
     const sheet = {
       id: linkId,
       ownerUid: currentFirebaseUser.uid,
-      ownerName: currentFirebaseUser.displayName || "Jogador",
-      ownerPhotoURL: currentFirebaseUser.photoURL || "",
+      ownerName: getEffectiveIdentity().displayName,
+      ownerPhotoURL: getEffectiveIdentity().photoURL,
       slotId,
       slotName: slot.name,
       characterName: String(profile.name || slot.name).slice(0, 120),
@@ -21822,8 +22096,9 @@ function isMinervaAdmin(user = currentFirebaseUser) {
 
 function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") {
   const signedIn = Boolean(user);
-  const displayName = user?.displayName || "Conta Google";
-  const firstName = displayName.trim().split(/\s+/)[0] || "Minha conta";
+  const identity = getEffectiveIdentity(user);
+  const displayName = identity.displayName;
+  const firstName = currentAccountSettings.nickname || displayName.trim().split(/\s+/)[0] || "Minha conta";
 
   firebaseUi.button.dataset.accountState = state;
   firebaseUi.button.disabled = state === "signing-in";
@@ -21834,8 +22109,8 @@ function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") 
   );
 
   firebaseUi.icon.hidden = signedIn;
-  setAvatar(firebaseUi.avatar, null, user?.photoURL || "", displayName);
-  setAvatar(firebaseUi.menuAvatar, firebaseUi.placeholder, user?.photoURL || "", displayName);
+  setAvatar(firebaseUi.avatar, null, identity.photoURL, displayName);
+  setAvatar(firebaseUi.menuAvatar, firebaseUi.placeholder, identity.photoURL, displayName);
   firebaseUi.name.textContent = signedIn ? displayName : "Nenhuma conta conectada";
   firebaseUi.email.textContent = signedIn ? (user.email || "Conta Google") : "Entre para sincronizar esta ficha.";
   firebaseUi.setupHint.hidden = state !== "missing";
@@ -21845,6 +22120,7 @@ function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") 
   firebaseUi.importSheet.hidden = !signedIn || !currentSlotId;
   firebaseUi.reset.hidden = !signedIn;
   firebaseUi.signOut.hidden = !signedIn;
+  rollAccountUi.settingsButton.hidden = !signedIn;
   firebaseUi.slotCard.hidden = !signedIn || !currentSlotId;
   firebaseUi.minervaButton.hidden = !signedIn || !isMinervaAdmin(user);
   firebaseUi.slotsLoginNote.hidden = signedIn;
@@ -23702,6 +23978,915 @@ async function deleteMinervaItem(item) {
   );
 }
 
+// Perfil, preferências de áudio e histórico de rolagens da conta.
+const ROLL_SOUND_CHUNK_SIZE = 266664;
+const MAX_ROLL_SOUND_BYTES = 1999980;
+const ROLL_AUDIO_TYPES = new Set(["audio/mpeg", "audio/wav", "audio/x-wav", "audio/ogg", "audio/webm", "audio/mp4"]);
+const ROLL_SOUND_KEYS = ["extreme", "failure", "criticalFailure"];
+const rollAccountUi = {
+  settingsButton: document.querySelector("#account-settings-button"),
+  settingsModal: document.querySelector("#account-settings-modal"),
+  settingsDialog: document.querySelector("#account-settings-dialog"),
+  settingsForm: document.querySelector("#account-settings-form"),
+  nickname: document.querySelector("#account-settings-nickname"),
+  avatarUrl: document.querySelector("#account-settings-avatar-url"),
+  avatarFile: document.querySelector("#account-settings-avatar-file"),
+  avatarPreview: document.querySelector("#account-settings-avatar-preview"),
+  ownVolume: document.querySelector("#settings-own-volume"),
+  ownVolumeValue: document.querySelector("#settings-own-volume-value"),
+  othersEnabled: document.querySelector("#settings-others-enabled"),
+  othersVolume: document.querySelector("#settings-others-volume"),
+  othersVolumeValue: document.querySelector("#settings-others-volume-value"),
+  playerVolumes: document.querySelector("#settings-player-volumes"),
+  settingsStatus: document.querySelector("#settings-status"),
+  save: document.querySelector("#account-settings-save"),
+  historyButton: document.querySelector("#open-roll-history"),
+  historyModal: document.querySelector("#roll-history-modal"),
+  historyDialog: document.querySelector("#roll-history-dialog"),
+  historyScope: document.querySelector("#roll-history-scope"),
+  hidden: document.querySelector("#roll-history-hidden"),
+  historyStatus: document.querySelector("#roll-history-status"),
+  historyList: document.querySelector("#roll-history-list"),
+};
+
+function clampRollVolume(value, fallback = .7) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.min(1, Math.max(0, number)) : fallback;
+}
+
+function normalizeAccountAvatar(value) {
+  const source = typeof value === "string" ? value.trim() : "";
+  if (source.length <= 90000 && /^data:image\/(?:png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(source)) return source;
+  if (source.length > 2048) return "";
+  try {
+    const url = new URL(source);
+    return ["https:", "http:"].includes(url.protocol) ? url.href : "";
+  } catch { return ""; }
+}
+
+function normalizeRollSoundRef(raw) {
+  if (!raw || typeof raw !== "object") return null;
+  const uid = String(raw.uid || "");
+  const id = String(raw.id || "");
+  if (!/^[A-Za-z0-9_-]{1,128}$/.test(uid) || !/^[A-Za-z0-9_-]{1,128}$/.test(id)) return null;
+  if (!ROLL_AUDIO_TYPES.has(raw.mimeType)) return null;
+  return { uid, id, name: String(raw.name || "Áudio").slice(0, 120), mimeType: raw.mimeType };
+}
+
+function normalizeAccountSettings(raw = {}) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) raw = {};
+  const playerVolumes = {};
+  Object.entries(raw.playerVolumes || {}).slice(0, 300).forEach(([uid, volume]) => {
+    if (/^[A-Za-z0-9_-]{1,128}$/.test(uid)) playerVolumes[uid] = clampRollVolume(volume, 1);
+  });
+  return {
+    nickname: String(raw.nickname || "").trim().replace(/\s+/g, " ").slice(0, 40),
+    avatar: normalizeAccountAvatar(raw.avatar),
+    sounds: Object.fromEntries(ROLL_SOUND_KEYS.map((key) => [key, normalizeRollSoundRef(raw.sounds?.[key])])),
+    ownVolume: clampRollVolume(raw.ownVolume ?? .7),
+    othersEnabled: raw.othersEnabled === true,
+    othersVolume: clampRollVolume(raw.othersVolume ?? .7),
+    playerVolumes,
+    hideRolls: raw.hideRolls === true,
+  };
+}
+
+let currentAccountSettings = normalizeAccountSettings();
+let accountSettingsDraft = null;
+let stagedRollSounds = {};
+let settingsBusy = false;
+let rollPrivacySaving = false;
+const pendingSettingsMedia = new Set();
+const settingsSoundReadVersions = {};
+let settingsAvatarReadVersion = 0;
+let accountRollEpoch = 0;
+let accountSettingsUnsubscribe = null;
+let personalHistoryUnsubscribe = null;
+let campaignIndexUnsubscribe = null;
+let personalRollHistory = [];
+let rollHistoryLimit = 200;
+let historyLastError = "";
+const rollCampaignSubscriptions = new Map();
+const rollAudioCache = new Map();
+const playedCampaignRolls = new Set();
+const activeOutcomeAudio = new Set();
+let outcomeAudioContext = null;
+
+function getEffectiveIdentity(user = currentFirebaseUser) {
+  const overrides = user?.uid && user.uid === currentFirebaseUser?.uid ? currentAccountSettings : null;
+  return {
+    displayName: overrides?.nickname || user?.displayName || user?.email || "Conta Google",
+    photoURL: overrides?.avatar || normalizeAccountAvatar(user?.photoURL || ""),
+  };
+}
+
+function rollFeatureError(error) {
+  if (String(error?.code || "").includes("permission-denied")) {
+    return "Atualize as Regras do Firestore disponíveis em Campanhas para liberar o histórico e os áudios.";
+  }
+  return error?.message || "Não foi possível sincronizar. Verifique sua conexão e tente novamente.";
+}
+
+function setRollFeatureStatus(element, message = "", error = false) {
+  element.textContent = message;
+  element.classList.toggle("is-error", error);
+}
+
+function resetAccountRollSession() {
+  accountRollEpoch += 1;
+  accountSettingsUnsubscribe?.();
+  personalHistoryUnsubscribe?.();
+  campaignIndexUnsubscribe?.();
+  accountSettingsUnsubscribe = personalHistoryUnsubscribe = campaignIndexUnsubscribe = null;
+  rollCampaignSubscriptions.forEach(stopRollCampaignSubscription);
+  rollCampaignSubscriptions.clear();
+  activeOutcomeAudio.forEach((audio) => audio.pause());
+  activeOutcomeAudio.clear();
+  playedCampaignRolls.clear();
+  rollAudioCache.clear();
+  currentAccountSettings = normalizeAccountSettings();
+  accountSettingsDraft = null;
+  stagedRollSounds = {};
+  campaignRecords = [];
+  activeCampaign = null;
+  activeCampaignMembers = [];
+  activeCampaignSheets = [];
+  stopCampaignShieldRealtime();
+  clearCampaignSheetSession();
+  closeAllCampaignModals();
+  pendingSettingsMedia.clear();
+  settingsBusy = false;
+  rollPrivacySaving = false;
+  rollAccountUi.save.textContent = "Salvar configurações";
+  personalRollHistory = [];
+  historyLastError = "";
+  rollHistoryLimit = 200;
+  rollAccountUi.settingsModal.hidden = true;
+  rollAccountUi.historyModal.hidden = true;
+  updateRollHistoryScopes();
+  renderRollHistory();
+}
+
+async function initializeAccountRollSession(user) {
+  const epoch = accountRollEpoch;
+  const userRef = firestoreApi.doc(firestoreDb, "users", user.uid);
+  try {
+    const snapshot = await firestoreApi.getDoc(userRef);
+    if (epoch !== accountRollEpoch || currentFirebaseUser?.uid !== user.uid) return;
+    currentAccountSettings = normalizeAccountSettings(snapshot.data()?.appSettings);
+    renderAccountIdentity(user);
+    accountSettingsUnsubscribe = firestoreApi.onSnapshot(userRef, (nextSnapshot) => {
+      if (epoch !== accountRollEpoch) return;
+      currentAccountSettings = normalizeAccountSettings(nextSnapshot.data()?.appSettings);
+      rollAccountUi.hidden.checked = currentAccountSettings.hideRolls;
+      renderAccountIdentity(currentFirebaseUser);
+      renderRollHistory();
+    }, (error) => {
+      if (epoch === accountRollEpoch) setRollFeatureStatus(rollAccountUi.settingsStatus, rollFeatureError(error), true);
+    });
+    startPersonalRollHistory();
+    campaignIndexUnsubscribe = firestoreApi.onSnapshot(
+      firestoreApi.collection(firestoreDb, "users", user.uid, "campaigns"),
+      () => { if (epoch === accountRollEpoch) loadCampaignRecords().catch(reportRollHistoryError); },
+      (error) => { if (epoch === accountRollEpoch) reportRollHistoryError(error); },
+    );
+  } catch (error) {
+    if (epoch === accountRollEpoch) reportRollHistoryError(error);
+  }
+}
+
+function getRollContext() {
+  return {
+    actorUid: currentFirebaseUser?.uid || "",
+    sheetOwnerUid: campaignSheetSession?.ownerUid || currentFirebaseUser?.uid || "",
+    slotId: campaignSheetSession?.slotId || currentSlotId || "",
+    campaignId: campaignSheetSession?.campaignId || "",
+    characterName: String(sheetBridge?.captureState?.()?.profile?.name || campaignSheetSession?.slotName || currentSlots.find((slot) => slot.id === currentSlotId)?.name || "Personagem").slice(0, 120),
+  };
+}
+
+function outcomeSoundKey(outcome) {
+  if (outcome === "extreme" || outcome === "extreme-critical") return "extreme";
+  if (outcome === "criticalFailure" || outcome === "critical-failure") return "criticalFailure";
+  return outcome === "failure" ? "failure" : "";
+}
+
+function normalizeCompletedRoll(raw = {}) {
+  const total = Number(raw.total);
+  if (!Number.isFinite(total)) return null;
+  const context = raw.context && typeof raw.context === "object" ? raw.context : getRollContext();
+  const actorUid = String(raw.actorUid || context.actorUid || "").slice(0, 128);
+  const sheetOwnerUid = String(raw.sheetOwnerUid || context.sheetOwnerUid || "").slice(0, 128);
+  const slotId = String(raw.slotId || context.slotId || "").slice(0, 128);
+  const knownOutcomes = ["extreme", "extreme-critical", "failure", "critical-failure", "criticalFailure", "partial", "normal", "good"];
+  const outcome = knownOutcomes.includes(raw.outcome || raw.outcomeKey) ? (raw.outcome || raw.outcomeKey) : "";
+  const soundRef = normalizeRollSoundRef(raw.soundRef);
+  return {
+    id: String(raw.id || "").slice(0, 128),
+    actorUid, sheetOwnerUid, slotId,
+    sheetId: campaignSheetLinkId(sheetOwnerUid, slotId),
+    characterName: String(raw.characterName || context.characterName || "Personagem").slice(0, 120),
+    actorNickname: String(raw.actorNickname || "Jogador").slice(0, 120),
+    title: String(raw.title || "Rolagem").slice(0, 160),
+    kind: String(raw.kind || "skill").slice(0, 30),
+    total,
+    natural: raw.natural != null && Number.isFinite(Number(raw.natural)) ? Number(raw.natural) : null,
+    outcome,
+    outcomeLabel: String(raw.outcomeLabel || "").slice(0, 80),
+    formula: String(raw.formula || "").slice(0, 500),
+    breakdown: (Array.isArray(raw.breakdown) ? raw.breakdown.join(" · ") : String(raw.breakdown || "")).slice(0, 5000),
+    difficulty: String(raw.difficulty || "").slice(0, 80),
+    clientTime: Number.isFinite(Number(raw.clientTime)) ? Number(raw.clientTime) : Date.now(),
+    createdAt: raw.createdAt || null,
+    campaignIds: Array.isArray(raw.campaignIds) ? raw.campaignIds.filter((id) => typeof id === "string" && !id.includes("/")).slice(0, 100) : [],
+    publicCampaignIds: Array.isArray(raw.publicCampaignIds) ? raw.publicCampaignIds.filter((id) => typeof id === "string" && !id.includes("/")).slice(0, 100) : [],
+    hidden: raw.hidden === true,
+    visibility: raw.visibility === "public" ? "public" : "private",
+    soundRef: soundRef?.uid === actorUid ? soundRef : null,
+  };
+}
+
+function shouldPublishCampaignRoll(record, campaign, link) {
+  return !currentAccountSettings.hideRolls && !record.hidden && Boolean(record.actorUid)
+    && record.actorUid === currentFirebaseUser?.uid
+    && link?.privateToPlayers === false
+    && link.ownerUid === record.sheetOwnerUid && link.slotId === record.slotId
+    && (record.sheetOwnerUid === record.actorUid || campaign?.ownerUid === record.actorUid);
+}
+
+async function getRollCampaignLinks(record, context) {
+  if (!record.actorUid || !record.slotId || !record.sheetOwnerUid) return [];
+  if (!campaignRecords.length) await loadCampaignRecords();
+  const candidates = context.campaignId && record.sheetOwnerUid !== record.actorUid
+    ? campaignRecords.filter((campaign) => campaign.id === context.campaignId)
+    : campaignRecords;
+  const links = await Promise.allSettled(candidates.map(async (campaign) => {
+    const snapshot = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "campaigns", campaign.id, "sheets", record.sheetId));
+    if (!snapshot.exists()) return null;
+    const link = snapshot.data();
+    if (link.ownerUid !== record.sheetOwnerUid || link.slotId !== record.slotId) return null;
+    if (record.actorUid !== link.ownerUid && record.actorUid !== campaign.ownerUid) return null;
+    return { campaign, link };
+  }));
+  const failure = links.find((result) => result.status === "rejected");
+  if (failure) reportRollHistoryError(failure.reason);
+  return links.filter((result) => result.status === "fulfilled" && result.value).map((result) => result.value);
+}
+
+async function recordCompletedRoll(event) {
+  const epoch = accountRollEpoch;
+  const context = event.context || getRollContext();
+  const identity = getEffectiveIdentity();
+  const record = normalizeCompletedRoll({ ...event, context, actorNickname: identity.displayName,
+    hidden: currentAccountSettings.hideRolls, clientTime: Date.now() });
+  if (!record) return;
+  record.id = `roll_${globalThis.crypto?.randomUUID?.() || `${Date.now()}_${Math.random().toString(36).slice(2)}`}`;
+  const soundKey = outcomeSoundKey(record.outcome);
+  record.soundRef = soundKey ? currentAccountSettings.sounds[soundKey] : null;
+  const ownVolume = currentAccountSettings.ownVolume;
+  const playOwnOutcome = () => {
+    if (epoch === accountRollEpoch && soundKey) playOutcomeSound(soundKey, record.soundRef, ownVolume).catch(reportOutcomeAudioError);
+  };
+  const soundDelay = Math.max(0, Math.min(2000, Number(event.soundDelay) || 0));
+  if (soundDelay) window.setTimeout(playOwnOutcome, soundDelay);
+  else playOwnOutcome();
+  personalRollHistory = [record, ...personalRollHistory].slice(0, rollHistoryLimit);
+  renderRollHistory();
+  const user = currentFirebaseUser;
+  if (!user || !firestoreDb || !firestoreApi || context.actorUid !== user.uid) return;
+  const privateRef = firestoreApi.doc(firestoreDb, "users", user.uid, "rollHistory", record.id);
+  try {
+    // Guardar primeiro na conta garante histórico mesmo se uma Campanha não estiver disponível.
+    await firestoreApi.setDoc(privateRef, { ...record, createdAt: firestoreApi.serverTimestamp() });
+    const links = await getRollCampaignLinks(record, context);
+    if (epoch !== accountRollEpoch || currentFirebaseUser?.uid !== user.uid) return;
+    record.campaignIds = links.map(({ campaign }) => campaign.id);
+    record.hidden = record.hidden || currentAccountSettings.hideRolls;
+    await firestoreApi.setDoc(privateRef, { campaignIds: record.campaignIds, hidden: record.hidden }, { merge: true });
+    const publicLinks = links.filter(({ campaign, link }) => shouldPublishCampaignRoll(record, campaign, link));
+    const writes = await Promise.allSettled(publicLinks.map(({ campaign }) =>
+      firestoreApi.setDoc(firestoreApi.doc(firestoreDb, "campaigns", campaign.id, "rollHistory", user.uid, "entries", record.id), {
+        ...record, visibility: "public", createdAt: firestoreApi.serverTimestamp(),
+      }),
+    ));
+    record.publicCampaignIds = publicLinks.filter((_, index) => writes[index].status === "fulfilled").map(({ campaign }) => campaign.id);
+    record.visibility = record.publicCampaignIds.length ? "public" : "private";
+    if (epoch !== accountRollEpoch) return;
+    await firestoreApi.setDoc(privateRef, { publicCampaignIds: record.publicCampaignIds, visibility: record.visibility }, { merge: true });
+    const failure = writes.find((result) => result.status === "rejected");
+    if (failure) throw failure.reason;
+  } catch (error) {
+    if (epoch === accountRollEpoch) reportRollHistoryError(error);
+  }
+}
+
+function reportRollHistoryError(error) {
+  historyLastError = rollFeatureError(error);
+  setRollFeatureStatus(rollAccountUi.historyStatus, historyLastError, true);
+}
+
+function startPersonalRollHistory() {
+  personalHistoryUnsubscribe?.();
+  if (!currentFirebaseUser) return;
+  const epoch = accountRollEpoch;
+  const query = firestoreApi.query(firestoreApi.collection(firestoreDb, "users", currentFirebaseUser.uid, "rollHistory"),
+    firestoreApi.orderBy("createdAt", "desc"), firestoreApi.limit(rollHistoryLimit));
+  personalHistoryUnsubscribe = firestoreApi.onSnapshot(query, (snapshot) => {
+    if (epoch !== accountRollEpoch) return;
+    const saved = snapshot.docs.map((item) => normalizeCompletedRoll({ ...item.data(), id: item.id })).filter(Boolean);
+    const pending = personalRollHistory.filter((record) => !record.createdAt && !saved.some((item) => item.id === record.id));
+    personalRollHistory = [...pending, ...saved].slice(0, rollHistoryLimit);
+    renderRollHistory();
+  }, (error) => { if (epoch === accountRollEpoch) reportRollHistoryError(error); });
+}
+
+function stopRollCampaignSubscription(subscription) {
+  subscription.membersUnsubscribe?.();
+  subscription.actors.forEach((actor) => actor.unsubscribe?.());
+  subscription.actors.clear();
+}
+
+function syncRollCampaignSubscriptions() {
+  if (!currentFirebaseUser || !firestoreApi?.onSnapshot) return;
+  const ids = new Set(campaignRecords.map((campaign) => campaign.id));
+  rollCampaignSubscriptions.forEach((subscription, id) => {
+    if (!ids.has(id)) { stopRollCampaignSubscription(subscription); rollCampaignSubscriptions.delete(id); }
+  });
+  const epoch = accountRollEpoch;
+  campaignRecords.forEach((campaign) => {
+    if (rollCampaignSubscriptions.has(campaign.id)) return;
+    const subscription = { campaign, members: new Map(), actors: new Map(), membersUnsubscribe: null };
+    rollCampaignSubscriptions.set(campaign.id, subscription);
+    subscription.membersUnsubscribe = firestoreApi.onSnapshot(
+      firestoreApi.collection(firestoreDb, "campaigns", campaign.id, "members"),
+      (snapshot) => {
+        if (epoch !== accountRollEpoch) return;
+        subscription.members = new Map(snapshot.docs.map((item) => [item.id, { ...item.data(), uid: item.id, id: item.id }]));
+        syncCampaignActorHistory(subscription);
+        if (activeCampaign?.id === campaign.id && subscription.members.has(currentFirebaseUser.uid)) {
+          activeCampaignMembers = [...subscription.members.values()];
+          campaignUi.membersList.replaceChildren(...activeCampaignMembers.map(createCampaignMemberRow));
+          campaignUi.detailMembersCount.textContent = `${activeCampaignMembers.length} ${activeCampaignMembers.length === 1 ? "membro" : "membros"}`;
+        }
+        renderSettingsPlayerVolumes();
+        renderRollHistory();
+      },
+      (error) => {
+        if (epoch !== accountRollEpoch) return;
+        stopRollCampaignSubscription(subscription);
+        subscription.members.clear();
+        rollCampaignSubscriptions.delete(campaign.id);
+        renderRollHistory();
+        reportRollHistoryError(error);
+      },
+    );
+  });
+  updateRollHistoryScopes();
+  renderRollHistory();
+}
+
+function isFreshCampaignRoll(roll, initial = false) {
+  const timestamp = Number(roll.clientTime);
+  const age = Date.now() - timestamp;
+  return !initial && Number.isFinite(timestamp) && age >= -5000 && age < 30000;
+}
+
+function syncCampaignActorHistory(subscription) {
+  const selfUid = currentFirebaseUser?.uid;
+  // A própria saída da Campanha encerra os streams, mesmo antes de atualizar o índice da conta.
+  if (!subscription.members.has(selfUid)) {
+    subscription.actors.forEach((actor) => actor.unsubscribe?.());
+    subscription.actors.clear();
+    return;
+  }
+  const visibleUids = new Set([...subscription.members.values()]
+    .filter((member) => member.uid === selfUid || member.hideRolls !== true).map((member) => member.uid));
+  subscription.actors.forEach((actor, uid) => {
+    if (!visibleUids.has(uid)) { actor.unsubscribe?.(); subscription.actors.delete(uid); }
+  });
+  const epoch = accountRollEpoch;
+  visibleUids.forEach((uid) => {
+    if (subscription.actors.has(uid)) return;
+    const actor = { records: [], unsubscribe: null, initial: true };
+    subscription.actors.set(uid, actor);
+    const query = firestoreApi.query(
+      firestoreApi.collection(firestoreDb, "campaigns", subscription.campaign.id, "rollHistory", uid, "entries"),
+      firestoreApi.orderBy("createdAt", "desc"), firestoreApi.limit(rollHistoryLimit),
+    );
+    actor.unsubscribe = firestoreApi.onSnapshot(query, (snapshot) => {
+      if (epoch !== accountRollEpoch || subscription.actors.get(uid) !== actor) return;
+      const initial = actor.initial;
+      actor.initial = false;
+      actor.records = snapshot.docs.map((item) => normalizeCompletedRoll({ ...item.data(), id: item.id })).filter(Boolean);
+      if (!snapshot.metadata?.fromCache) {
+        snapshot.docChanges().forEach((change) => {
+          if (change.type !== "added" || uid === selfUid) return;
+          const roll = normalizeCompletedRoll({ ...change.doc.data(), id: change.doc.id });
+          if (!roll || roll.actorUid !== uid || !isFreshCampaignRoll(roll, initial)) return;
+          const key = `${uid}:${roll.id}`;
+          if (playedCampaignRolls.has(key)) return;
+          playedCampaignRolls.add(key);
+          if (playedCampaignRolls.size > 1000) playedCampaignRolls.delete(playedCampaignRolls.values().next().value);
+          const sound = outcomeSoundKey(roll.outcome);
+          if (sound) playOutcomeSound(sound, roll.soundRef, getReceivedRollVolume(uid), "", () =>
+            subscription.actors.get(uid) === actor && subscription.members.get(uid)?.hideRolls !== true && currentAccountSettings.othersEnabled,
+          ).catch(reportOutcomeAudioError);
+        });
+      }
+      renderRollHistory();
+    }, (error) => {
+      if (epoch !== accountRollEpoch || subscription.actors.get(uid) !== actor) return;
+      actor.records = [];
+      actor.unsubscribe?.();
+      subscription.actors.delete(uid);
+      renderRollHistory();
+      reportRollHistoryError(error);
+    });
+  });
+}
+
+function updateRollHistoryScopes() {
+  const selected = rollAccountUi.historyScope.value;
+  const personal = new Option("Minhas rolagens", "personal");
+  rollAccountUi.historyScope.replaceChildren(personal, ...campaignRecords.map((campaign) => new Option(campaign.name || "Campanha", campaign.id)));
+  rollAccountUi.historyScope.value = campaignRecords.some((campaign) => campaign.id === selected) ? selected : "personal";
+  rollAccountUi.hidden.disabled = !currentFirebaseUser || settingsBusy || rollPrivacySaving;
+  rollAccountUi.hidden.checked = currentAccountSettings.hideRolls;
+}
+
+function getVisibleRollHistory(scope = "personal") {
+  if (scope === "personal") return [...personalRollHistory];
+  const subscription = rollCampaignSubscriptions.get(scope);
+  const records = new Map();
+  subscription?.actors.forEach((actor, uid) => {
+    if (uid !== currentFirebaseUser?.uid && subscription.members.get(uid)?.hideRolls === true) return;
+    actor.records.forEach((record) => records.set(`${record.actorUid}:${record.id}`, record));
+  });
+  personalRollHistory.filter((record) => record.campaignIds.includes(scope)).forEach((record) => records.set(`${record.actorUid}:${record.id}`, record));
+  return [...records.values()];
+}
+
+function renderRollHistory() {
+  if (rollAccountUi.historyModal.hidden) return;
+  const scope = rollAccountUi.historyScope.value || "personal";
+  const records = getVisibleRollHistory(scope).sort((a, b) => (campaignTimestamp(b.createdAt) || b.clientTime) - (campaignTimestamp(a.createdAt) || a.clientTime));
+  const subscription = rollCampaignSubscriptions.get(scope);
+  const nodes = records.map((record) => {
+    const article = document.createElement("article");
+    article.className = "roll-history-entry";
+    const head = document.createElement("div"); head.className = "roll-history-entry-head";
+    const title = document.createElement("strong"); title.textContent = `${record.title} · ${record.total}`;
+    const outcome = document.createElement("span"); outcome.className = "roll-history-outcome";
+    outcome.dataset.outcome = outcomeSoundKey(record.outcome) || record.outcome;
+    outcome.textContent = record.outcomeLabel || ({ "critical-failure": "Falha Crítica", failure: "Falha", extreme: "Sucesso Extremo", "extreme-critical": "Sucesso Extremo (Crítico)", partial: "Sucesso Parcial", normal: "Sucesso Normal", good: "Sucesso Bom" }[record.outcome] || "Rolagem");
+    head.append(title, outcome);
+    const meta = document.createElement("p"); meta.className = "roll-history-meta";
+    const name = record.actorUid === currentFirebaseUser?.uid ? getEffectiveIdentity().displayName : subscription?.members.get(record.actorUid)?.displayName || record.actorNickname;
+    const date = new Date(campaignTimestamp(record.createdAt) || record.clientTime).toLocaleString("pt-BR");
+    const isPublicHere = scope === "personal" ? record.visibility === "public" : record.publicCampaignIds.includes(scope) || record.visibility === "public";
+    const hidden = record.actorUid === currentFirebaseUser?.uid && (currentAccountSettings.hideRolls || record.hidden || !isPublicHere);
+    meta.textContent = `${name} · ${record.characterName} · ${date}${hidden ? " · Privada" : ""}${record.difficulty ? ` · Zona ${record.difficulty}` : ""}`;
+    const detail = document.createElement("p"); detail.className = "roll-history-detail";
+    detail.textContent = [record.formula, record.breakdown].filter(Boolean).join(" · ");
+    article.append(head, meta, detail);
+    return article;
+  });
+  if (!nodes.length) {
+    const empty = document.createElement("p"); empty.className = "roll-history-empty";
+    empty.textContent = "Nenhuma rolagem registrada nesta seção. Novas rolagens aparecerão aqui.";
+    nodes.push(empty);
+  }
+  if (records.length >= rollHistoryLimit) {
+    const more = document.createElement("button"); more.type = "button"; more.className = "dialog-button"; more.textContent = "Carregar rolagens anteriores";
+    more.addEventListener("click", () => {
+      rollHistoryLimit += 200;
+      startPersonalRollHistory();
+      rollCampaignSubscriptions.forEach((item) => { item.actors.forEach((actor) => actor.unsubscribe?.()); item.actors.clear(); syncCampaignActorHistory(item); });
+    });
+    nodes.push(more);
+  }
+  rollAccountUi.historyList.replaceChildren(...nodes);
+  if (!historyLastError) setRollFeatureStatus(rollAccountUi.historyStatus,
+    currentFirebaseUser ? "Histórico atualizado em tempo real. Rolagens ocultas ficam visíveis somente para você." : "Entre com Google para salvar o histórico. Estas rolagens são temporárias.");
+}
+
+function getReceivedRollVolume(actorUid) {
+  if (actorUid === currentFirebaseUser?.uid) return currentAccountSettings.ownVolume;
+  if (!currentAccountSettings.othersEnabled) return 0;
+  return currentAccountSettings.othersVolume * (currentAccountSettings.playerVolumes[actorUid] ?? 1);
+}
+
+async function unlockOutcomeAudio() {
+  const AudioContextApi = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextApi) return;
+  if (!outcomeAudioContext) outcomeAudioContext = new AudioContextApi();
+  if (outcomeAudioContext.state === "suspended") await outcomeAudioContext.resume();
+}
+
+function reportOutcomeAudioError(error) {
+  const message = error?.name === "NotAllowedError"
+    ? "Clique em “Ouvir” nas Configurações para liberar os sons neste navegador."
+    : rollFeatureError(error);
+  setRollFeatureStatus(rollAccountUi.settingsStatus, message, true);
+}
+
+function playDefaultOutcomeSound(key, volume) {
+  if (!outcomeAudioContext || volume <= 0) return;
+  const frequencies = key === "extreme" ? [523.25, 659.25, 783.99] : key === "criticalFailure" ? [220, 164.81, 110] : [293.66, 220];
+  frequencies.forEach((frequency, index) => {
+    const oscillator = outcomeAudioContext.createOscillator();
+    const gain = outcomeAudioContext.createGain();
+    const start = outcomeAudioContext.currentTime + index * .12;
+    oscillator.type = key === "extreme" ? "sine" : "triangle";
+    oscillator.frequency.value = frequency;
+    gain.gain.setValueAtTime(0, start);
+    gain.gain.linearRampToValueAtTime(volume * .16, start + .025);
+    gain.gain.exponentialRampToValueAtTime(.0001, start + .32);
+    oscillator.connect(gain); gain.connect(outcomeAudioContext.destination);
+    oscillator.start(start); oscillator.stop(start + .34);
+    oscillator.onended = () => { oscillator.disconnect(); gain.disconnect(); };
+  });
+}
+
+async function readSharedRollAudio(ref) {
+  ref = normalizeRollSoundRef(ref);
+  if (!ref || !currentFirebaseUser) return "";
+  const key = `${ref.uid}/${ref.id}`;
+  if (rollAudioCache.has(key)) return rollAudioCache.get(key);
+  const loading = (async () => {
+    const metaRef = firestoreApi.doc(firestoreDb, "users", ref.uid, "rollSounds", ref.id);
+    const metaSnapshot = await firestoreApi.getDoc(metaRef);
+    if (!metaSnapshot.exists()) throw new Error("O áudio selecionado não está disponível.");
+    const meta = metaSnapshot.data();
+    if (meta.ownerUid !== ref.uid || !ROLL_AUDIO_TYPES.has(meta.mimeType) || !Number.isInteger(meta.chunkCount) || meta.chunkCount < 1 || meta.chunkCount > 10) throw new Error("Áudio inválido.");
+    const chunks = await Promise.all(Array.from({ length: meta.chunkCount }, (_, index) => firestoreApi.getDoc(firestoreApi.doc(metaRef, "chunks", String(index)))));
+    const data = chunks.map((snapshot) => {
+      const text = snapshot.data()?.data;
+      if (!snapshot.exists() || typeof text !== "string" || text.length > ROLL_SOUND_CHUNK_SIZE || !/^[A-Za-z0-9+/=]+$/.test(text)) throw new Error("Áudio incompleto.");
+      return text;
+    }).join("");
+    return `data:${meta.mimeType};base64,${data}`;
+  })();
+  rollAudioCache.set(key, loading);
+  try { return await loading; } catch (error) { rollAudioCache.delete(key); throw error; }
+}
+
+async function playOutcomeSound(key, ref, volume, localSource = "", canPlay = () => true) {
+  volume = clampRollVolume(volume, 0);
+  if (!ROLL_SOUND_KEYS.includes(key) || volume === 0) return;
+  const epoch = accountRollEpoch;
+  const source = localSource || (ref ? await readSharedRollAudio(ref) : "");
+  if (epoch !== accountRollEpoch || !canPlay()) return;
+  if (!source) { await unlockOutcomeAudio(); playDefaultOutcomeSound(key, volume); return; }
+  const audio = new Audio(source);
+  audio.volume = volume;
+  activeOutcomeAudio.add(audio);
+  audio.onended = audio.onerror = () => activeOutcomeAudio.delete(audio);
+  try { await audio.play(); } catch (error) { activeOutcomeAudio.delete(audio); throw error; }
+}
+
+function readFileDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("Não foi possível ler o arquivo."));
+    reader.readAsDataURL(file);
+  });
+}
+
+function getRollSoundMimeType(file) {
+  const aliases = { "audio/mp3": "audio/mpeg", "audio/x-m4a": "audio/mp4", "audio/vnd.wave": "audio/wav", "audio/wave": "audio/wav" };
+  return aliases[file.type] || file.type || ({ mp3: "audio/mpeg", wav: "audio/wav", ogg: "audio/ogg", webm: "audio/webm", m4a: "audio/mp4", mp4: "audio/mp4" }[file.name.split(".").at(-1)?.toLowerCase()] || "");
+}
+
+async function stageRollSound(key, file) {
+  if (!file || !accountSettingsDraft) return;
+  const version = settingsSoundReadVersions[key] = (settingsSoundReadVersions[key] || 0) + 1;
+  const mimeType = getRollSoundMimeType(file);
+  if (!ROLL_AUDIO_TYPES.has(mimeType)) throw new Error("Escolha um áudio MP3, WAV, OGG, WebM ou M4A.");
+  if (!file.size || file.size > MAX_ROLL_SOUND_BYTES) throw new Error("O áudio precisa ter até 2 MB.");
+  const draft = accountSettingsDraft;
+  const source = await readFileDataUrl(file);
+  if (accountSettingsDraft !== draft || version !== settingsSoundReadVersions[key]) return;
+  const data = source.slice(source.indexOf(",") + 1);
+  if (!data || data.length > ROLL_SOUND_CHUNK_SIZE * 10 || !/^[A-Za-z0-9+/=]+$/.test(data)) throw new Error("O arquivo de áudio é inválido ou muito grande.");
+  stagedRollSounds[key] = { name: file.name.slice(0, 120), mimeType, data, source: `data:${mimeType};base64,${data}` };
+  renderSettingsSoundNames();
+}
+
+async function uploadRollSound(clip, user) {
+  const ref = firestoreApi.doc(firestoreApi.collection(firestoreDb, "users", user.uid, "rollSounds"));
+  const chunks = Array.from({ length: Math.ceil(clip.data.length / ROLL_SOUND_CHUNK_SIZE) }, (_, index) => clip.data.slice(index * ROLL_SOUND_CHUNK_SIZE, (index + 1) * ROLL_SOUND_CHUNK_SIZE));
+  if (!chunks.length || chunks.length > 10) throw new Error("O áudio precisa ter até 2 MB.");
+  const batch = firestoreApi.writeBatch(firestoreDb);
+  batch.set(ref, { ownerUid: user.uid, name: clip.name, mimeType: clip.mimeType, chunkCount: chunks.length, createdAt: firestoreApi.serverTimestamp() });
+  chunks.forEach((data, index) => batch.set(firestoreApi.doc(ref, "chunks", String(index)), { data }));
+  await withCloudTimeout(batch.commit(), 25000, "O envio do áudio demorou demais. Tente novamente.");
+  const soundRef = { uid: user.uid, id: ref.id, name: clip.name, mimeType: clip.mimeType };
+  rollAudioCache.set(`${user.uid}/${ref.id}`, clip.source);
+  return soundRef;
+}
+
+async function compactAccountAvatar(file) {
+  if (!["image/png", "image/jpeg", "image/webp"].includes(file.type) || file.size > 8 * 1024 * 1024) throw new Error("Escolha uma imagem PNG, JPG ou WebP com até 8 MB.");
+  const source = await readFileDataUrl(file);
+  const image = new Image();
+  await new Promise((resolve, reject) => { image.onload = resolve; image.onerror = () => reject(new Error("Não foi possível abrir a imagem.")); image.src = source; });
+  const canvas = document.createElement("canvas"); canvas.width = canvas.height = 256;
+  const context = canvas.getContext("2d");
+  const side = Math.min(image.naturalWidth, image.naturalHeight);
+  context.fillStyle = "#18191c"; context.fillRect(0, 0, 256, 256);
+  context.drawImage(image, (image.naturalWidth - side) / 2, (image.naturalHeight - side) / 2, side, side, 0, 0, 256, 256);
+  const compact = canvas.toDataURL("image/jpeg", .75);
+  if (compact.length > 90000) throw new Error("Não foi possível reduzir esta imagem. Escolha outra.");
+  return compact;
+}
+
+function settingsSoundFieldKey(key) { return key === "criticalFailure" ? "critical-failure" : key; }
+
+function renderSettingsSoundNames() {
+  ROLL_SOUND_KEYS.forEach((key) => {
+    document.querySelector(`#settings-sound-name-${settingsSoundFieldKey(key)}`).textContent = stagedRollSounds[key]?.name || accountSettingsDraft?.sounds[key]?.name || "Som padrão";
+  });
+}
+
+function renderSettingsAvatarPreview() {
+  const source = accountSettingsDraft?.avatar || normalizeAccountAvatar(currentFirebaseUser?.photoURL || "");
+  rollAccountUi.avatarPreview.hidden = !source;
+  if (source) rollAccountUi.avatarPreview.src = source;
+  else rollAccountUi.avatarPreview.removeAttribute("src");
+}
+
+function renderSettingsPlayerVolumes() {
+  if (!accountSettingsDraft || rollAccountUi.settingsModal.hidden) return;
+  const players = new Map();
+  rollCampaignSubscriptions.forEach((subscription) => subscription.members.forEach((member, uid) => {
+    if (uid !== currentFirebaseUser?.uid) players.set(uid, member);
+  }));
+  const rows = [...players.values()].sort((a, b) => String(a.displayName || "").localeCompare(String(b.displayName || ""), "pt-BR")).map((member) => {
+    const row = document.createElement("div"); row.className = "settings-player-volume";
+    const label = document.createElement("label"); label.textContent = member.displayName || "Jogador";
+    const range = document.createElement("input"); range.type = "range"; range.min = "0"; range.max = "100"; range.step = "1";
+    range.id = `player-roll-volume-${member.uid}`; label.htmlFor = range.id;
+    range.value = String(Math.round((accountSettingsDraft.playerVolumes[member.uid] ?? 1) * 100));
+    range.disabled = !accountSettingsDraft.othersEnabled;
+    const output = document.createElement("output"); output.htmlFor = range.id; output.textContent = `${range.value}%`;
+    range.addEventListener("input", () => { accountSettingsDraft.playerVolumes[member.uid] = Number(range.value) / 100; output.textContent = `${range.value}%`; });
+    row.append(label, range, output); return row;
+  });
+  if (!rows.length) { const note = document.createElement("p"); note.className = "settings-note"; note.textContent = "Os participantes das suas Campanhas aparecerão aqui."; rows.push(note); }
+  rollAccountUi.playerVolumes.replaceChildren(...rows);
+}
+
+function openAccountSettings() {
+  if (!currentFirebaseUser) return;
+  closeAccountMenu();
+  accountSettingsDraft = normalizeAccountSettings(currentAccountSettings);
+  stagedRollSounds = {};
+  rollAccountUi.nickname.value = accountSettingsDraft.nickname || getEffectiveIdentity().displayName;
+  rollAccountUi.avatarUrl.value = accountSettingsDraft.avatar.startsWith("data:") ? "" : accountSettingsDraft.avatar;
+  rollAccountUi.avatarFile.value = "";
+  ROLL_SOUND_KEYS.forEach((key) => { document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).value = ""; });
+  rollAccountUi.ownVolume.value = String(Math.round(accountSettingsDraft.ownVolume * 100));
+  rollAccountUi.ownVolumeValue.textContent = `${rollAccountUi.ownVolume.value}%`;
+  rollAccountUi.othersEnabled.checked = accountSettingsDraft.othersEnabled;
+  rollAccountUi.othersVolume.value = String(Math.round(accountSettingsDraft.othersVolume * 100));
+  rollAccountUi.othersVolumeValue.textContent = `${rollAccountUi.othersVolume.value}%`;
+  rollAccountUi.othersVolume.disabled = !accountSettingsDraft.othersEnabled;
+  setRollFeatureStatus(rollAccountUi.settingsStatus);
+  rollAccountUi.settingsModal.hidden = false;
+  renderSettingsAvatarPreview(); renderSettingsSoundNames(); renderSettingsPlayerVolumes();
+  updateSettingsFormAvailability();
+  syncModalLock(); rollAccountUi.settingsDialog.focus();
+  unlockOutcomeAudio().catch(() => {});
+  loadCampaignRecords().catch((error) => setRollFeatureStatus(rollAccountUi.settingsStatus, rollFeatureError(error), true));
+}
+
+function closeAccountSettings() {
+  if (settingsBusy) return;
+  rollAccountUi.settingsModal.hidden = true;
+  accountSettingsDraft = null; stagedRollSounds = {};
+  syncModalLock(); firebaseUi.button.focus();
+}
+
+function updateSettingsFormAvailability() {
+  rollAccountUi.settingsForm.querySelectorAll("input, button").forEach((element) => { element.disabled = settingsBusy; });
+  rollAccountUi.save.disabled = settingsBusy || pendingSettingsMedia.size > 0;
+  rollAccountUi.othersVolume.disabled = settingsBusy || !accountSettingsDraft?.othersEnabled;
+  rollAccountUi.playerVolumes.querySelectorAll("input").forEach((element) => { element.disabled = settingsBusy || !accountSettingsDraft?.othersEnabled; });
+  rollAccountUi.settingsDialog.querySelectorAll("[data-close-account-settings]").forEach((element) => { element.disabled = settingsBusy; });
+}
+
+async function readSettingsMedia(operation) {
+  const token = Symbol("media");
+  pendingSettingsMedia.add(token);
+  updateSettingsFormAvailability();
+  try { return await operation(); }
+  finally { pendingSettingsMedia.delete(token); updateSettingsFormAvailability(); }
+}
+
+async function propagateAccountIdentity(user, settings) {
+  const identity = getEffectiveIdentity(user);
+  const memberships = await firestoreApi.getDocs(firestoreApi.collection(firestoreDb, "users", user.uid, "campaigns"));
+  const results = await Promise.allSettled(memberships.docs.map(async (index) => {
+    const memberRef = firestoreApi.doc(firestoreDb, "campaigns", index.id, "members", user.uid);
+    const member = await firestoreApi.getDoc(memberRef);
+    if (!member.exists()) return;
+    await firestoreApi.setDoc(memberRef, { displayName: identity.displayName, photoURL: identity.photoURL, hideRolls: settings.hideRolls }, { merge: true });
+    const campaignRef = firestoreApi.doc(firestoreDb, "campaigns", index.id);
+    const campaign = await firestoreApi.getDoc(campaignRef);
+    if (campaign.exists() && campaign.data().ownerUid === user.uid) await firestoreApi.setDoc(campaignRef, { ownerName: identity.displayName }, { merge: true });
+    await Promise.all((member.data().sheetIds || []).filter((id) => typeof id === "string").map(async (id) => {
+      const sheetRef = firestoreApi.doc(firestoreDb, "campaigns", index.id, "sheets", id);
+      const sheet = await firestoreApi.getDoc(sheetRef);
+      if (sheet.exists() && sheet.data().ownerUid === user.uid) await firestoreApi.setDoc(sheetRef, { ownerName: identity.displayName, ownerPhotoURL: identity.photoURL }, { merge: true });
+    }));
+  }));
+  const failure = results.find((result) => result.status === "rejected");
+  if (failure) throw failure.reason;
+  if (currentFirebaseUser?.uid !== user.uid) return;
+  if (activeCampaign) {
+    activeCampaignMembers = activeCampaignMembers.map((member) => member.uid === user.uid ? { ...member, displayName: identity.displayName, photoURL: identity.photoURL, hideRolls: settings.hideRolls } : member);
+    activeCampaignSheets = activeCampaignSheets.map((sheet) => sheet.ownerUid === user.uid ? { ...sheet, ownerName: identity.displayName, ownerPhotoURL: identity.photoURL } : sheet);
+    renderCampaignDetail();
+  }
+}
+
+async function saveAccountSettings(event) {
+  event.preventDefault();
+  if (settingsBusy || !currentFirebaseUser || !accountSettingsDraft) return;
+  if (pendingSettingsMedia.size) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Aguarde o arquivo terminar de carregar."); return; }
+  const user = currentFirebaseUser; const epoch = accountRollEpoch;
+  const nickname = rollAccountUi.nickname.value.trim().replace(/\s+/g, " ").slice(0, 40);
+  if (!nickname) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Digite seu nick.", true); rollAccountUi.nickname.focus(); return; }
+  const typedAvatar = rollAccountUi.avatarUrl.value.trim();
+  if (typedAvatar && !normalizeAccountAvatar(typedAvatar)) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Use um link de imagem que comece com https:// ou http://.", true); return; }
+  settingsBusy = true; rollAccountUi.save.disabled = true;
+  updateSettingsFormAvailability();
+  rollAccountUi.save.textContent = "Salvando…";
+  rollAccountUi.hidden.disabled = true;
+  setRollFeatureStatus(rollAccountUi.settingsStatus, "Salvando perfil e preferências…");
+  try {
+    const settings = normalizeAccountSettings({ ...accountSettingsDraft, nickname, hideRolls: currentAccountSettings.hideRolls });
+    for (const key of ROLL_SOUND_KEYS) if (stagedRollSounds[key]) settings.sounds[key] = await uploadRollSound(stagedRollSounds[key], user);
+    if (epoch !== accountRollEpoch) return;
+    // A privacidade tem sua própria gravação; um salvamento de volume não pode desfazê-la.
+    const { hideRolls: ignoredPrivacy, ...savedSettings } = settings;
+    await firestoreApi.setDoc(firestoreApi.doc(firestoreDb, "users", user.uid), { appSettings: savedSettings }, { merge: true });
+    if (epoch !== accountRollEpoch) return;
+    settings.hideRolls = currentAccountSettings.hideRolls;
+    currentAccountSettings = settings;
+    accountSettingsDraft = normalizeAccountSettings(settings); stagedRollSounds = {};
+    renderAccountIdentity(user); renderSettingsSoundNames(); renderRollHistory();
+    try {
+      await propagateAccountIdentity(user, settings);
+      setRollFeatureStatus(rollAccountUi.settingsStatus, "Configurações salvas.");
+    } catch (error) {
+      setRollFeatureStatus(rollAccountUi.settingsStatus, `Salvo na conta. A atualização nas Campanhas está pendente: ${rollFeatureError(error)}`, true);
+    }
+  } catch (error) {
+    if (epoch === accountRollEpoch) setRollFeatureStatus(rollAccountUi.settingsStatus, rollFeatureError(error), true);
+  } finally {
+    if (epoch === accountRollEpoch) {
+      settingsBusy = false; rollAccountUi.save.disabled = false;
+      updateSettingsFormAvailability();
+      rollAccountUi.save.textContent = "Salvar configurações";
+      rollAccountUi.hidden.disabled = !currentFirebaseUser || rollPrivacySaving;
+    }
+  }
+}
+
+async function persistRollPrivacy(hidden) {
+  if (!currentFirebaseUser || settingsBusy || rollPrivacySaving) return;
+  const user = currentFirebaseUser; const epoch = accountRollEpoch;
+  const previousPrivacy = currentAccountSettings.hideRolls;
+  rollPrivacySaving = true;
+  if (hidden) currentAccountSettings.hideRolls = true;
+  rollAccountUi.hidden.disabled = true;
+  setRollFeatureStatus(rollAccountUi.historyStatus, "Atualizando privacidade…");
+  try {
+    await firestoreApi.setDoc(firestoreApi.doc(firestoreDb, "users", user.uid), { appSettings: { hideRolls: hidden } }, { merge: true });
+    if (epoch !== accountRollEpoch) return;
+    currentAccountSettings.hideRolls = hidden;
+    if (accountSettingsDraft) accountSettingsDraft.hideRolls = hidden;
+    await propagateAccountIdentity(user, currentAccountSettings);
+    historyLastError = "";
+    renderRollHistory();
+    setRollFeatureStatus(rollAccountUi.historyStatus, hidden ? "Suas rolagens e seus sons estão ocultos nas Campanhas, inclusive do Mestre. Você continua vendo seu histórico." : "Novas rolagens de fichas públicas serão compartilhadas. Rolagens feitas enquanto estavam ocultas continuam privadas.");
+  } catch (error) {
+    if (epoch === accountRollEpoch) {
+      const saved = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "users", user.uid)).catch(() => null);
+      if (epoch !== accountRollEpoch || currentFirebaseUser?.uid !== user.uid) return;
+      currentAccountSettings.hideRolls = saved ? saved.data()?.appSettings?.hideRolls === true : previousPrivacy;
+      reportRollHistoryError(error);
+    }
+  } finally {
+    if (epoch === accountRollEpoch) {
+      rollPrivacySaving = false;
+      rollAccountUi.hidden.checked = currentAccountSettings.hideRolls;
+      rollAccountUi.hidden.disabled = !currentFirebaseUser || settingsBusy;
+    }
+  }
+}
+
+async function openRollHistory() {
+  rollAccountUi.historyModal.hidden = false;
+  updateRollHistoryScopes(); renderRollHistory();
+  syncModalLock(); rollAccountUi.historyDialog.focus();
+  unlockOutcomeAudio().catch(() => {});
+  if (currentFirebaseUser) {
+    try { await loadCampaignRecords(); } catch (error) { reportRollHistoryError(error); }
+  }
+}
+
+function closeRollHistory() {
+  rollAccountUi.historyModal.hidden = true;
+  syncModalLock(); rollAccountUi.historyButton.focus();
+}
+
+rollAccountUi.settingsButton.addEventListener("click", openAccountSettings);
+rollAccountUi.settingsForm.addEventListener("submit", saveAccountSettings);
+rollAccountUi.historyButton.addEventListener("click", openRollHistory);
+rollAccountUi.historyScope.addEventListener("change", renderRollHistory);
+rollAccountUi.hidden.addEventListener("change", () => persistRollPrivacy(rollAccountUi.hidden.checked));
+document.querySelectorAll("[data-close-account-settings]").forEach((button) => button.addEventListener("click", closeAccountSettings));
+document.querySelectorAll("[data-close-roll-history]").forEach((button) => button.addEventListener("click", closeRollHistory));
+document.querySelector("#roll-history-refresh").addEventListener("click", async () => {
+  if (!currentFirebaseUser) { renderRollHistory(); return; }
+  historyLastError = "";
+  rollCampaignSubscriptions.forEach(stopRollCampaignSubscription); rollCampaignSubscriptions.clear();
+  startPersonalRollHistory();
+  try { await loadCampaignRecords(); } catch (error) { reportRollHistoryError(error); }
+});
+rollAccountUi.ownVolume.addEventListener("input", () => {
+  if (!accountSettingsDraft) return;
+  accountSettingsDraft.ownVolume = Number(rollAccountUi.ownVolume.value) / 100;
+  rollAccountUi.ownVolumeValue.textContent = `${rollAccountUi.ownVolume.value}%`;
+});
+rollAccountUi.othersVolume.addEventListener("input", () => {
+  if (!accountSettingsDraft) return;
+  accountSettingsDraft.othersVolume = Number(rollAccountUi.othersVolume.value) / 100;
+  rollAccountUi.othersVolumeValue.textContent = `${rollAccountUi.othersVolume.value}%`;
+});
+rollAccountUi.othersEnabled.addEventListener("change", () => {
+  if (!accountSettingsDraft) return;
+  accountSettingsDraft.othersEnabled = rollAccountUi.othersEnabled.checked;
+  rollAccountUi.othersVolume.disabled = !accountSettingsDraft.othersEnabled;
+  renderSettingsPlayerVolumes();
+});
+rollAccountUi.avatarUrl.addEventListener("input", () => {
+  if (!accountSettingsDraft) return;
+  settingsAvatarReadVersion += 1;
+  accountSettingsDraft.avatar = normalizeAccountAvatar(rollAccountUi.avatarUrl.value);
+  rollAccountUi.avatarFile.value = ""; renderSettingsAvatarPreview();
+});
+rollAccountUi.avatarFile.addEventListener("change", async () => {
+  const file = rollAccountUi.avatarFile.files?.[0]; const draft = accountSettingsDraft;
+  if (!file || !draft) return;
+  const version = ++settingsAvatarReadVersion;
+  try {
+    const avatar = await readSettingsMedia(() => compactAccountAvatar(file));
+    if (accountSettingsDraft !== draft || version !== settingsAvatarReadVersion) return;
+    draft.avatar = avatar; rollAccountUi.avatarUrl.value = ""; renderSettingsAvatarPreview();
+  } catch (error) { setRollFeatureStatus(rollAccountUi.settingsStatus, rollFeatureError(error), true); }
+});
+document.querySelector("#account-settings-avatar-reset").addEventListener("click", () => {
+  if (!accountSettingsDraft) return;
+  settingsAvatarReadVersion += 1;
+  accountSettingsDraft.avatar = ""; rollAccountUi.avatarUrl.value = ""; rollAccountUi.avatarFile.value = ""; renderSettingsAvatarPreview();
+});
+ROLL_SOUND_KEYS.forEach((key) => {
+  document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).addEventListener("change", async (event) => {
+    try { await readSettingsMedia(() => stageRollSound(key, event.target.files?.[0])); setRollFeatureStatus(rollAccountUi.settingsStatus, "Áudio selecionado. Salve para usar nas suas rolagens."); }
+    catch (error) { event.target.value = ""; setRollFeatureStatus(rollAccountUi.settingsStatus, rollFeatureError(error), true); }
+  });
+});
+document.querySelectorAll("[data-preview-outcome]").forEach((button) => button.addEventListener("click", () => {
+  if (!accountSettingsDraft) return;
+  const key = button.dataset.previewOutcome;
+  activeOutcomeAudio.forEach((audio) => audio.pause()); activeOutcomeAudio.clear();
+  unlockOutcomeAudio().then(() => playOutcomeSound(key, accountSettingsDraft.sounds[key], accountSettingsDraft.ownVolume, stagedRollSounds[key]?.source || "")).catch(reportOutcomeAudioError);
+}));
+document.querySelectorAll("[data-reset-outcome]").forEach((button) => button.addEventListener("click", () => {
+  if (!accountSettingsDraft) return;
+  const key = button.dataset.resetOutcome;
+  settingsSoundReadVersions[key] = (settingsSoundReadVersions[key] || 0) + 1;
+  accountSettingsDraft.sounds[key] = null; delete stagedRollSounds[key];
+  document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).value = ""; renderSettingsSoundNames();
+}));
+document.addEventListener("pointerdown", () => unlockOutcomeAudio().catch(() => {}), { passive: true });
+document.addEventListener("keydown", (event) => {
+  const modal = !rollAccountUi.settingsModal.hidden ? rollAccountUi.settingsModal : !rollAccountUi.historyModal.hidden ? rollAccountUi.historyModal : null;
+  if (!modal) return;
+  if (event.key === "Escape") { event.preventDefault(); modal === rollAccountUi.settingsModal ? closeAccountSettings() : closeRollHistory(); }
+  if (event.key !== "Tab") return;
+  const focusable = [...modal.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex="0"]')].filter((element) => !element.closest("[hidden]"));
+  const first = focusable[0], last = focusable.at(-1);
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === modal.querySelector('[role="dialog"]'))) { event.preventDefault(); last?.focus(); }
+  else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+});
+
+
 window.AbyssCloud = Object.freeze({
   isSignedIn: () => Boolean(currentFirebaseUser),
   hasActiveSlot: () => Boolean(currentFirebaseUser && currentSlotId),
@@ -23715,6 +24900,9 @@ window.AbyssCloud = Object.freeze({
   deleteMinervaItem,
   renderSlots,
   openSlotFolders,
+  getRollContext,
+  getOwnRollVolume: () => currentAccountSettings.ownVolume,
+  recordRoll: (event) => recordCompletedRoll(event).catch(reportRollHistoryError),
   describeError: describeFirebaseError,
 });
 
@@ -24366,6 +25554,7 @@ async function initializeFirebaseSync() {
     await authApi.setPersistence(firebaseAuth, authApi.browserLocalPersistence).catch(() => {});
 
     authApi.onAuthStateChanged(firebaseAuth, async (user) => {
+      resetAccountRollSession();
       currentFirebaseUser = user;
       if (!user) {
         clearCampaignSheetSession();
@@ -24406,6 +25595,7 @@ async function initializeFirebaseSync() {
       sheetBridge.resetState();
       openStartupSlotGate({ loading: true, message: "Buscando os Slots desta conta…" });
       renderAccountIdentity(user, "signed-in");
+      await initializeAccountRollSession(user);
       await hydrateUserSheet(user);
     });
   } catch (error) {
