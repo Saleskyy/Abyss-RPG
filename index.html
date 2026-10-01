@@ -683,7 +683,8 @@ h2 { margin-bottom: 0; font-size: 1.35rem; letter-spacing: 0.015em; }
 }
 .roll-button:hover { border-color: var(--theme-border-9299a4, #9299a4); background: var(--theme-surfaceRaised-22262d, #22262d); box-shadow: 0 0 20px rgba(255, 255, 255, 0.08); transform: translateY(-1px); }
 .roll-button:active { transform: translateY(0) scale(0.96); }
-.roll-button svg { width: 24px; height: 24px; }
+.roll-button > [data-static-die] { display: grid; place-items: center; line-height: 0; }
+.roll-button svg { display: block; width: 24px; height: 24px; }
 
 body.modal-open { overflow: hidden; }
 
@@ -3381,7 +3382,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 }
 
 .slots-dialog {
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   width: min(680px, 100%);
 }
 
@@ -3667,6 +3668,41 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 }
 
 .slots-manager-tools { display: grid; }
+.slots-manager-content { min-height: 0; overflow-y: auto; }
+.create-slot-folder-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 10px; padding: 16px 23px 0; }
+.create-slot-form { grid-template-columns: minmax(0, 1fr) minmax(125px, .5fr) auto; }
+.slots-folder-nav { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin: 3px 23px 12px; }
+.slots-folder-nav strong { min-width: 0; overflow-wrap: anywhere; color: var(--theme-text-e2dbce, #e2dbce); font: 600 1rem Georgia, "Times New Roman", serif; }
+.slots-folder-back { display: inline-flex; align-items: center; gap: 5px; min-height: 32px; padding: 0 9px; border: 1px solid var(--theme-border-3a3b41, #3a3b41); border-radius: 3px; color: var(--theme-accent-dfca86, #dfca86); background: transparent; cursor: pointer; font-size: .68rem; }
+.slots-folder-back svg { display: block; width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.slots-folder-status { margin: 0 23px 10px; color: var(--theme-accent-dfca86, #dfca86); font-size: .72rem; line-height: 1.5; }
+.slots-folder-status.is-error { color: #ef8c98; }
+.slots-folder-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; align-content: start; }
+.slot-folder-card { display: grid; gap: 12px; min-width: 0; padding: 13px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25); border-radius: 5px; background: linear-gradient(145deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .055), rgba(255, 255, 255, .012)); }
+.slot-folder-open { display: flex; align-items: center; gap: 12px; min-width: 0; width: 100%; padding: 3px 0; border: 0; color: var(--theme-accent-dfca86, #dfca86); background: transparent; text-align: left; cursor: pointer; }
+.slot-folder-open > svg, .slot-folder-symbol svg { display: block; flex: 0 0 30px; width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.35; stroke-linecap: round; stroke-linejoin: round; }
+.slot-folder-copy { min-width: 0; }
+.slot-folder-copy strong { display: block; overflow-wrap: anywhere; color: var(--theme-text-e2dbce, #e2dbce); font: 600 1rem Georgia, "Times New Roman", serif; }
+.slot-folder-copy small { display: block; margin-top: 4px; color: var(--theme-muted-858179, #858179); font-size: .67rem; }
+.slot-folder-card .slot-actions { grid-column: 1; justify-content: flex-start; }
+.slots-folder-empty { margin: 0; padding: 30px 16px; border: 1px dashed var(--theme-border-34353a, #34353a); color: var(--theme-muted-aaa69d, #aaa69d); text-align: center; font-size: .76rem; line-height: 1.6; }
+.slot-move-form { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.slot-move-form select { max-width: 210px; min-width: 120px; min-height: 34px; padding: 0 25px 0 9px; border: 1px solid var(--theme-border-44454c, #44454c); border-radius: 3px; color: var(--theme-text-e2dbce, #e2dbce); background: var(--theme-surface-090a0d, #090a0d); }
+.startup-folder-nav { margin: 0 0 14px; }
+.slot-folder-symbol { display: grid; place-items: center; color: var(--theme-accent-dfca86, #dfca86); }
+@media (max-width: 760px) {
+  .create-slot-folder-form { padding: 16px 17px 0; }
+  .create-slot-form { grid-template-columns: minmax(0, 1fr) auto; }
+  .create-slot-form > label:first-child { grid-column: 1 / -1; }
+  .slots-folder-nav, .slots-folder-status { margin-right: 17px; margin-left: 17px; }
+  .startup-folder-nav { margin-right: 0; margin-left: 0; }
+  .slots-list .slot-item { grid-template-columns: 30px minmax(0, 1fr); }
+  .slots-list .slot-item > .slot-actions { grid-column: 2; justify-content: flex-start; }
+}
+@media (max-width: 480px) {
+  .create-slot-folder-form, .slots-folder-grid { grid-template-columns: 1fr; }
+  .slot-rename-row, .slot-move-form { flex-wrap: wrap; }
+}
 
 .slots-transfer-panel {
   display: grid;
@@ -3715,7 +3751,7 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   align-content: start;
   gap: 8px;
   min-height: 160px;
-  overflow-y: auto;
+  overflow: visible;
   padding: 8px 23px 24px;
 }
 
@@ -6301,13 +6337,13 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
 .wallet-balance-line output { color: #8ee8a8; font: 700 clamp(1.8rem, 5vw, 2.6rem) Georgia, "Times New Roman", serif; }
 .wallet-balance-line span { color: #75b988; font-size: .71rem; font-weight: 750; letter-spacing: .09em; text-transform: uppercase; }
 .wallet-tools { position: relative; z-index: 1; display: grid; justify-items: end; gap: 9px; }
-.wallet-adjust-form { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(126px, 186px) auto auto; gap: 7px; }
+.wallet-adjust-form { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(100px, 122px) auto auto; justify-content: end; gap: 6px; }
 .wallet-amount-control { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; min-width: 0; gap: 9px; }
 .wallet-input-symbol { flex: 0 0 auto; color: #8ee8a8; font-size: 1.08rem; filter: drop-shadow(0 0 7px rgba(83, 210, 121, .2)); }
-.wallet-amount-field { display: block; min-width: 0; height: 42px; overflow: hidden; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 3px; color: #75b988; background: rgba(0, 0, 0, .25); }
-.wallet-adjust-form input { min-width: 0; width: 100%; height: 40px; border: 0; color: var(--theme-text-eee8dc, #eee8dc); background: transparent; padding: 0 11px; outline: 0; }
+.wallet-amount-field { display: block; min-width: 0; height: 34px; overflow: hidden; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 3px; color: #75b988; background: rgba(0, 0, 0, .25); }
+.wallet-adjust-form input { min-width: 0; width: 100%; height: 32px; border: 0; color: var(--theme-text-eee8dc, #eee8dc); background: transparent; padding: 0 8px; outline: 0; font-size: .78rem; }
 .wallet-amount-field:focus-within { border-color: rgba(83, 210, 121, .52); box-shadow: 0 0 0 2px rgba(83, 210, 121, .06); }
-.wallet-adjust-form button { min-height: 42px; padding: 0 13px; border: 1px solid rgba(83, 210, 121, .33); border-radius: 3px; color: #8ee8a8; background: rgba(55, 153, 84, .08); cursor: pointer; font-weight: 750; }
+.wallet-adjust-form button { min-height: 34px; padding: 0 10px; border: 1px solid rgba(83, 210, 121, .33); border-radius: 3px; color: #8ee8a8; background: rgba(55, 153, 84, .08); cursor: pointer; font-size: .75rem; font-weight: 750; }
 .wallet-adjust-form button[data-wallet-action="remove"] { border-color: rgba(216, 90, 103, .32); color: #e9909a; background: rgba(151, 44, 56, .08); }
 .wallet-history-button { display: inline-flex; align-items: center; gap: 7px; min-height: 34px; padding: 0 11px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .28); border-radius: 3px; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .055); cursor: pointer; font-size: .66rem; font-weight: 750; }
 .wallet-history-button svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
@@ -6377,7 +6413,7 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
   .slot-gate-list { grid-template-columns: 1fr; }
   .shop-wallet { grid-template-columns: 1fr; gap: 17px; padding: 20px 16px; }
   .wallet-tools { justify-items: stretch; }
-  .wallet-adjust-form { grid-template-columns: minmax(0, 1fr) auto auto; }
+  .wallet-adjust-form { grid-template-columns: minmax(100px, 122px) auto auto; }
   .wallet-history-button { justify-content: center; min-height: 40px; }
   .shop-toolbar { align-items: stretch; flex-direction: column; padding-inline: 14px; }
   .shop-list { grid-template-columns: 1fr; padding-inline: 10px; }
@@ -6388,8 +6424,8 @@ body.slot-gate-open > :is(.skip-link, .topbar, .sidebar, .main-content) {
   .sidebar-nav { gap: 1px; padding-right: 0; }
   .nav-item span, .slots-button span { font-size: .52rem; }
   .nav-item svg, .slots-button svg { width: 19px; height: 19px; }
-  .wallet-adjust-form { grid-template-columns: 1fr 1fr; }
-  .wallet-amount-control { grid-column: 1 / -1; }
+  .wallet-adjust-form { grid-template-columns: repeat(2, max-content); }
+  .wallet-amount-control { grid-column: 1 / -1; width: 122px; justify-self: end; }
   .shop-history-entry { grid-template-columns: 34px minmax(0, 1fr); }
   .shop-history-entry-price { grid-column: 2; }
 }
@@ -6894,7 +6930,7 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
 .special-tests-panel .sense-test-button, .sense-reroll-button { position: static; display: grid; width: 34px; height: 34px; padding: 0; place-items: center; border: 1px solid var(--theme-border-313238, #313238); border-radius: 3px; color: var(--theme-muted-a49e92, #a49e92); background: rgba(255, 255, 255, .02); cursor: pointer; }
 .special-tests-panel .sense-test-button { width: 38px; height: 38px; border-color: rgba(var(--special-rgb), .36); color: var(--special-color); background: rgba(var(--special-rgb), .07); }
 .special-tests-panel .sense-test-button:hover { border-color: rgba(var(--special-rgb), .72); color: var(--special-color); background: rgba(var(--special-rgb), .14); }
-.special-tests-panel .sense-test-button svg { width: 21px; height: 21px; }
+.special-tests-panel .sense-test-button svg { display: block; width: 21px; height: 21px; }
 .sense-reroll-button { font-size: 1rem; }
 .sense-reroll-button:disabled { cursor: default; opacity: .24; }
 .senses-footer { display: flex; justify-content: flex-end; margin-top: 12px; }
@@ -7844,7 +7880,7 @@ h1, h2, h3, h4, h5, h6,
             <div class="skills-panel-actions">
               <span id="training-cap-status" class="training-cap-status" aria-live="polite">Escolha uma Classe no Perfil</span>
               <div class="roll-formula" aria-label="Fórmula da rolagem">
-                <span>Melhor dado</span>
+                <span>Dado de Treinamento</span>
                 <b>±</b>
                 <span>Dado de Atributo</span>
                 <b>+</b>
@@ -8212,11 +8248,11 @@ h1, h2, h3, h4, h5, h6,
               <svg viewBox="0 0 32 32">
                 <path d="M10 5h12l-3 5H13l-3-5Z"></path>
                 <path d="M12.5 10C8 12.6 6 17 6 21.2 6 26 9.7 28 16 28s10-2 10-6.8C26 17 24 12.6 19.5 10"></path>
-                <path d="M12 17.2c1.1-.8 2.4-1.2 4-1.2 2 0 3.5.8 3.5 2.2 0 3.3-7 1.2-7 4.4 0 1.4 1.5 2.3 3.7 2.3 1.6 0 3-.4 4-1.2M16 14.2v12.3"></path>
+                <path d="M20 17.2c-1.1-.8-2.4-1.2-4-1.2-2 0-3.5.8-3.5 2.2 0 3.3 7 1.2 7 4.4 0 1.4-1.5 2.3-3.7 2.3-1.6 0-3-.4-4-1.2M16 14.2v12.3"></path>
               </svg>
             </span>
             <div>
-              <p class="eyebrow">Carteira do Slot</p>
+              <p class="eyebrow">Carteira</p>
               <h2 id="wallet-title">Verdeons</h2>
               <div class="wallet-balance-line">
                 <output id="wallet-balance" class="verdeon-value" aria-live="polite"><span class="verdeon-symbol" aria-hidden="true">V</span><span>0</span></output>
@@ -8571,6 +8607,10 @@ h1, h2, h3, h4, h5, h6,
         <div class="slot-gate-content">
           <div id="startup-slot-spinner" class="slot-gate-spinner" aria-hidden="true"></div>
           <p id="startup-slot-status" class="slot-gate-status" aria-live="polite">Carregando Slots…</p>
+          <div id="startup-folder-nav" class="slots-folder-nav startup-folder-nav" hidden>
+            <button id="startup-folder-back" class="slots-folder-back" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"></path></svg>Pastas</button>
+            <strong id="startup-folder-name"></strong>
+          </div>
           <div id="startup-slot-list" class="slot-gate-list"></div>
           <div id="startup-slot-actions" class="slot-gate-actions" hidden>
             <button id="startup-slot-retry" class="dialog-button" type="button">Tentar novamente</button>
@@ -8585,7 +8625,7 @@ h1, h2, h3, h4, h5, h6,
       <section id="shop-history-dialog" class="ability-dialog shop-history-dialog" role="dialog" aria-modal="true" aria-labelledby="shop-history-title" tabindex="-1">
         <header class="ability-dialog-head">
           <div>
-            <p class="eyebrow">Carteira do Slot</p>
+            <p class="eyebrow">Carteira</p>
             <h2 id="shop-history-title">Histórico de compras</h2>
             <p>Produtos adquiridos pela ficha atualmente aberta.</p>
           </div>
@@ -9615,7 +9655,12 @@ h1, h2, h3, h4, h5, h6,
           </button>
         </header>
 
+        <div class="slots-manager-content">
         <div class="slots-manager-tools">
+        <form id="create-slot-folder-form" class="create-slot-folder-form" hidden>
+          <label class="builder-field"><span>Nova pasta</span><input id="new-slot-folder-name" type="text" maxlength="60" autocomplete="off" placeholder="Ex.: Campanha, NPCs, Personagens" required /></label>
+          <button class="create-ability-button" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7V5h7l2 2h9v12H3V7ZM12 10v6M9 13h6"></path></svg><span>Criar pasta</span></button>
+        </form>
         <form id="create-slot-form" class="create-slot-form" hidden>
           <label class="builder-field">
             <span>Novo Slot</span>
@@ -9627,6 +9672,7 @@ h1, h2, h3, h4, h5, h6,
               placeholder="Nome do personagem ou da ficha"
             />
           </label>
+          <label class="builder-field"><span>Pasta</span><select id="new-slot-folder" aria-label="Pasta do novo Slot"><option value="__unfiled__">Sem pasta</option></select></label>
           <button class="create-ability-button" type="submit">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 5v14M5 12h14"></path>
@@ -9649,8 +9695,14 @@ h1, h2, h3, h4, h5, h6,
         <p id="slots-login-note" class="slots-login-note">
           Entre com o Google para criar e organizar seus Slots.
         </p>
+        <div id="slots-folder-nav" class="slots-folder-nav" hidden>
+          <button id="slots-folder-back" class="slots-folder-back" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"></path></svg>Pastas</button>
+          <strong id="slots-folder-name">Suas pastas</strong>
+        </div>
+        <p id="slots-folder-status" class="slots-folder-status" role="status" aria-live="polite" hidden></p>
         </div>
         <div id="slots-list" class="slots-list"></div>
+        </div>
         <footer class="ability-dialog-footer">
           <button class="dialog-button" type="button" data-close-slots>Fechar</button>
         </footer>
@@ -17122,7 +17174,7 @@ function openSlotsManager() {
   slotsModal.hidden = false;
   syncModalLock();
   slotsDialog.focus();
-  window.AbyssCloud?.renderSlots();
+  window.AbyssCloud?.openSlotFolders();
 }
 
 function closeSlotsManager() {
@@ -19644,6 +19696,13 @@ const firebaseUi = {
   slotsLoginNote: document.querySelector("#slots-login-note"),
   createSlotForm: document.querySelector("#create-slot-form"),
   newSlotName: document.querySelector("#new-slot-name"),
+  newSlotFolder: document.querySelector("#new-slot-folder"),
+  createSlotFolderForm: document.querySelector("#create-slot-folder-form"),
+  newSlotFolderName: document.querySelector("#new-slot-folder-name"),
+  slotsFolderNav: document.querySelector("#slots-folder-nav"),
+  slotsFolderBack: document.querySelector("#slots-folder-back"),
+  slotsFolderName: document.querySelector("#slots-folder-name"),
+  slotsFolderStatus: document.querySelector("#slots-folder-status"),
   slotsTransferPanel: document.querySelector("#slots-transfer-panel"),
   slotsExportCurrent: document.querySelector("#slots-export-current"),
   slotsImportCode: document.querySelector("#slots-import-code"),
@@ -19653,6 +19712,9 @@ const firebaseUi = {
   startupGateSpinner: document.querySelector("#startup-slot-spinner"),
   startupGateStatus: document.querySelector("#startup-slot-status"),
   startupGateList: document.querySelector("#startup-slot-list"),
+  startupFolderNav: document.querySelector("#startup-folder-nav"),
+  startupFolderBack: document.querySelector("#startup-folder-back"),
+  startupFolderName: document.querySelector("#startup-folder-name"),
   startupGateActions: document.querySelector("#startup-slot-actions"),
   startupGateRetry: document.querySelector("#startup-slot-retry"),
   startupGateSignOut: document.querySelector("#startup-slot-sign-out"),
@@ -19679,6 +19741,10 @@ let sheetTransferSlotId = "";
 let sheetTransferTrigger = null;
 let currentSlotId = null;
 let currentSlots = [];
+const UNFILED_SLOT_FOLDER = "__unfiled__";
+let currentSlotFolders = [];
+let currentSlotFolderId = null;
+let startupSlotFolderId = null;
 let authChangeSequence = 0;
 let cloudSaveTimer = null;
 let cloudSavePromise = null;
@@ -21651,7 +21717,11 @@ function openStartupSlotGate({ loading = true, message = "Carregando Slots…" }
   firebaseUi.startupGateStatus.classList.remove("is-error");
   firebaseUi.startupGateStatus.textContent = message;
   firebaseUi.startupGateActions.hidden = true;
-  if (loading) firebaseUi.startupGateList.replaceChildren();
+  if (loading) {
+    startupSlotFolderId = null;
+    firebaseUi.startupFolderNav.hidden = true;
+    firebaseUi.startupGateList.replaceChildren();
+  }
   document.body.classList.add("slot-gate-open");
   requestAnimationFrame(() => firebaseUi.startupGateDialog.focus());
 }
@@ -21674,10 +21744,22 @@ function renderStartupSlotChoices() {
   firebaseUi.startupGate.setAttribute("aria-busy", "false");
   firebaseUi.startupGateActions.hidden = true;
   firebaseUi.startupGateStatus.classList.remove("is-error");
-  firebaseUi.startupGateStatus.textContent = "Selecione o Slot que deseja abrir.";
-  firebaseUi.startupGateDescription.textContent = "Cada ficha é independente. Nada será carregado até você escolher um Slot.";
+  if (startupSlotFolderId !== null && startupSlotFolderId !== UNFILED_SLOT_FOLDER && !normalizeSlotFolderId(startupSlotFolderId)) {
+    startupSlotFolderId = null;
+  }
+  firebaseUi.startupFolderNav.hidden = startupSlotFolderId === null;
+  firebaseUi.startupFolderName.textContent = getSlotFolderName(startupSlotFolderId);
+  firebaseUi.startupGateStatus.textContent = startupSlotFolderId === null ? "Escolha uma pasta para ver suas fichas." : "Selecione o Slot que deseja abrir.";
+  firebaseUi.startupGateDescription.textContent = "Suas fichas estão organizadas por pastas. Cada personagem continua independente.";
 
-  currentSlots.forEach((slot, index) => {
+  if (startupSlotFolderId === null) {
+    getSlotFolderEntries().forEach((folder) => firebaseUi.startupGateList.append(createSlotFolderCard(folder, true)));
+    return;
+  }
+  const visibleSlots = currentSlots.filter((slot) => getSlotFolderId(slot) === startupSlotFolderId);
+  if (!visibleSlots.length) firebaseUi.startupGateStatus.textContent = "Esta pasta ainda não tem fichas. Volte às pastas para escolher outra.";
+
+  visibleSlots.forEach((slot) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = "slot-gate-choice";
@@ -21687,7 +21769,7 @@ function renderStartupSlotChoices() {
     const name = document.createElement("strong");
     name.textContent = slot.name;
     const detail = document.createElement("small");
-    detail.textContent = slot.id === preferredStartupSlotId ? "Último Slot usado" : `Slot ${index + 1}`;
+    detail.textContent = slot.id === preferredStartupSlotId ? "Último Slot usado" : `Slot ${currentSlots.indexOf(slot) + 1}`;
     copy.append(name, detail);
     const action = document.createElement("b");
     action.textContent = "Abrir";
@@ -21767,6 +21849,8 @@ function renderAccountIdentity(user, state = user ? "signed-in" : "signed-out") 
   firebaseUi.minervaButton.hidden = !signedIn || !isMinervaAdmin(user);
   firebaseUi.slotsLoginNote.hidden = signedIn;
   firebaseUi.createSlotForm.hidden = !signedIn;
+  firebaseUi.createSlotFolderForm.hidden = !signedIn;
+  firebaseUi.slotsFolderNav.hidden = !signedIn;
   firebaseUi.slotsTransferPanel.hidden = !signedIn;
   renderCampaignIdentity();
 }
@@ -22112,6 +22196,7 @@ async function importSheetTransferAsNewSlot() {
   const slot = {
     id: slotRef.id,
     name: suggestedName,
+    folderId: normalizeSlotFolderId(currentSlotFolderId || firebaseUi.newSlotFolder.value),
     portrait: "",
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -22141,9 +22226,11 @@ async function importSheetTransferAsNewSlot() {
     await writeCloudSheet(currentFirebaseUser, slot.id, normalizedState, {
       slotName: slot.name,
       created: true,
+      folderId: slot.folderId,
     });
     slotCommitted = true;
     lastSavedRevision = stateRevision;
+    currentSlotFolderId = getSlotFolderId(slot);
     renderSlots();
     setSyncStatus(
       "saved",
@@ -22568,7 +22655,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
         ),
         portrait,
         updatedAt: timestamp,
-        ...(options.created ? { createdAt: timestamp } : {}),
+        ...(options.created ? { createdAt: timestamp, folderId: normalizeSlotFolderId(options.folderId) } : {}),
       },
       { merge: true },
     );
@@ -22672,18 +22759,310 @@ function createSlotAvatar(slot, className) {
   return avatar;
 }
 
+function normalizeSlotFolders(raw) {
+  if (!Array.isArray(raw)) return [];
+  const seen = new Set();
+  return raw.filter((folder) => folder && typeof folder === "object").map((folder) => ({
+    id: String(folder.id || "").trim().slice(0, 120),
+    name: normalizeSlotName(folder.name, ""),
+    createdAt: Number.isFinite(Number(folder.createdAt)) ? Number(folder.createdAt) : 0,
+  })).filter((folder) => {
+    if (!folder.id || folder.id === UNFILED_SLOT_FOLDER || !folder.name || seen.has(folder.id)) return false;
+    seen.add(folder.id);
+    return true;
+  });
+}
+
+function normalizeSlotFolderId(id) {
+  return currentSlotFolders.some((folder) => folder.id === id) ? id : "";
+}
+
+function getSlotFolderId(slot) {
+  // Deleted or unknown folders return their sheets to Sem pasta.
+  return normalizeSlotFolderId(slot?.folderId) || UNFILED_SLOT_FOLDER;
+}
+
+function getSlotFolderName(id) {
+  return currentSlotFolders.find((folder) => folder.id === id)?.name || "Sem pasta";
+}
+
+function getSlotFolderEntries() {
+  const counts = new Map([[UNFILED_SLOT_FOLDER, 0], ...currentSlotFolders.map((folder) => [folder.id, 0])]);
+  currentSlots.forEach((slot) => {
+    const id = getSlotFolderId(slot);
+    counts.set(id, counts.get(id) + 1);
+  });
+  return [...currentSlotFolders, { id: UNFILED_SLOT_FOLDER, name: "Sem pasta" }]
+    .map((folder) => ({ ...folder, count: counts.get(folder.id) || 0 }));
+}
+
+function fillSlotFolderSelect(select, preferredId = UNFILED_SLOT_FOLDER) {
+  select.replaceChildren();
+  const folders = [{ id: UNFILED_SLOT_FOLDER, name: "Sem pasta" }, ...currentSlotFolders];
+  folders.forEach((folder) => {
+    const option = document.createElement("option");
+    option.value = folder.id;
+    option.textContent = folder.name;
+    select.append(option);
+  });
+  select.value = normalizeSlotFolderId(preferredId) || UNFILED_SLOT_FOLDER;
+}
+
+function createSlotFolderSymbol() {
+  const symbol = document.createElement("span");
+  symbol.className = "slot-folder-symbol";
+  symbol.setAttribute("aria-hidden", "true");
+  symbol.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 7V5h7l2 2h9v12H3V7ZM3 9h18"></path></svg>';
+  return symbol;
+}
+
+function createSlotFolderCard(folder, startup = false) {
+  const open = document.createElement("button");
+  open.type = "button";
+  open.className = startup ? "slot-gate-choice" : "slot-folder-open";
+  if (startup) open.dataset.startupFolder = folder.id;
+  else open.dataset.openSlotFolder = folder.id;
+  const copy = document.createElement("span");
+  copy.className = "slot-folder-copy";
+  const name = document.createElement("strong");
+  name.textContent = folder.name;
+  const count = document.createElement("small");
+  count.textContent = `${folder.count} ${folder.count === 1 ? "ficha" : "fichas"}`;
+  copy.append(name, count);
+  open.append(createSlotFolderSymbol(), copy);
+  if (startup) {
+    const action = document.createElement("b");
+    action.textContent = "Entrar";
+    open.append(action);
+    return open;
+  }
+  const card = document.createElement("article");
+  card.className = "slot-folder-card";
+  card.dataset.slotFolderId = folder.id;
+  card.append(open);
+  if (folder.id !== UNFILED_SLOT_FOLDER) {
+    const actions = document.createElement("div");
+    actions.className = "slot-actions";
+    const rename = document.createElement("button");
+    rename.type = "button";
+    rename.dataset.renameSlotFolder = folder.id;
+    rename.textContent = "Renomear";
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "slot-delete";
+    remove.dataset.deleteSlotFolder = folder.id;
+    remove.textContent = "Excluir pasta";
+    actions.append(rename, remove);
+    card.append(actions);
+  }
+  return card;
+}
+
+function setSlotFolderStatus(message = "", error = false) {
+  firebaseUi.slotsFolderStatus.textContent = message;
+  firebaseUi.slotsFolderStatus.hidden = !message;
+  firebaseUi.slotsFolderStatus.classList.toggle("is-error", error);
+}
+
+function refreshSlotFolderViews() {
+  renderSlots();
+  if (!firebaseUi.startupGate.hidden) renderStartupSlotChoices();
+}
+
+function openSlotFolders() {
+  currentSlotFolderId = null;
+  firebaseUi.newSlotFolder.value = UNFILED_SLOT_FOLDER;
+  setSlotFolderStatus();
+  renderSlots();
+}
+
+async function updateCloudSlotFolders(mutator) {
+  const user = currentFirebaseUser;
+  if (!user) throw new Error("Entre com o Google para organizar suas pastas.");
+  const reference = firestoreApi.doc(firestoreDb, "users", user.uid);
+  const folders = await firestoreApi.runTransaction(firestoreDb, async (transaction) => {
+    const snapshot = await transaction.get(reference);
+    const stored = normalizeSlotFolders(snapshot.exists() ? snapshot.data().slotFolders : []);
+    const next = normalizeSlotFolders(mutator(stored));
+    transaction.set(reference, { slotFolders: next }, { merge: true });
+    return next;
+  });
+  if (currentFirebaseUser?.uid !== user.uid) throw new Error("A conta conectada foi alterada.");
+  currentSlotFolders = folders;
+  return folders;
+}
+
+async function createCloudSlotFolder(proposedName) {
+  const name = normalizeSlotName(proposedName, "");
+  if (!name) throw new Error("Digite um nome para a pasta.");
+  const folder = {
+    id: window.crypto?.randomUUID?.() || `folder-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+    name,
+    createdAt: Date.now(),
+  };
+  await updateCloudSlotFolders((folders) => {
+    if (folders.some((entry) => entry.name.toLocaleLowerCase("pt-BR") === name.toLocaleLowerCase("pt-BR"))) {
+      throw new Error("Já existe uma pasta com esse nome.");
+    }
+    return [...folders, folder];
+  });
+  currentSlotFolderId = folder.id;
+  refreshSlotFolderViews();
+  setSlotFolderStatus(`Pasta “${name}” criada.`);
+  return folder;
+}
+
+async function renameCloudSlotFolder(id, proposedName) {
+  const name = normalizeSlotName(proposedName, "");
+  if (!name) throw new Error("Digite um nome para a pasta.");
+  await updateCloudSlotFolders((folders) => {
+    if (!folders.some((folder) => folder.id === id)) throw new Error("Esta pasta não está mais disponível.");
+    if (folders.some((folder) => folder.id !== id && folder.name.toLocaleLowerCase("pt-BR") === name.toLocaleLowerCase("pt-BR"))) {
+      throw new Error("Já existe uma pasta com esse nome.");
+    }
+    return folders.map((folder) => folder.id === id ? { ...folder, name } : folder);
+  });
+  refreshSlotFolderViews();
+  setSlotFolderStatus("Nome da pasta atualizado.");
+}
+
+async function deleteCloudSlotFolder(id) {
+  const folder = currentSlotFolders.find((entry) => entry.id === id);
+  if (!folder || !currentFirebaseUser) return;
+  const confirmed = await window.showAbyssConfirm({
+    eyebrow: "Organizar fichas",
+    title: `Excluir a pasta “${folder.name}”?`,
+    message: "As fichas desta pasta irão para “Sem pasta”. Nenhum personagem será excluído.",
+    confirmLabel: "Excluir pasta",
+    tone: "warning",
+  });
+  if (!confirmed) return;
+  await updateCloudSlotFolders((folders) => folders.filter((entry) => entry.id !== id));
+  currentSlots.forEach((slot) => { if (slot.folderId === id) slot.folderId = ""; });
+  if (currentSlotFolderId === id) currentSlotFolderId = null;
+  if (startupSlotFolderId === id) startupSlotFolderId = null;
+  refreshSlotFolderViews();
+  setSlotFolderStatus("Pasta excluída. As fichas foram mantidas em “Sem pasta”.");
+}
+
+async function moveCloudSlot(slotId, destinationId) {
+  const user = currentFirebaseUser;
+  const slot = currentSlots.find((entry) => entry.id === slotId);
+  if (!user || !slot) return;
+  if (destinationId !== UNFILED_SLOT_FOLDER && !normalizeSlotFolderId(destinationId)) {
+    throw new Error("Escolha uma pasta disponível.");
+  }
+  const folderId = normalizeSlotFolderId(destinationId);
+  await firestoreApi.setDoc(
+    firestoreApi.doc(firestoreDb, "users", user.uid, "slots", slotId),
+    { folderId, updatedAt: firestoreApi.serverTimestamp() },
+    { merge: true },
+  );
+  if (currentFirebaseUser?.uid !== user.uid) return;
+  slot.folderId = folderId;
+  refreshSlotFolderViews();
+  setSlotFolderStatus(`“${slot.name}” movido para “${getSlotFolderName(destinationId)}”.`);
+}
+
+function beginSlotFolderRename(id) {
+  const folder = currentSlotFolders.find((entry) => entry.id === id);
+  const card = firebaseUi.slotsList.querySelector(`[data-slot-folder-id="${CSS.escape(id)}"]`);
+  if (!folder || !card) return;
+  const form = document.createElement("form");
+  form.className = "slot-rename-row";
+  const input = document.createElement("input");
+  input.type = "text";
+  input.maxLength = 60;
+  input.required = true;
+  input.value = folder.name;
+  input.setAttribute("aria-label", "Nome da pasta");
+  const save = document.createElement("button");
+  save.type = "submit";
+  save.textContent = "Salvar";
+  const cancel = document.createElement("button");
+  cancel.type = "button";
+  cancel.textContent = "Cancelar";
+  form.append(input, save, cancel);
+  card.querySelector(".slot-folder-open").replaceWith(form);
+  card.querySelector(".slot-actions").hidden = true;
+  input.focus();
+  input.select();
+  cancel.addEventListener("click", () => renderSlots());
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    save.disabled = true;
+    try { await renameCloudSlotFolder(id, input.value); }
+    catch (error) { setSlotFolderStatus(error?.message || describeFirebaseError(error), true); }
+    finally { if (save.isConnected) save.disabled = false; }
+  });
+}
+
+function beginSlotMove(id) {
+  const slot = currentSlots.find((entry) => entry.id === id);
+  const row = firebaseUi.slotsList.querySelector(`[data-slot-id="${CSS.escape(id)}"]`);
+  if (!slot || !row) return;
+  const form = document.createElement("form");
+  form.className = "slot-move-form slot-rename-row";
+  const select = document.createElement("select");
+  select.setAttribute("aria-label", `Pasta de ${slot.name}`);
+  fillSlotFolderSelect(select, getSlotFolderId(slot));
+  const save = document.createElement("button");
+  save.type = "submit";
+  save.textContent = "Mover";
+  const cancel = document.createElement("button");
+  cancel.type = "button";
+  cancel.textContent = "Cancelar";
+  form.append(select, save, cancel);
+  row.querySelector(".slot-name-editor").append(form);
+  row.querySelector(".slot-actions").hidden = true;
+  select.focus();
+  cancel.addEventListener("click", () => renderSlots());
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    save.disabled = true;
+    try { await moveCloudSlot(id, select.value); }
+    catch (error) { setSlotFolderStatus(error?.message || describeFirebaseError(error), true); }
+    finally { if (save.isConnected) save.disabled = false; }
+  });
+}
+
 function renderSlots() {
   firebaseUi.slotsList.replaceChildren();
   firebaseUi.slotsLoginNote.hidden = Boolean(currentFirebaseUser);
   firebaseUi.createSlotForm.hidden = !currentFirebaseUser;
   firebaseUi.slotsTransferPanel.hidden = !currentFirebaseUser;
+  firebaseUi.createSlotFolderForm.hidden = !currentFirebaseUser;
+  firebaseUi.slotsFolderNav.hidden = !currentFirebaseUser;
 
   if (!currentFirebaseUser) {
     updateActiveSlotDisplay();
     return;
   }
 
-  currentSlots.forEach((slot, index) => {
+  if (currentSlotFolderId !== null && currentSlotFolderId !== UNFILED_SLOT_FOLDER && !normalizeSlotFolderId(currentSlotFolderId)) {
+    currentSlotFolderId = null;
+  }
+  firebaseUi.slotsFolderBack.hidden = currentSlotFolderId === null;
+  firebaseUi.slotsFolderName.textContent = currentSlotFolderId === null ? "Suas pastas" : getSlotFolderName(currentSlotFolderId);
+  fillSlotFolderSelect(firebaseUi.newSlotFolder, currentSlotFolderId || firebaseUi.newSlotFolder.value);
+
+  if (currentSlotFolderId === null) {
+    const grid = document.createElement("div");
+    grid.className = "slots-folder-grid";
+    getSlotFolderEntries().forEach((folder) => grid.append(createSlotFolderCard(folder)));
+    firebaseUi.slotsList.append(grid);
+    updateActiveSlotDisplay();
+    return;
+  }
+
+  const visibleSlots = currentSlots.filter((slot) => getSlotFolderId(slot) === currentSlotFolderId);
+  if (!visibleSlots.length) {
+    const empty = document.createElement("p");
+    empty.className = "slots-folder-empty";
+    empty.textContent = "Esta pasta ainda não tem fichas. Crie um Slot aqui ou mova uma ficha de outra pasta.";
+    firebaseUi.slotsList.append(empty);
+  }
+  visibleSlots.forEach((slot) => {
     const row = document.createElement("article");
     row.className = "slot-item";
     row.classList.toggle("is-active", slot.id === currentSlotId);
@@ -22697,7 +23076,7 @@ function renderSlots() {
       textContent: slot.name,
     });
     const detail = Object.assign(document.createElement("small"), {
-      textContent: slot.id === currentSlotId ? "Slot atual" : `Slot ${index + 1}`,
+      textContent: slot.id === currentSlotId ? "Slot atual" : `Slot ${currentSlots.indexOf(slot) + 1}`,
     });
     copy.append(name, detail);
 
@@ -22722,12 +23101,17 @@ function renderSlots() {
     exportSlot.dataset.exportSlot = slot.id;
     exportSlot.textContent = "Exportar";
 
+    const move = document.createElement("button");
+    move.type = "button";
+    move.dataset.moveSlot = slot.id;
+    move.textContent = "Mover";
+
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "slot-delete";
     remove.dataset.deleteSlot = slot.id;
     remove.textContent = "Excluir";
-    actions.append(exportSlot, rename, remove);
+    actions.append(exportSlot, move, rename, remove);
 
     row.append(marker, copy, actions);
     firebaseUi.slotsList.append(row);
@@ -22742,12 +23126,17 @@ async function loadSlotDirectory(user) {
     firestoreApi.getDocs(firestoreApi.collection(firestoreDb, "users", user.uid, "slots")),
   ]);
 
+  currentSlotFolders = normalizeSlotFolders(userSnapshot.exists() ? userSnapshot.data().slotFolders : []);
+  currentSlotFolderId = null;
+  startupSlotFolderId = null;
+
   currentSlots = slotsSnapshot.docs
     .map((snapshot) => {
       const data = snapshot.data();
       return {
         id: snapshot.id,
         name: normalizeSlotName(data.name, "Personagem"),
+        folderId: normalizeSlotFolderId(data.folderId),
         portrait: String(data.portrait || ""),
         createdAt: slotTimestampValue(data.createdAt),
         updatedAt: slotTimestampValue(data.updatedAt),
@@ -22777,7 +23166,7 @@ async function loadSlotDirectory(user) {
   };
 }
 
-async function createCloudSlot(name, { announce = true } = {}) {
+async function createCloudSlot(name, { announce = true, folderId = "" } = {}) {
   if (!currentFirebaseUser) throw new Error("Entre com o Google para criar um Slot.");
 
   const previousSlotId = currentSlotId;
@@ -22788,6 +23177,7 @@ async function createCloudSlot(name, { announce = true } = {}) {
   const slot = {
     id: slotRef.id,
     name: normalizeSlotName(name, `Personagem ${currentSlots.length + 1}`),
+    folderId: normalizeSlotFolderId(folderId),
     portrait: "",
     createdAt: Date.now(),
     updatedAt: Date.now(),
@@ -22803,6 +23193,7 @@ async function createCloudSlot(name, { announce = true } = {}) {
     await writeCloudSheet(currentFirebaseUser, slot.id, clean, {
       slotName: slot.name,
       created: true,
+      folderId: slot.folderId,
     });
     lastSavedRevision = stateRevision;
     renderSlots();
@@ -23323,6 +23714,7 @@ window.AbyssCloud = Object.freeze({
   saveMinervaItem,
   deleteMinervaItem,
   renderSlots,
+  openSlotFolders,
   describeError: describeFirebaseError,
 });
 
@@ -23458,6 +23850,13 @@ async function hydrateUserSheet(user) {
 }
 
 firebaseUi.startupGateList.addEventListener("click", async (event) => {
+  const folder = event.target.closest("[data-startup-folder]");
+  if (folder && currentFirebaseUser) {
+    startupSlotFolderId = folder.dataset.startupFolder;
+    renderStartupSlotChoices();
+    firebaseUi.startupFolderBack.focus();
+    return;
+  }
   const choice = event.target.closest("[data-startup-slot]");
   if (!choice || !currentFirebaseUser) return;
   const slotId = choice.dataset.startupSlot;
@@ -23481,6 +23880,12 @@ firebaseUi.startupGateList.addEventListener("click", async (event) => {
     });
     firebaseUi.startupGateSpinner.hidden = true;
   }
+});
+
+firebaseUi.startupFolderBack.addEventListener("click", () => {
+  startupSlotFolderId = null;
+  renderStartupSlotChoices();
+  firebaseUi.startupGateList.querySelector("button")?.focus();
 });
 
 firebaseUi.startupGateRetry.addEventListener("click", () => {
@@ -23613,6 +24018,27 @@ document.addEventListener("keydown", (event) => {
   closeSheetTransfer();
 }, true);
 
+firebaseUi.createSlotFolderForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const submit = firebaseUi.createSlotFolderForm.querySelector('button[type="submit"]');
+  submit.disabled = true;
+  setSlotFolderStatus("Criando pasta…");
+  try {
+    await createCloudSlotFolder(firebaseUi.newSlotFolderName.value);
+    firebaseUi.newSlotFolderName.value = "";
+    firebaseUi.newSlotName.focus();
+  } catch (error) {
+    setSlotFolderStatus(error?.message || describeFirebaseError(error), true);
+  } finally {
+    submit.disabled = false;
+  }
+});
+
+firebaseUi.slotsFolderBack.addEventListener("click", () => {
+  openSlotFolders();
+  firebaseUi.slotsList.querySelector("[data-open-slot-folder]")?.focus();
+});
+
 firebaseUi.createSlotForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   const name = normalizeSlotName(
@@ -23625,7 +24051,9 @@ firebaseUi.createSlotForm.addEventListener("submit", async (event) => {
   try {
     if (cloudSavePromise && !(await cloudSavePromise)) return;
     if (stateRevision > lastSavedRevision && !(await flushCloudSave())) return;
-    await createCloudSlot(name);
+    const slot = await createCloudSlot(name, { folderId: normalizeSlotFolderId(firebaseUi.newSlotFolder.value) });
+    currentSlotFolderId = getSlotFolderId(slot);
+    renderSlots();
     firebaseUi.newSlotName.value = "";
   } catch (error) {
     setSyncStatus(
@@ -23641,6 +24069,32 @@ firebaseUi.createSlotForm.addEventListener("submit", async (event) => {
 });
 
 firebaseUi.slotsList.addEventListener("click", async (event) => {
+  const folderOpen = event.target.closest("[data-open-slot-folder]");
+  if (folderOpen) {
+    currentSlotFolderId = folderOpen.dataset.openSlotFolder;
+    setSlotFolderStatus();
+    renderSlots();
+    firebaseUi.slotsFolderBack.focus();
+    return;
+  }
+  const folderRename = event.target.closest("[data-rename-slot-folder]");
+  if (folderRename) {
+    beginSlotFolderRename(folderRename.dataset.renameSlotFolder);
+    return;
+  }
+  const folderDelete = event.target.closest("[data-delete-slot-folder]");
+  if (folderDelete) {
+    folderDelete.disabled = true;
+    try { await deleteCloudSlotFolder(folderDelete.dataset.deleteSlotFolder); }
+    catch (error) { setSlotFolderStatus(error?.message || describeFirebaseError(error), true); }
+    finally { if (folderDelete.isConnected) folderDelete.disabled = false; }
+    return;
+  }
+  const move = event.target.closest("[data-move-slot]");
+  if (move) {
+    beginSlotMove(move.dataset.moveSlot);
+    return;
+  }
   const open = event.target.closest("[data-open-slot]");
   const exportSlot = event.target.closest("[data-export-slot]");
   const rename = event.target.closest("[data-rename-slot]");
@@ -23923,6 +24377,10 @@ async function initializeFirebaseSync() {
         window.clearTimeout(cloudSaveTimer);
         currentSlotId = null;
         currentSlots = [];
+        currentSlotFolders = [];
+        currentSlotFolderId = null;
+        startupSlotFolderId = null;
+        setSlotFolderStatus();
         stateRevision = 0;
         lastSavedRevision = 0;
         sheetBridge.resetState();
@@ -23941,6 +24399,10 @@ async function initializeFirebaseSync() {
 
       currentSlotId = null;
       currentSlots = [];
+      currentSlotFolders = [];
+      currentSlotFolderId = null;
+      startupSlotFolderId = null;
+      setSlotFolderStatus();
       sheetBridge.resetState();
       openStartupSlotGate({ loading: true, message: "Buscando os Slots desta conta…" });
       renderAccountIdentity(user, "signed-in");
