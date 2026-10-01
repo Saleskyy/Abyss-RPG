@@ -7118,6 +7118,12 @@ h1, h2, h3, h4, h5, h6,
 #open-roll-history { flex: 0 0 auto; min-height: 38px; margin-left: auto; }
 #open-roll-history svg, #account-settings-button svg, #account-sync-now svg { display: block; flex: 0 0 17px; width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 #account-settings-modal, #roll-history-modal { z-index: 154; }
+#roll-audio-notice { position: fixed; right: 18px; bottom: 18px; z-index: 180; display: flex; align-items: center; gap: 10px; max-width: min(520px, calc(100vw - 36px)); padding: 12px 14px; border: 1px solid var(--theme-accent-cfad62, #cfad62); border-radius: 5px; background: var(--theme-panel-15161b, #15161b); color: var(--theme-text-e2dbce, #e2dbce); box-shadow: 0 8px 28px rgba(0, 0, 0, .45); }
+#roll-audio-notice[hidden] { display: none; }
+#roll-audio-notice-message { margin: 0; flex: 1; font-size: .74rem; line-height: 1.5; }
+#roll-audio-notice .dialog-button { flex: 0 0 auto; min-height: 32px; padding: 0 10px; font-size: .68rem; }
+#roll-audio-notice-close { width: 24px; height: 24px; padding: 0; border: 0; background: transparent; color: inherit; cursor: pointer; font-size: 1.2rem; }
+@media (max-width: 520px) { #roll-audio-notice { flex-wrap: wrap; } #roll-audio-notice-message { flex-basis: calc(100% - 34px); } }
 #account-settings-dialog { width: min(760px, 100%); }
 #roll-history-dialog { width: min(820px, 100%); }
 #account-settings-form { display: contents; }
@@ -9858,6 +9864,12 @@ h1, h2, h3, h4, h5, h6,
       </section>
     </div>
 
+    <div id="roll-audio-notice" hidden>
+      <p id="roll-audio-notice-message" role="status" aria-live="polite" aria-atomic="true"></p>
+      <button id="roll-audio-unlock" class="dialog-button is-primary" type="button">Ativar sons</button>
+      <button id="roll-audio-notice-close" type="button" aria-label="Fechar aviso de áudio">×</button>
+    </div>
+
     <div id="account-settings-modal" class="ability-modal utility-modal" hidden>
       <div class="roll-backdrop" data-close-account-settings aria-hidden="true"></div>
       <section id="account-settings-dialog" class="ability-dialog" role="dialog" aria-modal="true" aria-labelledby="account-settings-title" tabindex="-1">
@@ -9934,7 +9946,7 @@ h1, h2, h3, h4, h5, h6,
               <label class="settings-check"><input id="settings-others-enabled" type="checkbox" /><span>Ouvir os sons de rolagens dos participantes das minhas Campanhas</span></label>
               <label class="settings-volume"><span class="settings-volume-label">Volume dos outros participantes</span><input id="settings-others-volume" type="range" min="0" max="100" step="1" value="70" aria-describedby="settings-others-volume-value" /><output id="settings-others-volume-value" for="settings-others-volume">70%</output></label>
               <div id="settings-player-volumes" aria-label="Volume de cada participante"></div>
-              <p class="settings-note">Você também pode ajustar cada participante. Seus ajustes de volume valem apenas para o que você ouve. Para liberar o áudio, o navegador pode pedir um primeiro clique em “Ouvir”.</p>
+              <p class="settings-note">Você também pode ajustar cada participante. Seus ajustes de volume valem apenas para o que você ouve. Clique em “Salvar configurações” para confirmar. Caso o navegador bloqueie os sons, aparecerá o botão “Ativar sons”.</p>
             </section>
             <p id="settings-status" role="status" aria-live="polite"></p>
           </div>
@@ -23801,6 +23813,8 @@ let rollHistoryLimit = 200;
 let historyLastError = "";
 const rollCampaignSubscriptions = new Map();
 const rollAudioCache = new Map();
+const rollDecodedAudioCache = new Map();
+const pendingOutcomeAudio = [];
 const playedCampaignRolls = new Set();
 const activeOutcomeAudio = new Set();
 let outcomeAudioContext = null;
@@ -23837,6 +23851,9 @@ function resetAccountRollSession() {
   activeOutcomeAudio.clear();
   playedCampaignRolls.clear();
   rollAudioCache.clear();
+  rollDecodedAudioCache.clear();
+  pendingOutcomeAudio.length = 0;
+  hideOutcomeAudioNotice();
   currentAccountSettings = normalizeAccountSettings();
   accountSettingsDraft = null;
   stagedRollSounds = {};
@@ -24034,10 +24051,26 @@ function startPersonalRollHistory() {
   }, (error) => { if (epoch === accountRollEpoch) reportRollHistoryError(error); });
 }
 
+function stopCampaignActorHistory(actor) {
+  actor.unsubscribe?.();
+  actor.unsubscribe = null;
+  if (actor.retryTimer != null) window.clearTimeout(actor.retryTimer);
+  actor.retryTimer = null;
+}
+
 function stopRollCampaignSubscription(subscription) {
   subscription.membersUnsubscribe?.();
-  subscription.actors.forEach((actor) => actor.unsubscribe?.());
+  subscription.actors.forEach(stopCampaignActorHistory);
   subscription.actors.clear();
+  subscription.retryAttempts?.clear();
+}
+
+async function reconnectRollCampaignAudio() {
+  if (!currentFirebaseUser) return;
+  historyLastError = "";
+  rollCampaignSubscriptions.forEach(stopRollCampaignSubscription);
+  rollCampaignSubscriptions.clear();
+  await loadCampaignRecords();
 }
 
 function syncRollCampaignSubscriptions() {
@@ -24072,6 +24105,7 @@ function syncRollCampaignSubscriptions() {
         rollCampaignSubscriptions.delete(campaign.id);
         renderRollHistory();
         reportRollHistoryError(error);
+        if (currentAccountSettings.othersEnabled) showOutcomeAudioNotice("A conexão com os sons da Campanha foi interrompida. Use “Sincronizar agora” no menu da conta para tentar novamente.");
       },
     );
   });
@@ -24080,59 +24114,89 @@ function syncRollCampaignSubscriptions() {
 }
 
 function isFreshCampaignRoll(roll, initial = false) {
-  const timestamp = Number(roll.clientTime);
+  const timestamp = campaignTimestamp(roll.createdAt) || Number(roll.clientTime);
   const age = Date.now() - timestamp;
   return !initial && Number.isFinite(timestamp) && age >= -5000 && age < 30000;
 }
 
 function syncCampaignActorHistory(subscription) {
   const selfUid = currentFirebaseUser?.uid;
+  subscription.retryAttempts ??= new Map();
   // A própria saída da Campanha encerra os streams, mesmo antes de atualizar o índice da conta.
   if (!subscription.members.has(selfUid)) {
-    subscription.actors.forEach((actor) => actor.unsubscribe?.());
+    subscription.actors.forEach(stopCampaignActorHistory);
     subscription.actors.clear();
+    subscription.retryAttempts.clear();
     return;
   }
   const visibleUids = new Set([...subscription.members.values()]
     .filter((member) => member.uid === selfUid || member.hideRolls !== true).map((member) => member.uid));
   subscription.actors.forEach((actor, uid) => {
-    if (!visibleUids.has(uid)) { actor.unsubscribe?.(); subscription.actors.delete(uid); }
+    if (!visibleUids.has(uid)) {
+      stopCampaignActorHistory(actor);
+      subscription.actors.delete(uid);
+      subscription.retryAttempts.delete(uid);
+    }
   });
   const epoch = accountRollEpoch;
   visibleUids.forEach((uid) => {
     if (subscription.actors.has(uid)) return;
-    const actor = { records: [], unsubscribe: null, initial: true };
+    const actor = { records: [], unsubscribe: null, retryTimer: null, failed: false, initial: true, observedIds: new Set() };
     subscription.actors.set(uid, actor);
     const query = firestoreApi.query(
       firestoreApi.collection(firestoreDb, "campaigns", subscription.campaign.id, "rollHistory", uid, "entries"),
       firestoreApi.orderBy("createdAt", "desc"), firestoreApi.limit(rollHistoryLimit),
     );
-    actor.unsubscribe = firestoreApi.onSnapshot(query, (snapshot) => {
+    actor.unsubscribe = firestoreApi.onSnapshot(query, { includeMetadataChanges: true }, (snapshot) => {
       if (epoch !== accountRollEpoch || subscription.actors.get(uid) !== actor) return;
+      if (!snapshot.metadata?.fromCache && !snapshot.metadata?.hasPendingWrites) subscription.retryAttempts.delete(uid);
       const initial = actor.initial;
       actor.initial = false;
       actor.records = snapshot.docs.map((item) => normalizeCompletedRoll({ ...item.data(), id: item.id })).filter(Boolean);
-      if (!snapshot.metadata?.fromCache) {
-        snapshot.docChanges().forEach((change) => {
-          if (change.type !== "added" || uid === selfUid) return;
-          const roll = normalizeCompletedRoll({ ...change.doc.data(), id: change.doc.id });
-          if (!roll || roll.actorUid !== uid || !isFreshCampaignRoll(roll, initial)) return;
+      if (initial) {
+        snapshot.docs.forEach((item) => actor.observedIds.add(item.id));
+      } else if (!snapshot.metadata?.fromCache) {
+        const recordsById = new Map(actor.records.map((roll) => [roll.id, roll]));
+        snapshot.docs.forEach((item) => {
+          if (actor.observedIds.has(item.id) || item.metadata?.hasPendingWrites) return;
+          actor.observedIds.add(item.id);
+          if (uid === selfUid) return;
+          const roll = recordsById.get(item.id);
+          if (!roll || roll.actorUid !== uid || !isFreshCampaignRoll(roll)) return;
+          const sound = outcomeSoundKey(roll.outcome);
+          const volume = getReceivedRollVolume(uid);
+          if (!sound || volume <= 0) return;
           const key = `${uid}:${roll.id}`;
           if (playedCampaignRolls.has(key)) return;
           playedCampaignRolls.add(key);
           if (playedCampaignRolls.size > 1000) playedCampaignRolls.delete(playedCampaignRolls.values().next().value);
-          const sound = outcomeSoundKey(roll.outcome);
-          if (sound) playOutcomeSound(sound, roll.soundRef, getReceivedRollVolume(uid), "", () =>
-            subscription.actors.get(uid) === actor && subscription.members.get(uid)?.hideRolls !== true && currentAccountSettings.othersEnabled,
+          playOutcomeSound(sound, roll.soundRef, volume, "", () =>
+            subscription.actors.get(uid) === actor && !actor.failed && subscription.members.get(uid)?.hideRolls !== true && getReceivedRollVolume(uid) > 0,
           ).catch(reportOutcomeAudioError);
         });
+        while (actor.observedIds.size > Math.max(1000, rollHistoryLimit * 2)) actor.observedIds.delete(actor.observedIds.values().next().value);
       }
       renderRollHistory();
     }, (error) => {
       if (epoch !== accountRollEpoch || subscription.actors.get(uid) !== actor) return;
       actor.records = [];
-      actor.unsubscribe?.();
-      subscription.actors.delete(uid);
+      actor.failed = true;
+      stopCampaignActorHistory(actor);
+      const attempt = (subscription.retryAttempts.get(uid) || 0) + 1;
+      subscription.retryAttempts.set(uid, attempt);
+      const maxAttempts = 3;
+      if (attempt <= maxAttempts) {
+        const delays = [1000, 2000, 4000];
+        actor.retryTimer = window.setTimeout(() => {
+          actor.retryTimer = null;
+          if (epoch !== accountRollEpoch || currentFirebaseUser?.uid !== selfUid || subscription.actors.get(uid) !== actor || !subscription.members.has(selfUid)) return;
+          const member = subscription.members.get(uid);
+          if (!member || (uid !== selfUid && member.hideRolls === true)) return;
+          subscription.actors.delete(uid);
+          syncCampaignActorHistory(subscription);
+        }, delays[attempt - 1]);
+      }
+      if (attempt > maxAttempts && uid !== selfUid && currentAccountSettings.othersEnabled) showOutcomeAudioNotice("Não foi possível receber os sons da Campanha. Use “Sincronizar agora” no menu da conta para tentar novamente.");
       renderRollHistory();
       reportRollHistoryError(error);
     });
@@ -24195,7 +24259,7 @@ function renderRollHistory() {
     more.addEventListener("click", () => {
       rollHistoryLimit += 200;
       startPersonalRollHistory();
-      rollCampaignSubscriptions.forEach((item) => { item.actors.forEach((actor) => actor.unsubscribe?.()); item.actors.clear(); syncCampaignActorHistory(item); });
+      rollCampaignSubscriptions.forEach((item) => { item.actors.forEach(stopCampaignActorHistory); item.actors.clear(); item.retryAttempts?.clear(); syncCampaignActorHistory(item); });
     });
     nodes.push(more);
   }
@@ -24212,16 +24276,63 @@ function getReceivedRollVolume(actorUid) {
 
 async function unlockOutcomeAudio() {
   const AudioContextApi = window.AudioContext || window.webkitAudioContext;
-  if (!AudioContextApi) return;
-  if (!outcomeAudioContext) outcomeAudioContext = new AudioContextApi();
-  if (outcomeAudioContext.state === "suspended") await outcomeAudioContext.resume();
+  if (!AudioContextApi) return null;
+  if (!outcomeAudioContext || outcomeAudioContext.state === "closed") {
+    outcomeAudioContext = new AudioContextApi();
+    rollDecodedAudioCache.clear();
+  }
+  const audioContext = outcomeAudioContext;
+  if (audioContext.state !== "running") {
+    let timer;
+    try {
+      await Promise.race([
+        audioContext.resume(),
+        new Promise((_, reject) => {
+          timer = window.setTimeout(() => reject(Object.assign(new Error("Clique em “Ativar sons” para liberar o áudio."), { name: "NotAllowedError" })), 1500);
+        }),
+      ]);
+    } catch (error) {
+      if (audioContext.state !== "running") throw Object.assign(new Error("Clique em “Ativar sons” para liberar o áudio."), { name: "NotAllowedError" });
+    } finally { window.clearTimeout(timer); }
+  }
+  if (audioContext.state !== "running") throw Object.assign(new Error("Clique em “Ativar sons” para liberar o áudio."), { name: "NotAllowedError" });
+  if (document.querySelector("#roll-audio-notice")?.dataset.needsUnlock === "true") hideOutcomeAudioNotice();
+  const pending = pendingOutcomeAudio.splice(0);
+  pending.forEach((item) => {
+    if (item.epoch === accountRollEpoch && Date.now() - item.time < 10000 && item.canPlay()) {
+      playOutcomeSound(item.key, item.ref, item.volume, item.localSource, item.canPlay).catch(reportOutcomeAudioError);
+    }
+  });
+  return audioContext;
+}
+
+function showOutcomeAudioNotice(message, needsUnlock = false) {
+  const notice = document.querySelector("#roll-audio-notice");
+  if (!notice) return;
+  notice.dataset.needsUnlock = String(needsUnlock);
+  document.querySelector("#roll-audio-notice-message").textContent = message;
+  document.querySelector("#roll-audio-unlock").hidden = !needsUnlock;
+  notice.hidden = false;
+}
+
+function hideOutcomeAudioNotice() {
+  const notice = document.querySelector("#roll-audio-notice");
+  if (notice) notice.hidden = true;
+}
+
+function queuePendingOutcomeSound(item) {
+  pendingOutcomeAudio.push({ ...item, time: Date.now() });
+  while (pendingOutcomeAudio.length > 3) pendingOutcomeAudio.shift();
 }
 
 function reportOutcomeAudioError(error) {
   const message = error?.name === "NotAllowedError"
-    ? "Clique em “Ouvir” nas Configurações para liberar os sons neste navegador."
+    ? "O navegador bloqueou o áudio. Clique em “Ativar sons” para ouvir as rolagens."
+    : error?.name === "NotSupportedError"
+      ? "Este navegador não conseguiu reproduzir o áudio personalizado. Use um arquivo MP3 ou WAV."
     : rollFeatureError(error);
   setRollFeatureStatus(rollAccountUi.settingsStatus, message, true);
+  showOutcomeAudioNotice(message, error?.name === "NotAllowedError");
 }
 
 function playDefaultOutcomeSound(key, volume) {
@@ -24269,13 +24380,80 @@ async function readSharedRollAudio(ref) {
   try { return await loading; } catch (error) { rollAudioCache.delete(key); throw error; }
 }
 
+async function decodeRollAudio(source, ref, audioContext) {
+  const cacheKey = ref ? `${ref.uid}/${ref.id}` : "";
+  if (cacheKey && rollDecodedAudioCache.has(cacheKey)) return rollDecodedAudioCache.get(cacheKey);
+  const loading = (async () => {
+    try {
+      const response = await fetch(source);
+      const data = await response.arrayBuffer();
+      return await audioContext.decodeAudioData(data);
+    } catch (error) {
+      throw Object.assign(new Error("Não foi possível reproduzir este áudio. Tente um arquivo MP3 ou WAV."), { name: "NotSupportedError" });
+    }
+  })();
+  if (cacheKey) {
+    rollDecodedAudioCache.set(cacheKey, loading);
+    while (rollDecodedAudioCache.size > 8) rollDecodedAudioCache.delete(rollDecodedAudioCache.keys().next().value);
+  }
+  try {
+    const buffer = await loading;
+    if (cacheKey && rollDecodedAudioCache.get(cacheKey) === loading) {
+      const bytes = buffer.length * buffer.numberOfChannels * 4;
+      if (bytes > 16 * 1024 * 1024) rollDecodedAudioCache.delete(cacheKey);
+      else rollDecodedAudioCache.set(cacheKey, buffer);
+      const cachedBytes = () => [...rollDecodedAudioCache.values()].reduce((total, item) => total + (Number(item.length) * Number(item.numberOfChannels) * 4 || 0), 0);
+      while (cachedBytes() > 64 * 1024 * 1024) rollDecodedAudioCache.delete(rollDecodedAudioCache.keys().next().value);
+    }
+    return buffer;
+  } catch (error) {
+    if (cacheKey && rollDecodedAudioCache.get(cacheKey) === loading) rollDecodedAudioCache.delete(cacheKey);
+    throw error;
+  }
+}
+
+function playBufferedOutcomeSound(buffer, volume, audioContext) {
+  const source = audioContext.createBufferSource();
+  const gain = audioContext.createGain();
+  source.buffer = buffer;
+  gain.gain.value = volume;
+  source.connect(gain); gain.connect(audioContext.destination);
+  let ended = false;
+  const finish = () => {
+    if (ended) return;
+    ended = true;
+    source.disconnect(); gain.disconnect();
+    activeOutcomeAudio.delete(playback);
+  };
+  const playback = { pause: () => { try { source.stop(); } finally { finish(); } } };
+  source.onended = finish;
+  activeOutcomeAudio.add(playback);
+  try { source.start(); } catch (error) { finish(); throw error; }
+  return playback;
+}
+
 async function playOutcomeSound(key, ref, volume, localSource = "", canPlay = () => true) {
   volume = clampRollVolume(volume, 0);
-  if (!ROLL_SOUND_KEYS.includes(key) || volume === 0) return;
+  if (!ROLL_SOUND_KEYS.includes(key) || volume === 0 || !canPlay()) return;
   const epoch = accountRollEpoch;
+  let audioContext;
+  try { audioContext = await unlockOutcomeAudio(); } catch (error) {
+    if (error?.name === "NotAllowedError" && epoch === accountRollEpoch && canPlay()) queuePendingOutcomeSound({ key, ref, volume, localSource, canPlay, epoch });
+    throw error;
+  }
   const source = localSource || (ref ? await readSharedRollAudio(ref) : "");
   if (epoch !== accountRollEpoch || !canPlay()) return;
-  if (!source) { await unlockOutcomeAudio(); playDefaultOutcomeSound(key, volume); return; }
+  if (!source) { playDefaultOutcomeSound(key, volume); return; }
+  if (audioContext) {
+    const buffer = await decodeRollAudio(source, localSource ? null : ref, audioContext);
+    if (epoch !== accountRollEpoch || !canPlay()) return;
+    if (audioContext.state !== "running") {
+      queuePendingOutcomeSound({ key, ref, volume, localSource, canPlay, epoch });
+      throw Object.assign(new Error("Clique em “Ativar sons” para liberar o áudio."), { name: "NotAllowedError" });
+    }
+    playBufferedOutcomeSound(buffer, volume, audioContext);
+    return;
+  }
   const audio = new Audio(source);
   audio.volume = volume;
   activeOutcomeAudio.add(audio);
@@ -24516,6 +24694,7 @@ async function saveAccountSettings(event) {
   const hasSoundChanges = pendingSoundKeys.length > 0 || ROLL_SOUND_KEYS.some((key) => JSON.stringify(accountSettingsDraft.sounds[key]) !== JSON.stringify(currentAccountSettings.sounds[key]));
   let uploadingSoundKey = "";
   settingsBusy = true; rollAccountUi.save.disabled = true;
+  if (accountSettingsDraft.othersEnabled) unlockOutcomeAudio().catch(reportOutcomeAudioError);
   updateSettingsFormAvailability();
   rollAccountUi.save.textContent = "Salvando…";
   rollAccountUi.hidden.disabled = true;
@@ -24646,6 +24825,7 @@ rollAccountUi.othersVolume.addEventListener("input", () => {
 rollAccountUi.othersEnabled.addEventListener("change", () => {
   if (!accountSettingsDraft) return;
   accountSettingsDraft.othersEnabled = rollAccountUi.othersEnabled.checked;
+  if (accountSettingsDraft.othersEnabled) unlockOutcomeAudio().catch(reportOutcomeAudioError);
   rollAccountUi.othersVolume.disabled = !accountSettingsDraft.othersEnabled;
   renderSettingsPlayerVolumes();
 });
@@ -24702,8 +24882,11 @@ document.querySelectorAll("[data-reset-outcome]").forEach((button) => button.add
   document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).value = ""; renderSettingsSoundNames();
   setSettingsSoundFeedback(key, "selected", "Som padrão escolhido. Clique em “Salvar configurações” para confirmar.");
 }));
+document.querySelector("#roll-audio-unlock").addEventListener("click", () => unlockOutcomeAudio().catch(reportOutcomeAudioError));
+document.querySelector("#roll-audio-notice-close").addEventListener("click", hideOutcomeAudioNotice);
 document.addEventListener("pointerdown", () => unlockOutcomeAudio().catch(() => {}), { passive: true });
 document.addEventListener("keydown", (event) => {
+  if (event.isTrusted && !event.repeat) unlockOutcomeAudio().catch(() => {});
   const modal = !rollAccountUi.settingsModal.hidden ? rollAccountUi.settingsModal : !rollAccountUi.historyModal.hidden ? rollAccountUi.historyModal : null;
   if (!modal) return;
   if (event.key === "Escape") { event.preventDefault(); modal === rollAccountUi.settingsModal ? closeAccountSettings() : closeRollHistory(); }
@@ -25145,7 +25328,11 @@ window.addEventListener("abyss:sheet-changed", () => {
   if (currentFirebaseUser) scheduleCloudSave();
 });
 window.addEventListener("abyss:firebase-login", requestFirebaseLogin);
-window.addEventListener("abyss:firebase-sync-now", () => flushCloudSave());
+window.addEventListener("abyss:firebase-sync-now", () => {
+  unlockOutcomeAudio().catch(reportOutcomeAudioError);
+  flushCloudSave();
+  reconnectRollCampaignAudio().catch((error) => { reportRollHistoryError(error); reportOutcomeAudioError(error); });
+});
 window.addEventListener("abyss:firebase-sign-out", requestFirebaseSignOut);
 window.addEventListener("offline", () => {
   if (currentFirebaseUser) {
@@ -25159,6 +25346,7 @@ window.addEventListener("offline", () => {
 });
 window.addEventListener("online", () => {
   if (currentFirebaseUser && stateRevision > lastSavedRevision) flushCloudSave();
+  if (currentFirebaseUser) reconnectRollCampaignAudio().catch((error) => { reportRollHistoryError(error); reportOutcomeAudioError(error); });
 });
 
 function campaignCardActivation(event) {
