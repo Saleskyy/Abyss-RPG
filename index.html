@@ -4747,7 +4747,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .ability-tabs { flex: 1 1 590px; }
 .abilities-actions { margin-left: auto; }
 .echo-counter { display: flex; align-items: center; gap: 14px; max-width: 100%; }
-.echo-counter-button { flex: 0 0 30px; height: 30px; border: 1px solid rgba(var(--echo-rgb), .45); border-radius: 3px; color: var(--echo-color); background: rgba(var(--echo-rgb), .06); font-size: 1.2rem; cursor: pointer; }
+.echo-counter-button { display: grid; place-items: center; flex: 0 0 30px; height: 30px; padding: 0; border: 1px solid rgba(var(--echo-rgb), .45); border-radius: 3px; color: var(--echo-color); background: rgba(var(--echo-rgb), .06); line-height: 1; cursor: pointer; }
+.echo-counter-button svg { display: block; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
 .echo-counter-button:hover { background: rgba(var(--echo-rgb), .17); }
 .echo-counter-button:disabled { opacity: .32; cursor: default; }
 .echo-counter-button:focus-visible { outline-color: var(--echo-color); box-shadow: 0 0 0 3px rgba(var(--echo-rgb), .12); }
@@ -7239,9 +7240,10 @@ h1, h2, h3, h4, h5, h6,
   pointer-events: none;
   background: linear-gradient(90deg, transparent, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .65), transparent);
 }
+#startup-slot-gate .slot-gate-dialog:focus, #startup-slot-gate .slot-gate-dialog:focus-visible { outline: none; }
 #startup-slot-gate .slot-gate-head {
   flex: 0 0 auto;
-  grid-template-columns: 64px minmax(0, 1fr);
+  grid-template-columns: 64px minmax(0, 1fr) auto;
   gap: 22px;
   padding: 32px 34px 28px;
   border-bottom-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .15);
@@ -7260,6 +7262,19 @@ h1, h2, h3, h4, h5, h6,
 #startup-slot-gate .slot-gate-head h1 { margin: 0 0 9px; color: var(--theme-text-eee8dc, #eee8dc); font-family: var(--font-title); font-size: clamp(1.55rem, 3vw, 2rem); font-weight: 500; line-height: 1.3; letter-spacing: -.025em; }
 #startup-slot-gate .slot-gate-head p:last-child { max-width: 550px; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .78rem; line-height: 1.7; }
 #startup-slot-gate .slot-gate-content { flex: 0 1 auto; min-height: 0; max-height: none; padding: 25px 34px 32px; scrollbar-width: thin; scrollbar-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .28) transparent; }
+#startup-slot-gate .startup-create-toggle { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 38px; padding: 0 13px; white-space: nowrap; font-size: .7rem; }
+#startup-slot-gate .startup-create-toggle svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+#startup-create-form { display: grid; gap: 15px; margin: 0 0 24px; padding: 19px 20px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25); border-radius: 7px; background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .035); }
+#startup-create-form h2 { margin: 0; color: var(--theme-text-eee8dc, #eee8dc); font: 500 1.1rem Georgia, "Times New Roman", serif; }
+.startup-create-fields { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 13px; }
+#startup-create-form .builder-field { min-width: 0; gap: 7px; }
+#startup-create-form .builder-field > span { color: var(--theme-accent-cfad62, #cfad62); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; }
+#startup-create-form input, #startup-create-form select { width: 100%; min-width: 0; min-height: 40px; border-radius: 4px; font-size: .77rem; }
+.startup-create-actions { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 8px; }
+.startup-create-actions .dialog-button { min-height: 36px; padding: 0 13px; font-size: .7rem; }
+#startup-create-status { margin: 0; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .74rem; line-height: 1.6; }
+#startup-create-status:empty { display: none; }
+#startup-create-status.is-error { color: #ef8c98; }
 #startup-slot-gate .slot-gate-section-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 20px; }
 #startup-slot-gate .slot-gate-status { margin: 0; text-align: left; font-size: .75rem; line-height: 1.6; }
 #startup-slot-gate .slot-gate-status.is-error { color: #ef8c98; }
@@ -7296,6 +7311,9 @@ h1, h2, h3, h4, h5, h6,
 @media (max-width: 700px) {
   #startup-slot-gate .slot-gate-dialog { width: 100%; max-height: 94dvh; border-radius: 16px 16px 0 0; }
   #startup-slot-gate .slot-gate-head { grid-template-columns: 48px minmax(0, 1fr); gap: 15px; padding: 24px 20px; }
+  #startup-slot-gate .startup-create-toggle { grid-column: 2; justify-self: start; }
+  .startup-create-fields { grid-template-columns: minmax(0, 1fr); }
+  #startup-create-form { padding: 16px; }
   #startup-slot-gate .slot-gate-mark { width: 48px; height: 48px; border-radius: 10px; }
   #startup-slot-gate .slot-gate-mark svg { width: 28px; height: 28px; }
   #startup-slot-gate .slot-gate-head h1 { font-size: 1.45rem; }
@@ -7317,7 +7335,227 @@ h1, h2, h3, h4, h5, h6,
   #startup-slot-gate .slot-gate-choice:hover, #startup-slot-gate .slot-gate-choice:focus-visible { transform: none; }
 }
     </style>
-  </head>
+  <style id="notebook-library-styles">
+/* Cadernos do personagem. Inserir depois dos estilos atuais de Notas. */
+#notes-view .notes-panel { border-radius: 8px; }
+#notes-view .notes-panel-head { flex-wrap: wrap; gap: 16px 24px; }
+#notes-view .notes-head-actions { flex-wrap: wrap; }
+#notes-view #notes-list { display: block; padding: 24px; }
+#notes-view .notebook-library {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
+  align-items: start;
+  gap: 24px 20px;
+}
+#notes-view .notebook-item { min-width: 0; }
+#notes-view .notebook-cover {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  min-width: 0;
+  min-height: 250px;
+  padding: 26px 25px 25px 34px;
+  overflow: hidden;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .38);
+  border-radius: 4px 9px 9px 4px;
+  color: var(--theme-text-eee8dc, #eee8dc);
+  background:
+    radial-gradient(ellipse at 90% 0%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .12), transparent 68%),
+    linear-gradient(125deg, var(--palette-containerRaised, #191a20), var(--palette-panel, #0d0e12));
+  box-shadow: 4px 5px 0 -1px var(--theme-surfaceRaised-191c21, #191c21), 5px 6px 0 -1px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .22), 0 12px 25px rgba(0, 0, 0, .16), inset 0 1px rgba(255, 255, 255, .025);
+  cursor: pointer;
+  text-align: left;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+#notes-view .notebook-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 13px;
+  border-right: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25);
+  background: linear-gradient(90deg, rgba(0, 0, 0, .28), rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .06));
+  box-shadow: 2px 0 3px rgba(0, 0, 0, .2);
+  pointer-events: none;
+}
+#notes-view .notebook-cover::after {
+  content: "";
+  position: absolute;
+  inset: 13px 13px 13px 24px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .12);
+  border-radius: 2px 5px 5px 2px;
+  pointer-events: none;
+}
+#notes-view .notebook-cover:hover { transform: translateY(-3px); border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .7); }
+#notes-view .notebook-cover:focus-visible { outline: 2px solid var(--theme-accent-dfc77f, #dfc77f); outline-offset: 5px; }
+#notes-view .notebook-cover-mark { display: grid; place-items: center; width: 34px; height: 34px; margin-bottom: 30px; color: var(--theme-accent-dfc77f, #dfc77f); }
+#notes-view .notebook-cover-mark svg { display: block; width: 30px; height: 30px; fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+#notes-view .notebook-cover-title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  width: 100%;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  color: var(--theme-text-eee8dc, #eee8dc);
+  font: 500 1.16rem/1.4 var(--font-title, Georgia, serif);
+}
+#notes-view .notebook-cover-meta { display: block; margin-top: auto; padding-top: 22px; color: var(--theme-accent-cfad62, #cfad62); font-size: .64rem; line-height: 1.5; letter-spacing: .07em; }
+#notes-view .notebook-cover-actions { display: flex; align-items: center; flex-wrap: wrap; justify-content: flex-end; gap: 6px; padding: 13px 0 0; }
+#notes-view .notebook-cover-actions .notes-small-button { min-height: 32px; font-weight: 600; }
+
+#notes-view .notebook-workspace { min-width: 0; }
+#notes-view .notebook-workspace-head { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+#notes-view .notebook-back { display: inline-flex; flex: 0 0 auto; align-items: center; justify-content: center; gap: 6px; min-height: 36px; }
+#notes-view .notebook-back svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+#notes-view [data-notebook-title] {
+  flex: 1 1 175px;
+  min-width: 0;
+  min-height: 38px;
+  padding: 4px 7px;
+  border: 0;
+  border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25);
+  border-radius: 2px 2px 0 0;
+  outline: 0;
+  color: var(--theme-text-eee8dc, #eee8dc);
+  background: transparent;
+  font: 500 1.06rem var(--font-title, Georgia, serif);
+}
+#notes-view [data-notebook-title]:focus { border-bottom-color: var(--theme-accent-dfc77f, #dfc77f); box-shadow: 0 2px 0 rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .2); }
+#notes-view .notebook-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; margin-left: auto; }
+#notes-view .notebook-actions .notes-small-button { min-height: 36px; }
+#notes-view .notebook-spread {
+  display: grid;
+  grid-template-columns: minmax(150px, 195px) minmax(0, 1fr);
+  align-items: stretch;
+  min-width: 0;
+  padding: 9px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .26);
+  border-radius: 7px;
+  background: linear-gradient(130deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08), transparent 70%), var(--palette-panel, #0d0e12);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, .17);
+}
+#notes-view .notebook-page-list {
+  display: grid;
+  align-content: start;
+  gap: 5px;
+  min-width: 0;
+  max-height: 720px;
+  padding: 19px 15px 22px 8px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .28) transparent;
+}
+#notes-view .notebook-page-list > h3, #notes-view .notebook-index-title { margin: 0 0 11px; padding: 0 8px; color: var(--theme-accent-cfad62, #cfad62); font: 700 .62rem/1.6 ui-sans-serif, system-ui, sans-serif; letter-spacing: .13em; text-transform: uppercase; }
+#notes-view .notebook-page-list button {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  min-height: 40px;
+  padding: 9px 8px;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  color: var(--theme-muted-aaa69d, #aaa69d);
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font: 500 .7rem/1.5 ui-sans-serif, system-ui, sans-serif;
+}
+#notes-view .notebook-page-number { color: var(--theme-accent-cfad62, #cfad62); font: 500 .8rem/1.4 Georgia, serif; text-align: center; font-variant-numeric: tabular-nums; }
+#notes-view .notebook-page-list button > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+#notes-view .notebook-page-list button:hover { color: var(--theme-text-eee8dc, #eee8dc); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .05); }
+#notes-view .notebook-page-list button[aria-current="page"], #notes-view .notebook-page-list button.is-active { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .27); color: var(--theme-text-eee8dc, #eee8dc); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .09); box-shadow: inset 2px 0 rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .6); }
+#notes-view .notebook-paper {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .22);
+  border-radius: 2px 5px 5px 2px;
+  background: var(--theme-surface-121418, #121418);
+  box-shadow: -7px 0 11px rgba(0, 0, 0, .12), 3px 3px 0 rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .07);
+}
+#notes-view .notebook-paper::before { content: ""; position: absolute; z-index: 2; inset: 0 auto 0 -4px; width: 7px; border-radius: 2px; background: linear-gradient(90deg, rgba(0, 0, 0, .16), rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .12), transparent); pointer-events: none; }
+#notes-view .notebook-spread .notes-card { flex: 1; margin: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+#notes-view .notebook-spread .notes-card-head { align-items: center; flex-wrap: wrap; gap: 10px; padding: 20px 25px 15px 32px; border-bottom-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .14); background: linear-gradient(110deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .035), transparent); }
+#notes-view .notebook-spread .notes-card-title { flex: 1 1 180px; font-size: 1.15rem; }
+#notes-view .notebook-spread .notes-card-actions { flex-wrap: wrap; margin-left: auto; }
+#notes-view .notebook-spread .notes-toolbar { padding: 10px 22px 10px 28px; gap: 5px; background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .018); border-bottom-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); }
+#notes-view .notebook-spread .notes-link-row { flex-wrap: wrap; padding: 11px 24px; }
+#notes-view .notebook-spread .notes-link-row input { flex: 1 1 170px; }
+#notes-view .notebook-spread .notes-card-body {
+  --notebook-paper-margin: 32px;
+  min-height: 420px;
+  padding: 25px 32px 38px 54px;
+  color: var(--theme-text-e2dbce, #e2dbce);
+  background-image:
+    linear-gradient(90deg, transparent var(--notebook-paper-margin), rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .12) var(--notebook-paper-margin), rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .12) calc(var(--notebook-paper-margin) + 1px), transparent calc(var(--notebook-paper-margin) + 1px)),
+    repeating-linear-gradient(180deg, transparent 0, transparent calc(1.95em - 1px), rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .052) calc(1.95em - 1px), rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .052) 1.95em);
+  background-position: 0 0, 0 25px;
+  font-size: .92rem;
+  line-height: 1.95;
+}
+#notes-view .notebook-spread .notes-card-body:focus-visible { box-shadow: inset 0 0 0 1px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .28); }
+#notes-view .notebook-spread .notes-card-body img { max-width: 100%; max-height: 620px; object-fit: contain; }
+#notes-view .notebook-pagination { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; min-height: 60px; padding: 11px 24px; border-top: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .16); color: var(--theme-muted-aaa69d, #aaa69d); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .025); }
+#notes-view .notebook-pagination > span, #notes-view .notebook-page-counter { flex: 0 0 auto; font: 500 .75rem/1.5 Georgia, serif; letter-spacing: .03em; font-variant-numeric: tabular-nums; }
+#notes-view .notebook-pagination .notes-small-button { min-height: 32px; }
+#notes-view .notebook-pagination svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+#notes-view .notebook-workspace button:focus-visible { outline: 2px solid var(--theme-accent-dfc77f, #dfc77f); outline-offset: 3px; }
+#notes-view .notebook-workspace button:disabled { opacity: .35; cursor: default; }
+#notes-view #notes-empty > svg { width: 42px; height: 42px; color: var(--theme-accent-dfc77f, #dfc77f); fill: none; stroke: currentColor; stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+
+@media (max-width: 1000px) {
+  #notes-view .notebook-spread { grid-template-columns: minmax(130px, 165px) minmax(0, 1fr); }
+  #notes-view .notebook-spread .notes-card-body { padding-right: 24px; }
+}
+@media (max-width: 760px) {
+  #notes-view #notes-list { padding: 16px; }
+  #notes-view .notebook-library { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 22px 17px; }
+  #notes-view .notebook-cover { min-height: 225px; }
+  #notes-view .notebook-workspace-head { gap: 11px; margin-bottom: 15px; }
+  #notes-view .notebook-actions { flex-basis: 100%; margin-left: 0; justify-content: flex-end; }
+  #notes-view .notebook-spread { grid-template-columns: minmax(0, 1fr); padding: 7px; }
+  #notes-view .notebook-page-list { display: flex; align-items: stretch; flex-wrap: wrap; gap: 6px; max-height: 185px; padding: 10px 8px 17px; }
+  #notes-view .notebook-page-list > h3, #notes-view .notebook-index-title { flex: 0 0 100%; margin: 0 0 4px; padding: 0; }
+  #notes-view .notebook-page-list button { flex: 1 1 130px; width: auto; }
+  #notes-view .notebook-paper::before { display: none; }
+  #notes-view .notebook-spread .notes-card-head { padding: 17px 19px; }
+  #notes-view .notebook-spread .notes-card-title { flex-basis: 155px; font-size: 1.03rem; }
+  #notes-view .notebook-spread .notes-toolbar { padding: 10px 15px; }
+  #notes-view .notebook-spread .notes-card-body { --notebook-paper-margin: 22px; min-height: 340px; padding: 20px 20px 30px 38px; background-position: 0 0, 0 20px; font-size: .88rem; }
+  #notes-view .notebook-pagination { padding: 10px 15px; gap: 8px; }
+}
+@media (max-width: 440px) {
+  #notes-view #notes-list { padding: 13px; }
+  #notes-view .notebook-library { grid-template-columns: minmax(0, 1fr); }
+  #notes-view .notebook-cover { min-height: 215px; }
+  #notes-view .notebook-cover-mark { margin-bottom: 23px; }
+  #notes-view [data-notebook-title] { flex-basis: calc(100% - 120px); }
+  #notes-view .notebook-spread .notes-card-actions { width: 100%; justify-content: flex-end; }
+  #notes-view .notebook-pagination .notes-small-button { padding: 0 7px; font-size: .61rem; }
+  #notes-view .notebook-pagination > span { font-size: .69rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #notes-view .notebook-cover { transition: none; }
+  #notes-view .notebook-cover:hover { transform: none; }
+}
+
+#notes-view .notebook-cover-open { margin-top: 12px; color: var(--theme-accent-dfc77f, #dfc77f); font-size: .65rem; letter-spacing: .03em; }
+body.is-readonly #notes-view .notebook-cover-actions,
+body.is-readonly #notes-view .notebook-actions,
+body.is-readonly #notes-view .notes-card-actions,
+body.is-readonly #notes-view .notes-toolbar,
+body.is-readonly #notes-view .notes-link-row,
+body.is-readonly #notes-view #create-note { display: none; }
+body.is-readonly #notes-view [data-notebook-title],
+body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparent; cursor: default; }
+</style>
+</head>
   <body class="slot-gate-open">
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
 
@@ -8008,7 +8246,7 @@ h1, h2, h3, h4, h5, h6,
             <p class="eyebrow">Eco do personagem</p>
             <h2 id="echo-panel-title" class="echo-panel-title">Escolha um Eco</h2>
             <div class="echo-counter">
-              <button id="echo-decrease" class="echo-counter-button" type="button" aria-label="Diminuir Eco em um" disabled>−</button>
+              <button id="echo-decrease" class="echo-counter-button" type="button" aria-label="Diminuir Eco em um" disabled><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10"></path></svg></button>
               <div id="echo-segments" class="echo-segments" role="meter" aria-label="Pontos de Eco" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
                 <span class="echo-segment"></span>
                 <span class="echo-segment"></span>
@@ -8016,7 +8254,7 @@ h1, h2, h3, h4, h5, h6,
                 <span class="echo-segment"></span>
                 <span class="echo-segment"></span>
               </div>
-              <button id="echo-increase" class="echo-counter-button" type="button" aria-label="Aumentar Eco em um">+</button>
+              <button id="echo-increase" class="echo-counter-button" type="button" aria-label="Aumentar Eco em um"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path d="M3 8h10M8 3v10"></path></svg></button>
             </div>
             <output id="echo-points-label" class="echo-points-label" aria-live="polite">0 / 5</output>
           </header>
@@ -8344,31 +8582,30 @@ h1, h2, h3, h4, h5, h6,
       >
         <div class="page-heading">
           <div>
-            <p class="eyebrow">Caderno do personagem</p>
+            <p class="eyebrow">Biblioteca do personagem</p>
             <h1 id="notes-title">Notas</h1>
           </div>
-          <p class="heading-note">História, pistas e registros deste Slot</p>
+          <p class="heading-note">Cadernos, histórias e registros deste Slot</p>
         </div>
-
-        <section class="notes-panel" aria-label="Blocos de notas do personagem">
+        <section class="notes-panel" aria-label="Cadernos do personagem">
           <header class="notes-panel-head">
             <div>
               <p class="eyebrow">Registros pessoais</p>
-              <h2>Seu caderno</h2>
+              <h2>Seus cadernos</h2>
             </div>
             <div class="notes-head-actions">
-              <span id="notes-count" class="notes-count">0 notas</span>
+              <span id="notes-count" class="notes-count">0 cadernos</span>
               <button id="create-note" class="create-ability-button" type="button">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
-                <span>Criar nota</span>
+                <span>Criar caderno</span>
               </button>
             </div>
           </header>
           <div id="notes-list" class="notes-list"></div>
           <div id="notes-empty" class="notes-empty">
-            <span aria-hidden="true">✎</span>
-            <strong>Seu caderno está vazio</strong>
-            <p>Crie um bloco para escrever a história, registrar pistas ou guardar anotações.</p>
+            <svg viewBox="0 0 40 40" aria-hidden="true"><path d="M7 6h23a3 3 0 0 1 3 3v25H10a3 3 0 0 1-3-3V6ZM12 6v28M18 14h10M18 19h7M7 28h26"></path></svg>
+            <strong>Sua biblioteca está vazia</strong>
+            <p>Crie um caderno e adicione páginas para guardar textos, imagens e histórias.</p>
           </div>
         </section>
       </section>
@@ -8780,9 +9017,22 @@ h1, h2, h3, h4, h5, h6,
             <h1 id="startup-slot-title">Escolha sua ficha</h1>
             <p id="startup-slot-description">Verificando sua conta e buscando os Slots disponíveis.</p>
           </div>
+          <button id="startup-create-button" class="dialog-button is-primary startup-create-toggle" type="button" aria-expanded="false" aria-controls="startup-create-form" hidden><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4v12M4 10h12"></path></svg>Nova ficha</button>
         </header>
         <div class="slot-gate-content">
           <div id="startup-slot-spinner" class="slot-gate-spinner" aria-hidden="true"></div>
+          <form id="startup-create-form" aria-labelledby="startup-create-title" hidden>
+            <h2 id="startup-create-title">Criar nova ficha</h2>
+            <div class="startup-create-fields">
+              <label class="builder-field"><span>Nome da ficha</span><input id="startup-create-name" type="text" maxlength="60" autocomplete="off" placeholder="Nome do personagem" /></label>
+              <label class="builder-field"><span>Pasta</span><select id="startup-create-folder" aria-label="Pasta da nova ficha"><option value="__unfiled__">Sem pasta</option></select></label>
+            </div>
+            <p id="startup-create-status" role="status" aria-live="polite"></p>
+            <div class="startup-create-actions">
+              <button id="startup-create-cancel" class="dialog-button" type="button">Cancelar</button>
+              <button id="startup-create-submit" class="dialog-button is-primary" type="submit">Criar e abrir</button>
+            </div>
+          </form>
           <div class="slot-gate-section-heading">
             <p id="startup-slot-status" class="slot-gate-status" aria-live="polite">Carregando Slots…</p>
             <span id="startup-slot-summary" hidden></span>
@@ -12381,8 +12631,13 @@ const views = [...document.querySelectorAll("[data-view]")];
 const notesList = document.querySelector("#notes-list");
 const notesEmpty = document.querySelector("#notes-empty");
 const notesCount = document.querySelector("#notes-count");
-const MAX_NOTES_BYTES = 650000;
+// Includes a small reserve so converting existing notes into pages never loses them to the notebook wrapper.
+const MAX_NOTES_BYTES = 651024;
 const MAX_NOTE_IMAGE_CHARS = 150000;
+const MAX_NOTEBOOKS = 100;
+const MAX_NOTEBOOK_PAGES = 200;
+let activeNotebookId = "";
+let activeNotebookPageId = "";
 let characterNotes = [];
 let notesEpoch = 0;
 const savedNoteSelections = new Map();
@@ -12791,7 +13046,7 @@ function sanitizeNoteHtml(value) {
       if (!url) return null;
       const image = document.createElement("img");
       image.src = url;
-      image.alt = String(node.getAttribute("alt") || "Imagem da nota").slice(0, 120);
+      image.alt = String(node.getAttribute("alt") || "Imagem da página").slice(0, 120);
       image.loading = "lazy";
       return image;
     }
@@ -12845,11 +13100,7 @@ function normalizeCharacterNote(raw) {
   if (!raw || typeof raw !== "object") return null;
   const id = String(raw.id || "").replace(/[^a-z0-9_-]/gi, "").slice(0, 90);
   if (!id) return null;
-  return {
-    id,
-    title: String(raw.title || "").trim().slice(0, 100),
-    html: sanitizeNoteHtml(raw.html),
-  };
+  return { id, title: String(raw.title || "").trim().slice(0, 100), html: sanitizeNoteHtml(raw.html) };
 }
 
 function notesSizeInBytes(list) {
@@ -12857,113 +13108,373 @@ function notesSizeInBytes(list) {
 }
 
 function normalizeCharacterNotes(raw) {
+  const entries = Array.isArray(raw) ? raw : [];
   const result = [];
-  const ids = new Set();
-  (Array.isArray(raw) ? raw : []).slice(0, 100).forEach((entry) => {
-    const note = normalizeCharacterNote(entry);
-    if (!note || ids.has(note.id)) return;
-    if (notesSizeInBytes([...result, note]) > MAX_NOTES_BYTES) return;
-    ids.add(note.id);
-    result.push(note);
-  });
-  return result;
+  const bookIds = new Set();
+  const reservedIds = new Set(entries.filter((entry) => Array.isArray(entry?.pages)).map((entry) => String(entry.id || "").replace(/[^a-z0-9_-]/gi, "").slice(0, 90)));
+  let legacyId = "notebook-legacy";
+  while (reservedIds.has(legacyId)) legacyId += "-old";
+  let legacyBook = null;
+  for (const entry of entries.slice(0, MAX_NOTEBOOKS + MAX_NOTEBOOK_PAGES)) {
+    if (!entry || typeof entry !== "object") continue;
+    if (!Array.isArray(entry.pages)) {
+      const page = normalizeCharacterNote(entry);
+      if (!page) continue;
+      if (!legacyBook) {
+        if (result.length >= MAX_NOTEBOOKS) continue;
+        legacyBook = { id: legacyId, title: "Anotações", pages: [] };
+        result.push(legacyBook);
+        bookIds.add(legacyId);
+      }
+      if (legacyBook.pages.length >= MAX_NOTEBOOK_PAGES || legacyBook.pages.some((item) => item.id === page.id)) continue;
+      legacyBook.pages.push(page);
+      if (notesSizeInBytes(result) > MAX_NOTES_BYTES) legacyBook.pages.pop();
+      continue;
+    }
+    const id = String(entry.id || "").replace(/[^a-z0-9_-]/gi, "").slice(0, 90);
+    if (!id || bookIds.has(id) || result.length >= MAX_NOTEBOOKS) continue;
+    const book = { id, title: String(entry.title || "").trim().slice(0, 100), pages: [] };
+    const pageIds = new Set();
+    result.push(book);
+    for (const rawPage of entry.pages.slice(0, MAX_NOTEBOOK_PAGES)) {
+      const page = normalizeCharacterNote(rawPage);
+      if (!page || pageIds.has(page.id)) continue;
+      book.pages.push(page);
+      if (notesSizeInBytes(result) > MAX_NOTES_BYTES) { book.pages.pop(); continue; }
+      pageIds.add(page.id);
+    }
+    if (!book.pages.length) book.pages.push({ id: `${id.slice(0, 78)}-page-1`, title: "", html: "" });
+    if (notesSizeInBytes(result) > MAX_NOTES_BYTES) { result.pop(); continue; }
+    bookIds.add(id);
+  }
+  return result.filter((book) => book.pages.length > 0);
 }
 
 function createCharacterNoteId() {
   return `note-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function renderCharacterNotes() {
-  savedNoteSelections.clear();
-  notesList.replaceChildren();
-  characterNotes.forEach((note) => {
-    const card = document.createElement("article");
-    card.className = "notes-card";
-    card.dataset.noteId = note.id;
-    card.innerHTML = `
-      <header class="notes-card-head">
-        <input class="notes-card-title" data-note-title type="text" maxlength="100"
-          aria-label="Título da nota" placeholder="Título da nota" autocomplete="off" />
-        <div class="notes-card-actions">
-          <button class="notes-small-button" type="button" data-note-action="edit" title="Editar texto">Editar</button>
-          <button class="notes-small-button" type="button" data-note-action="duplicate" title="Duplicar nota">Duplicar</button>
-          <button class="notes-small-button is-danger" type="button" data-note-action="delete" title="Excluir nota">Excluir</button>
-        </div>
-      </header>
-      <div class="notes-toolbar" role="toolbar" aria-label="Formatação da nota">
-        <button class="notes-tool" type="button" data-note-action="bold" aria-label="Negrito" title="Negrito"><b>B</b></button>
-        <button class="notes-tool" type="button" data-note-action="italic" aria-label="Itálico" title="Itálico"><i>I</i></button>
-        <button class="notes-tool" type="button" data-note-action="underline" aria-label="Sublinhado" title="Sublinhado">U</button>
-        <span class="notes-tool-separator" aria-hidden="true"></span>
-        <button class="notes-tool" type="button" data-note-action="heading" aria-label="Título no texto" title="Título no texto">H2</button>
-        <button class="notes-tool" type="button" data-note-action="subheading" aria-label="Subtítulo no texto" title="Subtítulo no texto">H3</button>
-        <button class="notes-tool" type="button" data-note-action="paragraph" aria-label="Parágrafo" title="Parágrafo">¶</button>
-        <button class="notes-tool" type="button" data-note-action="bullets" aria-label="Lista com marcadores" title="Lista com marcadores">• Lista</button>
-        <button class="notes-tool" type="button" data-note-action="numbers" aria-label="Lista numerada" title="Lista numerada">1. Lista</button>
-        <button class="notes-tool" type="button" data-note-action="quote" aria-label="Citação" title="Citação">❝</button>
-        <span class="notes-tool-separator" aria-hidden="true"></span>
-        <button class="notes-tool" type="button" data-note-action="link" aria-label="Inserir link" title="Inserir link">↗ Link</button>
-        <button class="notes-tool" type="button" data-note-action="image-file" aria-label="Adicionar imagem do aparelho" title="Adicionar imagem do aparelho">▣ Imagem</button>
-        <button class="notes-tool" type="button" data-note-action="image-url" aria-label="Adicionar imagem por link" title="Adicionar imagem por link">↗ Imagem</button>
-        <input type="file" data-note-image-file accept="image/png,image/jpeg,image/webp,image/gif" hidden />
-      </div>
-      <div class="notes-link-row" data-note-url-row hidden>
-        <input type="url" data-note-url-input placeholder="https://exemplo.com/imagem.png" aria-label="Endereço do link" />
-        <button class="notes-small-button" type="button" data-note-action="insert-url">Inserir</button>
-        <button class="notes-small-button" type="button" data-note-action="cancel-url">Cancelar</button>
-      </div>
-      <div class="notes-card-body" data-note-body contenteditable="true" role="textbox" aria-multiline="true"
-        aria-label="Texto da nota" spellcheck="true" data-placeholder="Escreva aqui. Selecione um trecho para formatar."></div>
-    `;
-    card.querySelector("[data-note-title]").value = note.title;
-    card.querySelector("[data-note-body]").innerHTML = note.html;
-    notesList.append(card);
-  });
-  const count = characterNotes.length;
-  notesCount.textContent = `${count} ${count === 1 ? "nota" : "notas"}`;
-  notesEmpty.hidden = count > 0;
+function getCharacterNotebook(id) {
+  return characterNotes.find((book) => book.id === id) || null;
 }
 
-function warnNoteCapacity(trigger) {
-  showAbyssAlert({
-    eyebrow: "Caderno do personagem",
-    title: "Limite de imagens e texto atingido",
-    message: "Este Slot atingiu o espaço disponível para notas. Reduza o tamanho das imagens, use um link para a imagem ou exclua parte do conteúdo.",
-    tone: "warning",
-    trigger,
-  });
+function getCharacterNotebookPage(bookId, pageId) {
+  return getCharacterNotebook(bookId)?.pages.find((page) => page.id === pageId) || null;
 }
 
-function commitNoteBody(editor) {
-  const card = editor.closest("[data-note-id]");
-  const note = characterNotes.find((entry) => entry.id === card?.dataset.noteId);
-  if (!note) return false;
-  const nextHtml = sanitizeNoteHtml(editor.innerHTML);
-  const proposed = characterNotes.map((entry) => entry.id === note.id ? { ...entry, html: nextHtml } : entry);
-  if (notesSizeInBytes(proposed) > MAX_NOTES_BYTES) {
-    editor.innerHTML = note.html;
-    warnNoteCapacity(editor);
-    return false;
-  }
-  if (note.html !== nextHtml) {
-    note.html = nextHtml;
+function getNoteFromCard(card) {
+  if (!card || card.isConnected === false || (card.dataset.notesEpoch !== undefined && card.dataset.notesEpoch !== String(notesEpoch))) return null;
+  return getCharacterNotebookPage(card.dataset.notebookId, card.dataset.noteId);
+}
+
+function isNotebookReadOnly() {
+  return Boolean(document.body?.classList?.contains("campaign-sheet-session") && document.body?.classList?.contains("is-readonly"));
+}
+
+function setCampaignSheetReadOnly(readOnly) {
+  const main = document.querySelector("#main-content");
+  main.inert = false;
+  [...main.children].forEach((view) => { view.inert = Boolean(readOnly && view.id !== "notes-view"); });
+  document.body.classList.toggle("is-readonly", Boolean(readOnly));
+  document.querySelector("#create-note").disabled = Boolean(readOnly);
+  renderCharacterNotes();
+}
+
+function updateNotebookPage(bookId, pageId, changes, trigger) {
+  if (isNotebookReadOnly()) return false;
+  const page = getCharacterNotebookPage(bookId, pageId);
+  if (!page) return false;
+  const proposed = characterNotes.map((book) => book.id === bookId ? { ...book, pages: book.pages.map((item) => item.id === pageId ? { ...item, ...changes } : item) } : book);
+  if (notesSizeInBytes(proposed) > MAX_NOTES_BYTES) { warnNoteCapacity(trigger); return false; }
+  if (Object.entries(changes).some(([key, value]) => page[key] !== value)) {
+    Object.assign(page, changes);
     notifySheetChanged("notes");
   }
   return true;
 }
 
+function renameCharacterNotebook(bookId, title, trigger) {
+  if (isNotebookReadOnly()) return false;
+  const book = getCharacterNotebook(bookId);
+  if (!book) return false;
+  const nextTitle = String(title || "").slice(0, 100);
+  const proposed = characterNotes.map((item) => item.id === bookId ? { ...item, title: nextTitle } : item);
+  if (notesSizeInBytes(proposed) > MAX_NOTES_BYTES) { warnNoteCapacity(trigger); return false; }
+  if (book.title !== nextTitle) { book.title = nextTitle; notifySheetChanged("notes"); }
+  return true;
+}
+
+function createCharacterNotebook(trigger) {
+  if (isNotebookReadOnly()) return null;
+  if (characterNotes.length >= MAX_NOTEBOOKS) { warnNoteCapacity(trigger); return null; }
+  const book = { id: createCharacterNoteId(), title: "Novo caderno", pages: [{ id: createCharacterNoteId(), title: "", html: "" }] };
+  if (notesSizeInBytes([book, ...characterNotes]) > MAX_NOTES_BYTES) { warnNoteCapacity(trigger); return null; }
+  characterNotes.unshift(book);
+  activeNotebookId = book.id;
+  activeNotebookPageId = book.pages[0].id;
+  notifySheetChanged("notes");
+  return book;
+}
+
+function addCharacterNotebookPage(bookId, sourcePageId, trigger) {
+  if (isNotebookReadOnly()) return null;
+  const book = getCharacterNotebook(bookId);
+  if (!book) return null;
+  if (book.pages.length >= MAX_NOTEBOOK_PAGES) { warnNoteCapacity(trigger); return null; }
+  const source = book.pages.find((page) => page.id === sourcePageId);
+  const page = { id: createCharacterNoteId(), title: source ? `${source.title || "Página"} (cópia)`.slice(0, 100) : "", html: source?.html || "" };
+  const pages = [...book.pages];
+  pages.splice(source ? pages.indexOf(source) + 1 : pages.length, 0, page);
+  const proposed = characterNotes.map((item) => item.id === bookId ? { ...item, pages } : item);
+  if (notesSizeInBytes(proposed) > MAX_NOTES_BYTES) { warnNoteCapacity(trigger); return null; }
+  book.pages = pages;
+  activeNotebookId = book.id;
+  activeNotebookPageId = page.id;
+  notifySheetChanged("notes");
+  return page;
+}
+
+function removeCharacterNotebookPage(bookId, pageId) {
+  if (isNotebookReadOnly()) return false;
+  const book = getCharacterNotebook(bookId);
+  const index = book?.pages.findIndex((page) => page.id === pageId) ?? -1;
+  if (!book || index < 0) return false;
+  book.pages.splice(index, 1);
+  if (!book.pages.length) book.pages.push({ id: createCharacterNoteId(), title: "", html: "" });
+  if (activeNotebookId === bookId && activeNotebookPageId === pageId) activeNotebookPageId = book.pages[Math.min(index, book.pages.length - 1)].id;
+  notifySheetChanged("notes");
+  return true;
+}
+
+function removeCharacterNotebook(bookId) {
+  if (isNotebookReadOnly()) return false;
+  if (!getCharacterNotebook(bookId)) return false;
+  characterNotes = characterNotes.filter((book) => book.id !== bookId);
+  if (activeNotebookId === bookId) { activeNotebookId = ""; activeNotebookPageId = ""; }
+  notifySheetChanged("notes");
+  return true;
+}
+
+function commitOpenNotebookPage() {
+  const editor = notesList.querySelector("[data-note-body]");
+  if (editor) commitNoteBody(editor);
+}
+
+function openCharacterNotebook(bookId, pageId) {
+  const book = getCharacterNotebook(bookId);
+  if (!book) return false;
+  commitOpenNotebookPage();
+  activeNotebookId = bookId;
+  activeNotebookPageId = book.pages.some((page) => page.id === pageId) ? pageId : book.pages[0].id;
+  renderCharacterNotes();
+  return true;
+}
+
+function renderCharacterNotes() {
+  savedNoteSelections.clear();
+  notesList.replaceChildren();
+  const count = characterNotes.length;
+  notesCount.textContent = `${count} ${count === 1 ? "caderno" : "cadernos"}`;
+  notesEmpty.hidden = count > 0;
+  const book = getCharacterNotebook(activeNotebookId);
+  if (!book) {
+    activeNotebookId = "";
+    activeNotebookPageId = "";
+    if (!count) return;
+    const library = document.createElement("div");
+    library.className = "notebook-library";
+    characterNotes.forEach((item) => {
+      const cover = document.createElement("article");
+      cover.className = "notebook-item";
+      cover.dataset.notebookId = item.id;
+      cover.innerHTML = `
+        <button class="notebook-cover" type="button" data-notebook-action="open" aria-label="Abrir caderno: ${escapeHtml(item.title || "Sem título")}">
+          <span class="notebook-cover-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 3h13a2 2 0 0 1 2 2v16H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2ZM7 3v18M11 8h5M11 12h5M11 16h3"/></svg></span>
+          <strong class="notebook-cover-title">${escapeHtml(item.title || "Sem título")}</strong>
+          <small class="notebook-cover-meta">${item.pages.length} ${item.pages.length === 1 ? "página" : "páginas"}</small>
+          <span class="notebook-cover-open">Abrir caderno <span aria-hidden="true">→</span></span>
+        </button>
+        <div class="notebook-cover-actions">
+          <button class="notes-small-button" type="button" data-notebook-action="rename" aria-label="Renomear caderno: ${escapeHtml(item.title || "Sem título")}">Renomear</button>
+          <button class="notes-small-button is-danger" type="button" data-notebook-action="delete-notebook" aria-label="Excluir caderno: ${escapeHtml(item.title || "Sem título")}">Excluir</button>
+        </div>`;
+      library.append(cover);
+    });
+    notesList.append(library);
+    return;
+  }
+  const page = getCharacterNotebookPage(book.id, activeNotebookPageId) || book.pages[0];
+  activeNotebookPageId = page.id;
+  const index = book.pages.indexOf(page);
+  const workspace = document.createElement("section");
+  workspace.className = "notebook-workspace";
+  workspace.dataset.notebookId = book.id;
+  workspace.setAttribute("aria-label", "Caderno aberto");
+  workspace.innerHTML = `
+    <header class="notebook-workspace-head">
+      <button class="notes-small-button notebook-back" type="button" data-notebook-action="library"><span aria-hidden="true">←</span> Cadernos</button>
+      <input class="notebook-title-input" data-notebook-title type="text" maxlength="100" placeholder="Nome do caderno" aria-label="Nome do caderno" autocomplete="off" />
+      <div class="notebook-actions">
+        <button class="notes-small-button" type="button" data-notebook-action="add-page"><span aria-hidden="true">+</span> Nova página</button>
+        <button class="notes-small-button is-danger" type="button" data-notebook-action="delete-notebook">Excluir caderno</button>
+      </div>
+    </header>
+    <div class="notebook-spread">
+      <nav class="notebook-page-list" aria-label="Páginas do caderno"><span class="notebook-index-title">Índice</span></nav>
+      <div class="notebook-paper"></div>
+    </div>`;
+  workspace.querySelector("[data-notebook-title]").value = book.title;
+  workspace.querySelector("[data-notebook-title]").readOnly = isNotebookReadOnly();
+  const navigation = workspace.querySelector(".notebook-page-list");
+  book.pages.forEach((item, number) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "notebook-page-tab";
+    button.dataset.notebookAction = "open-page";
+    button.dataset.pageId = item.id;
+    button.classList.toggle("is-active", item.id === page.id);
+    if (item.id === page.id) button.setAttribute("aria-current", "page");
+    button.innerHTML = `<span class="notebook-page-number">${number + 1}</span><span class="notebook-page-name">${escapeHtml(item.title || `Página ${number + 1}`)}</span>`;
+    navigation.append(button);
+  });
+  const paper = workspace.querySelector(".notebook-paper");
+  paper.append(createNotebookPageCard(book, page));
+  const pagination = document.createElement("footer");
+  pagination.className = "notebook-pagination";
+  pagination.setAttribute("aria-label", "Navegação entre páginas");
+  pagination.innerHTML = `
+    <button class="notes-small-button" type="button" data-notebook-action="open-page" data-page-id="${book.pages[index - 1]?.id || ""}" ${index === 0 ? "disabled" : ""}><span aria-hidden="true">←</span> Anterior</button>
+    <span aria-live="polite">Página ${index + 1} de ${book.pages.length}</span>
+    <button class="notes-small-button" type="button" data-notebook-action="open-page" data-page-id="${book.pages[index + 1]?.id || ""}" ${index === book.pages.length - 1 ? "disabled" : ""}>Próxima <span aria-hidden="true">→</span></button>`;
+  paper.append(pagination);
+  notesList.append(workspace);
+}
+
+async function handleNotebookAction(button) {
+  if (button.disabled) return;
+  const action = button.dataset.notebookAction;
+  const bookId = button.closest("[data-notebook-id]")?.dataset.notebookId;
+  const book = getCharacterNotebook(bookId);
+  if (action === "library") {
+    commitOpenNotebookPage();
+    activeNotebookId = "";
+    activeNotebookPageId = "";
+    renderCharacterNotes();
+    notesList.querySelector('[data-notebook-action="open"]')?.focus();
+    return;
+  }
+  if (!book) return;
+  if (isNotebookReadOnly() && !["open", "open-page"].includes(action)) return;
+  if (action === "open" || action === "rename" || action === "open-page") {
+    if (!openCharacterNotebook(bookId, button.dataset.pageId)) return;
+    const target = notesList.querySelector(action === "open-page" ? "[data-note-title]" : "[data-notebook-title]");
+    target?.focus();
+    if (action === "rename") target?.select();
+    return;
+  }
+  if (action === "add-page") {
+    commitOpenNotebookPage();
+    if (!addCharacterNotebookPage(bookId, "", button)) return;
+    renderCharacterNotes();
+    notesList.querySelector("[data-note-title]")?.focus();
+    return;
+  }
+  if (action === "delete-notebook") {
+    const epoch = notesEpoch;
+    const confirmed = await showAbyssConfirm({
+      eyebrow: "Cadernos do personagem", title: "Excluir este caderno?",
+      message: `O caderno “${book.title || "Sem título"}” será apagado com ${book.pages.length === 1 ? "sua página" : `suas ${book.pages.length} páginas`} e todo o conteúdo.`,
+      confirmLabel: "Excluir caderno", tone: "danger", trigger: button,
+    });
+    if (!confirmed || epoch !== notesEpoch || !removeCharacterNotebook(bookId)) return;
+    renderCharacterNotes();
+    document.querySelector("#create-note")?.focus();
+  }
+}
+
+function warnNoteCapacity(trigger) {
+  showAbyssAlert({
+    eyebrow: "Cadernos do personagem", title: "Limite do caderno atingido",
+    message: "Cada personagem pode ter até 100 cadernos, com 200 páginas em cada um. O espaço total de texto e imagens também é limitado. Use imagens menores ou por link, ou remova conteúdo para liberar espaço.",
+    tone: "warning", trigger,
+  });
+}
+
+function commitNoteBody(editor) {
+  if (isNotebookReadOnly()) return false;
+  const card = editor.closest("[data-note-id]");
+  const page = getNoteFromCard(card);
+  if (!page) return false;
+  const nextHtml = sanitizeNoteHtml(editor.innerHTML);
+  if (!updateNotebookPage(card.dataset.notebookId, page.id, { html: nextHtml }, editor)) {
+    editor.innerHTML = page.html;
+    return false;
+  }
+  return true;
+}
+
+
+function createNotebookPageCard(book, note) {
+  const card = document.createElement("article");
+  card.className = "notes-card";
+  card.dataset.noteId = note.id;
+  card.dataset.notebookId = book.id;
+  card.dataset.notesEpoch = String(notesEpoch);
+  card.innerHTML = `
+    <header class="notes-card-head">
+      <input class="notes-card-title" data-note-title type="text" maxlength="100"
+        aria-label="Título da página" placeholder="Título da página" autocomplete="off" />
+      <div class="notes-card-actions">
+        <button class="notes-small-button" type="button" data-note-action="edit" title="Editar texto">Editar</button>
+        <button class="notes-small-button" type="button" data-note-action="duplicate" title="Duplicar página">Duplicar página</button>
+        <button class="notes-small-button is-danger" type="button" data-note-action="delete" title="Excluir página">Excluir página</button>
+      </div>
+    </header>
+    <div class="notes-toolbar" role="toolbar" aria-label="Formatação da página">
+      <button class="notes-tool" type="button" data-note-action="bold" aria-label="Negrito" title="Negrito"><b>B</b></button>
+      <button class="notes-tool" type="button" data-note-action="italic" aria-label="Itálico" title="Itálico"><i>I</i></button>
+      <button class="notes-tool" type="button" data-note-action="underline" aria-label="Sublinhado" title="Sublinhado">U</button>
+      <span class="notes-tool-separator" aria-hidden="true"></span>
+      <button class="notes-tool" type="button" data-note-action="heading" aria-label="Título no texto" title="Título no texto">H2</button>
+      <button class="notes-tool" type="button" data-note-action="subheading" aria-label="Subtítulo no texto" title="Subtítulo no texto">H3</button>
+      <button class="notes-tool" type="button" data-note-action="paragraph" aria-label="Parágrafo" title="Parágrafo">¶</button>
+      <button class="notes-tool" type="button" data-note-action="bullets" aria-label="Lista com marcadores" title="Lista com marcadores">• Lista</button>
+      <button class="notes-tool" type="button" data-note-action="numbers" aria-label="Lista numerada" title="Lista numerada">1. Lista</button>
+      <button class="notes-tool" type="button" data-note-action="quote" aria-label="Citação" title="Citação">❝</button>
+      <span class="notes-tool-separator" aria-hidden="true"></span>
+      <button class="notes-tool" type="button" data-note-action="link" aria-label="Inserir link" title="Inserir link">↗ Link</button>
+      <button class="notes-tool" type="button" data-note-action="image-file" aria-label="Adicionar imagem do aparelho" title="Adicionar imagem do aparelho">▣ Imagem</button>
+      <button class="notes-tool" type="button" data-note-action="image-url" aria-label="Adicionar imagem por link" title="Adicionar imagem por link">↗ Imagem</button>
+      <input type="file" data-note-image-file accept="image/png,image/jpeg,image/webp,image/gif" hidden />
+    </div>
+    <div class="notes-link-row" data-note-url-row hidden>
+      <input type="url" data-note-url-input placeholder="https://exemplo.com/imagem.png" aria-label="Endereço do link" />
+      <button class="notes-small-button" type="button" data-note-action="insert-url">Inserir</button>
+      <button class="notes-small-button" type="button" data-note-action="cancel-url">Cancelar</button>
+    </div>
+    <div class="notes-card-body" data-note-body contenteditable="true" role="textbox" aria-multiline="true"
+      aria-label="Texto da página" spellcheck="true" data-placeholder="Escreva aqui. Selecione um trecho para formatar."></div>
+  `;
+  card.querySelector("[data-note-title]").value = note.title;
+  card.querySelector("[data-note-title]").readOnly = isNotebookReadOnly();
+  card.querySelector("[data-note-body]").innerHTML = note.html;
+  card.querySelector("[data-note-body]").contentEditable = String(!isNotebookReadOnly());
+  return card;
+}
+
+
 function rememberNoteSelection(editor) {
   const selection = window.getSelection();
   if (!selection?.rangeCount || !editor.contains(selection.anchorNode)) return;
   const card = editor.closest("[data-note-id]");
-  if (card) savedNoteSelections.set(card.dataset.noteId, selection.getRangeAt(0).cloneRange());
+  if (card) savedNoteSelections.set(`${card.dataset.notebookId}:${card.dataset.noteId}`, selection.getRangeAt(0).cloneRange());
 }
 
 function restoreNoteSelection(card) {
   const editor = card.querySelector("[data-note-body]");
   editor.focus();
   const selection = window.getSelection();
-  const saved = savedNoteSelections.get(card.dataset.noteId);
+  const saved = savedNoteSelections.get(`${card.dataset.notebookId}:${card.dataset.noteId}`);
   const isValid = saved?.startContainer?.isConnected && editor.contains(saved.startContainer);
   const range = isValid ? saved.cloneRange() : document.createRange();
   if (!isValid) {
@@ -12990,6 +13501,7 @@ function insertNodeIntoNote(card, node) {
 }
 
 function formatCharacterNote(card, action) {
+  if (isNotebookReadOnly()) return;
   const editor = restoreNoteSelection(card);
   const commands = {
     bold: ["bold"], italic: ["italic"], underline: ["underline"],
@@ -13049,23 +13561,25 @@ async function optimizeNoteImage(file) {
         if (jpeg.length <= MAX_NOTE_IMAGE_CHARS) return jpeg;
       }
     }
-    throw new Error("A imagem é grande demais para uma nota. Use uma versão menor ou um link.");
+    throw new Error("A imagem é grande demais para uma página. Use uma versão menor ou um link.");
   } finally {
     URL.revokeObjectURL(objectUrl);
   }
 }
 
 async function insertNoteFile(card, file) {
+  if (isNotebookReadOnly()) return;
   const epoch = notesEpoch;
   try {
     const source = await optimizeNoteImage(file);
-    if (epoch !== notesEpoch || !card.isConnected || !characterNotes.some((note) => note.id === card.dataset.noteId)) return;
+    if (epoch !== notesEpoch || !card.isConnected || !getNoteFromCard(card) || isNotebookReadOnly()) return;
     const image = document.createElement("img");
     image.src = source;
-    image.alt = String(file.name || "Imagem da nota").slice(0, 120);
+    image.alt = String(file.name || "Imagem da página").slice(0, 120);
     insertNodeIntoNote(card, image);
   } catch (error) {
-    showAbyssAlert({ eyebrow: "Imagem da nota", title: "Não foi possível inserir", message: userFacingErrorMessage(error) || "Não foi possível inserir a imagem.", tone: "warning", trigger: card.querySelector('[data-note-action="image-file"]') });
+    if (epoch !== notesEpoch || !card.isConnected || !getNoteFromCard(card)) return;
+    showAbyssAlert({ eyebrow: "Imagem da página", title: "Não foi possível inserir", message: userFacingErrorMessage(error) || "Não foi possível inserir a imagem.", tone: "warning", trigger: card.querySelector('[data-note-action="image-file"]') });
   }
 }
 
@@ -14008,7 +14522,7 @@ function captureCompleteSheetState() {
       skillLimitApprovedIds: [...skillLimitApprovedKeys].filter(
         (key) => skillRows[key] && skillRows[key].training !== "leigo",
       ),
-      notes: characterNotes.map((note) => ({ ...note, html: sanitizeNoteHtml(note.html) })),
+      notes: normalizeCharacterNotes(characterNotes),
     },
     customSkills: getCustomSkillsForCloud(),
     abilities: abilities.map((ability) => ({ ...ability })),
@@ -14243,6 +14757,8 @@ function applyCompleteSheetState(rawState, options = {}) {
     sortSkillsAlphabetically();
     rebuildFeatureCatalog();
     notesEpoch += 1;
+    activeNotebookId = "";
+    activeNotebookPageId = "";
     savedNoteSelections.clear();
     characterNotes = normalizeCharacterNotes(sheet.notes);
     renderCharacterNotes();
@@ -18553,20 +19069,18 @@ viewButtons.forEach((button) => {
 });
 
 document.querySelector("#create-note").addEventListener("click", (event) => {
+  if (isNotebookReadOnly()) return;
   if (!window.AbyssCloud?.hasActiveSlot()) {
     setAccountMenuOpen(true);
     if (!window.AbyssCloud?.isSignedIn()) window.dispatchEvent(new CustomEvent("abyss:firebase-login"));
     return;
   }
-  if (characterNotes.length >= 100) {
-    warnNoteCapacity(event.currentTarget);
-    return;
-  }
-  const note = { id: createCharacterNoteId(), title: "", html: "" };
-  characterNotes.unshift(note);
+  commitOpenNotebookPage();
+  if (!createCharacterNotebook(event.currentTarget)) return;
   renderCharacterNotes();
-  notifySheetChanged("notes");
-  notesList.querySelector("[data-note-title]")?.focus();
+  const nameInput = notesList.querySelector("[data-notebook-title]");
+  nameInput?.focus();
+  nameInput?.select();
 });
 
 document.addEventListener("selectionchange", () => {
@@ -18585,35 +19099,37 @@ notesList.addEventListener("pointerdown", (event) => {
 });
 
 notesList.addEventListener("input", (event) => {
+  if (isNotebookReadOnly()) return;
+  const bookId = event.target.closest("[data-notebook-id]")?.dataset.notebookId;
+  if (event.target.matches("[data-notebook-title]")) {
+    const book = getCharacterNotebook(bookId);
+    if (book && !renameCharacterNotebook(bookId, event.target.value, event.target)) event.target.value = book.title;
+    return;
+  }
   const card = event.target.closest("[data-note-id]");
-  const note = characterNotes.find((entry) => entry.id === card?.dataset.noteId);
+  const note = getNoteFromCard(card);
   if (!note) return;
   if (event.target.matches("[data-note-title]")) {
     const title = event.target.value.slice(0, 100);
-    const proposed = characterNotes.map((entry) => entry.id === note.id ? { ...entry, title } : entry);
-    if (notesSizeInBytes(proposed) > MAX_NOTES_BYTES) {
-      event.target.value = note.title;
-      warnNoteCapacity(event.target);
-      return;
-    }
-    note.title = title;
-    notifySheetChanged("notes");
+    if (!updateNotebookPage(bookId, note.id, { title }, event.target)) { event.target.value = note.title; return; }
+    const book = getCharacterNotebook(bookId);
+    const index = book.pages.indexOf(note);
+    const tab = [...notesList.querySelectorAll(".notebook-page-tab")].find((button) => button.dataset.pageId === note.id);
+    if (tab) tab.querySelector(".notebook-page-name").textContent = title || `Página ${index + 1}`;
   } else if (event.target.matches("[data-note-body]")) {
     commitNoteBody(event.target);
   }
 });
 
 notesList.addEventListener("focusout", (event) => {
-  if (!event.target.matches("[data-note-body]")) return;
-  const note = characterNotes.find((entry) => entry.id === event.target.closest("[data-note-id]")?.dataset.noteId);
-  if (!note) return;
-  commitNoteBody(event.target);
+  if (event.target.matches("[data-note-body]")) commitNoteBody(event.target);
 });
 
 notesList.addEventListener("paste", (event) => {
   const editor = event.target.closest("[data-note-body]");
   if (!editor) return;
   event.preventDefault();
+  if (isNotebookReadOnly()) return;
   const file = [...(event.clipboardData?.files || [])].find((entry) => entry.type.startsWith("image/"));
   if (file) {
     rememberNoteSelection(editor);
@@ -18631,6 +19147,7 @@ notesList.addEventListener("drop", (event) => {
   const editor = event.target.closest("[data-note-body]");
   if (!editor) return;
   event.preventDefault();
+  if (isNotebookReadOnly()) return;
   const file = [...(event.dataTransfer?.files || [])].find((entry) => entry.type.startsWith("image/"));
   if (file) {
     rememberNoteSelection(editor);
@@ -18656,6 +19173,11 @@ notesList.addEventListener("change", (event) => {
 });
 
 notesList.addEventListener("keydown", (event) => {
+  if (event.target.matches("[data-notebook-title], [data-note-title]") && event.key === "Enter") {
+    event.preventDefault();
+    event.target.closest(".notebook-workspace")?.querySelector("[data-note-body]")?.focus();
+    return;
+  }
   if (!event.target.matches("[data-note-url-input]")) return;
   if (event.key === "Enter") {
     event.preventDefault();
@@ -18667,11 +19189,14 @@ notesList.addEventListener("keydown", (event) => {
 });
 
 notesList.addEventListener("click", async (event) => {
+  const notebookButton = event.target.closest("[data-notebook-action]");
+  if (notebookButton) { await handleNotebookAction(notebookButton); return; }
   const button = event.target.closest("[data-note-action]");
   const card = button?.closest("[data-note-id]");
   if (!button || !card) return;
+  if (isNotebookReadOnly()) return;
   const action = button.dataset.noteAction;
-  const note = characterNotes.find((entry) => entry.id === card.dataset.noteId);
+  const note = getNoteFromCard(card);
   if (!note) return;
 
   if (action === "edit") {
@@ -18679,28 +19204,23 @@ notesList.addEventListener("click", async (event) => {
     return;
   }
   if (action === "duplicate") {
-    if (characterNotes.length >= 100) { warnNoteCapacity(button); return; }
-    const copy = { ...note, id: createCharacterNoteId(), title: `${note.title || "Nova nota"} (cópia)`.slice(0, 100) };
-    if (notesSizeInBytes([...characterNotes, copy]) > MAX_NOTES_BYTES) { warnNoteCapacity(button); return; }
-    characterNotes.splice(characterNotes.indexOf(note) + 1, 0, copy);
+    commitOpenNotebookPage();
+    if (!addCharacterNotebookPage(card.dataset.notebookId, note.id, button)) return;
     renderCharacterNotes();
-    notifySheetChanged("notes");
-    notesList.querySelector(`[data-note-id="${copy.id}"] [data-note-title]`)?.focus();
+    notesList.querySelector("[data-note-title]")?.focus();
     return;
   }
   if (action === "delete") {
+    const epoch = notesEpoch;
+    const bookId = card.dataset.notebookId;
     const confirmed = await showAbyssConfirm({
-      eyebrow: "Caderno do personagem",
-      title: "Excluir esta nota?",
-      message: `O bloco “${note.title || "Sem título"}” e todo o seu conteúdo serão apagados deste Slot.`,
-      confirmLabel: "Excluir nota",
-      tone: "danger",
-      trigger: button,
+      eyebrow: "Páginas do caderno", title: "Excluir esta página?",
+      message: `A página “${note.title || "Sem título"}” e seu conteúdo serão apagados. Se for a última, uma página em branco ficará no lugar.`,
+      confirmLabel: "Excluir página", tone: "danger", trigger: button,
     });
-    if (!confirmed || !characterNotes.some((entry) => entry.id === note.id)) return;
-    characterNotes = characterNotes.filter((entry) => entry.id !== note.id);
+    if (!confirmed || epoch !== notesEpoch || !removeCharacterNotebookPage(bookId, note.id)) return;
     renderCharacterNotes();
-    notifySheetChanged("notes");
+    notesList.querySelector("[data-note-title]")?.focus();
     return;
   }
   if (action === "image-file") { card.querySelector("[data-note-image-file]").click(); return; }
@@ -18719,13 +19239,13 @@ notesList.addEventListener("click", async (event) => {
     const row = card.querySelector("[data-note-url-row]");
     const url = safeRemoteImageUrl(row.querySelector("[data-note-url-input]").value);
     if (!url) {
-      showAbyssAlert({ eyebrow: "Nota", title: "Link inválido", message: "Use um endereço que comece com https:// ou http://.", tone: "warning", trigger: button });
+      showAbyssAlert({ eyebrow: "Página do caderno", title: "Link inválido", message: "Use um endereço que comece com https:// ou http://.", tone: "warning", trigger: button });
       return;
     }
     if (row.dataset.urlKind === "image") {
       const image = document.createElement("img");
       image.src = url;
-      image.alt = "Imagem da nota";
+      image.alt = "Imagem da página";
       insertNodeIntoNote(card, image);
     } else {
       const editor = restoreNoteSelection(card);
@@ -20040,6 +20560,13 @@ const firebaseUi = {
   startupGateActions: document.querySelector("#startup-slot-actions"),
   startupGateRetry: document.querySelector("#startup-slot-retry"),
   startupGateSignOut: document.querySelector("#startup-slot-sign-out"),
+  startupCreateForm: document.querySelector("#startup-create-form"),
+  startupCreateName: document.querySelector("#startup-create-name"),
+  startupCreateFolder: document.querySelector("#startup-create-folder"),
+  startupCreateButton: document.querySelector("#startup-create-button"),
+  startupCreateCancel: document.querySelector("#startup-create-cancel"),
+  startupCreateSubmit: document.querySelector("#startup-create-submit"),
+  startupCreateStatus: document.querySelector("#startup-create-status"),
   transferModal: document.querySelector("#sheet-transfer-modal"),
   transferDialog: document.querySelector("#sheet-transfer-dialog"),
   transferTitle: document.querySelector("#sheet-transfer-title"),
@@ -20067,6 +20594,7 @@ const UNFILED_SLOT_FOLDER = "__unfiled__";
 let currentSlotFolders = [];
 let currentSlotFolderId = null;
 let startupSlotFolderId = null;
+let startupCreateBusy = false;
 let authChangeSequence = 0;
 let cloudSaveTimer = null;
 let cloudSavePromise = null;
@@ -21781,7 +22309,7 @@ async function openCampaignSheet(sheetId, trigger) {
     document.body.classList.remove("campaign-mode");
     document.body.classList.add("campaign-sheet-session");
     document.body.classList.toggle("is-readonly", !canEdit);
-    document.querySelector("#main-content").inert = !canEdit;
+    setCampaignSheetReadOnly(!canEdit);
     campaignUi.sheetSessionBar.hidden = false;
     campaignUi.sheetSessionTitle.textContent = sheet.characterName || sheet.slotName || "Ficha da Campanha";
     campaignUi.sheetSessionStatus.textContent = canEdit
@@ -21792,6 +22320,7 @@ async function openCampaignSheet(sheetId, trigger) {
   } catch (error) {
     isHydratingCloudState = false;
     campaignSheetSession = null;
+    setCampaignSheetReadOnly(false);
     await window.showAbyssAlert?.({
       eyebrow: "Ficha da Campanha",
       title: "Não foi possível abrir",
@@ -21816,7 +22345,7 @@ async function closeCampaignSheetSession() {
       if (!saved) throw new Error("A ficha compartilhada ainda não pôde ser salva.");
     }
     campaignSheetSession = null;
-    document.querySelector("#main-content").inert = false;
+    setCampaignSheetReadOnly(false);
     document.body.classList.remove("campaign-sheet-session", "is-readonly");
     campaignUi.sheetSessionBar.hidden = true;
     if (currentFirebaseUser && session.returnSlotId) {
@@ -21841,7 +22370,7 @@ async function closeCampaignSheetSession() {
 
 function clearCampaignSheetSession() {
   campaignSheetSession = null;
-  document.querySelector("#main-content").inert = false;
+  setCampaignSheetReadOnly(false);
   document.body.classList.remove("campaign-sheet-session", "is-readonly", "campaign-mode");
   campaignUi.sheetSessionBar.hidden = true;
   campaignUi.app.hidden = true;
@@ -21855,6 +22384,9 @@ function openStartupSlotGate({ loading = true, message = "Carregando Slots…" }
   firebaseUi.startupGateStatus.textContent = message;
   firebaseUi.startupGateActions.hidden = true;
   if (loading) {
+    firebaseUi.startupCreateButton.hidden = true;
+    firebaseUi.startupCreateButton.setAttribute("aria-expanded", "false");
+    firebaseUi.startupCreateForm.hidden = true;
     firebaseUi.startupGateSummary.hidden = true;
     startupSlotFolderId = null;
     firebaseUi.startupFolderNav.hidden = true;
@@ -21867,6 +22399,8 @@ function openStartupSlotGate({ loading = true, message = "Carregando Slots…" }
 function closeStartupSlotGate() {
   firebaseUi.startupGate.hidden = true;
   firebaseUi.startupGate.setAttribute("aria-busy", "false");
+  firebaseUi.startupCreateForm.hidden = true;
+  firebaseUi.startupCreateButton.setAttribute("aria-expanded", "false");
   document.body.classList.remove("slot-gate-open");
 }
 
@@ -21879,9 +22413,11 @@ function showStartupSlotGateError(message) {
 function renderStartupSlotChoices() {
   firebaseUi.startupGateList.replaceChildren();
   firebaseUi.startupGateSpinner.hidden = true;
-  firebaseUi.startupGate.setAttribute("aria-busy", "false");
+  firebaseUi.startupGate.setAttribute("aria-busy", String(startupCreateBusy));
   firebaseUi.startupGateActions.hidden = true;
   firebaseUi.startupGateStatus.classList.remove("is-error");
+  firebaseUi.startupCreateButton.hidden = !currentFirebaseUser;
+  if (!firebaseUi.startupCreateForm.hidden) fillSlotFolderSelect(firebaseUi.startupCreateFolder, firebaseUi.startupCreateFolder.value);
   if (startupSlotFolderId !== null && startupSlotFolderId !== UNFILED_SLOT_FOLDER && !normalizeSlotFolderId(startupSlotFolderId)) {
     startupSlotFolderId = null;
   }
@@ -21895,6 +22431,7 @@ function renderStartupSlotChoices() {
     const folders = getSlotFolderEntries();
     firebaseUi.startupGateSummary.textContent = `${folders.length} ${folders.length === 1 ? "pasta" : "pastas"} · ${currentSlots.length} ${currentSlots.length === 1 ? "ficha" : "fichas"}`;
     folders.forEach((folder) => firebaseUi.startupGateList.append(createSlotFolderCard(folder, true)));
+    setStartupCreateAvailability(startupCreateBusy);
     return;
   }
   const visibleSlots = currentSlots.filter((slot) => getSlotFolderId(slot) === startupSlotFolderId);
@@ -21919,6 +22456,78 @@ function renderStartupSlotChoices() {
     button.append(marker, copy, action);
     firebaseUi.startupGateList.append(button);
   });
+  setStartupCreateAvailability(startupCreateBusy);
+}
+
+function setStartupCreateAvailability(busy = startupCreateBusy) {
+  firebaseUi.startupGate.querySelectorAll("button, input, select").forEach((control) => { control.disabled = busy; });
+  firebaseUi.startupCreateSubmit.textContent = startupCreateBusy ? "Criando…" : "Criar e abrir";
+}
+
+function openStartupCreateSheet() {
+  if (!currentFirebaseUser || firebaseUi.startupGate.hidden || startupCreateBusy || isHydratingCloudState) return;
+  fillSlotFolderSelect(firebaseUi.startupCreateFolder, startupSlotFolderId || UNFILED_SLOT_FOLDER);
+  firebaseUi.startupCreateName.value = "";
+  firebaseUi.startupCreateStatus.textContent = "";
+  firebaseUi.startupCreateStatus.classList.remove("is-error");
+  firebaseUi.startupCreateForm.hidden = false;
+  firebaseUi.startupCreateButton.setAttribute("aria-expanded", "true");
+  firebaseUi.startupCreateName.focus();
+}
+
+function closeStartupCreateSheet({ restoreFocus = true } = {}) {
+  if (startupCreateBusy) return;
+  firebaseUi.startupCreateForm.hidden = true;
+  firebaseUi.startupCreateButton.setAttribute("aria-expanded", "false");
+  firebaseUi.startupCreateStatus.textContent = "";
+  if (restoreFocus) firebaseUi.startupCreateButton.focus();
+}
+
+async function submitStartupCreateSheet(event) {
+  event.preventDefault();
+  if (!currentFirebaseUser || firebaseUi.startupGate.hidden || firebaseUi.startupCreateForm.hidden || startupCreateBusy || isHydratingCloudState) return;
+  const user = currentFirebaseUser;
+  const epoch = accountRollEpoch;
+  const name = normalizeSlotName(firebaseUi.startupCreateName.value, `Personagem ${currentSlots.length + 1}`);
+  const selectedFolder = firebaseUi.startupCreateFolder.value;
+  const folderId = normalizeSlotFolderId(selectedFolder);
+  if (selectedFolder !== UNFILED_SLOT_FOLDER && !folderId) {
+    fillSlotFolderSelect(firebaseUi.startupCreateFolder);
+    firebaseUi.startupCreateStatus.textContent = "Essa pasta não está mais disponível. Escolha outra pasta ou “Sem pasta”.";
+    firebaseUi.startupCreateStatus.classList.add("is-error");
+    firebaseUi.startupCreateFolder.focus();
+    return;
+  }
+  const sameAccount = () => epoch === accountRollEpoch && currentFirebaseUser?.uid === user.uid;
+  startupCreateBusy = true;
+  setStartupCreateAvailability(true);
+  firebaseUi.startupGate.setAttribute("aria-busy", "true");
+  firebaseUi.startupCreateStatus.classList.remove("is-error");
+  firebaseUi.startupCreateStatus.textContent = "Criando sua nova ficha…";
+  try {
+    if (currentSlotId) {
+      if (cloudSavePromise && !(await cloudSavePromise)) throw new Error("Não foi possível salvar a ficha atual. Tente novamente.");
+      if (stateRevision > lastSavedRevision && !(await flushCloudSave())) throw new Error("Não foi possível salvar a ficha atual. Tente novamente.");
+    }
+    if (!sameAccount()) return;
+    const slot = await createCloudSlot(name, { folderId });
+    if (!sameAccount() || currentSlotId !== slot.id) return;
+    currentSlotFolderId = getSlotFolderId(slot);
+    preferredStartupSlotId = slot.id;
+    firebaseUi.startupCreateName.value = "";
+    closeStartupSlotGate();
+    renderAccountIdentity(user, "signed-in");
+  } catch (error) {
+    if (!sameAccount()) return;
+    firebaseUi.startupCreateStatus.textContent = userFacingErrorMessage(error) || "Não foi possível criar a ficha. Tente novamente.";
+    firebaseUi.startupCreateStatus.classList.add("is-error");
+  } finally {
+    if (sameAccount()) {
+      startupCreateBusy = false;
+      setStartupCreateAvailability(false);
+      firebaseUi.startupGate.setAttribute("aria-busy", "false");
+    }
+  }
 }
 
 function firebaseConfigIsReady() {
@@ -23314,11 +23923,14 @@ async function loadSlotDirectory(user) {
 
 async function createCloudSlot(name, { announce = true, folderId = "" } = {}) {
   if (!currentFirebaseUser) throw new Error("Entre com o Google para criar um Slot.");
+  const user = currentFirebaseUser;
+  const epoch = accountRollEpoch;
+  const sameAccount = () => currentFirebaseUser?.uid === user.uid && accountRollEpoch === epoch;
 
   const previousSlotId = currentSlotId;
   const previousState = sheetBridge.captureState();
   const slotRef = firestoreApi.doc(
-    firestoreApi.collection(firestoreDb, "users", currentFirebaseUser.uid, "slots"),
+    firestoreApi.collection(firestoreDb, "users", user.uid, "slots"),
   );
   const slot = {
     id: slotRef.id,
@@ -23336,11 +23948,12 @@ async function createCloudSlot(name, { announce = true, folderId = "" } = {}) {
   try {
     const clean = sheetBridge.createCleanState();
     sheetBridge.applyState(clean, { persistLocal: false });
-    await writeCloudSheet(currentFirebaseUser, slot.id, clean, {
+    await writeCloudSheet(user, slot.id, clean, {
       slotName: slot.name,
       created: true,
       folderId: slot.folderId,
     });
+    if (!sameAccount()) throw new Error("A conta mudou durante a criação da ficha.");
     lastSavedRevision = stateRevision;
     renderSlots();
 
@@ -23354,13 +23967,15 @@ async function createCloudSlot(name, { announce = true, folderId = "" } = {}) {
     }
     return slot;
   } catch (error) {
-    currentSlots = currentSlots.filter((item) => item.id !== slot.id);
-    currentSlotId = previousSlotId;
-    sheetBridge.applyState(previousState, { persistLocal: false });
-    renderSlots();
+    if (sameAccount()) {
+      currentSlots = currentSlots.filter((item) => item.id !== slot.id);
+      currentSlotId = previousSlotId;
+      sheetBridge.applyState(previousState, { persistLocal: false });
+      renderSlots();
+    }
     throw error;
   } finally {
-    isHydratingCloudState = false;
+    if (sameAccount()) isHydratingCloudState = false;
   }
 }
 
@@ -23967,6 +24582,11 @@ function setRollFeatureStatus(element, message = "", error = false) {
 
 function resetAccountRollSession() {
   accountRollEpoch += 1;
+  startupCreateBusy = false;
+  firebaseUi.startupCreateForm.hidden = true;
+  firebaseUi.startupCreateButton.hidden = true;
+  firebaseUi.startupCreateButton.setAttribute("aria-expanded", "false");
+  setStartupCreateAvailability(false);
   accountSettingsUnsubscribe?.();
   personalHistoryUnsubscribe?.();
   campaignIndexUnsubscribe?.();
@@ -25175,6 +25795,7 @@ async function hydrateUserSheet(user) {
 }
 
 firebaseUi.startupGateList.addEventListener("click", async (event) => {
+  if (startupCreateBusy || isHydratingCloudState) return;
   const folder = event.target.closest("[data-startup-folder]");
   if (folder && currentFirebaseUser) {
     startupSlotFolderId = folder.dataset.startupFolder;
@@ -25185,35 +25806,39 @@ firebaseUi.startupGateList.addEventListener("click", async (event) => {
   const choice = event.target.closest("[data-startup-slot]");
   if (!choice || !currentFirebaseUser) return;
   const slotId = choice.dataset.startupSlot;
-  [...firebaseUi.startupGateList.querySelectorAll("button")].forEach((button) => {
-    button.disabled = true;
-  });
+  const user = currentFirebaseUser;
+  const epoch = accountRollEpoch;
+  setStartupCreateAvailability(true);
   firebaseUi.startupGateSpinner.hidden = false;
   firebaseUi.startupGate.setAttribute("aria-busy", "true");
   firebaseUi.startupGateStatus.textContent = "Abrindo a ficha escolhida…";
   try {
-    await hydrateSlot(currentFirebaseUser, slotId);
+    await hydrateSlot(user, slotId);
+    if (epoch !== accountRollEpoch || currentFirebaseUser?.uid !== user.uid) return;
     if (currentSlotId === slotId) {
       closeStartupSlotGate();
       renderAccountIdentity(currentFirebaseUser, "signed-in");
     }
   } catch (error) {
-    showStartupSlotGateError(describeFirebaseError(error));
+    if (epoch === accountRollEpoch && currentFirebaseUser?.uid === user.uid) showStartupSlotGateError(describeFirebaseError(error));
   } finally {
-    [...firebaseUi.startupGateList.querySelectorAll("button")].forEach((button) => {
-      button.disabled = false;
-    });
-    firebaseUi.startupGateSpinner.hidden = true;
+    if (epoch === accountRollEpoch && currentFirebaseUser?.uid === user.uid) {
+      setStartupCreateAvailability(false);
+      firebaseUi.startupGateSpinner.hidden = true;
+      firebaseUi.startupGate.setAttribute("aria-busy", "false");
+    }
   }
 });
 
 firebaseUi.startupFolderBack.addEventListener("click", () => {
+  if (startupCreateBusy || isHydratingCloudState) return;
   startupSlotFolderId = null;
   renderStartupSlotChoices();
   firebaseUi.startupGateList.querySelector("button")?.focus();
 });
 
 firebaseUi.startupGateRetry.addEventListener("click", () => {
+  if (startupCreateBusy || isHydratingCloudState) return;
   if (currentFirebaseUser) {
     openStartupSlotGate();
     hydrateUserSheet(currentFirebaseUser);
@@ -25221,19 +25846,28 @@ firebaseUi.startupGateRetry.addEventListener("click", () => {
 });
 
 firebaseUi.startupGateSignOut.addEventListener("click", () => {
+  if (startupCreateBusy || isHydratingCloudState) return;
   requestFirebaseSignOut();
 });
+
+firebaseUi.startupCreateButton.addEventListener("click", () => {
+  if (firebaseUi.startupCreateForm.hidden) openStartupCreateSheet();
+  else closeStartupCreateSheet();
+});
+firebaseUi.startupCreateCancel.addEventListener("click", () => closeStartupCreateSheet());
+firebaseUi.startupCreateForm.addEventListener("submit", submitStartupCreateSheet);
 
 document.addEventListener("keydown", (event) => {
   if (firebaseUi.startupGate.hidden) return;
   if (event.key === "Escape") {
+    if (!firebaseUi.startupCreateForm.hidden) closeStartupCreateSheet();
     event.preventDefault();
     event.stopImmediatePropagation();
     return;
   }
   if (event.key !== "Tab") return;
   const focusable = [...firebaseUi.startupGate.querySelectorAll(
-    'button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    'button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
   )].filter((element) => !element.hidden && element.getClientRects().length);
   if (!focusable.length) {
     event.preventDefault();
@@ -25242,7 +25876,7 @@ document.addEventListener("keydown", (event) => {
   }
   const first = focusable[0];
   const last = focusable[focusable.length - 1];
-  if (event.shiftKey && document.activeElement === first) {
+  if (event.shiftKey && (document.activeElement === first || document.activeElement === firebaseUi.startupGateDialog)) {
     event.preventDefault();
     last.focus();
   } else if (!event.shiftKey && document.activeElement === last) {
