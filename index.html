@@ -4676,7 +4676,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   .condition-alert.is-critical { animation: none; }
   .resource-meter-fill { transition: none; }
 }
-    </style>
+    
+</style>
 
     <style id="profile-tools-styles">
 
@@ -7555,6 +7556,443 @@ body.is-readonly #notes-view #create-note { display: none; }
 body.is-readonly #notes-view [data-notebook-title],
 body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparent; cursor: default; }
 </style>
+<style id="item-upgrade-styles">
+/* Tipos e melhorias dos Itens. Inserir após os estilos de Inventário. */
+.item-type-badge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  gap: 5px;
+  max-width: 100%;
+  min-height: 23px;
+  padding: 3px 8px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .26);
+  border-radius: 4px;
+  color: var(--theme-accent-dfc77f, #dfc77f);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .055);
+  font: 650 .59rem/1.4 ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: .045em;
+  overflow-wrap: anywhere;
+}
+.item-type-badge svg { display: block; flex: 0 0 auto; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.item-upgrade-tags { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; min-width: 0; margin-top: 11px; }
+.item-upgrade-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  min-height: 28px;
+  padding: 3px 4px 3px 9px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .24);
+  border-radius: 4px;
+  color: var(--theme-text-e2dbce, #e2dbce);
+  background: linear-gradient(120deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .075), rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .025));
+  font: 500 .64rem/1.5 ui-sans-serif, system-ui, sans-serif;
+}
+.item-upgrade-tag > span { min-width: 0; overflow-wrap: anywhere; }
+.item-upgrade-tag button {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 24px;
+  min-width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: 3px;
+  color: var(--theme-muted-aaa69d, #aaa69d);
+  background: transparent;
+  cursor: pointer;
+  line-height: 1;
+}
+.item-upgrade-tag button:hover { color: #eea4a7; background: rgba(180, 78, 89, .11); }
+.item-upgrade-tag button svg { display: block; width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; }
+.item-upgrade-tag button:focus-visible { outline: 2px solid var(--theme-accent-dfc77f, #dfc77f); outline-offset: 2px; }
+.item-upgrade-tags:empty { display: none; }
+.upgrade-picker-dialog { display: flex; flex-direction: column; width: min(820px, 100%); min-width: 0; max-height: min(88dvh, 820px); }
+.upgrade-picker-dialog .ability-dialog-head { flex: 0 0 auto; }
+.upgrade-picker-dialog .ability-dialog-head > div { min-width: 0; }
+.upgrade-picker-dialog .ability-dialog-head h2 { overflow-wrap: anywhere; }
+.upgrade-picker-dialog #item-upgrade-target { display: block; margin-top: 8px; color: var(--theme-accent-dfc77f, #dfc77f); font-size: .76rem; line-height: 1.5; overflow-wrap: anywhere; }
+.upgrade-picker-dialog .upgrade-picker-tools { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 17px 24px; border-bottom: 1px solid var(--theme-border-34353a, #34353a); }
+.upgrade-picker-dialog .upgrade-picker-search { display: flex; align-items: center; gap: 9px; min-width: 0; min-height: 40px; padding: 0 12px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 4px; background: var(--theme-surface-090a0d, #090a0d); }
+.upgrade-picker-dialog .upgrade-picker-search:focus-within { border-color: var(--theme-accent-cfad62, #cfad62); box-shadow: 0 0 0 2px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); }
+.upgrade-picker-dialog .upgrade-picker-search svg { display: block; flex: 0 0 auto; width: 15px; height: 15px; fill: none; stroke: var(--theme-muted-aaa69d, #aaa69d); stroke-width: 1.5; stroke-linecap: round; }
+.upgrade-picker-dialog .upgrade-picker-search input { flex: 1; width: 100%; min-width: 0; min-height: 38px; padding: 0; border: 0; outline: 0; color: var(--theme-text-eee8dc, #eee8dc); background: transparent; font-size: .76rem; }
+.upgrade-picker-dialog .upgrade-picker-search input::placeholder { color: var(--theme-muted-858179, #858179); }
+.upgrade-picker-dialog .upgrade-picker-count { color: var(--theme-muted-99958d, #99958d); font-size: .65rem; line-height: 1.5; white-space: nowrap; }
+.upgrade-picker-dialog .upgrade-picker-content { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 20px 24px 24px; scrollbar-width: thin; scrollbar-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25) transparent; }
+.upgrade-picker-dialog .upgrade-picker-list { display: grid; gap: 10px; min-width: 0; }
+.upgrade-picker-dialog .upgrade-picker-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+  padding: 17px 18px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .2);
+  border-radius: 5px;
+  background: linear-gradient(130deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04), transparent 70%), var(--palette-container, #111217);
+}
+.upgrade-picker-dialog .upgrade-picker-item-copy { min-width: 0; }
+.upgrade-picker-dialog .upgrade-picker-item strong { display: block; color: var(--theme-text-eee8dc, #eee8dc); font: 500 1rem/1.4 var(--font-title, Georgia, serif); overflow-wrap: anywhere; }
+.upgrade-picker-dialog .upgrade-picker-item p, .upgrade-picker-dialog .upgrade-picker-description { margin: 7px 0 0; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .73rem; line-height: 1.65; white-space: pre-line; overflow-wrap: anywhere; }
+.upgrade-picker-dialog .upgrade-picker-item-tags { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 11px; }
+.upgrade-picker-dialog .upgrade-compatibility-tag { display: inline-flex; align-items: center; gap: 5px; max-width: 100%; padding: 3px 7px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .21); border-radius: 3px; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04); font: 650 .59rem/1.4 ui-sans-serif, system-ui, sans-serif; overflow-wrap: anywhere; }
+.upgrade-picker-dialog .upgrade-compatibility-tag.is-applied { color: #8dce9f; border-color: rgba(96, 170, 119, .3); background: rgba(96, 170, 119, .055); }
+.upgrade-picker-dialog .upgrade-picker-item > button, .upgrade-picker-dialog .upgrade-picker-apply { display: inline-flex; align-items: center; justify-content: center; min-width: 83px; min-height: 36px; padding: 0 12px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .45); border-radius: 4px; color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .075); cursor: pointer; font: 750 .66rem/1.4 ui-sans-serif, system-ui, sans-serif; }
+.upgrade-picker-dialog .upgrade-picker-item > button:hover, .upgrade-picker-dialog .upgrade-picker-apply:hover { border-color: var(--theme-accent-dfc77f, #dfc77f); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .13); }
+.upgrade-picker-dialog button:focus-visible { outline: 2px solid var(--theme-accent-dfc77f, #dfc77f); outline-offset: 3px; }
+.upgrade-picker-dialog button:disabled { opacity: .42; cursor: default; }
+.upgrade-picker-dialog .upgrade-picker-item.is-applied { border-color: rgba(96, 170, 119, .32); }
+.upgrade-picker-dialog #item-upgrade-empty { display: grid; place-items: center; min-height: 180px; padding: 24px 16px; color: var(--theme-muted-aaa69d, #aaa69d); text-align: center; font-size: .77rem; line-height: 1.7; }
+.upgrade-picker-dialog #item-upgrade-empty strong { color: var(--theme-text-e2dbce, #e2dbce); font: 500 1.02rem/1.5 Georgia, serif; }
+.upgrade-picker-dialog #item-upgrade-empty p { max-width: 45ch; margin: 7px 0 0; }
+.upgrade-picker-dialog .ability-dialog-footer { flex: 0 0 auto; display: flex; justify-content: flex-end; gap: 8px; }
+@media (max-width: 600px) {
+  .item-upgrade-tag { padding-top: 4px; padding-bottom: 4px; }
+  .item-upgrade-tag button { width: 30px; height: 30px; }
+  .upgrade-picker-dialog { max-height: 94dvh; }
+  .upgrade-picker-dialog .upgrade-picker-tools { grid-template-columns: minmax(0, 1fr); gap: 8px; padding: 15px 17px; }
+  .upgrade-picker-dialog .upgrade-picker-count { justify-self: start; }
+  .upgrade-picker-dialog .upgrade-picker-content { padding: 15px 17px 20px; }
+  .upgrade-picker-dialog .upgrade-picker-item { grid-template-columns: minmax(0, 1fr); gap: 12px; padding: 15px; }
+  .upgrade-picker-dialog .upgrade-picker-item > button, .upgrade-picker-dialog .upgrade-picker-apply { justify-self: end; min-height: 38px; }
+}
+
+.upgrade-picker-dialog #item-upgrade-empty[hidden] { display: none; }
+.minerva-upgrade-filter { flex: 0 0 auto; padding: 12px 24px; border-bottom: 1px solid var(--theme-border-34353a, #34353a); }
+.minerva-upgrade-filter[hidden] { display: none; }
+.minerva-upgrade-filter .builder-field { max-width: 280px; }
+@media (max-width: 600px) { .minerva-upgrade-filter { padding-inline: 17px; } .minerva-upgrade-filter .builder-field { max-width: none; } }
+body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-upgrade] { display: none; }
+</style>
+<style id="creation-editor-refinement-styles">
+/* Refinamento local dos formulários de criação. */
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) {
+  --editor-line: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .22);
+  --editor-tint: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .045);
+  --editor-paper: var(--theme-surface-101116, var(--surface));
+  width: min(850px, 100%);
+  border-color: var(--editor-line);
+  border-radius: 8px;
+}
+:is(#ability-editor-dialog, #item-editor-dialog) { grid-template-rows: auto minmax(0, 1fr) auto; }
+#custom-skill-dialog { width: min(900px, 100%); }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.ability-dialog-head, .custom-skill-dialog-head) {
+  gap: 16px;
+  padding: 20px 24px 18px;
+  background: linear-gradient(110deg, var(--editor-tint), transparent 80%);
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.ability-dialog-head, .custom-skill-dialog-head) > div { min-width: 0; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.ability-dialog-head, .custom-skill-dialog-head) h2 {
+  margin: 2px 0 5px;
+  font-size: clamp(1.28rem, 2.2vw, 1.55rem);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.ability-dialog-head, .custom-skill-dialog-head) .eyebrow {
+  margin: 0;
+  font-size: .6rem;
+  letter-spacing: .14em;
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.ability-dialog-head, .custom-skill-dialog-head) > div > p:last-child {
+  margin: 4px 0 0;
+  max-width: 60ch;
+  color: var(--theme-muted-9a9993, var(--muted));
+  font-size: .77rem;
+  line-height: 1.5;
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .result-close {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  margin: 0;
+  border-color: var(--editor-line);
+  color: var(--theme-muted-9a9993, var(--muted));
+  font-size: 1.35rem;
+  line-height: 1;
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .result-close svg { display: block; width: 16px; height: 16px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .ability-editor-content {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  min-width: 0;
+  min-height: 0;
+  padding: 20px 24px 24px;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scroll-padding-block: 16px;
+}
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-group,
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--editor-line);
+  border-radius: 5px;
+  background: var(--editor-paper);
+}
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-group-heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 13px 15px;
+  border-bottom: 1px solid var(--theme-border-292a30, var(--line));
+  background: var(--editor-tint);
+}
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-group-heading > span,
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-step {
+  display: grid;
+  place-items: center;
+  flex: 0 0 29px;
+  width: 29px;
+  height: 29px;
+  border: 1px solid var(--editor-line);
+  border-radius: 4px;
+  color: var(--accent);
+  background: var(--editor-paper);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .03em;
+}
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-group-heading > div { min-width: 0; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-group-heading :is(h3, strong) {
+  display: block;
+  margin: 0;
+  color: var(--theme-text-e8e4dc, var(--text));
+  font-size: .88rem;
+  font-weight: 650;
+  line-height: 1.4;
+}
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-group-heading p {
+  margin: 2px 0 0;
+  color: var(--theme-muted-9a9993, var(--muted));
+  font-size: .7rem;
+  line-height: 1.5;
+}
+:is(#ability-editor-dialog, #item-editor-dialog) :is(.editor-overview, .editor-basics) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(160px, 240px);
+  align-items: start;
+  gap: 14px;
+  min-width: 0;
+  padding: 15px;
+}
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-overview .editor-basics { padding: 0; }
+#item-editor-dialog :is(.editor-overview, .editor-basics) { grid-template-columns: minmax(0, 1fr) minmax(160px, 220px) 100px; }
+:is(#ability-editor-dialog, #item-editor-dialog) :is(.editor-field-origin, .editor-field-description) { grid-column: 1 / -1; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-field-type { grid-column: auto; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-field-type select { max-width: 260px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-field-quantity { width: 100px; max-width: 100%; grid-column: auto; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-field-price { width: 160px; max-width: 100%; grid-column: auto; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-field-destination { grid-column: 1 / -1; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-field-destination select { max-width: 300px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-field-origin select { max-width: 260px; }
+#ability-editor-dialog :is(#ability-echo-field, #ability-upgrade-type-field) { grid-column: 1 / -1; }
+#ability-editor-dialog :is(#ability-echo-field, #ability-upgrade-type-field) select { max-width: 260px; }
+#item-editor-dialog #item-publication-group > :is(.ability-editor-grid, .editor-overview, .editor-basics, .editor-publication-grid) {
+  display: grid;
+  grid-template-columns: minmax(110px, 150px) minmax(180px, 1fr) minmax(180px, 1fr);
+  align-items: start;
+  gap: 14px;
+  padding: 15px;
+}
+#item-editor-dialog #item-publication-group :is(.editor-field-destination, #item-shop-echo-field) { grid-column: auto; }
+#item-editor-dialog #item-publication-group #item-shop-echo { max-width: 260px; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .builder-field { gap: 6px; min-width: 0; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .builder-field > span {
+  color: var(--theme-accent-bca467, var(--accent));
+  font-size: .64rem;
+  letter-spacing: .055em;
+  line-height: 1.45;
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .builder-field > span small { color: var(--theme-muted-9a9993, var(--muted)); font-size: .62rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .builder-field :is(input:not([type="checkbox"]), select) {
+  min-width: 0;
+  min-height: 38px;
+  height: 38px;
+  padding-inline: 10px;
+  border-radius: 4px;
+  font-size: .8rem;
+  line-height: normal;
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .builder-field select { padding-right: 26px; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .builder-field textarea {
+  min-height: 108px;
+  padding: 10px 11px;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: .82rem;
+  line-height: 1.6;
+}
+:is(#ability-editor-dialog, #item-editor-dialog) .ability-field-help { margin: 2px 0 0; color: var(--theme-muted-9a9993, var(--muted)); font-size: .69rem; line-height: 1.5; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 62px;
+  padding: 13px 15px;
+  list-style: none;
+  cursor: pointer;
+  user-select: none;
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary::-webkit-details-marker { display: none; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary > :is(div, span) { min-width: 0; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary :is(strong, h3) { display: block; margin: 0; color: var(--theme-text-e8e4dc, var(--text)); font-size: .84rem; font-weight: 650; line-height: 1.45; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary :is(small, p) { display: block; margin: 2px 0 0; color: var(--theme-muted-9a9993, var(--muted)); font-size: .7rem; line-height: 1.5; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary::after {
+  flex: 0 0 7px;
+  width: 7px;
+  height: 7px;
+  margin: 0 4px 3px auto;
+  border-right: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  content: "";
+  transform: rotate(45deg);
+  transition: transform 140ms ease;
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional[open] > .editor-optional-summary { border-bottom: 1px solid var(--theme-border-292a30, var(--line)); background: var(--editor-tint); }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional[open] > .editor-optional-summary::after { margin-bottom: -2px; transform: rotate(225deg); }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary:hover { background: var(--editor-tint); }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -3px; border-radius: 4px; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional > .mechanics-builder {
+  margin: 0;
+  padding: 14px;
+  border: 0;
+  background: transparent;
+}
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-builder-head { padding: 0 0 2px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-builder-head h3 { font-size: .93rem; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-builder-head p:last-child { color: var(--theme-muted-9a9993, var(--muted)); font-size: .7rem; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-block { min-width: 0; padding: 12px; border-color: var(--theme-border-292a30, var(--line)); border-radius: 4px; background: rgba(var(--theme-surface-08090c-rgb, 8, 9, 12), .28); }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-block-head { align-items: center; gap: 12px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-block-head > div { min-width: 0; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-block-head strong { font-size: .78rem; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-block-head small { color: var(--theme-muted-9a9993, var(--muted)); font-size: .68rem; line-height: 1.5; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row { min-width: 0; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr) 36px; padding: 10px; gap: 10px; border-radius: 4px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row.is-cost { grid-template-columns: minmax(120px, 155px) minmax(145px, 190px) minmax(85px, 100px) 36px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row.is-modifier { grid-template-columns: minmax(155px, 1fr) minmax(170px, 1fr) minmax(100px, 150px) 36px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row .builder-field > span { font-size: .61rem; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-remove { display: grid; place-items: center; width: 36px; height: 38px; padding: 0; font-size: 1.1rem; line-height: 1; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-empty { color: var(--theme-muted-9a9993, var(--muted)); font-size: .7rem; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-switch { min-height: 28px; max-width: 100%; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-switch > span { flex: 0 0 38px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-switch strong { font-size: .78rem; }
+:is(#ability-editor-dialog, #item-editor-dialog) .mechanics-switch input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 3px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .shop-publish-fields { padding: 12px; grid-template-columns: minmax(0, 1fr) 160px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .shop-price-input { width: 160px; max-width: 100%; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-media .ability-media-editor { margin: 0; padding: 15px; border: 0; background: transparent; grid-template-columns: 110px minmax(0, 1fr); gap: 15px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-media .ability-media-preview { width: 110px; }
+:is(#ability-editor-dialog, #item-editor-dialog) .editor-media .ability-media-fields h3 { font-size: .86rem; }
+:is(#ability-editor-dialog, #item-editor-dialog) .ability-file-name { overflow-wrap: anywhere; line-height: 1.5; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.ability-dialog-footer, .custom-skill-dialog-footer) {
+  position: relative;
+  z-index: 3;
+  flex-wrap: wrap;
+  gap: 9px;
+  padding: 14px 24px 17px;
+  background: var(--editor-paper);
+  border-top-color: var(--editor-line);
+}
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.builder-submit, .dialog-button) { min-height: 38px; padding-inline: 15px; border-radius: 4px; font-size: .75rem; }
+:is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .builder-add-button { flex-shrink: 0; min-height: 34px; padding-inline: 10px; font-size: .68rem; border-radius: 4px; }
+#custom-skill-dialog .custom-skill-content { gap: 14px; padding: 20px 24px 24px; scrollbar-gutter: stable; }
+#custom-skill-dialog .builder-section-head { min-height: 62px; grid-template-columns: 29px minmax(0, 1fr); gap: 11px; padding: 13px 15px; }
+#custom-skill-dialog .builder-section-head-action { grid-template-columns: 29px minmax(0, 1fr) auto; }
+#custom-skill-dialog .builder-section-head > span { font-size: .66rem; }
+#custom-skill-dialog .builder-section-head h3 { font-size: .91rem; }
+#custom-skill-dialog .builder-section-head p { font-size: .71rem; }
+#custom-skill-dialog .builder-grid { grid-template-columns: minmax(0, 1fr) minmax(170px, 230px); padding: 15px; gap: 14px; }
+#custom-skill-dialog .builder-repeat-list,
+#custom-skill-dialog .builder-competencies-list { padding: 13px 15px 15px; }
+#custom-skill-dialog .builder-repeat-item { min-width: 0; grid-template-columns: minmax(130px, .5fr) minmax(0, 1fr) auto; }
+#custom-skill-dialog .builder-specialization-item { grid-template-columns: minmax(110px, .4fr) minmax(110px, .4fr) minmax(0, 1fr) auto; }
+#custom-skill-dialog .builder-repeat-item .builder-field textarea { min-height: 76px; }
+#custom-skill-dialog .editor-optional > .builder-section { border: 0; background: transparent; }
+#custom-skill-dialog .editor-optional .builder-section-head > :is(span, div) { display: none; }
+#custom-skill-dialog .editor-optional .builder-section-head-action { display: flex; justify-content: flex-end; min-height: 0; padding: 12px 15px 0; border: 0; background: transparent; }
+#custom-skill-dialog .editor-optional .builder-repeat-list,
+#custom-skill-dialog .editor-optional .builder-competencies-list { padding-top: 12px; }
+
+@media (max-width: 760px) {
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) { width: 100%; border-radius: 12px 12px 0 0; }
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.ability-dialog-head, .custom-skill-dialog-head) { padding: 17px 16px 15px; gap: 12px; }
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .result-close { flex-basis: 42px; width: 42px; height: 42px; min-width: 42px; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .ability-editor-content,
+  #custom-skill-dialog .custom-skill-content { padding: 15px 16px 20px; scrollbar-gutter: auto; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row.is-modifier { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row.is-modifier .mechanics-remove { justify-self: end; }
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .builder-field :is(input:not([type="checkbox"]), select) { min-height: 42px; height: 42px; font-size: .84rem; }
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.builder-submit, .dialog-button, .builder-add-button, .ability-file-button, .clear-ability-media) { min-height: 42px; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-remove { width: 42px; height: 42px; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row:not(.is-modifier) { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 42px; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row.is-cost { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row.is-cost .mechanics-remove { justify-self: end; }
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.ability-dialog-footer, .custom-skill-dialog-footer) { padding: 12px 16px max(14px, env(safe-area-inset-bottom, 0px)); }
+  #custom-skill-dialog .builder-section-head-action { grid-template-columns: 29px minmax(0, 1fr); }
+  #custom-skill-dialog .builder-section-head-action .builder-add-button { grid-column: 2; justify-self: start; }
+  #custom-skill-dialog .builder-specialization-item { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  :is(#ability-editor-dialog, #item-editor-dialog) :is(.editor-overview, .editor-basics),
+  #custom-skill-dialog .builder-grid { grid-template-columns: minmax(0, 1fr); }
+  #item-editor-dialog #item-publication-group > :is(.ability-editor-grid, .editor-overview, .editor-basics, .editor-publication-grid) { grid-template-columns: minmax(0, 1fr); }
+  #item-editor-dialog #item-publication-group :is(.editor-field-destination, #item-shop-echo-field) { grid-column: auto; }
+  :is(#ability-editor-dialog, #item-editor-dialog) :is(.editor-field-origin, .editor-field-description, .editor-field-destination, .builder-field-wide) { grid-column: auto; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .editor-field-type select,
+  :is(#ability-editor-dialog, #item-editor-dialog) .editor-field-destination select,
+  :is(#ability-editor-dialog, #item-editor-dialog) .editor-field-origin select { max-width: 100%; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .editor-field-quantity { width: 110px; }
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary,
+  :is(#ability-editor-dialog, #item-editor-dialog) .editor-group-heading { padding: 12px; }
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional > .mechanics-builder { padding: 10px; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-block { padding: 10px; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-block-head { flex-wrap: wrap; align-items: flex-start; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row { padding: 9px; gap: 10px; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-damage-grid { grid-template-columns: minmax(0, 1fr); }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-wide { grid-column: auto; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .shop-publish-fields { grid-template-columns: minmax(0, 1fr); }
+  :is(#ability-editor-dialog, #item-editor-dialog) .editor-media .ability-media-editor { grid-template-columns: minmax(0, 1fr); padding: 12px; }
+  :is(#ability-editor-dialog, #item-editor-dialog) .editor-media .ability-media-preview { width: 92px; }
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .builder-field > span { font-size: .66rem; }
+  #custom-skill-dialog .builder-repeat-item,
+  #custom-skill-dialog .builder-specialization-item { grid-template-columns: minmax(0, 1fr); }
+  #custom-skill-dialog .builder-repeat-item .builder-remove-button { margin-top: 0; justify-self: end; min-height: 42px; }
+  #custom-skill-dialog .builder-field-wide { grid-column: auto; }
+}
+@media (max-width: 400px) {
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row,
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row:not(.is-modifier),
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row.is-cost,
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row.is-modifier { grid-template-columns: minmax(0, 1fr); }
+  :is(#ability-editor-dialog, #item-editor-dialog) .mechanics-repeat-row .mechanics-remove { justify-self: end; }
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) :is(.ability-dialog-footer, .custom-skill-dialog-footer) > button { flex: 1 1 auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :is(#ability-editor-dialog, #item-editor-dialog, #custom-skill-dialog) .editor-optional-summary::after { transition: none; }
+}
+#ability-editor-dialog .shop-publish-fields.editor-group { display: block; padding: 0; }
+#ability-editor-dialog .shop-publish-fields .editor-publication-grid { display: grid; grid-template-columns: minmax(0, 1fr) 160px; align-items: center; gap: 14px; padding: 15px; }
+#item-editor-dialog #item-publication-group > .editor-publication-grid { grid-template-columns: 160px minmax(180px, 1fr); }
+#item-editor-dialog #item-shop-echo-field { grid-column: 2; }
+@media (max-width: 600px) {
+  #ability-editor-dialog .shop-publish-fields .editor-publication-grid,
+  #item-editor-dialog #item-publication-group > .editor-publication-grid { grid-template-columns: minmax(0, 1fr); }
+  #item-editor-dialog #item-shop-echo-field { grid-column: auto; }
+}
+@media (min-width: 761px) {
+  :is(#ability-editor-dialog, #item-editor-dialog) {
+    height: auto;
+    max-height: min(780px, calc(100dvh - 44px));
+    margin-block: 0;
+  }
+}
+
+</style>
 </head>
   <body class="slot-gate-open">
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
@@ -9586,7 +10024,7 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
           <div>
             <p id="ability-editor-eyebrow" class="eyebrow">Habilidade do personagem</p>
             <h2 id="ability-editor-title">Criar Habilidade</h2>
-            <p>Combine dados, valores fixos e atributos na fórmula de dano.</p>
+            <p id="ability-editor-help">Preencha as informações e adicione regras de uso, se precisar.</p>
           </div>
           <button
             class="result-close"
@@ -9602,8 +10040,10 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
 
         <form id="ability-editor-form" class="ability-editor-form" novalidate>
           <div class="ability-editor-content">
-            <div class="ability-editor-grid">
-              <label class="builder-field">
+            <section class="editor-group" aria-labelledby="ability-basics-title">
+              <header class="editor-group-heading"><div><h3 id="ability-basics-title">Informações básicas</h3><p>Nomeie, escolha a seção e descreva sua criação.</p></div></header>
+              <div class="ability-editor-grid editor-overview editor-basics">
+                <label class="builder-field editor-field-name">
                 <span>Nome</span>
                 <input
                   id="ability-name"
@@ -9614,8 +10054,7 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                   required
                 />
               </label>
-
-              <label class="builder-field">
+                <label class="builder-field editor-field-type">
                 <span>Seção</span>
                 <select id="ability-section" required>
                   <option value="attacks">Ataques</option>
@@ -9627,10 +10066,15 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                   <option value="echoes">Ecos</option>
                   <option value="classes">Classes</option>
                   <option value="tree">Árvore</option>
+                  <option value="upgrades">Melhorias</option>
                 </select>
               </label>
-
-              <label id="ability-echo-field" class="builder-field builder-field-wide" hidden>
+                <label id="ability-upgrade-type-field" class="builder-field editor-field-type" hidden>
+                <span>Tipo de Melhoria</span>
+                <select id="ability-upgrade-type"><option value="weapon">Armas</option><option value="armor">Armaduras</option><option value="clothing">Vestimentas</option><option value="ammunition">Munições</option></select>
+                <small class="ability-field-help">Disponível apenas para itens do mesmo tipo.</small>
+              </label>
+                <label id="ability-echo-field" class="builder-field editor-field-type" hidden>
                 <span>Eco de origem <small>(obrigatório)</small></span>
                 <select id="ability-echo">
                   <option value="">Escolha um Eco</option>
@@ -9644,21 +10088,24 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                   <option value="indiferente">O Indiferente</option>
                 </select>
               </label>
-              <label class="builder-field builder-field-wide">
+                <label class="builder-field editor-field-origin">
                 <span>Origem <small>(opcional)</small></span>
                 <input id="ability-origin" type="text" maxlength="120" placeholder="Ex.: técnica, tradição ou fonte da habilidade" />
               </label>
-              <label class="builder-field builder-field-wide">
+                <label class="builder-field editor-field-description">
                 <span>Descrição</span>
                 <textarea
                   id="ability-description"
-                  rows="5"
+                  rows="3"
                   maxlength="3000"
                   placeholder="Descreva o efeito, custo, alcance e demais regras."
                 ></textarea>
               </label>
-
-              <div id="ability-shop-fields" class="shop-publish-fields" hidden>
+              </div>
+            </section>
+            <div id="ability-shop-fields" class="shop-publish-fields editor-group" hidden>
+              <header class="editor-group-heading"><div><h3 id="ability-publication-title">Loja</h3><p>Defina se esta habilidade estará à venda.</p></div></header>
+              <div class="editor-publication-grid">
                 <label class="mechanics-switch">
                   <input id="ability-shop-listed" type="checkbox" />
                   <span aria-hidden="true"></span>
@@ -9672,17 +10119,12 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                   </span>
                 </label>
               </div>
-
             </div>
 
-            <section class="mechanics-builder" aria-labelledby="ability-mechanics-title">
-              <header class="mechanics-builder-head">
-                <div>
-                  <p class="eyebrow">Uso em jogo</p>
-                  <h3 id="ability-mechanics-title">Rolagens, gastos e efeitos</h3>
-                  <p>Essas regras também funcionam em Poderes, Feitiços, Ataques e nas demais seções.</p>
-                </div>
-              </header>
+            <details class="editor-optional" data-editor-panel="mechanics">
+              <summary class="editor-optional-summary"><span><strong id="ability-mechanics-title">Regras e efeitos</strong><small>Rolagens, gastos, dano e modificadores · opcional</small></span></summary>
+              <section class="mechanics-builder" aria-labelledby="ability-mechanics-title">
+              
 
               <div class="mechanics-block">
                 <div class="mechanics-block-head">
@@ -9745,15 +10187,18 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                 </div>
               </div>
             </section>
+            </details>
 
-            <section class="ability-media-editor" aria-labelledby="ability-media-title">
+            <details class="editor-optional editor-media" data-editor-panel="media">
+              <summary class="editor-optional-summary"><span><strong id="ability-media-title">Imagem ou GIF</strong><small>Arquivo ou link · opcional</small></span></summary>
+              <section class="ability-media-editor" aria-labelledby="ability-media-title">
               <div id="ability-media-preview" class="ability-media-preview">
                 <span aria-hidden="true">✦</span>
                 <small>Prévia</small>
               </div>
 
               <div class="ability-media-fields">
-                <h3 id="ability-media-title">Imagem ou GIF</h3>
+                
 
                 <label class="builder-field">
                   <span>Link da mídia</span>
@@ -9786,6 +10231,7 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                 </p>
               </div>
             </section>
+            </details>
 
             <p id="ability-editor-error" class="builder-error" role="alert" hidden></p>
           </div>
@@ -9798,6 +10244,16 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
       </section>
     </div>
 
+    <div id="item-upgrade-modal" class="ability-modal" hidden>
+      <div class="roll-backdrop" data-close-item-upgrades aria-hidden="true"></div>
+      <section id="item-upgrade-dialog" class="ability-dialog upgrade-picker-dialog" role="dialog" aria-modal="true" aria-labelledby="item-upgrade-title" tabindex="-1">
+        <header class="ability-dialog-head"><div><p class="eyebrow">Aprimoramentos do Grimório</p><h2 id="item-upgrade-title">Adicionar Melhorias</h2><p>Somente melhorias compatíveis com este tipo de item.</p><span id="item-upgrade-target"></span></div><button class="result-close" type="button" data-close-item-upgrades aria-label="Fechar melhorias">×</button></header>
+        <div class="upgrade-picker-tools"><label class="upgrade-picker-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><input id="item-upgrade-search" type="search" placeholder="Buscar melhoria compatível" aria-label="Buscar melhoria compatível" /></label><span id="item-upgrade-count" class="upgrade-picker-count"></span></div>
+        <div class="upgrade-picker-content"><div id="item-upgrade-list" class="upgrade-picker-list"></div><div id="item-upgrade-empty"></div><p id="item-upgrade-feedback" class="ability-field-help" role="status" aria-live="polite"></p></div>
+        <footer class="ability-dialog-footer"><button class="dialog-button" type="button" data-close-item-upgrades>Concluir</button></footer>
+      </section>
+    </div>
+
     <div id="item-editor-modal" class="ability-modal" hidden>
       <div class="roll-backdrop" data-close-item-editor aria-hidden="true"></div>
       <section id="item-editor-dialog" class="ability-dialog item-editor-dialog" role="dialog" aria-modal="true" aria-labelledby="item-editor-title" tabindex="-1">
@@ -9807,30 +10263,46 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
           <div>
             <p id="item-editor-eyebrow" class="eyebrow">Inventário do personagem</p>
             <h2 id="item-editor-title">Criar Item</h2>
-            <p>Configure tudo que o item pode rolar, gastar ou modificar.</p>
+            <p>Defina o item. Rolagens, gastos e efeitos são opcionais.</p>
           </div>
           <button class="result-close" type="button" data-close-item-editor aria-label="Fechar editor de item">×</button>
         </header>
 
         <form id="item-editor-form" class="ability-editor-form" novalidate>
           <div class="ability-editor-content">
-            <div class="ability-editor-grid">
-              <label class="builder-field">
+            <section class="editor-group" aria-labelledby="item-basics-title">
+              <header class="editor-group-heading"><div><h3 id="item-basics-title">Informações básicas</h3><p>Nome, tipo e quantidade identificam o item.</p></div></header>
+              <div class="ability-editor-grid editor-overview editor-basics">
+                <label class="builder-field editor-field-name">
                 <span>Nome</span>
                 <input id="item-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Espada do Eclipse" required />
               </label>
-              <label class="builder-field">
+                <label class="builder-field editor-field-type">
+                <span>Tipo de Item</span>
+                <select id="item-type"><option value="weapon">Arma</option><option value="armor">Armadura</option><option value="utility" selected>Utilitário</option><option value="clothing">Vestimenta</option><option value="throwable">Arremessável</option><option value="ammunition">Munição</option><option value="magic">Objeto Mágico</option></select>
+                <small class="ability-field-help">Define quais melhorias este item pode receber.</small>
+              </label>
+                <label class="builder-field editor-field-quantity">
                 <span>Quantidade</span>
                 <input id="item-quantity" type="number" min="1" max="9999" step="1" value="1" inputmode="numeric" />
               </label>
-              <label id="item-shop-price-field" class="builder-field builder-field-wide" hidden>
+                <label class="builder-field editor-field-description">
+                <span>Descrição</span>
+                <textarea id="item-description" rows="3" maxlength="3000" placeholder="Aparência, função e demais regras do item."></textarea>
+              </label>
+              </div>
+            </section>
+            <section id="item-publication-group" class="editor-group" aria-labelledby="item-publication-title" hidden>
+              <header class="editor-group-heading"><div><h3 id="item-publication-title">Loja</h3><p>Escolha o preço e onde o jogador receberá a compra.</p></div></header>
+              <div class="editor-publication-grid">
+                <label id="item-shop-price-field" class="builder-field editor-field-price" hidden>
                 <span>Preço na Loja</span>
                 <span class="shop-price-input">
                   <input id="item-shop-price" type="number" min="0" max="999999999" step="1" value="0" inputmode="numeric" />
                   <small class="verdeon-symbol" aria-label="Verdeons">V</small>
                 </span>
               </label>
-              <label id="item-shop-destination-field" class="builder-field builder-field-wide" hidden>
+                <label id="item-shop-destination-field" class="builder-field editor-field-destination" hidden>
                 <span>Destino após a compra</span>
                 <select id="item-shop-destination">
                   <option value="inventory">Inventário</option>
@@ -9846,7 +10318,7 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                 </select>
                 <small class="ability-field-help">O produto será convertido em uma Habilidade quando o destino não for o Inventário.</small>
               </label>
-              <label id="item-shop-echo-field" class="builder-field builder-field-wide" hidden>
+                <label id="item-shop-echo-field" class="builder-field editor-field-type" hidden>
                 <span>Eco de destino <small>(obrigatório)</small></span>
                 <select id="item-shop-echo">
                   <option value="">Escolha um Eco</option>
@@ -9860,16 +10332,13 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                   <option value="indiferente">O Indiferente</option>
                 </select>
               </label>
-              <label class="builder-field builder-field-wide">
-                <span>Descrição</span>
-                <textarea id="item-description" rows="4" maxlength="3000" placeholder="Aparência, função e demais regras do item."></textarea>
-              </label>
-            </div>
+              </div>
+            </section>
 
-            <section class="mechanics-builder" aria-labelledby="item-mechanics-title">
-              <header class="mechanics-builder-head">
-                <div><p class="eyebrow">Uso em jogo</p><h3 id="item-mechanics-title">Mecânicas do Item</h3><p>Rolagens e gastos podem ser usados diretamente pelo card do inventário.</p></div>
-              </header>
+            <details class="editor-optional" data-editor-panel="mechanics">
+              <summary class="editor-optional-summary"><span><strong id="item-mechanics-title">Regras e efeitos</strong><small>Rolagens, gastos, dano e modificadores · opcional</small></span></summary>
+              <section class="mechanics-builder" aria-labelledby="item-mechanics-title">
+              
 
               <div class="mechanics-block">
                 <div class="mechanics-block-head">
@@ -9893,7 +10362,7 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                 <label class="mechanics-switch">
                   <input id="item-is-weapon" type="checkbox" />
                   <span aria-hidden="true"></span>
-                  <strong>É uma arma?</strong>
+                  <strong>Possui dano de arma?</strong>
                 </label>
                 <div id="item-weapon-fields" class="weapon-fields" hidden>
                   <div class="mechanics-damage-grid">
@@ -9922,6 +10391,7 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
                 </div>
               </div>
             </section>
+            </details>
 
             <p id="item-editor-error" class="builder-error" role="alert" hidden></p>
           </div>
@@ -10007,7 +10477,7 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
           <div>
             <p class="eyebrow">Acesso da Guardiã</p>
             <h2 id="minerva-title">Grimório de Minerva</h2>
-            <p>Crie habilidades compartilhadas e publique produtos para a Loja dos jogadores.</p>
+            <p>Crie habilidades e melhorias compartilhadas, e publique produtos para a Loja dos jogadores.</p>
           </div>
 
           <div class="minerva-head-actions">
@@ -10041,8 +10511,12 @@ body.is-readonly #notes-view [data-note-title] { border-bottom-color: transparen
           <button type="button" role="tab" data-minerva-section="classes" aria-selected="false">Classes</button>
           <button type="button" role="tab" data-minerva-section="tree" aria-selected="false">Árvore</button>
           <button type="button" role="tab" data-minerva-section="inventory" aria-selected="false">Itens da Loja</button>
+          <button type="button" role="tab" data-minerva-section="upgrades" aria-selected="false">Melhorias</button>
         </div>
 
+        <div id="minerva-upgrade-filter-row" class="minerva-upgrade-filter" hidden>
+          <label class="builder-field"><span>Tipo de Melhoria</span><select id="minerva-upgrade-filter"><option value="">Todos os tipos</option><option value="weapon">Armas</option><option value="armor">Armaduras</option><option value="clothing">Vestimentas</option><option value="ammunition">Munições</option></select></label>
+        </div>
         <div id="minerva-list" class="grimoire-list minerva-list"></div>
         <div id="minerva-empty" class="grimoire-empty" hidden>
           O Grimório ainda não possui habilidades.
@@ -11709,7 +12183,14 @@ const ABILITY_SECTIONS = {
   echoes: { label: "Ecos", eyebrow: "Essência do personagem" },
   classes: { label: "Classes", eyebrow: "Arquétipo" },
   tree: { label: "Árvore", eyebrow: "Progressão" },
+  upgrades: { label: "Melhorias", eyebrow: "Aprimoramentos de itens" },
 };
+
+const ITEM_TYPES = {
+  weapon: "Arma", armor: "Armadura", utility: "Utilitário", clothing: "Vestimenta",
+  throwable: "Arremessável", ammunition: "Munição", magic: "Objeto Mágico",
+};
+const UPGRADE_ITEM_TYPES = ["weapon", "armor", "clothing", "ammunition"];
 
 const VERDEON_SYMBOL = "V̶";
 const MAX_PURCHASE_HISTORY = 200;
@@ -11733,7 +12214,7 @@ function renderVerdeonAmount(element, value) {
 }
 
 function sanitizeShopDestination(value) {
-  return value === "inventory" || ABILITY_SECTIONS[value] ? value : "inventory";
+  return value === "inventory" || (value !== "upgrades" && ABILITY_SECTIONS[value]) ? value : "inventory";
 }
 
 const CREATION_RESOURCES = {
@@ -12837,6 +13318,8 @@ const abilitySectionSelect = document.querySelector("#ability-section");
 const abilityOriginInput = document.querySelector("#ability-origin");
 const abilityEchoSelect = document.querySelector("#ability-echo");
 const abilityEchoField = document.querySelector("#ability-echo-field");
+const abilityUpgradeTypeField = document.querySelector("#ability-upgrade-type-field");
+const abilityUpgradeTypeSelect = document.querySelector("#ability-upgrade-type");
 const abilityDescriptionInput = document.querySelector("#ability-description");
 const abilityShopFields = document.querySelector("#ability-shop-fields");
 const abilityShopListedInput = document.querySelector("#ability-shop-listed");
@@ -12866,6 +13349,7 @@ const minervaModal = document.querySelector("#minerva-modal");
 const minervaDialog = document.querySelector("#minerva-dialog");
 const minervaList = document.querySelector("#minerva-list");
 const minervaEmpty = document.querySelector("#minerva-empty");
+const minervaUpgradeFilter = document.querySelector("#minerva-upgrade-filter");
 const minervaSectionButtons = [...document.querySelectorAll("[data-minerva-section]")];
 const slotsModal = document.querySelector("#slots-modal");
 const slotsDialog = document.querySelector("#slots-dialog");
@@ -12886,6 +13370,7 @@ const itemEditorEyebrow = document.querySelector("#item-editor-eyebrow");
 const itemEditorTitle = document.querySelector("#item-editor-title");
 const itemNameInput = document.querySelector("#item-name");
 const itemQuantityInput = document.querySelector("#item-quantity");
+const itemTypeSelect = document.querySelector("#item-type");
 const itemShopPriceField = document.querySelector("#item-shop-price-field");
 const itemShopPriceInput = document.querySelector("#item-shop-price");
 const itemShopDestinationField = document.querySelector("#item-shop-destination-field");
@@ -12903,6 +13388,15 @@ const itemGrantsModifiersInput = document.querySelector("#item-grants-modifiers"
 const itemModifiersFields = document.querySelector("#item-modifiers-fields");
 const itemEditorError = document.querySelector("#item-editor-error");
 const saveItemButton = document.querySelector("#save-item");
+const itemUpgradeModal = document.querySelector("#item-upgrade-modal");
+const itemUpgradeDialog = document.querySelector("#item-upgrade-dialog");
+const itemUpgradeList = document.querySelector("#item-upgrade-list");
+const itemUpgradeEmpty = document.querySelector("#item-upgrade-empty");
+const itemUpgradeSearch = document.querySelector("#item-upgrade-search");
+let activeItemUpgradeId = "";
+let activeItemUpgradeTrigger = null;
+let activeItemUpgradeEpoch = 0;
+let itemUpgradeRequestToken = 0;
 const walletBalanceOutput = document.querySelector("#wallet-balance");
 const walletAdjustForm = document.querySelector("#wallet-adjust-form");
 const walletAdjustAmountInput = document.querySelector("#wallet-adjust-amount");
@@ -14526,7 +15020,7 @@ function captureCompleteSheetState() {
     },
     customSkills: getCustomSkillsForCloud(),
     abilities: abilities.map((ability) => ({ ...ability })),
-    inventory: inventoryItems.map((item) => ({ ...item })),
+    inventory: inventoryItems.map(sanitizeInventoryItem).filter(Boolean),
   };
 }
 
@@ -14698,17 +15192,20 @@ function sanitizeAbility(rawAbility) {
   const name = String(rawAbility.name || "").trim().slice(0, 80);
   if (!name) return null;
   const section = ABILITY_SECTIONS[rawAbility.section] ? rawAbility.section : "attacks";
+  const upgradeType = section === "upgrades" ? sanitizeUpgradeType(rawAbility.upgradeType) : "";
+  if (section === "upgrades" && !upgradeType) return null;
   const echoKey = Object.hasOwn(ECHOES, rawAbility.echoKey) ? rawAbility.echoKey : "";
   if (section === "echoes" && !echoKey) return null;
   const mechanics = sanitizeCreationMechanics(rawAbility);
   const damageProfile = sanitizeDamageProfile(rawAbility.damageProfile, rawAbility.damage);
-  const hasDamage = Boolean(rawAbility.hasDamage ?? damageProfile.primary);
+  const hasDamage = section !== "upgrades" && Boolean(rawAbility.hasDamage ?? damageProfile.primary);
 
   return {
     id: String(
       rawAbility.id || `ability-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     ).slice(0, 120),
     section,
+    upgradeType,
     name,
     description: String(rawAbility.description || "").trim().slice(0, 3000),
     origin: String(rawAbility.origin || "").trim().slice(0, 120),
@@ -14726,7 +15223,7 @@ function sanitizeAbility(rawAbility) {
           ? "slot"
           : "link",
     sourceId: String(rawAbility.sourceId || "").slice(0, 120),
-    shopListed: Boolean(rawAbility.shopListed),
+    shopListed: section !== "upgrades" && Boolean(rawAbility.shopListed),
     shopPrice: clampInteger(rawAbility.shopPrice, 0, 999999999, 0),
   };
 }
@@ -14746,6 +15243,9 @@ function applyCompleteSheetState(rawState, options = {}) {
     shopHistoryModal.hidden = true;
     activeShopHistoryTrigger = null;
     abilityDetailModal.hidden = true;
+    itemUpgradeModal.hidden = true;
+    activeItemUpgradeId = "";
+    itemUpgradeRequestToken += 1;
     activeAbilityDetailId = null;
     rdManagerButton.setAttribute("aria-expanded", "false");
     document.querySelectorAll("[data-resource-feedback]").forEach((feedback) => {
@@ -15284,12 +15784,50 @@ function createBuilderCompetencyCard() {
   return card;
 }
 
+function revealCreationEditorField(field) {
+  let panel = field?.closest?.("details");
+  while (panel) {
+    panel.open = true;
+    panel = panel.parentElement?.closest?.("details");
+  }
+}
+
+function focusCreationEditorField(field, options = {}) {
+  if (!field) return;
+  revealCreationEditorField(field);
+  try { field.focus(options); } catch { field.focus(); }
+  if (!options.preventScroll) field.scrollIntoView?.({ block: "nearest", behavior: "auto" });
+}
+
+function setCreationEditorPanels(form, creation = null) {
+  const hasMechanics = Boolean(creation && (
+    creation.rolls?.length || creation.costs?.length || creation.hasDamage || creation.isWeapon ||
+    creation.damageProfile?.primary || creation.grantsModifiers || creation.modifiers?.length
+  ));
+  const hasMedia = Boolean(creation?.mediaUrl || creation?.mediaRefId);
+  form.querySelectorAll("details[data-editor-panel]").forEach((panel) => {
+    panel.open = panel.dataset.editorPanel === "mechanics" ? hasMechanics :
+      panel.dataset.editorPanel === "media" ? hasMedia : false;
+  });
+}
+
+function isCreationEditorControlVisible(control) {
+  if (control.closest("[hidden]")) return false;
+  let panel = control.closest("details");
+  while (panel) {
+    const summary = panel.querySelector(":scope > summary");
+    if (!panel.open && !summary?.contains(control)) return false;
+    panel = panel.parentElement?.closest?.("details");
+  }
+  return true;
+}
+
 function setBuilderError(message, field) {
   customSkillError.textContent = message;
   customSkillError.hidden = !message;
   if (field) {
     field.classList.add("is-invalid");
-    field.focus();
+    focusCreationEditorField(field, { preventScroll: true });
     field.scrollIntoView({ block: "center", behavior: "smooth" });
   }
 }
@@ -15693,23 +16231,154 @@ function sanitizeCreationMechanics(rawCreation) {
   };
 }
 
+function sanitizeItemType(rawType, legacyIsWeapon = false) {
+  const value = String(rawType || "");
+  return Object.hasOwn(ITEM_TYPES, value) ? value : legacyIsWeapon ? "weapon" : "utility";
+}
+
+function sanitizeUpgradeType(rawType) {
+  const value = String(rawType || "");
+  return UPGRADE_ITEM_TYPES.includes(value) ? value : "";
+}
+
+function isUpgradeCompatible(item, upgrade) {
+  if (!item || !upgrade || (upgrade.section && upgrade.section !== "upgrades")) return false;
+  const itemType = sanitizeItemType(item.itemType, item.isWeapon);
+  return Boolean(sanitizeUpgradeType(upgrade.upgradeType)) && upgrade.upgradeType === itemType;
+}
+
+function sanitizeInventoryUpgrades(rawUpgrades, itemType) {
+  if (!UPGRADE_ITEM_TYPES.includes(itemType)) return [];
+  const ids = new Set();
+  const sources = new Set();
+  return (Array.isArray(rawUpgrades) ? rawUpgrades : []).slice(0, 50).flatMap((raw) => {
+    if (!raw || typeof raw !== "object" || sanitizeUpgradeType(raw.upgradeType) !== itemType) return [];
+    const name = String(raw.name || "").trim().slice(0, 80);
+    const id = String(raw.id || "").slice(0, 120);
+    const sourceId = String(raw.sourceId || raw.id || "").slice(0, 120);
+    if (!name || !id || !sourceId || ids.has(id) || sources.has(sourceId)) return [];
+    ids.add(id);
+    sources.add(sourceId);
+    const mechanics = sanitizeCreationMechanics(raw);
+    return [{
+      id,
+      sourceId,
+      name,
+      description: String(raw.description || "").trim().slice(0, 3000),
+      upgradeType: itemType,
+      rolls: mechanics.rolls.slice(0, 30),
+      costs: mechanics.costs.slice(0, 30),
+      grantsModifiers: mechanics.grantsModifiers && mechanics.modifiers.length > 0,
+      modifiers: mechanics.grantsModifiers ? mechanics.modifiers.slice(0, 30) : [],
+    }];
+  });
+}
+
+function getEffectiveInventoryItem(item) {
+  if (!item) return null;
+  const upgrades = (Array.isArray(item.upgrades) ? item.upgrades : []).filter((upgrade) => isUpgradeCompatible(item, upgrade));
+  if (!upgrades.length) return item;
+  const effective = {
+    ...item,
+    upgrades,
+    rolls: [...(item.rolls || []), ...upgrades.flatMap((upgrade) => upgrade.rolls || [])],
+    costs: [...(item.costs || []), ...upgrades.flatMap((upgrade) => upgrade.costs || [])],
+    grantsModifiers: Boolean(item.grantsModifiers) || upgrades.some((upgrade) => upgrade.grantsModifiers),
+    modifiers: [
+      ...(item.grantsModifiers ? item.modifiers || [] : []),
+      ...upgrades.flatMap((upgrade) => upgrade.grantsModifiers ? upgrade.modifiers || [] : []),
+    ],
+  };
+  Object.defineProperty(effective, "modifiersActive", {
+    enumerable: true,
+    get: () => Boolean(item.modifiersActive),
+    set: (active) => { item.modifiersActive = Boolean(active); },
+  });
+  return effective;
+}
+
+function makeInventoryUpgradeSnapshot(source) {
+  if (!source || source.section !== "upgrades" || !sanitizeUpgradeType(source.upgradeType)) return null;
+  const name = String(source.name || "").trim().slice(0, 80);
+  const sourceId = String(source.id || "").slice(0, 120);
+  if (!name || !sourceId) return null;
+  const id = createAbilityId("upgrade").slice(0, 120);
+  const mechanics = sanitizeCreationMechanics(source);
+  const withIds = (entries, kind) => entries.slice(0, 30).map((entry, index) => ({
+    ...entry,
+    id: `${id}-${kind}-${index}`.slice(0, 120),
+  }));
+  return {
+    id,
+    sourceId,
+    name,
+    description: String(source.description || "").trim().slice(0, 3000),
+    upgradeType: source.upgradeType,
+    rolls: withIds(mechanics.rolls, "roll"),
+    costs: withIds(mechanics.costs, "cost"),
+    grantsModifiers: mechanics.grantsModifiers && mechanics.modifiers.length > 0,
+    modifiers: mechanics.grantsModifiers ? withIds(mechanics.modifiers, "modifier").map((modifier) => ({
+      ...modifier,
+      resolvedValue: 0,
+    })) : [],
+  };
+}
+
+function applyInventoryUpgrade(item, source) {
+  if (isNotebookReadOnly() || !isUpgradeCompatible(item, source) || source.section !== "upgrades") return false;
+  const upgrades = Array.isArray(item.upgrades) ? item.upgrades : [];
+  if (upgrades.length >= 50 || upgrades.some((upgrade) => upgrade.sourceId === String(source.id || "").slice(0, 120))) return false;
+  const snapshot = makeInventoryUpgradeSnapshot(source);
+  if (!snapshot) return false;
+  if (item.modifiersActive && snapshot.grantsModifiers) {
+    snapshot.modifiers.forEach((modifier) => {
+      if (modifierRollsPerUse(modifier)) return;
+      const parsed = parseDamageFormula(modifier.formula);
+      modifier.resolvedValue = parsed.error ? 0 : evaluateDamageFormula(parsed).total;
+      adjustDirectModifierTarget(modifier, 1);
+    });
+  }
+  item.upgrades = [...upgrades, snapshot];
+  return true;
+}
+
+function removeInventoryUpgrade(item, upgradeId) {
+  if (isNotebookReadOnly() || !item || !Array.isArray(item.upgrades)) return false;
+  const snapshot = item.upgrades.find((upgrade) => upgrade.id === upgradeId);
+  if (!snapshot) return false;
+  if (item.modifiersActive && snapshot.grantsModifiers) {
+    snapshot.modifiers.forEach((modifier) => {
+      if (!modifierRollsPerUse(modifier)) adjustDirectModifierTarget(modifier, -1);
+      modifier.resolvedValue = 0;
+    });
+  }
+  item.upgrades = item.upgrades.filter((upgrade) => upgrade.id !== upgradeId);
+  const effective = getEffectiveInventoryItem(item);
+  if (!effective.grantsModifiers || !effective.modifiers.length) item.modifiersActive = false;
+  return true;
+}
+
 function sanitizeInventoryItem(rawItem) {
   if (!rawItem || typeof rawItem !== "object") return null;
   const name = String(rawItem.name || "").trim().slice(0, 80);
   if (!name) return null;
   const mechanics = sanitizeCreationMechanics(rawItem);
   const isWeapon = Boolean(rawItem.isWeapon);
+  const itemType = sanitizeItemType(rawItem.itemType, isWeapon);
   const damageProfile = sanitizeDamageProfile(rawItem.damageProfile, rawItem.damage);
+  const upgrades = sanitizeInventoryUpgrades(rawItem.upgrades, itemType);
   return {
     id: String(rawItem.id || createAbilityId("item")).slice(0, 120),
     kind: "item",
     name,
     description: String(rawItem.description || "").trim().slice(0, 3000),
     quantity: clampInteger(rawItem.quantity, 1, 9999, 1),
+    itemType,
     isWeapon,
     equipped: isWeapon && Boolean(rawItem.equipped),
     damageProfile: isWeapon ? damageProfile : sanitizeDamageProfile({}),
     ...mechanics,
+    upgrades,
     sourceId: String(rawItem.sourceId || "").slice(0, 120),
     shopListed: Boolean(rawItem.shopListed),
     shopPrice: clampInteger(rawItem.shopPrice, 0, 999999999, 0),
@@ -15717,6 +16386,188 @@ function sanitizeInventoryItem(rawItem) {
     shopEchoKey: Object.hasOwn(ECHOES, rawItem.shopEchoKey) ? rawItem.shopEchoKey : "",
   };
 }
+
+
+function itemTypeLabel(item) {
+  return ITEM_TYPES[sanitizeItemType(item?.itemType, item?.isWeapon)];
+}
+
+function upgradeTypeLabel(type) {
+  return `Melhoria de ${ITEM_TYPES[sanitizeUpgradeType(type)] || "Item"}`;
+}
+
+function updateAbilityUpgradeFields() {
+  const isUpgrade = abilitySectionSelect.value === "upgrades";
+  abilityUpgradeTypeField.hidden = !isUpgrade;
+  abilityUpgradeTypeSelect.required = isUpgrade;
+  abilityHasDamageInput.closest(".mechanics-block").hidden = isUpgrade;
+  if (isUpgrade) abilityHasDamageInput.checked = false;
+  abilityDamageFields.hidden = isUpgrade || !abilityHasDamageInput.checked;
+  abilityNameInput.placeholder = isUpgrade ? "Ex.: Fio Afiado" : "Ex.: Golpe Abissal";
+  document.querySelector("#ability-editor-help").textContent = isUpgrade
+    ? "Escolha o tipo de item compatível e configure o que esta melhoria acrescenta."
+    : "Preencha as informações e adicione regras de uso, se precisar.";
+  updateAbilityShopFields();
+  abilityEditorTitle.textContent = activeAbilityId ? `Editar ${isUpgrade ? "Melhoria" : "Habilidade"}` : `Criar ${isUpgrade ? "Melhoria" : "Habilidade"}`;
+  saveAbilityButton.textContent = activeAbilityId ? "Salvar Alterações" : isUpgrade ? "Publicar Melhoria" : "Criar Habilidade";
+}
+
+function createItemTypeBadge(item) {
+  const badge = document.createElement("span");
+  badge.className = "item-type-badge";
+  badge.dataset.itemType = sanitizeItemType(item.itemType, item.isWeapon);
+  badge.textContent = itemTypeLabel(item);
+  return badge;
+}
+
+function appendItemUpgradeTags(container, item, removable = true) {
+  if (!item.upgrades?.length) return;
+  const tags = document.createElement("div");
+  tags.className = "item-upgrade-tags";
+  tags.setAttribute("aria-label", "Melhorias aplicadas");
+  item.upgrades.forEach((upgrade) => {
+    const tag = document.createElement("span");
+    tag.className = "item-upgrade-tag";
+    tag.title = upgrade.description || upgradeTypeLabel(upgrade.upgradeType);
+    const name = document.createElement("span");
+    name.textContent = upgrade.name;
+    tag.append(name);
+    if (removable && !isNotebookReadOnly()) {
+      const remove = document.createElement("button");
+      remove.type = "button";
+      remove.dataset.removeItemUpgrade = upgrade.id;
+      remove.dataset.upgradeItemId = item.id;
+      remove.setAttribute("aria-label", `Remover melhoria: ${upgrade.name}`);
+      remove.innerHTML = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8"/></svg>';
+      tag.append(remove);
+    }
+    tags.append(tag);
+  });
+  container.append(tags);
+}
+
+function getCompatibleItemUpgrades(item) {
+  return grimoireAbilities.filter((upgrade) => upgrade.section === "upgrades" && isUpgradeCompatible(item, upgrade));
+}
+
+function renderItemUpgradePicker() {
+  const item = inventoryItems.find((entry) => entry.id === activeItemUpgradeId);
+  if (!item || activeItemUpgradeEpoch !== notesEpoch) { closeItemUpgradePicker(); return; }
+  const query = normalizeSearchTerm(itemUpgradeSearch.value);
+  const visible = getCompatibleItemUpgrades(item)
+    .filter((upgrade) => !query || normalizeSearchTerm(`${upgrade.name} ${upgrade.description}`).includes(query))
+    .sort((a, b) => portugueseCollator.compare(a.name, b.name));
+  document.querySelector("#item-upgrade-target").textContent = `${item.name} · ${itemTypeLabel(item)}`;
+  document.querySelector("#item-upgrade-count").textContent = `${visible.length} ${visible.length === 1 ? "melhoria" : "melhorias"}`;
+  itemUpgradeList.replaceChildren();
+  visible.forEach((upgrade) => {
+    const applied = item.upgrades?.some((entry) => entry.sourceId === upgrade.id);
+    const card = document.createElement("article");
+    card.className = `upgrade-picker-item${applied ? " is-applied" : ""}`;
+    const copy = document.createElement("div");
+    copy.className = "upgrade-picker-item-copy";
+    const name = document.createElement("strong");
+    name.textContent = upgrade.name;
+    const description = document.createElement("p");
+    description.textContent = upgrade.description || "Sem descrição.";
+    const type = document.createElement("span");
+    type.className = "upgrade-compatibility-tag";
+    type.textContent = upgradeTypeLabel(upgrade.upgradeType);
+    const tags = document.createElement("div");
+    tags.className = "upgrade-picker-item-tags";
+    tags.append(type);
+    const effects = [];
+    if (upgrade.rolls?.length) effects.push(`${upgrade.rolls.length} ${upgrade.rolls.length === 1 ? "rolagem" : "rolagens"}`);
+    if (upgrade.grantsModifiers && upgrade.modifiers?.length) effects.push(`${upgrade.modifiers.length} ${upgrade.modifiers.length === 1 ? "modificador" : "modificadores"}`);
+    if (upgrade.costs?.length) effects.push(`${upgrade.costs.length} ${upgrade.costs.length === 1 ? "gasto" : "gastos"}`);
+    if (effects.length) {
+      const summary = document.createElement("p");
+      summary.textContent = effects.join(" · ");
+      copy.append(name, description, tags, summary);
+    } else copy.append(name, description, tags);
+    const apply = document.createElement("button");
+    apply.type = "button";
+    apply.className = "upgrade-picker-apply";
+    apply.dataset.applyItemUpgrade = upgrade.id;
+    apply.disabled = Boolean(applied || isNotebookReadOnly() || item.upgrades?.length >= 50);
+    apply.textContent = applied ? "Aplicada" : "Adicionar";
+    apply.setAttribute("aria-label", `${applied ? "Melhoria aplicada" : "Adicionar melhoria"}: ${upgrade.name}`);
+    card.append(copy, apply);
+    itemUpgradeList.append(card);
+  });
+  itemUpgradeEmpty.hidden = visible.length > 0;
+  itemUpgradeEmpty.textContent = query ? "Nenhuma melhoria compatível encontrada nesta busca." : `Ainda não há ${upgradeTypeLabel(item.itemType).toLocaleLowerCase("pt-BR")} publicada no grimório.`;
+}
+
+async function openItemUpgradePicker(itemId, trigger) {
+  if (isNotebookReadOnly() || !window.AbyssCloud?.hasActiveSlot()) return;
+  const item = inventoryItems.find((entry) => entry.id === itemId);
+  if (!item || !UPGRADE_ITEM_TYPES.includes(sanitizeItemType(item.itemType, item.isWeapon))) return;
+  activeItemUpgradeId = item.id;
+  activeItemUpgradeTrigger = trigger;
+  activeItemUpgradeEpoch = notesEpoch;
+  const epoch = notesEpoch;
+  const request = ++itemUpgradeRequestToken;
+  itemUpgradeSearch.value = "";
+  itemUpgradeModal.hidden = false;
+  itemUpgradeList.replaceChildren();
+  itemUpgradeList.setAttribute("aria-busy", "true");
+  itemUpgradeEmpty.hidden = false;
+  itemUpgradeEmpty.textContent = "Carregando melhorias…";
+  document.querySelector("#item-upgrade-target").textContent = `${item.name} · ${itemTypeLabel(item)}`;
+  document.querySelector("#item-upgrade-count").textContent = "";
+  document.querySelector("#item-upgrade-feedback").textContent = "";
+  syncModalLock();
+  itemUpgradeDialog.focus();
+  try {
+    await refreshGrimoireFromCloud();
+    if (request !== itemUpgradeRequestToken || epoch !== notesEpoch || itemUpgradeModal.hidden) return;
+    renderItemUpgradePicker();
+  } catch (error) {
+    if (request !== itemUpgradeRequestToken || epoch !== notesEpoch || itemUpgradeModal.hidden) return;
+    itemUpgradeEmpty.textContent = "Não foi possível carregar as melhorias. Feche e tente novamente.";
+  } finally {
+    if (request === itemUpgradeRequestToken) itemUpgradeList.removeAttribute("aria-busy");
+  }
+}
+
+function closeItemUpgradePicker() {
+  itemUpgradeRequestToken += 1;
+  itemUpgradeModal.hidden = true;
+  activeItemUpgradeId = "";
+  syncModalLock();
+  if (activeItemUpgradeTrigger?.isConnected) activeItemUpgradeTrigger.focus();
+  activeItemUpgradeTrigger = null;
+}
+
+function notifyItemUpgradeChanged(item, reason) {
+  renderResourceState();
+  applyClassCalculations();
+  updateDifficultyTargets();
+  renderInventory();
+  renderAbilities();
+  if (!abilityDetailModal.hidden && activeAbilityDetailScope === "inventory" && activeAbilityDetailId === item.id) {
+    openAbilityDetail(item.id, activeAbilityDetailTrigger, "inventory");
+  }
+  notifySheetChanged(reason);
+}
+
+async function confirmRemoveItemUpgrade(itemId, upgradeId, trigger) {
+  if (isNotebookReadOnly()) return;
+  const item = inventoryItems.find((entry) => entry.id === itemId);
+  const upgrade = item?.upgrades?.find((entry) => entry.id === upgradeId);
+  if (!upgrade) return;
+  const epoch = notesEpoch;
+  const confirmed = await showAbyssConfirm({
+    eyebrow: itemTypeLabel(item), title: "Remover esta melhoria?",
+    message: `“${upgrade.name}” será removida de “${item.name}”, junto com seus efeitos.`,
+    confirmLabel: "Remover melhoria", tone: "warning", trigger,
+  });
+  if (!confirmed || epoch !== notesEpoch || inventoryItems.find((entry) => entry.id === itemId) !== item) return;
+  if (!removeInventoryUpgrade(item, upgradeId)) return;
+  notifyItemUpgradeChanged(item, "item-upgrade-removed");
+}
+
 
 function modifierTargetOptions(type, selected = "") {
   if (type === "attribute") {
@@ -15866,11 +16717,7 @@ function appendMechanicEditorRow(prefix, kind, data = {}) {
   list.append(row);
   refreshMechanicsEditor(prefix);
   const firstField = row.querySelector("input, select");
-  try {
-    firstField?.focus({ preventScroll: true });
-  } catch {
-    firstField?.focus();
-  }
+  focusCreationEditorField(firstField, { preventScroll: true });
   const scroller = row.closest(".ability-editor-content");
   if (scroller) {
     requestAnimationFrame(() => {
@@ -15895,8 +16742,8 @@ function modifierTargetLabel(modifier) {
 
 function getAllSheetCreations() {
   return [
-    ...abilities.map((creation) => ({ scope: "sheet", creation })),
-    ...inventoryItems.map((creation) => ({ scope: "inventory", creation })),
+    ...abilities.filter((creation) => creation.section !== "upgrades").map((creation) => ({ scope: "sheet", creation })),
+    ...inventoryItems.map((item) => ({ scope: "inventory", creation: getEffectiveInventoryItem(item) })),
   ];
 }
 
@@ -15908,7 +16755,8 @@ function getCreation(scope, id) {
       : scope === "minerva-item"
         ? grimoireItems
         : abilities;
-  return collection.find((creation) => creation.id === id) || null;
+  const creation = collection.find((entry) => entry.id === id) || null;
+  return scope === "inventory" ? getEffectiveInventoryItem(creation) : creation;
 }
 
 function getActiveModifierTotal(type, target = "general") {
@@ -16349,6 +17197,7 @@ function createCreationDetailRow(label, value, buttonData = null) {
 function renderCreationDetailMechanics(creation, scope) {
   const container = document.querySelector("#ability-detail-mechanics");
   container.replaceChildren();
+  appendCreationDetailSection(container, "Melhorias aplicadas", (creation.upgrades || []).map((upgrade) => createCreationDetailRow(upgrade.name, `${upgradeTypeLabel(upgrade.upgradeType)}${upgrade.description ? ` · ${upgrade.description}` : ""}`)));
   const profile = creation.damageProfile || sanitizeDamageProfile({}, creation.damage);
   const isCatalogPreview = scope === "minerva" || scope === "minerva-item";
 
@@ -16484,8 +17333,8 @@ function openAbilityDetail(abilityId, trigger, scope = "sheet") {
   activeAbilityDetailScope = scope;
   activeAbilityDetailTrigger = trigger;
   document.querySelector("#ability-detail-kind").textContent = isInventoryLike
-    ? `Informações · ${ability.isWeapon ? "Arma" : "Item"}`
-    : `Informações · ${abilitySectionLabel(ability.section)}`;
+    ? `Informações · ${itemTypeLabel(ability)}`
+    : `Informações · ${ability.section === "upgrades" ? upgradeTypeLabel(ability.upgradeType) : abilitySectionLabel(ability.section)}`;
   document.querySelector("#ability-detail-title").textContent = ability.name;
   document.querySelector("#ability-detail-origin").textContent = isInventoryLike
     ? `${scope === "minerva-item" ? "Loja" : "Inventário"} · Quantidade ${ability.quantity}`
@@ -16527,7 +17376,7 @@ function updateAbilityEchoField() {
 }
 
 function updateAbilityShopFields() {
-  const canPublish = abilityEditorScope === "minerva";
+  const canPublish = abilityEditorScope === "minerva" && abilitySectionSelect.value !== "upgrades";
   abilityShopFields.hidden = !canPublish;
   abilityShopPriceField.hidden = !canPublish || !abilityShopListedInput.checked;
   abilityShopPriceInput.required = canPublish && abilityShopListedInput.checked;
@@ -16542,7 +17391,7 @@ function renderAbilities() {
   if (activeAbilitySection === "attacks") {
     filtered.push(...inventoryItems
       .filter((item) => item.isWeapon && item.equipped)
-      .map((item) => ({ scope: "inventory", kind: "equipped-weapon", creation: item })));
+      .map((item) => ({ scope: "inventory", kind: "equipped-weapon", creation: getEffectiveInventoryItem(item) })));
   }
   filtered.sort((a, b) => portugueseCollator.compare(a.creation.name, b.creation.name));
 
@@ -16572,7 +17421,7 @@ function renderAbilities() {
     headingMain.className = "creation-card-heading-main";
     const type = document.createElement("small");
     type.textContent = isEquippedWeapon
-      ? "Ataques · Arma equipada · Inventário"
+      ? `Ataques · ${itemTypeLabel(ability)} · Inventário`
       : `${section.label} · ${abilityOriginLabel(ability)}`;
     const name = Object.assign(document.createElement("h3"), {
       textContent: ability.name,
@@ -16606,6 +17455,7 @@ function renderAbilities() {
     });
     description.className = "creation-card-description";
     copy.append(heading, description);
+    if (isEquippedWeapon) appendItemUpgradeTags(copy, ability);
 
     const primaryDamage = ability.damageProfile?.primary || ability.damage || "";
     appendCreationQuickRolls(copy, ability, scope, true);
@@ -16667,6 +17517,10 @@ function openAbilityEditor(scope, ability = null, trigger = null) {
   activeAbilityId = ability?.id || null;
   activeAbilityTrigger = trigger;
   abilityEditorForm.reset();
+  const upgradeOption = abilitySectionSelect.querySelector('option[value="upgrades"]');
+  upgradeOption.hidden = abilityEditorScope !== "minerva";
+  upgradeOption.disabled = abilityEditorScope !== "minerva";
+  abilityUpgradeTypeSelect.value = sanitizeUpgradeType(ability?.upgradeType) || sanitizeUpgradeType(minervaUpgradeFilter.value) || "weapon";
   abilitySectionSelect.value = ability?.section || (
     abilityEditorScope === "minerva" ? activeMinervaSection : activeAbilitySection
   );
@@ -16702,6 +17556,8 @@ function openAbilityEditor(scope, ability = null, trigger = null) {
     abilityEditorScope === "minerva" ? "Grimório de Minerva" : "Habilidade do personagem";
   abilityEditorTitle.textContent = ability ? "Editar Habilidade" : "Criar Habilidade";
   saveAbilityButton.textContent = ability ? "Salvar Alterações" : "Criar Habilidade";
+  updateAbilityUpgradeFields();
+  setCreationEditorPanels(abilityEditorForm, ability);
   abilityEditorModal.hidden = false;
   syncModalLock();
   abilityEditorDialog.focus();
@@ -16719,60 +17575,65 @@ function closeAbilityEditor() {
 async function submitAbilityEditor(event) {
   event.preventDefault();
   setAbilityEditorError("");
+  if (abilitySectionSelect.value === "upgrades" && (abilityEditorScope !== "minerva" || !sanitizeUpgradeType(abilityUpgradeTypeSelect.value))) {
+    setAbilityEditorError("Escolha o tipo de melhoria no Grimório de Minerva.");
+    focusCreationEditorField(abilityUpgradeTypeSelect);
+    return;
+  }
 
   const name = abilityNameInput.value.trim();
   if (!name) {
     setAbilityEditorError("Dê um nome à Habilidade.");
-    abilityNameInput.focus();
+    focusCreationEditorField(abilityNameInput);
     return;
   }
 
   if (abilitySectionSelect.value === "echoes" && !Object.hasOwn(ECHOES, abilityEchoSelect.value)) {
     setAbilityEditorError("Escolha o Eco de origem desta Habilidade.");
-    abilityEchoSelect.focus();
+    focusCreationEditorField(abilityEchoSelect);
     return;
   }
   const mechanics = readMechanicsEditor("ability", { includeModifiers: abilityGrantsModifiersInput.checked });
   if (mechanics.error) {
     setAbilityEditorError(mechanics.error);
-    mechanics.input?.focus();
+    focusCreationEditorField(mechanics.input);
     return;
   }
   const parsedDamage = parseDamageFormula(abilityDamageInput.value);
   const parsedAdditionalDamage = parseDamageFormula(abilityAdditionalDamageInput.value);
   if (abilityHasDamageInput.checked && (parsedDamage.error || !parsedDamage.tokens.length)) {
     setAbilityEditorError(parsedDamage.error || "Preencha o Dano Principal.");
-    abilityDamageInput.focus();
+    focusCreationEditorField(abilityDamageInput);
     return;
   }
   if (abilityHasDamageInput.checked && parsedAdditionalDamage.error) {
     setAbilityEditorError(parsedAdditionalDamage.error);
-    abilityAdditionalDamageInput.focus();
+    focusCreationEditorField(abilityAdditionalDamageInput);
     return;
   }
   const parsedCriticalBonus = parseDamageFormula(abilityCriticalBonusInput.value);
   const criticalThreshold = clampInteger(abilityCriticalThresholdInput.value, 0, 1000, 0);
   if (abilityHasDamageInput.checked && parsedCriticalBonus.error) {
     setAbilityEditorError(parsedCriticalBonus.error);
-    abilityCriticalBonusInput.focus();
+    focusCreationEditorField(abilityCriticalBonusInput);
     return;
   }
   if (abilityHasDamageInput.checked && (criticalThreshold || parsedCriticalBonus.tokens.length)) {
     if (!criticalThreshold || !parsedCriticalBonus.tokens.length) {
       setAbilityEditorError("Para usar crítico, informe a margem natural e o Dano Crítico.");
-      (criticalThreshold ? abilityCriticalBonusInput : abilityCriticalThresholdInput).focus();
+      focusCreationEditorField(criticalThreshold ? abilityCriticalBonusInput : abilityCriticalThresholdInput);
       return;
     }
     const primaryDie = parsedDamage.tokens.find((token) => token.type === "dice" && token.sign > 0);
     if (!primaryDie || criticalThreshold > primaryDie.faces) {
       setAbilityEditorError("A margem de crítico deve caber no primeiro dado do Dano Principal.");
-      abilityCriticalThresholdInput.focus();
+      focusCreationEditorField(abilityCriticalThresholdInput);
       return;
     }
   }
   if (abilityGrantsModifiersInput.checked && !mechanics.modifiers.length) {
     setAbilityEditorError("Adicione pelo menos um modificador ou desative “Concede Modificadores?”.");
-    document.querySelector("#add-ability-modifier").focus();
+    focusCreationEditorField(document.querySelector("#add-ability-modifier"));
     return;
   }
 
@@ -16785,7 +17646,7 @@ async function submitAbilityEditor(event) {
 
   if (typedUrl && !safeRemoteImageUrl(typedUrl)) {
     setAbilityEditorError("O link da imagem precisa começar com http:// ou https://.");
-    abilityMediaUrlInput.focus();
+    focusCreationEditorField(abilityMediaUrlInput);
     return;
   }
   const allowedImageTypes = new Set([
@@ -16796,6 +17657,7 @@ async function submitAbilityEditor(event) {
   ]);
   if (file && (!allowedImageTypes.has(file.type) || file.size > 8 * 1024 * 1024)) {
     setAbilityEditorError("Escolha uma imagem ou GIF de até 8 MB.");
+    focusCreationEditorField(abilityMediaFileInput);
     return;
   }
 
@@ -16830,6 +17692,7 @@ async function submitAbilityEditor(event) {
     const nextAbility = sanitizeAbility({
       id,
       section: abilitySectionSelect.value,
+      upgradeType: abilitySectionSelect.value === "upgrades" ? abilityUpgradeTypeSelect.value : "",
       name,
       description: abilityDescriptionInput.value,
       origin: abilityOriginInput.value,
@@ -16865,6 +17728,7 @@ async function submitAbilityEditor(event) {
       }
       await window.AbyssCloud.saveMinervaAbility(nextAbility);
       await refreshGrimoireFromCloud();
+      if (nextAbility.section === "upgrades") minervaUpgradeFilter.value = nextAbility.upgradeType;
       selectMinervaSection(nextAbility.section);
     } else {
       const index = abilities.findIndex((item) => item.id === id);
@@ -16904,7 +17768,7 @@ async function submitAbilityEditor(event) {
     );
   } finally {
     saveAbilityButton.disabled = false;
-    saveAbilityButton.textContent = existing ? "Salvar Alterações" : "Criar Habilidade";
+    saveAbilityButton.textContent = existing ? "Salvar Alterações" : abilitySectionSelect.value === "upgrades" ? "Publicar Melhoria" : "Criar Habilidade";
   }
 }
 
@@ -16947,6 +17811,7 @@ function updateItemModifierFields() {
 
 function updateItemShopDestinationFields() {
   const isShopItem = itemEditorScope === "minerva";
+  document.querySelector("#item-publication-group").hidden = !isShopItem;
   itemShopDestinationField.hidden = !isShopItem;
   const needsEcho = isShopItem && itemShopDestinationSelect.value === "echoes";
   itemShopEchoField.hidden = !needsEcho;
@@ -16958,6 +17823,8 @@ function openItemEditor(item = null, trigger = null, scope = "inventory") {
   activeItemId = item?.id || null;
   activeItemTrigger = trigger;
   itemEditorForm.reset();
+  itemEditorForm.dataset.sheetEpoch = String(notesEpoch);
+  itemTypeSelect.value = sanitizeItemType(item?.itemType, item?.isWeapon);
   itemNameInput.value = item?.name || "";
   itemQuantityInput.value = String(item?.quantity || 1);
   itemShopPriceInput.value = String(clampInteger(item?.shopPrice, 0, 999999999, 0));
@@ -16982,6 +17849,7 @@ function openItemEditor(item = null, trigger = null, scope = "inventory") {
   itemEditorEyebrow.textContent = itemEditorScope === "minerva" ? "Produto da Loja" : "Inventário do personagem";
   itemEditorTitle.textContent = item ? "Editar Item" : itemEditorScope === "minerva" ? "Criar Item da Loja" : "Criar Item";
   saveItemButton.textContent = item ? "Salvar Alterações" : itemEditorScope === "minerva" ? "Publicar Item" : "Criar Item";
+  setCreationEditorPanels(itemEditorForm, item);
   itemEditorModal.hidden = false;
   syncModalLock();
   itemEditorDialog.focus();
@@ -16997,11 +17865,12 @@ function closeItemEditor() {
 
 async function submitItemEditor(event) {
   event.preventDefault();
+  if (isNotebookReadOnly() || (itemEditorScope === "inventory" && itemEditorForm.dataset.sheetEpoch !== String(notesEpoch))) return;
   setItemEditorError("");
   const name = itemNameInput.value.trim();
   if (!name) {
     setItemEditorError("Dê um nome ao Item.");
-    itemNameInput.focus();
+    focusCreationEditorField(itemNameInput);
     return;
   }
   if (
@@ -17010,19 +17879,19 @@ async function submitItemEditor(event) {
     !Object.hasOwn(ECHOES, itemShopEchoSelect.value)
   ) {
     setItemEditorError("Escolha o Eco que receberá este produto.");
-    itemShopEchoSelect.focus();
+    focusCreationEditorField(itemShopEchoSelect);
     return;
   }
 
   const mechanics = readMechanicsEditor("item", { includeModifiers: itemGrantsModifiersInput.checked });
   if (mechanics.error) {
     setItemEditorError(mechanics.error);
-    mechanics.input?.focus();
+    focusCreationEditorField(mechanics.input);
     return;
   }
   if (itemGrantsModifiersInput.checked && !mechanics.modifiers.length) {
     setItemEditorError("Adicione pelo menos um modificador ou desative “Concede Modificadores?”.");
-    document.querySelector("#add-item-modifier").focus();
+    focusCreationEditorField(document.querySelector("#add-item-modifier"));
     return;
   }
 
@@ -17032,29 +17901,29 @@ async function submitItemEditor(event) {
   const criticalThreshold = clampInteger(itemCriticalThresholdInput.value, 0, 1000, 0);
   if (itemIsWeaponInput.checked && (primary.error || !primary.tokens.length)) {
     setItemEditorError(primary.error || "Uma arma precisa de Dano Principal.");
-    itemPrimaryDamageInput.focus();
+    focusCreationEditorField(itemPrimaryDamageInput);
     return;
   }
   if (itemIsWeaponInput.checked && additional.error) {
     setItemEditorError(additional.error);
-    itemAdditionalDamageInput.focus();
+    focusCreationEditorField(itemAdditionalDamageInput);
     return;
   }
   if (itemIsWeaponInput.checked && criticalBonus.error) {
     setItemEditorError(criticalBonus.error);
-    itemCriticalBonusInput.focus();
+    focusCreationEditorField(itemCriticalBonusInput);
     return;
   }
   const primaryDie = primary.tokens?.find((token) => token.type === "dice" && token.sign > 0);
   if (itemIsWeaponInput.checked && (criticalThreshold || criticalBonus.tokens.length)) {
     if (!criticalThreshold || !criticalBonus.tokens.length) {
       setItemEditorError("Para usar crítico, informe a margem natural e o Dano Crítico.");
-      (criticalThreshold ? itemCriticalBonusInput : itemCriticalThresholdInput).focus();
+      focusCreationEditorField(criticalThreshold ? itemCriticalBonusInput : itemCriticalThresholdInput);
       return;
     }
     if (!primaryDie || criticalThreshold > primaryDie.faces) {
       setItemEditorError("A margem de crítico deve caber no primeiro dado do Dano Principal.");
-      itemCriticalThresholdInput.focus();
+      focusCreationEditorField(itemCriticalThresholdInput);
       return;
     }
   }
@@ -17062,10 +17931,18 @@ async function submitItemEditor(event) {
   const targetCollection = itemEditorScope === "minerva" ? grimoireItems : inventoryItems;
   const existingIndex = targetCollection.findIndex((entry) => entry.id === activeItemId);
   const existing = existingIndex >= 0 ? targetCollection[existingIndex] : null;
+  if (existing && itemEditorScope === "inventory" && (existing.upgrades || []).some((upgrade) => upgrade.upgradeType !== itemTypeSelect.value)) {
+    const epoch = notesEpoch;
+    const confirmed = await showAbyssConfirm({ eyebrow: "Tipo de Item", title: "Remover melhorias incompatíveis?", message: "Ao mudar o tipo deste item, as melhorias incompatíveis serão removidas com seus efeitos.", confirmLabel: "Alterar tipo", tone: "warning", trigger: saveItemButton });
+    if (!confirmed || epoch !== notesEpoch || inventoryItems.find((item) => item.id === existing.id) !== existing || isNotebookReadOnly()) return;
+  }
+  if (existing?.modifiersActive && itemEditorScope === "inventory") setCreationModifiersActive("inventory", existing.id, false, { notify: false });
   const nextItem = sanitizeInventoryItem({
     id: existing?.id || createAbilityId("item"),
     name,
     quantity: itemQuantityInput.value,
+    itemType: itemTypeSelect.value,
+    upgrades: existing?.upgrades || [],
     description: itemDescriptionInput.value,
     isWeapon: itemIsWeaponInput.checked,
     equipped: itemIsWeaponInput.checked && Boolean(existing?.equipped),
@@ -17272,14 +18149,15 @@ function renderInventory() {
   if (!inventoryList || !inventoryEmpty) return;
   const query = normalizeSearchTerm(inventorySearchInput.value);
   const visible = inventoryItems
-    .filter((item) => !query || normalizeSearchTerm(`${item.name} ${item.description}`).includes(query));
+    .filter((item) => !query || normalizeSearchTerm(`${item.name} ${item.description} ${itemTypeLabel(item)} ${(item.upgrades || []).map((upgrade) => upgrade.name).join(" ")}`).includes(query));
   inventoryCount.textContent = `${visible.length} ${visible.length === 1 ? "item" : "itens"}`;
   inventoryEmpty.hidden = visible.length !== 0;
   inventoryList.hidden = visible.length === 0;
   inventoryList.classList.toggle("is-move-mode", inventoryMoveMode);
   inventoryList.replaceChildren();
 
-  visible.forEach((item) => {
+  visible.forEach((rawItem) => {
+    const item = getEffectiveInventoryItem(rawItem);
     const card = document.createElement("article");
     card.className = `ability-card creation-card inventory-card${item.isWeapon ? " is-weapon" : ""}${item.equipped ? " is-equipped" : ""}${item.modifiersActive ? " is-active" : ""}`;
     card.dataset.itemId = item.id;
@@ -17294,10 +18172,10 @@ function renderInventory() {
     const headingMain = document.createElement("div");
     headingMain.className = "creation-card-heading-main";
     const type = document.createElement("small");
-    type.textContent = `${item.isWeapon ? "Arma" : "Item"} · Quantidade ${item.quantity}`;
+    type.textContent = `Quantidade ${item.quantity}`;
     const name = document.createElement("h3");
     name.textContent = item.name;
-    headingMain.append(type, name);
+    headingMain.append(createItemTypeBadge(item), name, type);
     if (item.equipped) {
       const headingTags = document.createElement("div");
       headingTags.className = "creation-card-heading-tags";
@@ -17321,10 +18199,19 @@ function renderInventory() {
     description.textContent = item.description || "Sem descrição.";
     description.className = "creation-card-description";
     copy.append(heading, description);
+    appendItemUpgradeTags(copy, item);
     appendCreationQuickRolls(copy, item, "inventory", !item.isWeapon);
 
     const actions = document.createElement("div");
     actions.className = "creation-main-actions";
+    if (UPGRADE_ITEM_TYPES.includes(item.itemType)) {
+      const upgrade = document.createElement("button");
+      upgrade.type = "button";
+      upgrade.className = "ability-card-action";
+      upgrade.dataset.openItemUpgrades = item.id;
+      upgrade.textContent = "Adicionar melhorias";
+      actions.append(upgrade);
+    }
     if (item.isWeapon) {
       const equip = document.createElement("button");
       equip.className = `ability-card-action is-equip${item.equipped ? " is-equipped" : ""}`;
@@ -17399,7 +18286,7 @@ function createGrimoireItem(ability, mode) {
   copy.className = "grimoire-item-copy";
 
   const type = document.createElement("small");
-  type.textContent = `${abilitySectionLabel(ability.section)} · ${abilityOriginLabel(ability, "minerva")} · ${ability.shopListed ? `Loja: ${formatVerdeons(ability.shopPrice)}` : "Fora da Loja"}`;
+  type.textContent = `${ability.section === "upgrades" ? upgradeTypeLabel(ability.upgradeType) : abilitySectionLabel(ability.section)} · ${abilityOriginLabel(ability, "minerva")} · ${ability.shopListed ? `Loja: ${formatVerdeons(ability.shopPrice)}` : "Fora da Loja"}`;
   const name = Object.assign(document.createElement("strong"), {
     textContent: ability.name,
   });
@@ -17455,7 +18342,7 @@ function createGrimoireInventoryItem(item) {
   const copy = document.createElement("div");
   copy.className = "grimoire-item-copy";
   const type = document.createElement("small");
-  type.textContent = `${item.isWeapon ? "Arma" : "Item"} · ${formatVerdeons(item.shopPrice)} · → ${shopDestinationLabel("item", item)}`;
+  type.textContent = `${itemTypeLabel(item)} · ${formatVerdeons(item.shopPrice)} · → ${shopDestinationLabel("item", item)}`;
   const name = Object.assign(document.createElement("strong"), { textContent: item.name });
   const description = Object.assign(document.createElement("p"), {
     textContent: item.description || "Sem descrição.",
@@ -17487,7 +18374,7 @@ function createGrimoireInventoryItem(item) {
 function getShopProducts() {
   return [
     ...grimoireAbilities
-      .filter((ability) => ability.shopListed)
+      .filter((ability) => ability.shopListed && ability.section !== "upgrades")
       .map((creation) => ({ kind: "ability", creation })),
     ...grimoireItems
       .filter((item) => item.shopListed)
@@ -17515,7 +18402,7 @@ function renderShop() {
   const products = getShopProducts()
     .filter(({ kind, creation }) => {
       const searchable = normalizeSearchTerm(
-        `${creation.name} ${creation.description} ${kind === "item" ? "item inventário arma" : abilitySectionLabel(creation.section)}`,
+        `${creation.name} ${creation.description} ${kind === "item" ? `item inventário ${itemTypeLabel(creation)}` : abilitySectionLabel(creation.section)}`,
       );
       return !query || searchable.includes(query);
     })
@@ -17562,6 +18449,7 @@ function renderShop() {
     const description = document.createElement("p");
     description.textContent = creation.description || "Sem descrição.";
     copy.append(destination, name, description);
+    if (kind === "item") copy.insertBefore(createItemTypeBadge(creation), name);
 
     const footer = document.createElement("div");
     footer.className = "shop-product-footer";
@@ -17731,7 +18619,7 @@ async function purchaseShopProduct(kind, productId, trigger) {
     return;
   }
   const stackedItem = deliversToInventory
-    ? inventoryItems.find((item) => item.sourceId === source.id)
+    ? inventoryItems.find((item) => item.sourceId === source.id && !item.upgrades?.length && sanitizeItemType(item.itemType, item.isWeapon) === sanitizeItemType(source.itemType, source.isWeapon))
     : null;
   if (stackedItem && stackedItem.quantity + source.quantity > 9999) {
     await showAbyssAlert({
@@ -17775,6 +18663,7 @@ async function purchaseShopProduct(kind, productId, trigger) {
         id: createAbilityId("item"),
         sourceId: source.id,
         equipped: false,
+        upgrades: [],
         modifiersActive: false,
         modifiers: (source.modifiers || []).map((modifier) => ({ ...modifier, resolvedValue: 0 })),
         shopListed: false,
@@ -17850,7 +18739,7 @@ function renderGrimoirePicker() {
   const query = normalizeSearchTerm(grimoireSearchInput.value);
   const visible = grimoireAbilities
     .filter((ability) => {
-      if (ability.shopListed) return false;
+      if (ability.shopListed || ability.section === "upgrades") return false;
       const searchable = normalizeSearchTerm(
         `${ability.name} ${ability.description} ${ability.damage} ${abilitySectionLabel(ability.section)} ${abilityOriginLabel(ability, "minerva")}`,
       );
@@ -17867,19 +18756,21 @@ function renderGrimoirePicker() {
 
 function renderMinervaList() {
   const showingItems = activeMinervaSection === "inventory";
+  const showingUpgrades = activeMinervaSection === "upgrades";
+  document.querySelector("#minerva-upgrade-filter-row").hidden = !showingUpgrades;
   const minervaVisible = (showingItems
     ? grimoireItems
-    : grimoireAbilities.filter((ability) => ability.section === activeMinervaSection))
+    : grimoireAbilities.filter((ability) => ability.section === activeMinervaSection && (!showingUpgrades || !minervaUpgradeFilter.value || ability.upgradeType === minervaUpgradeFilter.value)))
     .sort((a, b) => portugueseCollator.compare(a.name, b.name));
   minervaList.replaceChildren(...minervaVisible.map((creation) =>
     showingItems ? createGrimoireInventoryItem(creation) : createGrimoireItem(creation, "admin"),
   ));
   minervaEmpty.textContent = showingItems
     ? "Nenhum Item foi publicado na Loja."
-    : `Nenhuma habilidade em ${abilitySectionLabel(activeMinervaSection)}.`;
+    : activeMinervaSection === "upgrades" ? "Nenhuma melhoria publicada." : `Nenhuma habilidade em ${abilitySectionLabel(activeMinervaSection)}.`;
   minervaEmpty.hidden = minervaVisible.length !== 0;
   const createLabel = document.querySelector("#create-minerva-ability span");
-  if (createLabel) createLabel.textContent = showingItems ? "Novo Item" : "Nova Habilidade";
+  if (createLabel) createLabel.textContent = showingItems ? "Novo Item" : activeMinervaSection === "upgrades" ? "Nova Melhoria" : "Nova Habilidade";
 }
 
 function renderGrimoireCollections() {
@@ -17949,7 +18840,7 @@ function closeGrimoirePicker() {
 
 function importMinervaAbility(abilityId) {
   const source = grimoireAbilities.find((item) => item.id === abilityId);
-  if (!source || source.shopListed) return;
+  if (!source || source.shopListed || source.section === "upgrades") return;
 
   abilities.push(
     sanitizeAbility({
@@ -18107,6 +18998,7 @@ function syncModalLock() {
     photoEditorModal,
     abilityEditorModal,
     itemEditorModal,
+    itemUpgradeModal,
     grimoirePickerModal,
     minervaModal,
     slotsModal,
@@ -18998,8 +19890,8 @@ function trapFeatureDetailFocus(event) {
 function trapInteractiveModalFocus(event, modal, dialog) {
   if (event.key !== "Tab" || modal.hidden || !dialog.contains(document.activeElement)) return;
   const focusable = [...dialog.querySelectorAll(
-    'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
-  )].filter((element) => !element.closest("[hidden]"));
+    'button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), summary, [tabindex]:not([tabindex="-1"])',
+  )].filter(isCreationEditorControlVisible);
   const first = focusable[0];
   const last = focusable.at(-1);
   if (!first || !last) return;
@@ -19286,12 +20178,13 @@ createAbilityButton.addEventListener("click", () => {
 
 openGrimoirePickerButton.addEventListener("click", openGrimoirePicker);
 minervaButton.addEventListener("click", openMinervaGrimoire);
+minervaUpgradeFilter.addEventListener("change", renderMinervaList);
 slotsButton.addEventListener("click", openSlotsManager);
 campaignButton.addEventListener("click", () => {
   window.dispatchEvent(new CustomEvent("abyss:campaign-open"));
 });
 abilityEditorForm.addEventListener("submit", submitAbilityEditor);
-abilitySectionSelect.addEventListener("change", updateAbilityEchoField);
+abilitySectionSelect.addEventListener("change", () => { updateAbilityEchoField(); updateAbilityUpgradeFields(); });
 abilityShopListedInput.addEventListener("change", updateAbilityShopFields);
 abilityHasDamageInput.addEventListener("change", () => {
   abilityDamageFields.hidden = !abilityHasDamageInput.checked;
@@ -19299,7 +20192,7 @@ abilityHasDamageInput.addEventListener("change", () => {
 abilityGrantsModifiersInput.addEventListener("change", () => {
   abilityModifiersFields.hidden = !abilityGrantsModifiersInput.checked;
 });
-itemIsWeaponInput.addEventListener("change", updateItemWeaponFields);
+itemIsWeaponInput.addEventListener("change", () => { if (itemIsWeaponInput.checked && itemTypeSelect.value === "utility") itemTypeSelect.value = "weapon"; updateItemWeaponFields(); });
 itemGrantsModifiersInput.addEventListener("change", updateItemModifierFields);
 itemShopDestinationSelect.addEventListener("change", updateItemShopDestinationFields);
 itemEditorForm.addEventListener("submit", submitItemEditor);
@@ -19690,6 +20583,25 @@ minervaList.addEventListener("click", async (event) => {
 document.querySelectorAll("[data-close-ability-editor]").forEach((button) => {
   button.addEventListener("click", closeAbilityEditor);
 });
+document.querySelectorAll("[data-close-item-upgrades]").forEach((button) => button.addEventListener("click", closeItemUpgradePicker));
+itemUpgradeSearch.addEventListener("input", renderItemUpgradePicker);
+itemUpgradeList.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-apply-item-upgrade]");
+  if (!button || button.disabled || isNotebookReadOnly() || activeItemUpgradeEpoch !== notesEpoch || itemUpgradeList.getAttribute("aria-busy") === "true") return;
+  const item = inventoryItems.find((entry) => entry.id === activeItemUpgradeId);
+  const source = grimoireAbilities.find((entry) => entry.id === button.dataset.applyItemUpgrade);
+  if (!item || !source || !applyInventoryUpgrade(item, source)) return;
+  notifyItemUpgradeChanged(item, "item-upgrade-added");
+  renderItemUpgradePicker();
+  document.querySelector("#item-upgrade-feedback").textContent = `“${source.name}” adicionada a “${item.name}”.${source.grantsModifiers && !item.modifiersActive ? " Ative os efeitos do item para usar seus modificadores." : ""}`;
+});
+document.addEventListener("click", (event) => {
+  const open = event.target.closest("[data-open-item-upgrades]");
+  if (open) { if (!inventoryMoveMode && Date.now() >= inventorySuppressClickUntil) openItemUpgradePicker(open.dataset.openItemUpgrades, open); return; }
+  const remove = event.target.closest("[data-remove-item-upgrade]");
+  if (remove && !inventoryMoveMode && Date.now() >= inventorySuppressClickUntil) confirmRemoveItemUpgrade(remove.dataset.upgradeItemId, remove.dataset.removeItemUpgrade, remove);
+});
+
 document.querySelectorAll("[data-close-item-editor]").forEach((button) => {
   button.addEventListener("click", closeItemEditor);
 });
@@ -20384,6 +21296,8 @@ document.addEventListener("keydown", (event) => {
     closeAbilityDetail();
   } else if (event.key === "Escape" && !abilityEditorModal.hidden) {
     closeAbilityEditor();
+  } else if (event.key === "Escape" && !itemUpgradeModal.hidden) {
+    closeItemUpgradePicker();
   } else if (event.key === "Escape" && !itemEditorModal.hidden) {
     closeItemEditor();
   } else if (event.key === "Escape" && !grimoirePickerModal.hidden) {
@@ -20422,6 +21336,7 @@ document.addEventListener("keydown", (event) => {
   trapInteractiveModalFocus(event, photoEditorModal, photoEditorDialog);
   trapInteractiveModalFocus(event, abilityEditorModal, abilityEditorDialog);
   trapInteractiveModalFocus(event, itemEditorModal, itemEditorDialog);
+  trapInteractiveModalFocus(event, itemUpgradeModal, itemUpgradeDialog);
   trapInteractiveModalFocus(event, grimoirePickerModal, grimoirePickerDialog);
   trapInteractiveModalFocus(event, minervaModal, minervaDialog);
   trapInteractiveModalFocus(event, slotsModal, slotsDialog);
