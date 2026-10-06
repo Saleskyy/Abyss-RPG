@@ -6846,8 +6846,15 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
   font: 700 2.15rem/1 Georgia, "Times New Roman", serif;
 }
 .derived-combat-detail { position: relative; z-index: 1; margin: 8px 0 0; color: var(--theme-muted-858179, #858179); font-size: .65rem; line-height: 1.45; }
-.movement-value-row { display: grid; grid-template-columns: minmax(60px, 1fr) auto auto; align-items: center; gap: 8px; }
-.movement-value-row strong { color: var(--theme-accent-cdb779, #cdb779); font: 800 .78rem ui-monospace, SFMono-Regular, Menlo, monospace; }
+.derived-combat-summary { display: flex; align-items: center; gap: 14px; min-height: 40px; }
+.derived-combat-summary .derived-combat-value { flex: 0 1 auto; min-width: 40px; max-width: 48%; padding-right: 14px; border-right: 1px solid rgba(var(--combat-rgb, 207, 173, 98), .22); font-size: 1.9rem; line-height: 1.2; overflow-wrap: anywhere; }
+.derived-combat-summary .derived-combat-detail { flex: 1; min-width: 0; margin: 0; font-size: .69rem; line-height: 1.6; color: var(--theme-muted-aaa69d, #aaa69d); }
+.movement-value-row { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.movement-amount { display: inline-flex; align-items: center; flex: 0 1 112px; min-width: 102px; max-width: 100%; min-height: 40px; padding-right: 12px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 4px; background: var(--theme-surface-090a0d, #090a0d); }
+.movement-amount:focus-within { border-color: var(--theme-accent-cfad62, #cfad62); box-shadow: 0 0 0 2px rgba(var(--combat-rgb, 207, 173, 98), .1); }
+.movement-amount #movement-value { width: 100%; min-width: 0; height: 38px; padding: 0 4px 0 10px; border: 0; background: transparent; box-shadow: none; outline: none; color: var(--theme-text-eee8dc, #eee8dc); font-size: 1.12rem; text-align: right; appearance: textfield; -moz-appearance: textfield; }
+.movement-amount #movement-value::-webkit-inner-spin-button, .movement-amount #movement-value::-webkit-outer-spin-button { margin: 0; -webkit-appearance: none; }
+.movement-amount strong { flex: 0 0 auto; color: var(--theme-accent-cdb779, #cdb779); font: 400 .7rem/1 ui-sans-serif, system-ui, sans-serif; }
 
 .special-tests-panel {
   position: relative;
@@ -7936,20 +7943,24 @@ h1, h2, h3, h4, h5, h6,
                 <h3>Iniciativa</h3>
                 <span id="initiative-formula" class="defense-base-value">4 + AGI</span>
               </header>
-              <output id="initiative-value" class="derived-combat-value" aria-live="polite">5</output>
-              <p id="initiative-detail" class="derived-combat-detail">Leigo em Reflexos · metade de d8 + AGI</p>
+              <div class="derived-combat-summary">
+                <output id="initiative-value" class="derived-combat-value" aria-live="polite">5</output>
+                <p id="initiative-detail" class="derived-combat-detail">Leigo em Reflexos · metade de d8 + AGI</p>
+              </div>
             </article>
             <article class="combat-stat derived-combat-stat is-movement">
               <header class="combat-stat-head">
                 <h3>Deslocamento</h3>
-                <span id="movement-base-value" class="defense-base-value">Base 6Q</span>
+                <span id="movement-base-value" class="defense-base-value">Base 6■</span>
               </header>
               <div class="movement-value-row">
-                <input id="movement-value" class="block-input" type="number" value="6" min="0" max="999999" step="1" inputmode="numeric" aria-label="Deslocamento em quadrados" />
-                <strong aria-hidden="true">Q</strong>
+                <div class="movement-amount">
+                  <input id="movement-value" class="block-input" type="number" value="6" min="0" max="999999" step="1" inputmode="numeric" aria-label="Deslocamento em quadrados" />
+                  <strong aria-hidden="true">■</strong>
+                </div>
                 <button class="dt-auto-button" type="button" data-reset-movement title="Usar Deslocamento padrão">Usar padrão</button>
               </div>
-              <p class="derived-combat-detail">Por padrão, personagens possuem 6Q de Deslocamento.</p>
+              <p class="derived-combat-detail">Por padrão, personagens possuem 6■ de Deslocamento.</p>
             </article>
           </div>
           <div class="combat-dt-grid">
@@ -13172,7 +13183,7 @@ function updateDerivedCombatStats() {
   initiativeFormula.textContent = `${initiativeDieHalf} + AGI`;
   initiativeDetail.textContent = `${reflexesTraining.label} em Reflexos · metade de d${reflexesTraining.die} + AGI`;
 
-  movementBaseValue.textContent = "Base 6Q";
+  movementBaseValue.textContent = "Base 6■";
   if (!movementWasManuallySet) movementValueInput.value = "6";
 }
 
