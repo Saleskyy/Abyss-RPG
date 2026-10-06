@@ -7208,6 +7208,108 @@ h1, h2, h3, h4, h5, h6,
   #account-settings-dialog .ability-dialog-footer > button { flex: 1; }
 }
     </style>
+    <style id="startup-slot-refinement">
+#startup-slot-gate {
+  background: radial-gradient(ellipse at 50% 38%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .11), transparent 58%), rgba(4, 5, 7, .97);
+}
+#startup-slot-gate .slot-gate-dialog {
+  display: flex;
+  flex-direction: column;
+  width: min(820px, 100%);
+  max-height: min(88dvh, 820px);
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .3);
+  border-radius: 12px;
+  background: radial-gradient(ellipse at 0 0, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .065), transparent 65%), var(--palette-panel, #0d0e12);
+  box-shadow: 0 30px 100px rgba(0, 0, 0, .65), inset 0 1px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .12);
+}
+#startup-slot-gate .slot-gate-dialog::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  width: 80%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .65), transparent);
+}
+#startup-slot-gate .slot-gate-head {
+  flex: 0 0 auto;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 22px;
+  padding: 32px 34px 28px;
+  border-bottom-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .15);
+}
+#startup-slot-gate .slot-gate-mark {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 14px;
+  border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .3);
+  background: linear-gradient(145deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .13), rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .025));
+  box-shadow: inset 0 1px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .12);
+}
+#startup-slot-gate .slot-gate-mark svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+#startup-slot-gate .slot-gate-head .eyebrow { margin: 0 0 8px; font-size: .64rem; letter-spacing: .22em; color: var(--theme-accent-cfad62, #cfad62); }
+#startup-slot-gate .slot-gate-head h1 { margin: 0 0 9px; color: var(--theme-text-eee8dc, #eee8dc); font-family: var(--font-title); font-size: clamp(1.55rem, 3vw, 2rem); font-weight: 500; line-height: 1.3; letter-spacing: -.025em; }
+#startup-slot-gate .slot-gate-head p:last-child { max-width: 550px; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .78rem; line-height: 1.7; }
+#startup-slot-gate .slot-gate-content { flex: 0 1 auto; min-height: 0; max-height: none; padding: 25px 34px 32px; scrollbar-width: thin; scrollbar-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .28) transparent; }
+#startup-slot-gate .slot-gate-section-heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 20px; margin-bottom: 20px; }
+#startup-slot-gate .slot-gate-status { margin: 0; text-align: left; font-size: .75rem; line-height: 1.6; }
+#startup-slot-gate .slot-gate-status.is-error { color: #ef8c98; }
+#startup-slot-summary { flex: 0 0 auto; color: var(--theme-muted-99958d, #99958d); font-size: .65rem; letter-spacing: .035em; font-variant-numeric: tabular-nums; }
+#startup-slot-gate .slot-gate-list { gap: 13px; }
+#startup-slot-gate .slot-gate-choice {
+  position: relative;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
+  gap: 15px;
+  min-height: 100px;
+  padding: 20px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .16);
+  border-radius: 7px;
+  color: var(--theme-text-eee8dc, #eee8dc);
+  background: linear-gradient(135deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04), transparent 65%), var(--palette-container, #111217);
+  box-shadow: inset 0 1px rgba(255, 255, 255, .02);
+  transition: border-color .2s ease, background-color .2s ease, box-shadow .2s ease, transform .2s ease;
+}
+#startup-slot-gate .slot-gate-choice::before { content: ""; position: absolute; top: 24px; bottom: 24px; left: -1px; width: 2px; border-radius: 2px; background: var(--theme-accent-cfad62, #cfad62); opacity: .35; transition: opacity .2s ease; }
+#startup-slot-gate .slot-gate-choice:hover, #startup-slot-gate .slot-gate-choice:focus-visible { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .6); background-color: var(--palette-containerRaised, #191a20); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0, 0, 0, .2), inset 0 1px rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); }
+#startup-slot-gate .slot-gate-choice:focus-visible { outline: 2px solid var(--theme-accent-dfc77f, #dfc77f); outline-offset: 3px; }
+#startup-slot-gate .slot-gate-choice:hover::before, #startup-slot-gate .slot-gate-choice:focus-visible::before { opacity: 1; }
+#startup-slot-gate .slot-folder-symbol { width: 48px; height: 48px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .18); border-radius: 9px; background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .065); color: var(--theme-accent-dfc77f, #dfc77f); }
+#startup-slot-gate .slot-folder-symbol svg { width: 26px; height: 26px; stroke-width: 1.35; }
+#startup-slot-gate .slot-gate-avatar { width: 48px; height: 48px; }
+#startup-slot-gate .slot-gate-choice > span:nth-child(2) { min-width: 0; }
+#startup-slot-gate .slot-gate-choice strong { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; white-space: normal; overflow-wrap: anywhere; color: var(--theme-text-eee8dc, #eee8dc); font: 500 1.08rem/1.35 Georgia, "Times New Roman", serif; }
+#startup-slot-gate .slot-gate-choice small { margin-top: 6px; color: var(--theme-muted-99958d, #99958d); font-size: .61rem; letter-spacing: .095em; line-height: 1.45; }
+#startup-slot-gate .slot-gate-choice b { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 28px; padding: 0 8px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .16); border-radius: 4px; background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .04); color: var(--theme-accent-dfc77f, #dfc77f); font-size: .58rem; font-weight: 600; letter-spacing: .055em; }
+#startup-slot-gate .slot-gate-choice b::after { content: ""; width: 5px; height: 5px; border-top: 1px solid currentColor; border-right: 1px solid currentColor; transform: rotate(45deg); }
+#startup-slot-gate .startup-folder-nav { gap: 12px; margin-bottom: 19px; padding-bottom: 15px; border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .12); }
+#startup-slot-gate .slots-folder-back { min-height: 34px; padding: 0 11px; border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .23); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .035); }
+#startup-slot-gate .slot-gate-actions { flex-wrap: wrap; margin-top: 22px; }
+@media (max-width: 700px) {
+  #startup-slot-gate .slot-gate-dialog { width: 100%; max-height: 94dvh; border-radius: 16px 16px 0 0; }
+  #startup-slot-gate .slot-gate-head { grid-template-columns: 48px minmax(0, 1fr); gap: 15px; padding: 24px 20px; }
+  #startup-slot-gate .slot-gate-mark { width: 48px; height: 48px; border-radius: 10px; }
+  #startup-slot-gate .slot-gate-mark svg { width: 28px; height: 28px; }
+  #startup-slot-gate .slot-gate-head h1 { font-size: 1.45rem; }
+  #startup-slot-gate .slot-gate-head p:last-child { font-size: .73rem; }
+  #startup-slot-gate .slot-gate-content { max-height: none; padding: 22px 20px calc(26px + env(safe-area-inset-bottom, 0px)); }
+  #startup-slot-gate .slot-gate-list { grid-template-columns: 1fr; }
+  #startup-slot-gate .slot-gate-choice { min-height: 92px; padding: 17px; }
+}
+@media (max-width: 380px) {
+  #startup-slot-gate .slot-gate-head { gap: 12px; padding: 22px 16px; }
+  #startup-slot-gate .slot-gate-content { padding-left: 16px; padding-right: 16px; }
+  #startup-slot-gate .slot-gate-choice { grid-template-columns: 42px minmax(0, 1fr) auto; gap: 10px; padding: 14px; }
+  #startup-slot-gate .slot-folder-symbol, #startup-slot-gate .slot-gate-avatar { width: 42px; height: 42px; }
+  #startup-slot-gate .slot-gate-choice strong { font-size: 1rem; }
+  #startup-slot-gate .slot-gate-choice b { padding: 0 6px; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #startup-slot-gate .slot-gate-choice, #startup-slot-gate .slot-gate-choice::before { transition: none; }
+  #startup-slot-gate .slot-gate-choice:hover, #startup-slot-gate .slot-gate-choice:focus-visible { transform: none; }
+}
+    </style>
   </head>
   <body class="slot-gate-open">
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
@@ -7895,17 +7997,17 @@ h1, h2, h3, h4, h5, h6,
             <p class="eyebrow">Eco do personagem</p>
             <h2 id="echo-panel-title" class="echo-panel-title">Escolha um Eco</h2>
             <div class="echo-counter">
-              <button id="echo-decrease" class="echo-counter-button" type="button" aria-label="Diminuir Eco em um">−</button>
-              <div id="echo-segments" class="echo-segments" role="meter" aria-label="Pontos de Eco" aria-valuemin="0" aria-valuemax="5" aria-valuenow="5">
-                <span class="echo-segment is-filled"></span>
-                <span class="echo-segment is-filled"></span>
-                <span class="echo-segment is-filled"></span>
-                <span class="echo-segment is-filled"></span>
-                <span class="echo-segment is-filled"></span>
+              <button id="echo-decrease" class="echo-counter-button" type="button" aria-label="Diminuir Eco em um" disabled>−</button>
+              <div id="echo-segments" class="echo-segments" role="meter" aria-label="Pontos de Eco" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+                <span class="echo-segment"></span>
+                <span class="echo-segment"></span>
+                <span class="echo-segment"></span>
+                <span class="echo-segment"></span>
+                <span class="echo-segment"></span>
               </div>
               <button id="echo-increase" class="echo-counter-button" type="button" aria-label="Aumentar Eco em um">+</button>
             </div>
-            <output id="echo-points-label" class="echo-points-label" aria-live="polite">5 / 5</output>
+            <output id="echo-points-label" class="echo-points-label" aria-live="polite">0 / 5</output>
           </header>
           <div class="echo-panel-body">
             <article id="echo-lore-card" class="echo-lore-card">
@@ -8661,7 +8763,7 @@ h1, h2, h3, h4, h5, h6,
     <div id="startup-slot-gate" class="slot-gate" role="dialog" aria-modal="true" aria-labelledby="startup-slot-title" aria-busy="true">
       <section class="slot-gate-dialog" tabindex="-1">
         <header class="slot-gate-head">
-          <span class="slot-gate-mark" aria-hidden="true">✦</span>
+          <span class="slot-gate-mark" aria-hidden="true"><svg viewBox="0 0 40 40" focusable="false"><path d="M20 10c-4-3-10-4-15-2v23c5-2 11-1 15 2 4-3 10-4 15-2V8c-5-2-11-1-15 2ZM20 10v23M9 14c2-.5 5 0 7 1M9 19c2-.5 5 0 7 1M9 24c2-.5 5 0 7 1"></path><path d="m27 14 1.2 3.4 3.3 1.1-3.3 1.2-1.2 3.3-1.2-3.3-3.3-1.2 3.3-1.1Z"></path></svg></span>
           <div>
             <p class="eyebrow">Abyss RPG</p>
             <h1 id="startup-slot-title">Escolha sua ficha</h1>
@@ -8670,7 +8772,10 @@ h1, h2, h3, h4, h5, h6,
         </header>
         <div class="slot-gate-content">
           <div id="startup-slot-spinner" class="slot-gate-spinner" aria-hidden="true"></div>
-          <p id="startup-slot-status" class="slot-gate-status" aria-live="polite">Carregando Slots…</p>
+          <div class="slot-gate-section-heading">
+            <p id="startup-slot-status" class="slot-gate-status" aria-live="polite">Carregando Slots…</p>
+            <span id="startup-slot-summary" hidden></span>
+          </div>
           <div id="startup-folder-nav" class="slots-folder-nav startup-folder-nav" hidden>
             <button id="startup-folder-back" class="slots-folder-back" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"></path></svg>Pastas</button>
             <strong id="startup-folder-name"></strong>
@@ -11515,32 +11620,32 @@ const CHARACTER_CLASSES = {
     label: "Vanguardista",
     pvInitial: 10,
     pvPerLevel: 5,
-    paInitial: 9,
-    paPerLevel: 3,
-    saInitial: 8,
+    paInitial: 6,
+    paPerLevel: 1,
+    saInitial: 5,
     saPerLevel: 1,
     defenseBase: 10,
     adeptBase: 2,
   },
   especialista: {
     label: "Especialista",
-    pvInitial: 9,
+    pvInitial: 8,
     pvPerLevel: 4,
-    paInitial: 9,
-    paPerLevel: 4,
-    saInitial: 10,
+    paInitial: 8,
+    paPerLevel: 2,
+    saInitial: 8,
     saPerLevel: 1,
     defenseBase: 12,
     adeptBase: 6,
   },
   arcanista: {
     label: "Arcanista",
-    pvInitial: 8,
+    pvInitial: 6,
     pvPerLevel: 3,
-    paInitial: 12,
-    paPerLevel: 4,
-    saInitial: 13,
-    saPerLevel: 1,
+    paInitial: 10,
+    paPerLevel: 3,
+    saInitial: 10,
+    saPerLevel: 2,
     defenseBase: 8,
     adeptBase: 4,
   },
@@ -12600,7 +12705,7 @@ let walletBalance = 0;
 let purchaseHistory = [];
 let activeShopHistoryTrigger = null;
 let damageReductions = [];
-let echoPoints = 5;
+let echoPoints = 0;
 let activeAbilityDetailId = null;
 let activeAbilityDetailScope = "sheet";
 let activeAbilityDetailTrigger = null;
@@ -13206,12 +13311,14 @@ function calculateClassStatistics() {
   if (!classDefinition) return null;
   const level = getCharacterLevel();
   const constitution = getAttributeValue("CON");
+  const power = getAttributeValue("POD");
+  const intellect = getAttributeValue("INT");
   const defenseAttribute = ATTRIBUTES[defenseAttributeSelect.value] ? defenseAttributeSelect.value : "AGI";
   const evasionAttribute = ATTRIBUTES[evasionAttributeSelect.value] ? evasionAttributeSelect.value : "AGI";
   return {
     pv: Math.max(0, classDefinition.pvInitial + (classDefinition.pvPerLevel + constitution) * level),
-    pa: Math.max(0, classDefinition.paInitial + classDefinition.paPerLevel * level),
-    sa: Math.max(0, classDefinition.saInitial + classDefinition.saPerLevel * level),
+    pa: Math.max(0, classDefinition.paInitial + (classDefinition.paPerLevel + power) * level),
+    sa: Math.max(0, classDefinition.saInitial + (classDefinition.saPerLevel + intellect) * level),
     defense: classDefinition.defenseBase + getAttributeValue(defenseAttribute) + getActiveModifierTotal("defense"),
     evasion: classDefinition.defenseBase + getAttributeValue(evasionAttribute) + getActiveModifierTotal("evasion"),
     trainingCap: Math.max(0, classDefinition.adeptBase + getAttributeValue("INT")),
@@ -13273,7 +13380,7 @@ function updateEvasionFromDefense() {
 }
 
 function renderEchoCounter() {
-  echoPoints = clampInteger(echoPoints, 0, 5, 5);
+  echoPoints = clampInteger(echoPoints, 0, 5, 0);
   [...echoSegments.children].forEach((segment, index) => {
     segment.classList.toggle("is-filled", index < echoPoints);
   });
@@ -13284,7 +13391,7 @@ function renderEchoCounter() {
 }
 
 function changeEchoPoints(delta) {
-  echoPoints = clampInteger(echoPoints + delta, 0, 5, 5);
+  echoPoints = clampInteger(echoPoints + delta, 0, 5, 0);
   renderEchoCounter();
   notifySheetChanged("echo-points");
 }
@@ -13832,7 +13939,7 @@ function captureCompleteSheetState() {
       background: document.querySelector("#character-background").value.trim().slice(0, 240),
       portrait: portraitPreview.hidden ? "" : String(portraitPreview.src || ""),
       echo: ECHOES[characterEchoSelect.value] ? characterEchoSelect.value : "",
-      echoPoints: clampInteger(echoPoints, 0, 5, 5),
+      echoPoints: clampInteger(echoPoints, 0, 5, 0),
       appearance: sanitizeTheme(themeSettings),
       classKey: CHARACTER_CLASSES[characterClassSelect.value] ? characterClassSelect.value : "",
       level: getCharacterLevel(),
@@ -13954,7 +14061,7 @@ function createCleanSheetState() {
       background: "",
       portrait: "",
       echo: "",
-      echoPoints: 5,
+      echoPoints: 0,
       appearance: {},
       classKey: "",
       level: 1,
@@ -14139,7 +14246,7 @@ function applyCompleteSheetState(rawState, options = {}) {
     document.querySelector("#character-name").value = String(profile.name || "").slice(0, 120);
     document.querySelector("#character-background").value = String(profile.background || "").slice(0, 240);
     characterEchoSelect.value = ECHOES[profile.echo] ? profile.echo : "";
-    echoPoints = clampInteger(profile.echoPoints, 0, 5, 5);
+    echoPoints = clampInteger(profile.echoPoints, 0, 5, 0);
     themeSettings = sanitizeTheme(profile.appearance);
     applyTheme();
     renderThemeFields();
@@ -19914,6 +20021,7 @@ const firebaseUi = {
   startupGateDescription: document.querySelector("#startup-slot-description"),
   startupGateSpinner: document.querySelector("#startup-slot-spinner"),
   startupGateStatus: document.querySelector("#startup-slot-status"),
+  startupGateSummary: document.querySelector("#startup-slot-summary"),
   startupGateList: document.querySelector("#startup-slot-list"),
   startupFolderNav: document.querySelector("#startup-folder-nav"),
   startupFolderBack: document.querySelector("#startup-folder-back"),
@@ -21736,6 +21844,7 @@ function openStartupSlotGate({ loading = true, message = "Carregando Slots…" }
   firebaseUi.startupGateStatus.textContent = message;
   firebaseUi.startupGateActions.hidden = true;
   if (loading) {
+    firebaseUi.startupGateSummary.hidden = true;
     startupSlotFolderId = null;
     firebaseUi.startupFolderNav.hidden = true;
     firebaseUi.startupGateList.replaceChildren();
@@ -21769,12 +21878,16 @@ function renderStartupSlotChoices() {
   firebaseUi.startupFolderName.textContent = getSlotFolderName(startupSlotFolderId);
   firebaseUi.startupGateStatus.textContent = startupSlotFolderId === null ? "Escolha uma pasta para ver suas fichas." : "Selecione o Slot que deseja abrir.";
   firebaseUi.startupGateDescription.textContent = "Suas fichas estão organizadas por pastas. Cada personagem continua independente.";
+  firebaseUi.startupGateSummary.hidden = false;
 
   if (startupSlotFolderId === null) {
-    getSlotFolderEntries().forEach((folder) => firebaseUi.startupGateList.append(createSlotFolderCard(folder, true)));
+    const folders = getSlotFolderEntries();
+    firebaseUi.startupGateSummary.textContent = `${folders.length} ${folders.length === 1 ? "pasta" : "pastas"} · ${currentSlots.length} ${currentSlots.length === 1 ? "ficha" : "fichas"}`;
+    folders.forEach((folder) => firebaseUi.startupGateList.append(createSlotFolderCard(folder, true)));
     return;
   }
   const visibleSlots = currentSlots.filter((slot) => getSlotFolderId(slot) === startupSlotFolderId);
+  firebaseUi.startupGateSummary.textContent = `${visibleSlots.length} ${visibleSlots.length === 1 ? "ficha" : "fichas"}`;
   if (!visibleSlots.length) firebaseUi.startupGateStatus.textContent = "Esta pasta ainda não tem fichas. Volte às pastas para escolher outra.";
 
   visibleSlots.forEach((slot) => {
@@ -21782,6 +21895,7 @@ function renderStartupSlotChoices() {
     button.type = "button";
     button.className = "slot-gate-choice";
     button.dataset.startupSlot = slot.id;
+    button.title = slot.name;
     const marker = createSlotAvatar(slot, "slot-gate-avatar");
     const copy = document.createElement("span");
     const name = document.createElement("strong");
@@ -22686,7 +22800,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     background: String(state.profile?.background || "").slice(0, 240),
     portrait,
     echo: String(state.profile?.echo || "").slice(0, 24),
-    echoPoints: Math.min(5, Math.max(0, Number.parseInt(state.profile?.echoPoints ?? 5, 10) || 0)),
+    echoPoints: Math.min(5, Math.max(0, Number.parseInt(state.profile?.echoPoints ?? 0, 10) || 0)),
     appearance: state.profile?.appearance || {},
     classKey: String(state.profile?.classKey || "").slice(0, 24),
     level: Math.min(15, Math.max(1, Number.parseInt(state.profile?.level, 10) || 1)),
@@ -22846,6 +22960,7 @@ function createSlotFolderCard(folder, startup = false) {
   copy.className = "slot-folder-copy";
   const name = document.createElement("strong");
   name.textContent = folder.name;
+  if (startup) open.title = folder.name;
   const count = document.createElement("small");
   count.textContent = `${folder.count} ${folder.count === 1 ? "ficha" : "fichas"}`;
   copy.append(name, count);
