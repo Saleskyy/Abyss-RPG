@@ -7994,6 +7994,252 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
 .skill-dice-help code { color: var(--text); font-size: .73rem; white-space: nowrap; }
 @media (max-width: 760px) { .skill-dice-help { padding: 10px 14px; } }
 </style>
+<style id="theme-wheel-popover-styles">
+/* Editor flutuante de cores: a ficha permanece disponível para a prévia. */
+#theme-modal.theme-popover {
+  position: fixed;
+  z-index: 145;
+  inset: auto 14px auto auto;
+  top: calc(var(--topbar-height, 82px) + 10px);
+  display: block;
+  width: min(320px, calc(100vw - 20px));
+  height: auto;
+  padding: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+#theme-modal.theme-popover > .roll-backdrop { display: none; }
+#theme-modal.theme-popover #theme-dialog.theme-popover-dialog {
+  --picker-text: #ece8df;
+  --picker-muted: #a5a29b;
+  --picker-accent: #d5b573;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: 100%;
+  height: auto;
+  max-height: calc(100dvh - 92px);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #484236;
+  border-radius: 9px;
+  color: var(--picker-text);
+  background: #121318;
+  background-image: none;
+  box-shadow: 0 16px 50px #0008, 0 3px 14px #0006;
+  pointer-events: auto;
+  color-scheme: dark;
+  animation: theme-popover-in 160ms ease-out both;
+}
+#theme-modal.theme-popover .dialog-corner { display: none; }
+#theme-dialog .theme-popover-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 13px 15px 11px;
+  border-bottom: 1px solid #303137;
+  background: #18191f;
+}
+#theme-dialog .theme-popover-head > div { min-width: 0; }
+#theme-dialog .theme-popover-head .eyebrow { margin: 0 0 3px; color: #c7ad78; font-size: .57rem; letter-spacing: .12em; }
+#theme-dialog .theme-popover-head h2 { margin: 0; color: #eee8db; font: 600 1rem/1.35 var(--font-title, Georgia, serif); }
+#theme-dialog .theme-popover-head p:last-child { margin: 4px 0 0; color: #a5a29b; font-size: .67rem; line-height: 1.45; }
+#theme-dialog .theme-popover-head .result-close {
+  display: grid;
+  place-items: center;
+  flex: 0 0 30px;
+  width: 30px;
+  min-width: 30px;
+  height: 30px;
+  margin: -1px -2px 0 0;
+  padding: 0;
+  border: 1px solid #35363d;
+  border-radius: 4px;
+  color: #c5c1b8;
+  background: #121318;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+#theme-dialog .theme-popover-head .result-close:hover { color: #fff7e7; border-color: #8b764b; background: #24231f; }
+#theme-dialog .theme-popover-head .result-close svg { display: block; width: 13px; height: 13px; }
+#theme-dialog .theme-popover-content {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  min-width: 0;
+  min-height: 0;
+  padding: 13px 15px 14px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #555043 #121318;
+}
+#theme-dialog .theme-popover-content .builder-field,
+#theme-dialog .theme-target-field { display: grid; gap: 6px; min-width: 0; }
+#theme-dialog .theme-popover-content .builder-field > span,
+#theme-dialog .theme-target-field > span,
+#theme-dialog .theme-lightness > span { color: #b9a67e; font-size: .62rem; font-weight: 700; line-height: 1.4; letter-spacing: .035em; text-transform: uppercase; }
+#theme-dialog #theme-target {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  min-height: 36px;
+  padding: 0 26px 0 10px;
+  border: 1px solid #383941;
+  border-radius: 4px;
+  color: #ebe7df;
+  background: #0c0d11;
+  font-size: .76rem;
+}
+#theme-dialog #theme-target option { color: #ebe7df; background: #14151b; }
+#theme-dialog .theme-wheel-stage { display: grid; place-items: center; min-width: 0; padding: 2px 0 3px; }
+#theme-dialog .theme-color-wheel {
+  --wheel-value: 1;
+  position: relative;
+  display: block;
+  flex: 0 0 auto;
+  width: 170px;
+  height: 170px;
+  aspect-ratio: 1;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  isolation: isolate;
+  border: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 90deg, #f00 0deg, #ff0 60deg, #0f0 120deg, #0ff 180deg, #00f 240deg, #f0f 300deg, #f00 360deg);
+  box-shadow: 0 0 0 1px #ffffff29, 0 3px 12px #0006;
+  cursor: crosshair;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#theme-dialog .theme-color-wheel::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle closest-side, #fff 0%, #fff0 100%);
+  content: "";
+  pointer-events: none;
+}
+#theme-dialog .theme-color-wheel::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border-radius: inherit;
+  background: #000;
+  opacity: calc(1 - var(--wheel-value));
+  content: "";
+  pointer-events: none;
+}
+#theme-dialog #theme-wheel-thumb {
+  position: absolute;
+  z-index: 3;
+  left: var(--wheel-x, 50%);
+  top: var(--wheel-y, 50%);
+  display: block;
+  width: 13px;
+  height: 13px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 0 0 1px #000b, 0 1px 4px #000a;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+#theme-dialog .theme-lightness { display: grid; gap: 7px; min-width: 0; }
+#theme-dialog #theme-brightness {
+  width: 100%;
+  height: 17px;
+  min-height: 17px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  accent-color: #d5b573;
+  appearance: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+#theme-dialog #theme-brightness::-webkit-slider-runnable-track { height: 9px; border: 1px solid #ffffff26; border-radius: 6px; background: linear-gradient(90deg, #000, var(--wheel-bright-color, #fff)); }
+#theme-dialog #theme-brightness::-moz-range-track { height: 9px; border: 1px solid #ffffff26; border-radius: 6px; background: linear-gradient(90deg, #000, var(--wheel-bright-color, #fff)); }
+#theme-dialog #theme-brightness::-webkit-slider-thumb { width: 16px; height: 16px; margin-top: -4.5px; border: 2px solid #eee8dc; border-radius: 50%; background: #45413a; box-shadow: 0 1px 4px #0008; appearance: none; -webkit-appearance: none; }
+#theme-dialog #theme-brightness::-moz-range-thumb { width: 12px; height: 12px; border: 2px solid #eee8dc; border-radius: 50%; background: #45413a; box-shadow: 0 1px 4px #0008; }
+#theme-dialog .theme-color-value { display: flex; align-items: center; gap: 9px; min-width: 0; }
+#theme-dialog #theme-current-swatch { display: block; flex: 0 0 32px; width: 32px; height: 32px; border: 1px solid #ffffff4d; border-radius: 4px; background: #cfad62; box-shadow: inset 0 0 0 1px #0003; }
+#theme-dialog #theme-hex {
+  width: 100%;
+  min-width: 0;
+  height: 34px;
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid #383941;
+  border-radius: 4px;
+  color: #ebe7df;
+  background: #0c0d11;
+  font: 500 .79rem/1 ui-monospace, SFMono-Regular, Consolas, monospace;
+  letter-spacing: .055em;
+  text-transform: uppercase;
+}
+#theme-dialog #theme-hex::placeholder { color: #88857e; }
+#theme-dialog #theme-hex:is(.is-invalid, [aria-invalid="true"]) { border-color: #d27580; color: #ffd6db; }
+#theme-dialog .theme-palette-list { min-width: 0; margin: 0; padding: 0; border-top: 1px solid #303137; }
+#theme-dialog .theme-palette-list > summary { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 10px 0 0; list-style: none; color: #c8c1b1; font-size: .69rem; font-weight: 650; cursor: pointer; user-select: none; }
+#theme-dialog .theme-palette-list > summary::-webkit-details-marker { display: none; }
+#theme-dialog .theme-palette-list > summary::after { width: 6px; height: 6px; margin: 0 3px 3px auto; border-right: 1.5px solid #bba476; border-bottom: 1.5px solid #bba476; content: ""; transform: rotate(45deg); }
+#theme-dialog .theme-palette-list[open] > summary::after { margin-bottom: -2px; transform: rotate(225deg); }
+#theme-dialog #theme-fields { display: grid; gap: 13px; max-height: 140px; min-height: 0; margin: 8px 0 0; padding: 0 3px 2px 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #555043 #121318; }
+#theme-dialog .theme-group { min-width: 0; margin: 0; padding: 0; border: 0; }
+#theme-dialog .theme-group legend { margin: 0 0 6px; color: #b7a27b; font-size: .58rem; letter-spacing: .07em; }
+#theme-dialog .theme-group-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+#theme-dialog .theme-color-control { display: flex; align-items: center; gap: 6px; min-width: 0; min-height: 34px; padding: 6px 7px; border: 1px solid #303139; border-radius: 4px; color: #d6d1c6; background: #191a20; background-image: none; text-align: left; cursor: pointer; }
+#theme-dialog .theme-color-control .theme-swatch { display: block; flex: 0 0 16px; width: 16px; height: 16px; min-width: 16px; border: 1px solid #ffffff30; border-radius: 3px; background: #cfad62; }
+#theme-dialog .theme-color-control :is(.label, .theme-color-label) { flex: 1 1 auto; min-width: 0; color: #d6d1c6; font-size: .6rem; line-height: 1.35; overflow-wrap: anywhere; }
+#theme-dialog .theme-color-control output { display: none; }
+#theme-dialog .theme-color-control:is(:hover, .is-active, [aria-pressed="true"], [aria-selected="true"]) { border-color: #a38b58; color: #fff0ca; background: #27251f; background-image: none; }
+#theme-dialog .theme-color-control:is(.is-active, [aria-pressed="true"], [aria-selected="true"]) :is(.label, .theme-color-label) { color: #f1dfb8; }
+#theme-dialog .theme-popover-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 15px 12px; border-top: 1px solid #303137; background: #18191f; }
+#theme-dialog .theme-popover-footer .dialog-button { min-height: 32px; padding: 0 10px; border: 1px solid #3e3d39; border-radius: 4px; color: #d6c7a5; background: #21211f; font-size: .66rem; line-height: 1.4; }
+#theme-dialog .theme-popover-footer .dialog-button:hover { border-color: #a38b58; color: #fff0ca; background: #2d281f; }
+#theme-dialog :is(button, select, input, summary, .theme-color-wheel):focus-visible { outline: 2px solid #e0c68e; outline-offset: 3px; }
+#theme-dialog.theme-popover-dialog:focus { outline: none; }
+#theme-dialog :is(button:disabled, input:disabled, select:disabled, [aria-disabled="true"]) { opacity: .5; cursor: default; }
+#theme-dialog .theme-color-wheel[aria-disabled="true"] { pointer-events: none; }
+#theme-dialog input[readonly] { color: #aaa59a; cursor: default; }
+@keyframes theme-popover-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 600px) {
+  #theme-modal.theme-popover { right: 10px; width: min(320px, calc(100vw - 20px)); }
+  #theme-modal.theme-popover #theme-dialog.theme-popover-dialog { border: 1px solid #484236; border-radius: 9px; max-height: calc(100dvh - 92px); }
+  #theme-dialog .theme-popover-head { padding: 12px 13px 10px; }
+  #theme-dialog .theme-popover-head .result-close { flex-basis: 34px; width: 34px; min-width: 34px; height: 34px; }
+  #theme-dialog .theme-popover-content { gap: 11px; padding: 12px 13px 13px; }
+  #theme-dialog .theme-color-wheel { width: 144px; height: 144px; }
+  #theme-dialog #theme-wheel-thumb { width: 14px; height: 14px; }
+  #theme-dialog #theme-target,
+  #theme-dialog #theme-hex { min-height: 38px; height: 38px; }
+  #theme-dialog #theme-brightness { height: 25px; min-height: 25px; }
+  #theme-dialog .theme-color-control { min-height: 38px; }
+  #theme-dialog .theme-popover-footer { padding: 10px 13px 12px; }
+  #theme-dialog .theme-popover-footer .dialog-button { min-height: 36px; }
+}
+@media (max-height: 560px) {
+  #theme-modal.theme-popover #theme-dialog.theme-popover-dialog { max-height: calc(100dvh - 20px); }
+  #theme-dialog .theme-popover-head { padding-block: 10px; }
+  #theme-dialog .theme-popover-head p:last-child { display: none; }
+  #theme-dialog .theme-color-wheel { width: 130px; height: 130px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #theme-modal.theme-popover #theme-dialog.theme-popover-dialog { animation: none; }
+}
+#theme-modal.theme-popover #theme-dialog.theme-popover-dialog { max-height: min(var(--theme-popover-room, calc(100dvh - 92px)), calc(100dvh - 20px)); }
+#theme-dialog .theme-hex-feedback { margin: -6px 0 0; color: #f0aeb5; font-size: .67rem; line-height: 1.5; }
+#theme-dialog #theme-brightness-value { float: right; color: #bfbab1; font-weight: 500; font-variant-numeric: tabular-nums; }
+#theme-dialog .theme-color-wheel { max-width: 100%; height: auto; }
+
+</style>
 </head>
   <body class="slot-gate-open">
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
@@ -8006,7 +8252,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
       <div class="topbar-rule" aria-hidden="true"></div>
 
       <div class="topbar-actions">
-        <button id="theme-button" class="theme-button" type="button" aria-label="Personalizar cores" title="Personalizar cores" aria-haspopup="dialog">
+        <button id="theme-button" class="theme-button" type="button" aria-label="Personalizar cores" title="Personalizar cores" aria-haspopup="dialog" aria-expanded="false" aria-controls="theme-dialog">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18h1.2a2.3 2.3 0 0 0 1.6-3.9 1.4 1.4 0 0 1 1-2.4H18A3 3 0 0 0 21 12a9 9 0 0 0-9-9Z"></path><circle cx="7.5" cy="10" r="1"></circle><circle cx="10" cy="6.8" r="1"></circle><circle cx="14.2" cy="6.8" r="1"></circle><circle cx="17" cy="10" r="1"></circle></svg>
         </button>
         <button
@@ -9567,18 +9813,24 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
       </section>
     </div>
 
-    <div id="theme-modal" class="ability-modal utility-modal" hidden>
-      <div class="roll-backdrop" data-close-theme aria-hidden="true"></div>
-      <section id="theme-dialog" class="ability-dialog" role="dialog" aria-modal="false" aria-labelledby="theme-title" tabindex="-1">
-        <header class="ability-dialog-head">
-          <div><p class="eyebrow">Aparência</p><h2 id="theme-title">Sua paleta</h2><p>Edite com a ficha visível. Painéis e contêineres também podem ter cores próprias; as cores dos Ecos permanecem fixas.</p></div>
+    <div id="theme-modal" class="theme-popover" hidden>
+      <section id="theme-dialog" class="theme-popover-dialog" role="dialog" aria-modal="false" aria-labelledby="theme-title" tabindex="-1">
+        <header class="theme-popover-head">
+          <div><p class="eyebrow">Aparência</p><h2 id="theme-title">Sua paleta</h2><p id="theme-preview-status">A cor muda na ficha enquanto você escolhe.</p></div>
           <button class="result-close" type="button" data-close-theme aria-label="Fechar paleta de cores">×</button>
         </header>
-        <div id="theme-fields" class="utility-content theme-fields"></div>
-        <footer class="skill-info-dialog-footer">
-          <button id="theme-reset" class="dialog-button" type="button">Restaurar cores</button>
-          <button class="dialog-button" type="button" data-close-theme>Fechar</button>
-        </footer>
+        <div class="theme-popover-content">
+          <label class="theme-target-field"><span>Alterar cor de</span><select id="theme-target" aria-label="Parte da paleta que será alterada"></select></label>
+          <div class="theme-wheel-stage">
+            <div id="theme-color-wheel" class="theme-color-wheel" role="slider" tabindex="0" aria-label="Escolher cor" aria-valuemin="0" aria-valuemax="360" aria-valuenow="0" aria-describedby="theme-wheel-help"><span id="theme-wheel-thumb" aria-hidden="true"></span></div>
+          </div>
+          <p id="theme-wheel-help" class="sr-only">Arraste na roda para escolher a cor e a intensidade. No teclado, esquerda e direita mudam a cor; cima e baixo mudam a intensidade. Shift aumenta o passo.</p>
+          <label class="theme-lightness"><span>Brilho <output id="theme-brightness-value" for="theme-brightness">100%</output></span><input id="theme-brightness" type="range" min="0" max="100" step="1" value="100" /></label>
+          <div class="theme-color-value"><span id="theme-current-swatch" aria-hidden="true"></span><label class="sr-only" for="theme-hex">Código da cor</label><input id="theme-hex" type="text" maxlength="7" autocomplete="off" spellcheck="false" placeholder="#CFAD62" aria-describedby="theme-hex-feedback" /></div>
+          <p id="theme-hex-feedback" class="theme-hex-feedback" role="status" hidden>Use 6 dígitos, como #CFAD62.</p>
+          <details class="theme-palette-list"><summary>Paleta do site</summary><div id="theme-fields" class="theme-fields"></div></details>
+        </div>
+        <footer class="theme-popover-footer"><button id="theme-reset" class="dialog-button" type="button">Restaurar cores</button><button class="dialog-button" type="button" data-close-theme>Fechar</button></footer>
       </section>
     </div>
 
@@ -12431,7 +12683,7 @@ const THEME_FIELDS = [
   },
   {
     "key": "accent",
-    "label": "Detalhes dourados",
+    "label": "Destaques",
     "group": "Textos e detalhes",
     "default": "#cfad62"
   },
@@ -12977,23 +13229,176 @@ function applyTheme() {
   appliedThemeColors = resolved;
 }
 
-function updateThemeColor(input, { notify = true } = {}) {
+let activeThemeKey = "accent";
+let themePickerState = { h: 0, s: 1, v: 1 };
+let themePointerId = null;
+
+function themeHexToHsv(hex) {
+  const [r, g, b] = themeRgb(hex).map((value) => value / 255);
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  const delta = max - min;
+  let h = 0;
+  if (delta) {
+    h = max === r ? ((g - b) / delta) % 6 : max === g ? (b - r) / delta + 2 : (r - g) / delta + 4;
+    h = (h * 60 + 360) % 360;
+  }
+  return { h, s: max ? delta / max : 0, v: max };
+}
+
+function themeHsvToHex({ h, s, v }) {
+  const hue = ((Number(h) || 0) % 360 + 360) % 360;
+  const saturation = Math.min(1, Math.max(0, Number(s) || 0));
+  const value = Math.min(1, Math.max(0, Number(v) || 0));
+  const chroma = value * saturation;
+  const x = chroma * (1 - Math.abs((hue / 60) % 2 - 1));
+  const m = value - chroma;
+  const channels = hue < 60 ? [chroma, x, 0] : hue < 120 ? [x, chroma, 0] : hue < 180 ? [0, chroma, x] :
+    hue < 240 ? [0, x, chroma] : hue < 300 ? [x, 0, chroma] : [chroma, 0, x];
+  return "#" + channels.map((channel) => Math.round((channel + m) * 255).toString(16).padStart(2, "0")).join("");
+}
+
+function themeWheelCoordinates({ clientX, clientY }, rect) {
+  const radius = Math.min(rect.width, rect.height) / 2;
+  const x = clientX - rect.left - rect.width / 2;
+  const y = clientY - rect.top - rect.height / 2;
+  const h = (Math.atan2(y, x) * 180 / Math.PI + 360) % 360;
+  return { h, s: radius ? Math.min(1, Math.hypot(x, y) / radius) : 0 };
+}
+
+function syncThemePicker({ readColor = true } = {}) {
+  const field = THEME_FIELDS.find((entry) => entry.key === activeThemeKey) || THEME_FIELDS.find((entry) => entry.key === "accent");
+  activeThemeKey = field.key;
+  const color = themeSettings[field.key] || field.default;
+  if (readColor) {
+    const next = themeHexToHsv(color);
+    // Black has no hue; preserve the chosen hue and intensity while adjusting brightness.
+    themePickerState = { h: next.s ? next.h : themePickerState.h, s: next.v ? next.s : themePickerState.s, v: next.v };
+  }
+  const wheel = document.querySelector("#theme-color-wheel");
+  const thumb = document.querySelector("#theme-wheel-thumb");
+  const brightness = document.querySelector("#theme-brightness");
+  const hex = document.querySelector("#theme-hex");
+  const readOnly = isNotebookReadOnly();
+  const angle = themePickerState.h * Math.PI / 180;
+  thumb.style.setProperty("--wheel-x", `${50 + Math.cos(angle) * themePickerState.s * 50}%`);
+  thumb.style.setProperty("--wheel-y", `${50 + Math.sin(angle) * themePickerState.s * 50}%`);
+  wheel.style.setProperty("--wheel-value", String(themePickerState.v));
+  wheel.setAttribute("aria-valuenow", String(Math.round(themePickerState.h)));
+  wheel.setAttribute("aria-valuetext", `${color.toUpperCase()}; matiz ${Math.round(themePickerState.h)} graus, intensidade ${Math.round(themePickerState.s * 100)}%, brilho ${Math.round(themePickerState.v * 100)}%`);
+  wheel.setAttribute("aria-label", `Cor de ${field.label}`);
+  wheel.setAttribute("aria-disabled", String(readOnly));
+  brightness.style.setProperty("--wheel-bright-color", themeHsvToHex({ ...themePickerState, v: 1 }));
+  brightness.value = String(Math.round(themePickerState.v * 100));
+  brightness.disabled = readOnly;
+  document.querySelector("#theme-brightness-value").textContent = `${brightness.value}%`;
+  hex.value = color.toUpperCase();
+  hex.disabled = readOnly;
+  hex.setCustomValidity("");
+  hex.removeAttribute("aria-invalid");
+  document.querySelector("#theme-hex-feedback").hidden = true;
+  document.querySelector("#theme-current-swatch").style.backgroundColor = color;
+  document.querySelector("#theme-target").value = field.key;
+  document.querySelector("#theme-reset").disabled = readOnly;
+  document.querySelector("#theme-preview-status").textContent = readOnly ? "Esta ficha está em modo de leitura." : "A cor muda na ficha enquanto você escolhe.";
+  themeFields.querySelectorAll("[data-theme-key]").forEach((control) => {
+    const entry = THEME_FIELDS.find((item) => item.key === control.dataset.themeKey);
+    if (!entry) return;
+    const entryColor = themeSettings[entry.key] || entry.default;
+    control.setAttribute("aria-pressed", String(entry.key === field.key));
+    control.setAttribute("aria-label", `${entry.label}: ${entryColor.toUpperCase()}`);
+    control.querySelector(".theme-swatch").style.backgroundColor = entryColor;
+    control.querySelector("[data-theme-value]").textContent = entryColor.toUpperCase();
+  });
+}
+
+function selectThemeTarget(key) {
+  if (!THEME_FIELDS.some((field) => field.key === key)) return false;
+  activeThemeKey = key;
+  syncThemePicker();
+  return true;
+}
+
+function updateThemeColor(input, { notify = true, syncHsv = true } = {}) {
+  if (isNotebookReadOnly()) return false;
   const field = THEME_FIELDS.find((entry) => entry.key === input?.dataset.themeKey);
   const color = String(input?.value || "").toLowerCase();
-  if (!field || !/^#[0-9a-f]{6}$/.test(color)) return;
-
+  if (!field || !/^#[0-9a-f]{6}$/.test(color)) return false;
   const previous = themeSettings[field.key] || field.default;
   if (color === field.default) delete themeSettings[field.key];
   else themeSettings[field.key] = color;
-
-  input.closest(".theme-color-control")?.querySelector("[data-theme-value]")
-    ?.replaceChildren(document.createTextNode(color.toUpperCase()));
   applyTheme();
+  syncThemePicker({ readColor: syncHsv });
   if (notify && color !== previous) notifySheetChanged("appearance");
+  return true;
+}
+
+function setThemePickerColor(color, { syncHsv = true } = {}) {
+  return updateThemeColor({ dataset: { themeKey: activeThemeKey }, value: color }, { syncHsv });
+}
+
+function handleThemeWheelPointer(event) {
+  if (isNotebookReadOnly() || event.isPrimary === false) return;
+  const wheel = document.querySelector("#theme-color-wheel");
+  if (event.type === "pointerdown") {
+    if (event.pointerType === "mouse" && event.button !== 0) return;
+    themePointerId = event.pointerId;
+    wheel.focus({ preventScroll: true });
+    try { wheel.setPointerCapture(event.pointerId); } catch {}
+  } else if (themePointerId === null || event.pointerId !== themePointerId) return;
+  event.preventDefault();
+  const point = themeWheelCoordinates(event, wheel.getBoundingClientRect());
+  if (point.s > 0) themePickerState.h = point.h;
+  themePickerState.s = point.s;
+  setThemePickerColor(themeHsvToHex(themePickerState), { syncHsv: false });
+}
+
+function releaseThemeWheelPointer(event = null) {
+  if (event && event.pointerId !== themePointerId) return;
+  const id = themePointerId;
+  themePointerId = null;
+  const wheel = document.querySelector("#theme-color-wheel");
+  try { if (id !== null && wheel.hasPointerCapture(id)) wheel.releasePointerCapture(id); } catch {}
+}
+
+function handleThemeWheelKeydown(event) {
+  if (isNotebookReadOnly()) return;
+  const hueStep = event.shiftKey ? 15 : 3;
+  const saturationStep = event.shiftKey ? .05 : .01;
+  if (event.key === "ArrowRight") themePickerState.h = (themePickerState.h + hueStep) % 360;
+  else if (event.key === "ArrowLeft") themePickerState.h = (themePickerState.h - hueStep + 360) % 360;
+  else if (event.key === "ArrowUp") themePickerState.s = Math.min(1, themePickerState.s + saturationStep);
+  else if (event.key === "ArrowDown") themePickerState.s = Math.max(0, themePickerState.s - saturationStep);
+  else if (event.key === "Home") themePickerState.s = 0;
+  else if (event.key === "End") themePickerState.s = 1;
+  else return;
+  event.preventDefault();
+  setThemePickerColor(themeHsvToHex(themePickerState), { syncHsv: false });
+}
+
+function handleThemeBrightnessInput(event) {
+  if (isNotebookReadOnly()) return;
+  themePickerState.v = Math.min(1, Math.max(0, Number(event.currentTarget.value) / 100));
+  setThemePickerColor(themeHsvToHex(themePickerState), { syncHsv: false });
+}
+
+function handleThemeHexInput(event) {
+  const input = event.currentTarget;
+  const raw = input.value.trim();
+  const color = /^[0-9a-f]{6}$/i.test(raw) ? "#" + raw : raw;
+  const valid = /^#[0-9a-f]{6}$/i.test(color);
+  const showError = event.type === "change" && !valid;
+  input.setCustomValidity(showError ? "Use uma cor com 6 dígitos, como #CFAD62." : "");
+  input.toggleAttribute("aria-invalid", showError);
+  document.querySelector("#theme-hex-feedback").hidden = !showError;
+  if (valid) setThemePickerColor(color);
 }
 
 function renderThemeFields() {
+  releaseThemeWheelPointer();
   themeFields.replaceChildren();
+  const select = document.querySelector("#theme-target");
+  select.replaceChildren();
   const groups = new Map();
   THEME_FIELDS.forEach((field) => {
     if (!groups.has(field.group)) {
@@ -13005,26 +13410,62 @@ function renderThemeFields() {
       fields.className = "theme-group-fields";
       group.append(legend, fields);
       themeFields.append(group);
-      groups.set(field.group, fields);
+      const options = document.createElement("optgroup");
+      options.label = field.group;
+      select.append(options);
+      groups.set(field.group, { fields, options });
     }
-    const control = document.createElement("label");
+    const color = themeSettings[field.key] || field.default;
+    const option = document.createElement("option");
+    option.value = field.key;
+    option.textContent = field.label;
+    groups.get(field.group).options.append(option);
+    const control = document.createElement("button");
+    control.type = "button";
     control.className = "theme-color-control";
-    const input = document.createElement("input");
-    input.type = "color";
-    input.dataset.themeKey = field.key;
-    input.value = themeSettings[field.key] || field.default;
-    input.setAttribute("aria-label", field.label);
-    input.addEventListener("input", (event) => updateThemeColor(event.currentTarget));
-    input.addEventListener("change", (event) => updateThemeColor(event.currentTarget));
+    control.dataset.themeKey = field.key;
+    const swatch = document.createElement("span");
+    swatch.className = "theme-swatch";
+    swatch.setAttribute("aria-hidden", "true");
+    swatch.style.backgroundColor = color;
     const label = document.createElement("span");
+    label.className = "theme-color-label";
     label.textContent = field.label;
     const value = document.createElement("output");
     value.dataset.themeValue = "";
-    value.textContent = input.value.toUpperCase();
-    control.append(input, label, value);
-    groups.get(field.group).append(control);
+    control.append(swatch, label, value);
+    groups.get(field.group).fields.append(control);
   });
+  syncThemePicker();
 }
+
+function positionThemePopover() {
+  if (themeModal.hidden) return;
+  const viewport = window.visualViewport;
+  const viewportLeft = viewport?.offsetLeft || 0;
+  const viewportTop = viewport?.offsetTop || 0;
+  const width = viewport?.width || window.innerWidth;
+  const height = viewport?.height || window.innerHeight;
+  const rect = themeButton.getBoundingClientRect();
+  themeModal.style.maxWidth = `${Math.max(0, width - 20)}px`;
+  const panelWidth = themeModal.getBoundingClientRect().width;
+  const left = Math.max(viewportLeft + 10, Math.min(rect.right - panelWidth, viewportLeft + width - panelWidth - 10));
+  const top = Math.max(viewportTop + 10, Math.min(rect.bottom + 10, viewportTop + height - 150));
+  themeModal.style.left = `${left}px`;
+  themeModal.style.right = "auto";
+  themeModal.style.top = `${top}px`;
+  themeDialog.style.setProperty("--theme-popover-room", `${Math.max(0, viewportTop + height - top - 10)}px`);
+}
+
+function resetThemePalette() {
+  if (isNotebookReadOnly()) return;
+  themeSettings = {};
+  applyTheme();
+  renderThemeFields();
+  notifySheetChanged("appearance");
+}
+
+
 
 const COMBAT_ZONES = new Set(["easy", "medium", "hard"]);
 const COMBAT_MARGINS = new Set(["partial", "normal", "good", "extreme"]);
@@ -15236,7 +15677,9 @@ function applyCompleteSheetState(rawState, options = {}) {
     activeTrainingLimitRequest = null;
     trainingLimitModal.hidden = true;
     rdModal.hidden = true;
+    releaseThemeWheelPointer();
     themeModal.hidden = true;
+    themeButton.setAttribute("aria-expanded", "false");
     shopHistoryModal.hidden = true;
     activeShopHistoryTrigger = null;
     abilityDetailModal.hidden = true;
@@ -18913,16 +19356,19 @@ function closeRdManager() {
 }
 
 function openThemeEditor() {
+  if (!themeModal.hidden) { closeThemeEditor(); return; }
   renderThemeFields();
   themeModal.hidden = false;
-  syncModalLock();
-  themeDialog.focus();
+  themeButton.setAttribute("aria-expanded", "true");
+  positionThemePopover();
+  themeDialog.focus({ preventScroll: true });
 }
 
-function closeThemeEditor() {
+function closeThemeEditor({ restoreFocus = true } = {}) {
+  releaseThemeWheelPointer();
   themeModal.hidden = true;
-  syncModalLock();
-  if (themeButton.isConnected) themeButton.focus();
+  themeButton.setAttribute("aria-expanded", "false");
+  if (restoreFocus && themeButton.isConnected) themeButton.focus({ preventScroll: true });
 }
 
 function closeSystemPrompt(result = false) {
@@ -19011,6 +19457,7 @@ function syncModalLock() {
     document.querySelector("#roll-history-modal"),
   ]
     .some((modal) => !modal.hidden);
+  if (hasOpenModal && !themeModal.hidden) closeThemeEditor({ restoreFocus: false });
   document.body.classList.toggle("modal-open", hasOpenModal);
 }
 
@@ -20357,12 +20804,31 @@ document.querySelectorAll("[data-system-prompt-cancel]").forEach((button) => {
 systemPromptCancel.addEventListener("click", () => closeSystemPrompt(false));
 systemPromptConfirm.addEventListener("click", () => closeSystemPrompt(true));
 themeButton.addEventListener("click", openThemeEditor);
-document.querySelector("#theme-reset").addEventListener("click", () => {
-  themeSettings = {};
-  applyTheme();
-  renderThemeFields();
-  notifySheetChanged("appearance");
+document.querySelector("#theme-reset").addEventListener("click", resetThemePalette);
+document.querySelector("#theme-target").addEventListener("change", (event) => selectThemeTarget(event.currentTarget.value));
+themeFields.addEventListener("click", (event) => {
+  const control = event.target.closest("[data-theme-key]");
+  if (control) selectThemeTarget(control.dataset.themeKey);
 });
+{
+  const wheel = document.querySelector("#theme-color-wheel");
+  wheel.addEventListener("pointerdown", handleThemeWheelPointer);
+  wheel.addEventListener("pointermove", handleThemeWheelPointer);
+  wheel.addEventListener("pointerup", releaseThemeWheelPointer);
+  wheel.addEventListener("pointercancel", releaseThemeWheelPointer);
+  wheel.addEventListener("lostpointercapture", releaseThemeWheelPointer);
+  wheel.addEventListener("keydown", handleThemeWheelKeydown);
+}
+document.querySelector("#theme-brightness").addEventListener("input", handleThemeBrightnessInput);
+document.querySelector("#theme-hex").addEventListener("input", handleThemeHexInput);
+document.querySelector("#theme-hex").addEventListener("change", handleThemeHexInput);
+document.querySelector(".theme-palette-list").addEventListener("toggle", positionThemePopover);
+document.addEventListener("pointerdown", (event) => {
+  if (!themeModal.hidden && !themeDialog.contains(event.target) && !themeButton.contains(event.target)) closeThemeEditor({ restoreFocus: false });
+});
+window.addEventListener("resize", positionThemePopover);
+window.visualViewport?.addEventListener("resize", positionThemePopover);
+window.visualViewport?.addEventListener("scroll", positionThemePopover);
 grimoireSearchInput.addEventListener("input", renderGrimoirePicker);
 minervaSectionButtons.forEach((button) => {
   button.addEventListener("click", () => selectMinervaSection(button.dataset.minervaSection));
