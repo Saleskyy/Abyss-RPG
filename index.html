@@ -8749,7 +8749,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
           <div class="skills-panel-head">
             <div>
               <h2>Lista de perícias</h2>
-              <p>Role o melhor Dado de Treinamento, aplique o Dado de Atributo e os modificadores. Atributos em 0 ou abaixo subtraem dados.</p>
+              <p>Use o melhor Dado de Treinamento com vantagem ou o pior com desvantagem. Aplique o Dado de Atributo e os modificadores; atributos em 0 ou abaixo subtraem dados.</p>
             </div>
             <div class="skills-panel-actions">
               <span id="training-cap-status" class="training-cap-status" aria-live="polite">Escolha uma Classe no Perfil</span>
@@ -8806,7 +8806,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
             <button id="clear-skill-filters" class="filter-clear" type="button">Limpar</button>
           </div>
 
-          <p class="skill-dice-help">Dados extras: <code>1d8 + 1d12 − 1d4</code> (vírgulas também funcionam). Qtd. negativa subtrai o maior dado de treinamento.</p>
+          <p class="skill-dice-help">Qtd. dados: <code>0</code> = normal; <code>+1</code> = 2 dados, melhor; <code>−1</code> = 2 dados, pior. Cada ponto acrescenta um dado. Dados extras aceitam +, − ou vírgulas.</p>
           <div class="skills-column-head" aria-hidden="true">
             <span>Perícia</span>
             <span>Atributo</span>
@@ -14087,6 +14087,7 @@ function captureSkillRowState() {
       attribute: row.querySelector("[data-skill-attribute]")?.value,
       training: row.querySelector("[data-training-index]")?.value,
       mainDiceCount: row.querySelector("[data-main-dice-count]")?.value,
+      mainDiceMode: "advantage",
       diceModifier: row.querySelector("[data-dice-modifier]")?.value,
       fixedModifier: row.querySelector("[data-fixed-modifier]")?.value,
     });
@@ -14937,6 +14938,7 @@ function captureCompleteSheetState() {
       attribute: ATTRIBUTES[value.attribute] ? value.attribute : "INT",
       training: TRAINING[value.training] ? value.training : "leigo",
       mainDiceCount: String(normalizeMainDiceCountValue(value.mainDiceCount)),
+      mainDiceMode: "advantage",
       diceModifier: String(value.diceModifier || "").trim().slice(0, 512),
       fixedModifier: String(value.fixedModifier || "").trim().slice(0, 12),
     };
@@ -15053,11 +15055,15 @@ function replaceCustomSkills(rawCustomSkills) {
 
 function sanitizeStoredRowState(rawState) {
   const state = rawState && typeof rawState === "object" ? rawState : {};
+  const legacyCount = Number.parseInt(state.mainDiceCount, 10);
+  // Earlier sheets stored the total number of training dice; current rows store advantage/disadvantage.
+  const adjustment = state.mainDiceMode === "advantage" ? state.mainDiceCount : legacyCount > 0 ? legacyCount - 1 : legacyCount;
   const fixedModifier = String(state.fixedModifier ?? "").trim();
   return {
     attribute: ATTRIBUTES[state.attribute] ? state.attribute : undefined,
     training: TRAINING[state.training] ? state.training : "leigo",
-    mainDiceCount: String(normalizeMainDiceCountValue(state.mainDiceCount)),
+    mainDiceCount: String(normalizeMainDiceCountValue(adjustment)),
+    mainDiceMode: "advantage",
     diceModifier: String(state.diceModifier || "").trim().slice(0, 512),
     fixedModifier: /^[-+]?\d{1,7}$/.test(fixedModifier) ? fixedModifier : "",
   };
@@ -15466,7 +15472,7 @@ function renderSkills(rowStates = captureSkillRowState()) {
         </div>
 
         <label class="modifier-control">
-          <span class="control-caption">Dados principais</span>
+          <span class="control-caption">Vantagem / desvantagem</span>
           <input
             class="modifier-input main-dice-count"
             type="number"
@@ -15474,10 +15480,10 @@ function renderSkills(rowStates = captureSkillRowState()) {
             min="-20"
             max="20"
             step="1"
-            value="1"
+            value="0"
             data-main-dice-count="${index}"
-            aria-label="Quantidade de dados principais em ${safeName}; valores negativos subtraem o maior resultado"
-            title="De 1 a 20 ou de −1 a −20. Um valor negativo subtrai o maior resultado."
+            aria-label="Vantagens ou desvantagens em ${safeName}; zero rola um dado, positivo usa o melhor, negativo usa o pior"
+            title="0: 1 dado. +1: 2 dados, use o melhor. −1: 2 dados, use o pior. Cada ponto acrescenta um dado."
           />
         </label>
 
@@ -15489,7 +15495,7 @@ function renderSkills(rowStates = captureSkillRowState()) {
             inputmode="text"
             autocomplete="off"
             spellcheck="false"
-            placeholder="1d8 − 1d4"
+            placeholder="Ex: 1d8"
             maxlength="512"
             title="Some ou subtraia grupos: 1d8 + 1d12 − 1d4. Também aceita vírgulas."
             data-dice-modifier="${index}"
@@ -15534,7 +15540,7 @@ function renderSkills(rowStates = captureSkillRowState()) {
     attributeSelect.value = attribute;
     trainingSelect.value = training;
     trainingSelect.dataset.previousTraining = training;
-    mainDiceInput.value = state.mainDiceCount || "1";
+    mainDiceInput.value = String(state.mainDiceCount ?? "0");
     diceInput.value = state.diceModifier || "";
     fixedInput.value = state.fixedModifier || "";
     row.querySelector(".training-die").innerHTML = dieSvg(TRAINING[training].die);
@@ -19467,8 +19473,18 @@ function rollDiceModifier(modifier) {
 }
 
 function normalizeMainDiceCountValue(value) {
-  const parsed = Number.parseInt(value, 10);
-  return Number.isFinite(parsed) && parsed !== 0 ? Math.min(20, Math.max(-20, parsed)) : 1;
+  const parsed = Number.parseInt(String(value ?? "").trim().replace(/[−–—]/g, "-"), 10);
+  return Number.isFinite(parsed) ? Math.min(20, Math.max(-20, parsed)) : 0;
+}
+
+function rollTrainingDice(adjustment, faces) {
+  const advantage = normalizeMainDiceCountValue(adjustment);
+  const count = Math.abs(advantage) + 1;
+  const results = rollDice(count, faces);
+  const result = advantage < 0 ? Math.min(...results) : Math.max(...results);
+  const selection = count === 1 ? "único" : advantage < 0 ? "pior" : "melhor";
+  const formula = `${count}d${faces}${count > 1 ? ` (${selection})` : ""}`;
+  return { count, results, result, selection, formula };
 }
 
 function normalizeMainDiceCount(input) {
@@ -19643,16 +19659,16 @@ function rollSkill(skillIndex, triggerButton) {
   const parsedFixed = Number.parseInt(fixedInput.value, 10);
   const fixedModifier = Number.isFinite(parsedFixed) ? parsedFixed : 0;
   const mainDiceCount = normalizeMainDiceCount(mainDiceInput);
-  const mainDiceQuantity = Math.abs(mainDiceCount);
-  const mainResults = rollDice(mainDiceQuantity, training.die);
-  const mainResult = Math.max(...mainResults);
-  const mainContribution = mainDiceCount < 0 ? -mainResult : mainResult;
-  const mainDiceFormula = `${mainDiceCount < 0 ? "− " : ""}${mainDiceQuantity}d${training.die}`;
+  const trainingRoll = rollTrainingDice(mainDiceCount, training.die);
+  const mainDiceQuantity = trainingRoll.count;
+  const mainResults = trainingRoll.results;
+  const mainResult = trainingRoll.result;
+  const mainDiceFormula = trainingRoll.formula;
   const extraRoll = rollDiceModifier(diceModifier);
   const extraTotal = extraRoll.total;
   const grantedModifiers = rollActiveCreationModifiers("skill", getSkillKey(skill));
-  const total = mainContribution + attributeBonus - attributePenalty + extraTotal + fixedModifier + grantedModifiers.total;
-  const baseFormula = `${mainDiceFormula} (melhor) ${attributeValue <= 0 ? "" : "+ "}${attributeFormula}`;
+  const total = mainResult + attributeBonus - attributePenalty + extraTotal + fixedModifier + grantedModifiers.total;
+  const baseFormula = `${mainDiceFormula} ${attributeValue <= 0 ? "" : "+ "}${attributeFormula}`;
   const extraFormula = extraRoll.groups.length ? `${diceModifier.terms[0].sign < 0 ? " " : " + "}${diceModifier.formula}` : "";
   const fixedFormula = fixedModifier ? ` ${fixedModifier < 0 ? "−" : "+"} ${Math.abs(fixedModifier)}` : "";
   const grantedFormula = grantedModifiers.total ? ` ${grantedModifiers.total < 0 ? "−" : "+"} ${Math.abs(grantedModifiers.total)}` : "";
@@ -19667,7 +19683,7 @@ function rollSkill(skillIndex, triggerButton) {
   resultEyebrow.textContent = "Teste de perícia";
   document.querySelector("#result-skill").textContent = skill.name;
   document.querySelector("#result-context").textContent = `${training.label} · ${rollFormula} · ${attribute} (${attributeValue})`;
-  document.querySelector("#roll-status").textContent = `Rolando ${mainDiceQuantity}d${training.die}${mainDiceCount < 0 ? " · resultado será subtraído" : ""}...`;
+  document.querySelector("#roll-status").textContent = `Rolando ${mainDiceFormula}...`;
   resultOutcomeLabel.textContent = outcome.label;
   resultDifficultyLabel.textContent = `Zona ${difficulty.label}`;
   document.querySelector("#result-total").textContent = total;
@@ -19693,11 +19709,11 @@ function rollSkill(skillIndex, triggerButton) {
     setRollingDie(training.die, mainResult);
     rollingDie.classList.remove("is-rolling");
     rollingDie.classList.add("is-settled");
-    document.querySelector("#roll-status").textContent = `${mainDiceQuantity > 1 ? "Melhor resultado natural" : "Resultado natural"}: ${mainResult}${mainDiceCount < 0 ? " · subtraído do total" : ""}`;
+    document.querySelector("#roll-status").textContent = `${mainDiceQuantity > 1 ? mainDiceCount < 0 ? "Pior resultado natural" : "Melhor resultado natural" : "Resultado natural"}: ${mainResult}`;
     rollDialog.classList.add(`outcome-${outcome.key}`);
 
-    const mainDiceDetail = `${training.label} · ${mainDiceFormula} → ${mainResults.join(" · ")}${mainDiceQuantity > 1 ? " · melhor" : ""}${mainDiceCount < 0 ? " · subtraído do total" : ""}`;
-    addBreakdownLine(mainDiceQuantity > 1 ? "Dados principais" : "Dado principal", mainDiceDetail, mainContribution, false);
+    const mainDiceDetail = `${training.label} · ${mainDiceFormula} → ${mainResults.join(" · ")} → ${mainResult}`;
+    addBreakdownLine(mainDiceQuantity > 1 ? "Dados principais" : "Dado principal", mainDiceDetail, mainResult, false);
     addBreakdownLine("Dado de Atributo", `${attribute} · ${ATTRIBUTES[attribute]} · ${attributeBreakdown}${attributePenalty ? " · subtraído do total" : ""}`, attributeResult);
     if (extraRoll.groups.length) {
       addBreakdownLine("Dados extras", extraRoll.breakdown, extraTotal);
@@ -19720,7 +19736,7 @@ function rollSkill(skillIndex, triggerButton) {
       difficulty: difficulty.label, context: rollContext,
       soundDelay: reducedMotion ? 120 : 920,
       formula: rollFormula,
-      breakdown: [`Treinamento: ${mainDiceFormula} → ${mainResults.join(" · ")} → ${mainContribution}`, `Atributo ${attribute}: ${attributeBreakdown} → ${attributeResult}`,
+      breakdown: [`Treinamento: ${mainDiceFormula} → ${mainResults.join(" · ")} → ${mainResult}`, `Atributo ${attribute}: ${attributeBreakdown} → ${attributeResult}`,
         `Dados extras: ${extraRoll.breakdown || "0"} → ${extraTotal}`, `Modificador fixo: ${fixedModifier}`, ...grantedModifiers.breakdown, `Total: ${total}`],
   });
 }
