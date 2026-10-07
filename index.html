@@ -4159,7 +4159,6 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .identity-choice-wrap[data-echo="integro"] .identity-choice-select { border-color: rgba(61, 106, 211, 0.62); background-color: rgba(28, 58, 143, 0.31); color: #c7d7ff; }
 .identity-choice-wrap[data-echo="bravo"] .identity-choice-select { border-color: rgba(247, 139, 56, 0.62); background-color: rgba(221, 91, 25, 0.23); color: #ffe0c2; }
 .identity-choice-wrap[data-echo="perseverante"] .identity-choice-select { border-color: rgba(178, 104, 235, 0.58); background-color: rgba(120, 55, 183, 0.25); color: #ead3ff; }
-.identity-choice-wrap[data-echo="indiferente"] .identity-choice-select { border-color: rgba(240, 240, 236, 0.5); background-color: rgba(232, 232, 226, 0.12); color: #fff; }
 
 .identity-choice-wrap.is-class .identity-choice-select {
   border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), 0.16);
@@ -4542,7 +4541,6 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 .echo-panel[data-echo="integro"] { --echo-color: #4876de; --echo-rgb: 72, 118, 222; }
 .echo-panel[data-echo="bravo"] { --echo-color: #f18b3d; --echo-rgb: 241, 139, 61; }
 .echo-panel[data-echo="perseverante"] { --echo-color: #ad67e4; --echo-rgb: 173, 103, 228; }
-.echo-panel[data-echo="indiferente"] { --echo-color: #f1f1ed; --echo-rgb: 241, 241, 237; }
 .echo-panel::before {
   position: absolute;
   inset: -1px auto auto -1px;
@@ -4706,7 +4704,6 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 #echo-choice-wrap[data-echo="integro"] { --identity-echo-color: #4876de; --identity-echo-ink: #ffffff; }
 #echo-choice-wrap[data-echo="bravo"] { --identity-echo-color: #f18b3d; }
 #echo-choice-wrap[data-echo="perseverante"] { --identity-echo-color: #ad67e4; }
-#echo-choice-wrap[data-echo="indiferente"] { --identity-echo-color: #f1f1ed; }
 #echo-choice-wrap.has-value::before {
   content: "";
   position: absolute;
@@ -6991,7 +6988,6 @@ body.campaign-sheet-session .slots-button { opacity: .35; pointer-events: none; 
 .identity-option[data-value="integro"] { --option-color: #4876de; }
 .identity-option[data-value="bravo"] { --option-color: #f18b3d; }
 .identity-option[data-value="perseverante"] { --option-color: #ad67e4; }
-.identity-option[data-value="indiferente"] { --option-color: #f1f1ed; }
 .identity-options-menu[data-kind="class"] .identity-option-mark { border-radius: 3px; transform: rotate(45deg) scale(.76); }
 @media (max-width: 900px) { #class-choice-wrap > .identity-choice-control { flex: 1 1 175px; } }
 @media (max-width: 760px) { #echo-choice-wrap .identity-choice-trigger { min-height: 46px; } #class-choice-wrap .identity-choice-trigger { min-height: 44px; } }
@@ -7993,6 +7989,11 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
 }
 
 </style>
+<style id="signed-skill-dice-styles">
+.skill-dice-help { margin: 0; padding: 10px 24px; border-bottom: 1px solid var(--line); color: var(--muted); font-size: .72rem; line-height: 1.6; }
+.skill-dice-help code { color: var(--text); font-size: .73rem; white-space: nowrap; }
+@media (max-width: 760px) { .skill-dice-help { padding: 10px 14px; } }
+</style>
 </head>
   <body class="slot-gate-open">
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
@@ -8267,7 +8268,6 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                       <option value="integro">O Íntegro</option>
                       <option value="bravo">O Bravo</option>
                       <option value="perseverante">O Perseverante</option>
-                      <option value="indiferente">O Indiferente</option>
                     </select>
                     <button id="echo-choice-trigger" class="identity-choice-trigger" type="button"
                       aria-label="Eco do personagem" aria-haspopup="listbox" aria-expanded="false"
@@ -8806,6 +8806,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
             <button id="clear-skill-filters" class="filter-clear" type="button">Limpar</button>
           </div>
 
+          <p class="skill-dice-help">Dados extras: <code>1d8 + 1d12 − 1d4</code> (vírgulas também funcionam). Qtd. negativa subtrai o maior dado de treinamento.</p>
           <div class="skills-column-head" aria-hidden="true">
             <span>Perícia</span>
             <span>Atributo</span>
@@ -10085,7 +10086,6 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                   <option value="integro">O Íntegro</option>
                   <option value="bravo">O Bravo</option>
                   <option value="perseverante">O Perseverante</option>
-                  <option value="indiferente">O Indiferente</option>
                 </select>
               </label>
                 <label class="builder-field editor-field-origin">
@@ -10329,7 +10329,6 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                   <option value="integro">O Íntegro</option>
                   <option value="bravo">O Bravo</option>
                   <option value="perseverante">O Perseverante</option>
-                  <option value="indiferente">O Indiferente</option>
                 </select>
               </label>
               </div>
@@ -12254,7 +12253,6 @@ const ECHOES = {
   integro: "O Íntegro",
   bravo: "O Bravo",
   perseverante: "O Perseverante",
-  indiferente: "O Indiferente",
 };
 
 const ECHO_DETAILS = {
@@ -12348,12 +12346,6 @@ const ECHO_DETAILS = {
       "Ser Perseverante não significa insistir cegamente em uma única abordagem. Diferente do Determinado, que encontra impulso para superar uma adversidade presente, o Perseverante se destaca por permanecer comprometido ao longo do tempo, adaptando seus métodos sempre que necessário sem abandonar facilmente aquilo que pretende alcançar.",
       "Essa característica também pode fazê-lo permanecer preso a algo por tempo demais. O investimento acumulado em um objetivo pode tornar difícil reconhecer quando ele deixou de valer o esforço, levando o personagem a continuar apenas porque já percorreu uma grande parte do caminho. A mesma resistência ao desgaste que o faz seguir adiante pode dificultar reconhecer quando é hora de parar.",
     ],
-  },
-  indiferente: {
-    title: "O Indiferente",
-    intro: ["Nada."],
-    characterTitle: "",
-    characters: [],
   },
 };
 
@@ -14944,8 +14936,8 @@ function captureCompleteSheetState() {
     skillRows[key] = {
       attribute: ATTRIBUTES[value.attribute] ? value.attribute : "INT",
       training: TRAINING[value.training] ? value.training : "leigo",
-      mainDiceCount: String(Math.min(20, Math.max(1, Number.parseInt(value.mainDiceCount, 10) || 1))),
-      diceModifier: String(value.diceModifier || "").trim().slice(0, 24),
+      mainDiceCount: String(normalizeMainDiceCountValue(value.mainDiceCount)),
+      diceModifier: String(value.diceModifier || "").trim().slice(0, 512),
       fixedModifier: String(value.fixedModifier || "").trim().slice(0, 12),
     };
   });
@@ -15061,13 +15053,12 @@ function replaceCustomSkills(rawCustomSkills) {
 
 function sanitizeStoredRowState(rawState) {
   const state = rawState && typeof rawState === "object" ? rawState : {};
-  const parsedDiceCount = Number.parseInt(state.mainDiceCount, 10);
   const fixedModifier = String(state.fixedModifier ?? "").trim();
   return {
     attribute: ATTRIBUTES[state.attribute] ? state.attribute : undefined,
     training: TRAINING[state.training] ? state.training : "leigo",
-    mainDiceCount: String(Number.isFinite(parsedDiceCount) ? Math.min(20, Math.max(1, parsedDiceCount)) : 1),
-    diceModifier: String(state.diceModifier || "").trim().slice(0, 24),
+    mainDiceCount: String(normalizeMainDiceCountValue(state.mainDiceCount)),
+    diceModifier: String(state.diceModifier || "").trim().slice(0, 512),
     fixedModifier: /^[-+]?\d{1,7}$/.test(fixedModifier) ? fixedModifier : "",
   };
 }
@@ -15479,14 +15470,14 @@ function renderSkills(rowStates = captureSkillRowState()) {
           <input
             class="modifier-input main-dice-count"
             type="number"
-            inputmode="numeric"
-            min="1"
+            inputmode="text"
+            min="-20"
             max="20"
             step="1"
             value="1"
             data-main-dice-count="${index}"
-            aria-label="Quantidade de dados principais em ${safeName}; o maior resultado será usado"
-            title="Role de 1 a 20 dados e use o maior resultado"
+            aria-label="Quantidade de dados principais em ${safeName}; valores negativos subtraem o maior resultado"
+            title="De 1 a 20 ou de −1 a −20. Um valor negativo subtrai o maior resultado."
           />
         </label>
 
@@ -15498,9 +15489,11 @@ function renderSkills(rowStates = captureSkillRowState()) {
             inputmode="text"
             autocomplete="off"
             spellcheck="false"
-            placeholder="ex.: 1d6"
+            placeholder="1d8 − 1d4"
+            maxlength="512"
+            title="Some ou subtraia grupos: 1d8 + 1d12 − 1d4. Também aceita vírgulas."
             data-dice-modifier="${index}"
-            aria-label="Dados extras em ${safeName}"
+            aria-label="Dados extras positivos ou negativos em ${safeName}"
           />
         </label>
 
@@ -19428,33 +19421,67 @@ function changeView(viewName) {
 }
 
 function parseDiceModifier(rawValue) {
-  const compact = rawValue.trim().toLowerCase().replaceAll(" ", "").replace(/^\+/, "");
-  if (!compact) return { count: 0, faces: 0, formula: "", error: "" };
-
-  const match = compact.match(/^(\d*)d(\d+)$/);
-  if (!match) {
-    return { error: "Use um formato como 1d6, d8 ou 2d4." };
+  const compact = String(rawValue ?? "").trim().toLowerCase()
+    .replace(/[−–—]/g, "-").replace(/\s+/g, "");
+  const empty = { terms: [], count: 0, faces: 0, formula: "", error: "" };
+  if (!compact) return empty;
+  const formatError = "Use dados separados por +, − ou vírgula. Ex.: 1d8 + 1d12 − 1d4.";
+  const parts = compact.split(",");
+  if (parts.some((part) => !part)) return { ...empty, error: formatError };
+  const expression = parts.map((part, index) => index && !/^[+-]/.test(part) ? `+${part}` : part).join("");
+  const pattern = /([+-]?)(\d*)d(\d+)/g;
+  const terms = [];
+  let cursor = 0;
+  let totalDice = 0;
+  let match;
+  while ((match = pattern.exec(expression))) {
+    if (match.index !== cursor || (terms.length && !match[1])) return { ...empty, error: formatError };
+    const count = Number(match[2] || 1);
+    const faces = Number(match[3]);
+    if (!Number.isInteger(count) || count < 1 || count > 20 || !Number.isInteger(faces) || faces < 2 || faces > 1000) {
+      return { ...empty, error: "Cada grupo pode ter de 1 a 20 dados, com 2 a 1000 faces." };
+    }
+    totalDice += count;
+    terms.push({ sign: match[1] === "-" ? -1 : 1, count, faces });
+    cursor = pattern.lastIndex;
   }
-
-  const count = Number(match[1] || 1);
-  const faces = Number(match[2]);
-  if (!Number.isInteger(count) || !Number.isInteger(faces) || count < 1 || count > 20 || faces < 2 || faces > 1000) {
-    return { error: "Use entre 1 e 20 dados, com pelo menos 2 faces." };
+  if (cursor !== expression.length || !terms.length) return { ...empty, error: formatError };
+  if (terms.length > 30 || totalDice > 100) {
+    return { ...empty, error: "Use no máximo 30 grupos e 100 dados extras no total." };
   }
+  const formula = terms.map((term, index) => `${term.sign < 0 ? index ? " − " : "− " : index ? " + " : ""}${term.count}d${term.faces}`).join("");
+  return { terms, count: totalDice, faces: terms.length === 1 ? terms[0].faces : 0, formula, error: "" };
+}
 
-  return { count, faces, formula: `${count}d${faces}`, error: "" };
+function rollDiceModifier(modifier) {
+  const groups = (modifier.terms || []).map((term) => {
+    const results = rollDice(term.count, term.faces);
+    return { ...term, results, total: term.sign * sum(results) };
+  });
+  const total = sum(groups.map((group) => group.total));
+  const breakdown = groups.map((group, index) => {
+    const sign = group.sign < 0 ? index ? " − " : "− " : index ? " + " : "";
+    return `${sign}${group.count}d${group.faces} [${group.results.join(" + ")}]`;
+  }).join("");
+  return { groups, total, breakdown };
+}
+
+function normalizeMainDiceCountValue(value) {
+  const parsed = Number.parseInt(value, 10);
+  return Number.isFinite(parsed) && parsed !== 0 ? Math.min(20, Math.max(-20, parsed)) : 1;
+}
+
+function normalizeMainDiceCount(input) {
+  const count = normalizeMainDiceCountValue(input.value);
+  input.value = String(count);
+  return count;
 }
 
 function rollDice(count, faces) {
   return Array.from({ length: count }, () => Math.floor(Math.random() * faces) + 1);
 }
 
-function normalizeMainDiceCount(input) {
-  const parsed = Number.parseInt(input.value, 10);
-  const count = Number.isFinite(parsed) ? Math.min(20, Math.max(1, parsed)) : 1;
-  input.value = String(count);
-  return count;
-}
+
 
 function sum(values) {
   return values.reduce((total, value) => total + value, 0);
@@ -19616,12 +19643,20 @@ function rollSkill(skillIndex, triggerButton) {
   const parsedFixed = Number.parseInt(fixedInput.value, 10);
   const fixedModifier = Number.isFinite(parsedFixed) ? parsedFixed : 0;
   const mainDiceCount = normalizeMainDiceCount(mainDiceInput);
-  const mainResults = rollDice(mainDiceCount, training.die);
+  const mainDiceQuantity = Math.abs(mainDiceCount);
+  const mainResults = rollDice(mainDiceQuantity, training.die);
   const mainResult = Math.max(...mainResults);
-  const extraResults = diceModifier.count ? rollDice(diceModifier.count, diceModifier.faces) : [];
-  const extraTotal = sum(extraResults);
+  const mainContribution = mainDiceCount < 0 ? -mainResult : mainResult;
+  const mainDiceFormula = `${mainDiceCount < 0 ? "− " : ""}${mainDiceQuantity}d${training.die}`;
+  const extraRoll = rollDiceModifier(diceModifier);
+  const extraTotal = extraRoll.total;
   const grantedModifiers = rollActiveCreationModifiers("skill", getSkillKey(skill));
-  const total = mainResult + attributeBonus - attributePenalty + extraTotal + fixedModifier + grantedModifiers.total;
+  const total = mainContribution + attributeBonus - attributePenalty + extraTotal + fixedModifier + grantedModifiers.total;
+  const baseFormula = `${mainDiceFormula} (melhor) ${attributeValue <= 0 ? "" : "+ "}${attributeFormula}`;
+  const extraFormula = extraRoll.groups.length ? `${diceModifier.terms[0].sign < 0 ? " " : " + "}${diceModifier.formula}` : "";
+  const fixedFormula = fixedModifier ? ` ${fixedModifier < 0 ? "−" : "+"} ${Math.abs(fixedModifier)}` : "";
+  const grantedFormula = grantedModifiers.total ? ` ${grantedModifiers.total < 0 ? "−" : "+"} ${Math.abs(grantedModifiers.total)}` : "";
+  const rollFormula = baseFormula + extraFormula + fixedFormula + grantedFormula;
   const rollContext = window.AbyssCloud?.getRollContext?.();
   const difficulty = DIFFICULTIES[selectedDifficulty];
   const outcome = evaluateOutcome(training.die, mainResult, total, selectedDifficulty);
@@ -19631,8 +19666,8 @@ function rollSkill(skillIndex, triggerButton) {
   activeRollButton = triggerButton;
   resultEyebrow.textContent = "Teste de perícia";
   document.querySelector("#result-skill").textContent = skill.name;
-  document.querySelector("#result-context").textContent = `${training.label} · ${mainDiceCount}d${training.die} (melhor) ${attributeValue <= 0 ? "" : "+ "}${attributeFormula} de ${attribute} (${attributeValue})`;
-  document.querySelector("#roll-status").textContent = `Rolando ${mainDiceCount}d${training.die}...`;
+  document.querySelector("#result-context").textContent = `${training.label} · ${rollFormula} · ${attribute} (${attributeValue})`;
+  document.querySelector("#roll-status").textContent = `Rolando ${mainDiceQuantity}d${training.die}${mainDiceCount < 0 ? " · resultado será subtraído" : ""}...`;
   resultOutcomeLabel.textContent = outcome.label;
   resultDifficultyLabel.textContent = `Zona ${difficulty.label}`;
   document.querySelector("#result-total").textContent = total;
@@ -19658,18 +19693,14 @@ function rollSkill(skillIndex, triggerButton) {
     setRollingDie(training.die, mainResult);
     rollingDie.classList.remove("is-rolling");
     rollingDie.classList.add("is-settled");
-    document.querySelector("#roll-status").textContent = mainDiceCount > 1
-      ? `Melhor resultado natural: ${mainResult}`
-      : `Resultado natural: ${mainResult}`;
+    document.querySelector("#roll-status").textContent = `${mainDiceQuantity > 1 ? "Melhor resultado natural" : "Resultado natural"}: ${mainResult}${mainDiceCount < 0 ? " · subtraído do total" : ""}`;
     rollDialog.classList.add(`outcome-${outcome.key}`);
 
-    const mainDiceDetail = mainDiceCount > 1
-      ? `${training.label} · ${mainDiceCount}d${training.die} → ${mainResults.join(" · ")} · melhor`
-      : `${training.label} · 1d${training.die}`;
-    addBreakdownLine(mainDiceCount > 1 ? "Dados principais" : "Dado principal", mainDiceDetail, mainResult, false);
+    const mainDiceDetail = `${training.label} · ${mainDiceFormula} → ${mainResults.join(" · ")}${mainDiceQuantity > 1 ? " · melhor" : ""}${mainDiceCount < 0 ? " · subtraído do total" : ""}`;
+    addBreakdownLine(mainDiceQuantity > 1 ? "Dados principais" : "Dado principal", mainDiceDetail, mainContribution, false);
     addBreakdownLine("Dado de Atributo", `${attribute} · ${ATTRIBUTES[attribute]} · ${attributeBreakdown}${attributePenalty ? " · subtraído do total" : ""}`, attributeResult);
-    if (extraResults.length) {
-      addBreakdownLine("Dados extras", `${diceModifier.formula} → ${extraResults.join(" + ")}`, extraTotal);
+    if (extraRoll.groups.length) {
+      addBreakdownLine("Dados extras", extraRoll.breakdown, extraTotal);
     }
     if (fixedModifier !== 0) {
       addBreakdownLine("Modificador fixo", "Valor informado", fixedModifier);
@@ -19688,9 +19719,9 @@ function rollSkill(skillIndex, triggerButton) {
       kind: "skill", title: skill.name, total, natural: mainResult, outcome: outcome.key, outcomeLabel: outcome.label,
       difficulty: difficulty.label, context: rollContext,
       soundDelay: reducedMotion ? 120 : 920,
-      formula: `${mainDiceCount}d${training.die} (melhor) ${attributeValue <= 0 ? "" : "+ "}${attributeFormula}`,
-      breakdown: [`Treinamento: ${mainResults.join(" · ")} → ${mainResult}`, `Atributo ${attribute}: ${attributeBreakdown} → ${attributeResult}`,
-        `Dados extras: ${extraResults.join(" + ") || "0"} → ${extraTotal}`, `Modificador fixo: ${fixedModifier}`, ...grantedModifiers.breakdown, `Total: ${total}`],
+      formula: rollFormula,
+      breakdown: [`Treinamento: ${mainDiceFormula} → ${mainResults.join(" · ")} → ${mainContribution}`, `Atributo ${attribute}: ${attributeBreakdown} → ${attributeResult}`,
+        `Dados extras: ${extraRoll.breakdown || "0"} → ${extraTotal}`, `Modificador fixo: ${fixedModifier}`, ...grantedModifiers.breakdown, `Total: ${total}`],
   });
 }
 
