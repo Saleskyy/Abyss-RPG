@@ -8240,6 +8240,90 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
 #theme-dialog .theme-color-wheel { max-width: 100%; height: auto; }
 
 </style>
+<style id="audio-clip-styles">
+#audio-clip-modal { z-index: 164; }
+#audio-clip-modal[hidden], #audio-clip-dialog [hidden] { display: none !important; }
+#audio-clip-dialog { width: min(660px, 100%); min-width: 0; max-height: calc(100dvh - 36px); }
+#audio-clip-dialog .ability-dialog-head { padding: 21px 24px 18px; gap: 14px; }
+#audio-clip-dialog .ability-dialog-head > div { min-width: 0; }
+#audio-clip-dialog .ability-dialog-head h2 { font-size: 1.55rem; }
+#audio-clip-dialog .ability-dialog-head p:last-child { line-height: 1.6; }
+#audio-clip-dialog .result-close { flex: 0 0 34px; width: 34px; min-width: 34px; height: 34px; display: grid; place-items: center; }
+#audio-clip-dialog .result-close svg { display: block; width: 16px; height: 16px; }
+.audio-clip-content { min-height: 0; overflow-y: auto; overscroll-behavior: contain; display: grid; gap: 16px; padding: 19px 24px 22px; }
+.audio-clip-tabs { display: inline-flex; justify-self: start; gap: 4px; max-width: 100%; padding: 4px; border: 1px solid var(--theme-border-303137, #303137); border-radius: 5px; background: var(--theme-surface-090a0d, #090a0d); }
+.audio-clip-tab { display: inline-flex; justify-content: center; align-items: center; gap: 7px; min-height: 36px; padding: 0 13px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .73rem; font-weight: 650; cursor: pointer; }
+.audio-clip-tab[aria-selected="true"] { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .33); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); color: var(--theme-accent-dfca86, #dfca86); }
+.audio-clip-tab:hover { color: var(--theme-text-e2dbce, #e2dbce); }
+.audio-clip-tab svg, .audio-clip-file-button svg { flex: 0 0 16px; display: block; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.audio-clip-source { display: grid; gap: 9px; min-width: 0; }
+.audio-clip-file-button { justify-self: start; min-height: 38px; padding: 0 14px; gap: 8px; font-size: .73rem; }
+.audio-clip-link-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: end; }
+.audio-clip-link-row .dialog-button { min-height: 40px; padding: 0 15px; font-size: .73rem; }
+.audio-clip-hint { margin: 0; color: var(--theme-muted-858179, #858179); font-size: .69rem; line-height: 1.6; }
+.audio-clip-player { min-width: 0; display: grid; gap: 12px; padding: 13px; border: 1px solid var(--theme-border-303137, #303137); border-radius: 5px; background: rgba(var(--theme-surface-090a0d-rgb, 9, 10, 13), .62); }
+.audio-clip-source-summary { display: flex; justify-content: space-between; align-items: start; gap: 14px; font-size: .73rem; }
+.audio-clip-source-summary strong { min-width: 0; color: var(--theme-text-e2dbce, #e2dbce); font-weight: 650; overflow-wrap: anywhere; }
+.audio-clip-source-summary output { flex-shrink: 0; color: var(--theme-muted-aaa69d, #aaa69d); font-variant-numeric: tabular-nums; }
+.audio-clip-empty { display: grid; justify-items: center; gap: 10px; padding: 20px 12px; color: var(--theme-muted-858179, #858179); font-size: .72rem; line-height: 1.6; text-align: center; }
+.audio-clip-empty svg { width: 30px; height: 30px; fill: none; stroke: var(--theme-accent-cfad62, #cfad62); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
+#audio-clip-audio { display: block; width: 100%; height: 38px; }
+#audio-clip-youtube-stage { justify-self: center; width: min(100%, 480px); min-width: 200px; min-height: 200px; overflow: hidden; border-radius: 3px; background: #000; }
+#audio-clip-youtube-player, #audio-clip-youtube-stage iframe { display: block; width: 100%; min-width: 200px; height: 270px; border: 0; }
+.audio-clip-selection { min-width: 0; display: grid; gap: 12px; padding-top: 2px; }
+.audio-clip-selection-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; }
+.audio-clip-selection-head h3 { margin: 0; color: var(--theme-text-e2dbce, #e2dbce); font: 600 1.12rem Georgia, "Times New Roman", serif; }
+.audio-clip-selection-head output { color: var(--theme-accent-dfca86, #dfca86); font-size: .72rem; font-variant-numeric: tabular-nums; }
+.audio-clip-time-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.audio-clip-time { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr) 94px; align-items: center; gap: 8px 10px; }
+.audio-clip-time > span { color: var(--theme-accent-dfca86, #dfca86); font-size: .65rem; font-weight: 750; letter-spacing: .07em; text-transform: uppercase; }
+.audio-clip-time input[type="text"] { width: 100%; min-width: 0; height: 37px; padding: 0 9px; border: 1px solid var(--theme-border-3a3b41, #3a3b41); border-radius: 3px; background: var(--theme-surface-090a0d, #090a0d); color: var(--theme-text-e2dbce, #e2dbce); font: inherit; font-size: .83rem; font-variant-numeric: tabular-nums; text-align: center; }
+.audio-clip-time input[type="range"] { grid-column: 1 / -1; width: 100%; min-width: 0; height: 25px; margin: 0; accent-color: var(--theme-accent-dfca86, #dfca86); cursor: pointer; }
+.audio-clip-preview-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.audio-clip-preview-actions .dialog-button { min-height: 36px; padding: 0 12px; font-size: .71rem; }
+.audio-clip-status { min-height: 20px; margin: 0; color: var(--theme-muted-aaa69d, #aaa69d); font-size: .73rem; line-height: 1.6; overflow-wrap: anywhere; }
+.audio-clip-status[data-state="loading"], .audio-clip-status[data-state="processing"] { color: var(--theme-accent-dfca86, #dfca86); }
+.audio-clip-status[data-state="ready"], .audio-clip-status[data-state="saved"] { color: #82d2a0; }
+.audio-clip-status[data-state="error"] { color: #ef8c98; }
+#audio-clip-dialog :is(button, input):focus-visible { outline: 2px solid var(--theme-accent-dfca86, #dfca86); outline-offset: 2px; }
+#audio-clip-dialog :is(button, input):disabled { opacity: .45; cursor: default; }
+#audio-clip-dialog .ability-dialog-footer { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 9px; padding: 14px 24px; }
+#audio-clip-dialog .ability-dialog-footer .dialog-button { min-height: 38px; padding: 0 15px; font-size: .73rem; }
+.settings-sound-actions { max-width: 445px; justify-content: flex-end; }
+.settings-sound-actions [data-edit-audio-outcome] { color: var(--theme-accent-dfca86, #dfca86); }
+@media (max-width: 760px) { .settings-sound-actions { max-width: 100%; justify-content: flex-start; } }
+@media (max-width: 480px) {
+  #audio-clip-dialog { max-height: calc(100dvh - 24px); }
+  #audio-clip-dialog .ability-dialog-head { padding: 18px 16px 15px; }
+  #audio-clip-dialog .ability-dialog-head h2 { font-size: 1.35rem; }
+  .audio-clip-content { gap: 14px; padding: 16px; }
+  .audio-clip-tabs { justify-self: stretch; }
+  .audio-clip-tab { flex: 1 1 auto; padding: 0 9px; font-size: .7rem; }
+  .audio-clip-link-row { gap: 8px; }
+  .audio-clip-link-row .dialog-button { padding: 0 11px; }
+  .audio-clip-time-grid { gap: 12px; }
+  .audio-clip-time { grid-template-columns: minmax(0, 1fr); gap: 7px; }
+  .audio-clip-time input[type="text"] { text-align: left; }
+  .audio-clip-player { padding: 10px; }
+  #audio-clip-youtube-player, #audio-clip-youtube-stage iframe { height: 200px; }
+  #audio-clip-dialog .ability-dialog-footer { padding: 12px 16px max(14px, env(safe-area-inset-bottom, 0px)); }
+  #audio-clip-dialog .ability-dialog-footer .dialog-button { flex: 1 1 auto; }
+}
+
+#audio-clip-youtube-open { display: block; padding: 8px 11px; color: var(--theme-accent-dfca86, #dfca86); font-size: .7rem; background: var(--theme-surface-090a0d, #090a0d); }
+.roll-youtube-player-panel { position: fixed; right: 18px; bottom: 18px; z-index: 176; width: min(380px, calc(100vw - 36px)); padding: 13px; border: 1px solid var(--theme-accent-cfad62, #cfad62); border-radius: 5px; background: var(--theme-panel-15161b, #15161b); color: var(--theme-text-e2dbce, #e2dbce); box-shadow: 0 8px 28px #0008; }
+.roll-youtube-player-panel[hidden] { display: none; }
+.roll-youtube-player-head, .roll-youtube-player-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.roll-youtube-player-head { margin-bottom: 10px; font-size: .78rem; }
+.roll-youtube-player-panel .button { min-height: 30px; padding: 0 10px; font-size: .7rem; }
+.roll-youtube-player-host { height: 210px; min-height: 200px; background: #000; }
+.roll-youtube-player-host iframe { display: block; width: 100%; height: 100%; min-height: 200px; border: 0; }
+#roll-youtube-status { margin: 10px 0; font-size: .72rem; line-height: 1.55; }
+#roll-youtube-status[data-error="true"] { color: #ef8c98; }
+#roll-youtube-open { color: var(--theme-accent-dfca86, #dfca86); font-size: .7rem; }
+@media(max-height: 480px) { .roll-youtube-player-panel { max-height: calc(100dvh - 24px); overflow-y: auto; bottom: 12px; } }
+
+</style>
 </head>
   <body class="slot-gate-open">
     <a class="skip-link" href="#main-content">Pular para o conteúdo</a>
@@ -10991,12 +11075,14 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
             </section>
             <section class="settings-section" aria-labelledby="settings-sounds-title">
               <h3 id="settings-sounds-title">Sons das suas rolagens</h3>
-              <p class="settings-section-copy">Escolha um áudio para cada resultado. MP3, WAV, OGG, WebM ou M4A · até 20 MB por áudio. Depois clique em “Salvar configurações”. Os participantes da mesma Campanha podem ouvi-lo nas suas rolagens públicas. O som de Dano Crítico toca quando o crítico é ativado na rolagem de dano.</p>
+              <p class="settings-section-copy">Escolha um áudio para cada resultado. Carregue a música inteira por arquivo ou cole um link do YouTube, escolha o início e o fim e teste o trecho antes de usá-lo. Arquivos completos: até 100 MB; trecho salvo: até 20 MB. Depois clique em “Salvar configurações”. Os participantes da mesma Campanha podem ouvi-lo nas suas rolagens públicas. O som de Dano Crítico toca quando o crítico é ativado na rolagem de dano.</p>
               <div class="settings-sound-list">
                 <div class="settings-sound-row" data-outcome="extreme">
                   <div class="settings-sound-copy"><strong>Sucesso Extremo</strong><output id="settings-sound-name-extreme">Som padrão</output></div>
                   <div class="settings-sound-actions">
                     <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-extreme" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Sucesso Extremo" aria-describedby="settings-sound-status-extreme" /></label>
+                    <button class="dialog-button" type="button" data-youtube-audio-outcome="extreme">YouTube</button>
+                    <button class="dialog-button" type="button" data-edit-audio-outcome="extreme" disabled>Editar trecho</button>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="extreme"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="extreme">Padrão</button>
                   </div>
@@ -11006,6 +11092,8 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                   <div class="settings-sound-copy"><strong>Falha</strong><output id="settings-sound-name-failure">Som padrão</output></div>
                   <div class="settings-sound-actions">
                     <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-failure" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha" aria-describedby="settings-sound-status-failure" /></label>
+                    <button class="dialog-button" type="button" data-youtube-audio-outcome="failure">YouTube</button>
+                    <button class="dialog-button" type="button" data-edit-audio-outcome="failure" disabled>Editar trecho</button>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="failure"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="failure">Padrão</button>
                   </div>
@@ -11015,6 +11103,8 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                   <div class="settings-sound-copy"><strong>Falha Crítica</strong><output id="settings-sound-name-critical-failure">Som padrão</output></div>
                   <div class="settings-sound-actions">
                     <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-critical-failure" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha Crítica" aria-describedby="settings-sound-status-critical-failure" /></label>
+                    <button class="dialog-button" type="button" data-youtube-audio-outcome="criticalFailure">YouTube</button>
+                    <button class="dialog-button" type="button" data-edit-audio-outcome="criticalFailure" disabled>Editar trecho</button>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="criticalFailure"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="criticalFailure">Padrão</button>
                   </div>
@@ -11024,6 +11114,8 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                   <div class="settings-sound-copy"><strong>Dano Crítico</strong><output id="settings-sound-name-critical-damage">Som padrão</output></div>
                   <div class="settings-sound-actions">
                     <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-critical-damage" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Dano Crítico" aria-describedby="settings-sound-status-critical-damage" /></label>
+                    <button class="dialog-button" type="button" data-youtube-audio-outcome="criticalDamage">YouTube</button>
+                    <button class="dialog-button" type="button" data-edit-audio-outcome="criticalDamage" disabled>Editar trecho</button>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="criticalDamage"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="criticalDamage">Padrão</button>
                   </div>
@@ -11046,6 +11138,57 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
             <button id="account-settings-save" class="dialog-button is-primary" type="submit">Salvar configurações</button>
           </footer>
         </form>
+      </section>
+    </div>
+
+    <div id="audio-clip-modal" class="ability-modal utility-modal" hidden>
+      <div class="roll-backdrop" data-close-audio-clip aria-hidden="true"></div>
+      <section id="audio-clip-dialog" class="ability-dialog" role="dialog" aria-modal="true" aria-labelledby="audio-clip-title" aria-describedby="audio-clip-description" tabindex="-1">
+        <header class="ability-dialog-head">
+          <div>
+            <p class="eyebrow" id="audio-clip-outcome">Som da rolagem</p>
+            <h2 id="audio-clip-title">Escolher trecho</h2>
+            <p id="audio-clip-description">Escolha a música e marque o início e o fim do trecho que quer ouvir.</p>
+          </div>
+          <button class="result-close" type="button" data-close-audio-clip aria-label="Fechar editor de áudio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg></button>
+        </header>
+        <div class="audio-clip-content">
+          <div class="audio-clip-tabs" role="tablist" aria-label="Origem do áudio">
+            <button id="audio-clip-file-tab" class="audio-clip-tab" type="button" role="tab" data-audio-clip-source="file" aria-controls="audio-clip-file-panel" aria-selected="true" tabindex="0"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2.5h7l3 3v12H5Z M12 2.5v3h3 M8 10v4.5 M8 10l5-1v4.5 M8 14.5c0 .6-.7 1-1.5 1S5 15.1 5 14.5s.7-1 1.5-1 1.5.4 1.5 1Z M13 13.5c0 .6-.7 1-1.5 1s-1.5-.4-1.5-1 .7-1 1.5-1 1.5.4 1.5 1Z"></path></svg>Arquivo</button>
+            <button id="audio-clip-youtube-tab" class="audio-clip-tab" type="button" role="tab" data-audio-clip-source="youtube" aria-controls="audio-clip-youtube-panel" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="4.5" width="16" height="11" rx="3"></rect><path d="m8 7 5 3-5 3Z"></path></svg>Link do YouTube</button>
+          </div>
+          <div id="audio-clip-file-panel" class="audio-clip-source" role="tabpanel" aria-labelledby="audio-clip-file-tab">
+            <label class="dialog-button settings-file-button audio-clip-file-button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3 M6.5 6.5 10 3l3.5 3.5 M3 12v4.5h14V12"></path></svg>Escolher arquivo<input id="audio-clip-file" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher arquivo para recortar" /></label>
+            <p class="audio-clip-hint">Carregue a música inteira (até 100 MB e 15 minutos). Apenas o trecho será salvo, com limite de 20 MB.</p>
+          </div>
+          <div id="audio-clip-youtube-panel" class="audio-clip-source" role="tabpanel" aria-labelledby="audio-clip-youtube-tab" hidden>
+            <div class="audio-clip-link-row">
+              <label class="settings-field"><span>Link da música ou vídeo</span><input id="audio-clip-youtube-url" type="url" inputmode="url" autocomplete="off" placeholder="https://www.youtube.com/watch?v=…" /></label>
+              <button id="audio-clip-load-youtube" class="dialog-button" type="button">Carregar</button>
+            </div>
+            <p class="audio-clip-hint">Use o vídeo para encontrar o trecho que quer ouvir.</p>
+          </div>
+          <section class="audio-clip-player" aria-label="Prévia do áudio">
+            <div class="audio-clip-source-summary"><strong id="audio-clip-source-name">Nenhum áudio escolhido</strong><output id="audio-clip-source-duration">—</output></div>
+            <div id="audio-clip-empty" class="audio-clip-empty"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 21V8l13-3v14 M12 21c0 2-2 3.5-4.5 3.5S3 23 3 21s2-3.5 4.5-3.5S12 19 12 21Z M25 19c0 2-2 3.5-4.5 3.5S16 21 16 19s2-3.5 4.5-3.5S25 17 25 19Z"></path></svg><span>Escolha um arquivo ou cole um link para começar.</span></div>
+            <audio id="audio-clip-audio" controls preload="metadata" hidden aria-label="Áudio original"></audio>
+            <div id="audio-clip-youtube-stage" hidden><div id="audio-clip-youtube-player"></div><a id="audio-clip-youtube-open" target="_blank" rel="noopener noreferrer">Abrir no YouTube</a></div>
+          </section>
+          <section class="audio-clip-selection" aria-labelledby="audio-clip-selection-title">
+            <div class="audio-clip-selection-head"><h3 id="audio-clip-selection-title">Seu trecho</h3><output id="audio-clip-duration">0:00 selecionados</output></div>
+            <div class="audio-clip-time-grid">
+              <label class="audio-clip-time"><span>Início</span><input id="audio-clip-start" type="text" inputmode="decimal" autocomplete="off" value="0:00" placeholder="0:00" aria-describedby="audio-clip-time-help" disabled /><input id="audio-clip-start-range" type="range" min="0" max="1" step="0.1" value="0" aria-label="Início do trecho em segundos" disabled /></label>
+              <label class="audio-clip-time"><span>Fim</span><input id="audio-clip-end" type="text" inputmode="decimal" autocomplete="off" value="0:00" placeholder="0:00" aria-describedby="audio-clip-time-help" disabled /><input id="audio-clip-end-range" type="range" min="0" max="1" step="0.1" value="0" aria-label="Fim do trecho em segundos" disabled /></label>
+            </div>
+            <p id="audio-clip-time-help" class="audio-clip-hint">Arraste as barras ou digite os tempos, como 1:30.</p>
+            <div class="audio-clip-preview-actions"><button id="audio-clip-preview" class="dialog-button settings-preview-button" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir trecho</button><button id="audio-clip-stop" class="dialog-button settings-preview-button" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="4" width="8" height="8"></rect></svg>Parar</button></div>
+          </section>
+          <p id="audio-clip-status" class="audio-clip-status" data-state="idle" role="status" aria-live="polite" aria-atomic="true">O áudio atual será mantido até você aplicar o novo trecho.</p>
+        </div>
+        <footer class="ability-dialog-footer">
+          <button class="dialog-button" type="button" data-close-audio-clip>Cancelar</button>
+          <button id="audio-clip-apply" class="dialog-button is-primary" type="button" disabled>Usar este trecho</button>
+        </footer>
       </section>
     </div>
 
@@ -19455,6 +19598,7 @@ function syncModalLock() {
     sheetTransferModal,
     document.querySelector("#account-settings-modal"),
     document.querySelector("#roll-history-modal"),
+    document.querySelector("#audio-clip-modal"),
   ]
     .some((modal) => !modal.hidden);
   if (hasOpenModal && !themeModal.hidden) closeThemeEditor({ restoreFocus: false });
@@ -21795,6 +21939,7 @@ window.addEventListener("resize", () => {
 });
 
 document.addEventListener("keydown", (event) => {
+  if (document.querySelector("#audio-clip-modal")?.hidden === false) return;
   if (event.key === "Escape" && !systemPromptModal.hidden) {
     closeSystemPrompt(false);
   } else if (event.key === "Escape" && !themeModal.hidden) {
@@ -25943,6 +26088,10 @@ function normalizeRollSoundRef(raw) {
   const uid = String(raw.uid || "");
   const id = String(raw.id || "");
   if (!/^[A-Za-z0-9_-]{1,128}$/.test(uid) || !/^[A-Za-z0-9_-]{1,128}$/.test(id)) return null;
+  if (raw.kind === "youtube" && raw.mimeType === "video/youtube") {
+    const clip = normalizeYoutubeRollClip(raw);
+    return clip ? { uid, id, ...clip } : null;
+  }
   if (!ROLL_AUDIO_TYPES.has(raw.mimeType)) return null;
   return { uid, id, name: String(raw.name || "Áudio").slice(0, 120), mimeType: raw.mimeType };
 }
@@ -26010,6 +26159,8 @@ function setRollFeatureStatus(element, message = "", error = false) {
 
 function resetAccountRollSession() {
   accountRollEpoch += 1;
+  closeAudioClipEditor({ restoreSettings: false });
+  stopYoutubeRollPlayer();
   startupCreateBusy = false;
   firebaseUi.startupCreateForm.hidden = true;
   firebaseUi.startupCreateButton.hidden = true;
@@ -26500,6 +26651,7 @@ function queuePendingOutcomeSound(item) {
 }
 
 function reportOutcomeAudioError(error) {
+  if (error?.name === "AbortError") return;
   const message = error?.name === "NotAllowedError"
     ? "O navegador bloqueou o áudio. Clique em “Ativar sons” para ouvir as rolagens."
     : error?.name === "NotSupportedError"
@@ -26586,7 +26738,7 @@ async function decodeRollAudio(source, ref, audioContext) {
   }
 }
 
-function playBufferedOutcomeSound(buffer, volume, audioContext) {
+function playBufferedOutcomeSound(buffer, volume, audioContext, offset = 0, duration = null) {
   const source = audioContext.createBufferSource();
   const gain = audioContext.createGain();
   source.buffer = buffer;
@@ -26602,7 +26754,7 @@ function playBufferedOutcomeSound(buffer, volume, audioContext) {
   const playback = { pause: () => { try { source.stop(); } finally { finish(); } } };
   source.onended = finish;
   activeOutcomeAudio.add(playback);
-  try { source.start(); } catch (error) { finish(); throw error; }
+  try { if (duration == null) source.start(); else source.start(0, offset, duration); } catch (error) { finish(); throw error; }
   return playback;
 }
 
@@ -26610,6 +26762,12 @@ async function playOutcomeSound(key, ref, volume, localSource = "", canPlay = ()
   volume = clampRollVolume(volume, 0);
   if (!ROLL_SOUND_KEYS.includes(key) || volume === 0 || !canPlay()) return;
   const epoch = accountRollEpoch;
+  const youtubeClip = localSource?.kind === "youtube" ? normalizeYoutubeRollClip(localSource) : ref?.kind === "youtube" ? await readSharedYoutubeRollClip(ref) : null;
+  if (youtubeClip) {
+    if (epoch !== accountRollEpoch || !canPlay()) return;
+    await playYoutubeOutcomeClip(youtubeClip, volume, () => epoch === accountRollEpoch && canPlay());
+    return;
+  }
   let audioContext;
   try { audioContext = await unlockOutcomeAudio(); } catch (error) {
     if (error?.name === "NotAllowedError" && epoch === accountRollEpoch && canPlay()) queuePendingOutcomeSound({ key, ref, volume, localSource, canPlay, epoch });
@@ -26673,6 +26831,7 @@ async function stageRollSound(key, file) {
 }
 
 async function uploadRollSound(clip, user, onProgress = () => {}) {
+  if (clip?.kind === "youtube") return uploadYoutubeRollSound(clip, user, onProgress);
   const data = clip.data;
   if (typeof data !== "string" || !data.length || data.length % 4 || data.length > 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3) || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) throw new Error("O áudio é inválido ou ultrapassa o limite de 20 MB.");
   const byteSize = data.length * 3 / 4 - (data.endsWith("==") ? 2 : data.endsWith("=") ? 1 : 0);
@@ -26727,26 +26886,17 @@ function audioAdditionErrorMessage(error) {
 
 async function handleSettingsSoundSelection(key, input) {
   const file = input.files?.[0];
-  const draft = accountSettingsDraft;
-  if (!file || !draft || settingsBusy) return;
-  setSettingsSoundFeedback(key, "loading", `Carregando “${file.name}”…`);
-  try {
-    const loaded = await readSettingsMedia(() => stageRollSound(key, file));
-    if (!loaded || accountSettingsDraft !== draft || input.files?.[0] !== file) return;
-    setSettingsSoundFeedback(key, "selected", "Áudio carregado! Clique em “Ouvir” para testar e em “Salvar configurações” para adicioná-lo.");
-    setRollFeatureStatus(rollAccountUi.settingsStatus, "Áudio carregado. Falta salvar as configurações para usar o som nas rolagens.");
-  } catch (error) {
-    if (accountSettingsDraft !== draft || input.files?.[0] !== file) return;
-    input.value = "";
-    const message = `Áudio não adicionado: ${audioAdditionErrorMessage(error)}`;
-    setSettingsSoundFeedback(key, "error", message);
-    setRollFeatureStatus(rollAccountUi.settingsStatus, message, true);
-  }
+  if (!file || !accountSettingsDraft || settingsBusy) return;
+  setSettingsSoundFeedback(key, "loading", "Escolha o início e o fim do áudio no editor de trecho.");
+  input.value = "";
+  await openAudioClipEditor(key, { file });
 }
 
 function renderSettingsSoundNames() {
   ROLL_SOUND_KEYS.forEach((key) => {
     document.querySelector(`#settings-sound-name-${settingsSoundFieldKey(key)}`).textContent = stagedRollSounds[key]?.name || accountSettingsDraft?.sounds[key]?.name || "Som padrão";
+    const edit = document.querySelector(`[data-edit-audio-outcome="${key}"]`);
+    if (edit) edit.disabled = settingsBusy || !Boolean(stagedRollSounds[key] || accountSettingsDraft?.sounds[key]);
   });
 }
 
@@ -26807,6 +26957,8 @@ function openAccountSettings() {
 
 function closeAccountSettings() {
   if (settingsBusy) return;
+  closeAudioClipEditor({ restoreSettings: false });
+  stopYoutubeRollPlayer();
   rollAccountUi.settingsModal.hidden = true;
   accountSettingsDraft = null; stagedRollSounds = {};
   syncModalLock(); firebaseUi.button.focus();
@@ -26814,6 +26966,10 @@ function closeAccountSettings() {
 
 function updateSettingsFormAvailability() {
   rollAccountUi.settingsForm.querySelectorAll("input, button").forEach((element) => { element.disabled = settingsBusy; });
+  document.querySelectorAll("[data-edit-audio-outcome]").forEach((button) => {
+    const key = button.dataset.editAudioOutcome;
+    button.disabled = settingsBusy || !Boolean(stagedRollSounds[key] || accountSettingsDraft?.sounds[key]);
+  });
   rollAccountUi.save.disabled = settingsBusy || pendingSettingsMedia.size > 0;
   rollAccountUi.othersVolume.disabled = settingsBusy || !accountSettingsDraft?.othersEnabled;
   rollAccountUi.playerVolumes.querySelectorAll("input").forEach((element) => { element.disabled = settingsBusy || !accountSettingsDraft?.othersEnabled; });
@@ -26877,12 +27033,13 @@ async function saveAccountSettings(event) {
     const settings = normalizeAccountSettings({ ...accountSettingsDraft, nickname, hideRolls: currentAccountSettings.hideRolls });
     for (const key of pendingSoundKeys) {
       uploadingSoundKey = key;
-      setSettingsSoundFeedback(key, "uploading", "Enviando áudio para sua conta…");
+      const isYoutube = stagedRollSounds[key].kind === "youtube";
+      setSettingsSoundFeedback(key, "uploading", isYoutube ? "Salvando trecho do YouTube…" : "Enviando trecho do áudio para sua conta…");
       settings.sounds[key] = await uploadRollSound(stagedRollSounds[key], user, (progress) => {
-        if (epoch === accountRollEpoch) setSettingsSoundFeedback(key, "uploading", `Enviando áudio para sua conta… ${progress}%`);
+        if (epoch === accountRollEpoch) setSettingsSoundFeedback(key, "uploading", `${isYoutube ? "Salvando trecho do YouTube" : "Enviando trecho do áudio"}… ${progress}%`);
       });
       if (epoch !== accountRollEpoch) return;
-      setSettingsSoundFeedback(key, "uploading", "Arquivo enviado. Finalizando o salvamento…");
+      setSettingsSoundFeedback(key, "uploading", "Trecho preparado. Finalizando o salvamento…");
     }
     uploadingSoundKey = "";
     if (epoch !== accountRollEpoch) return;
@@ -27036,7 +27193,7 @@ document.querySelectorAll("[data-preview-outcome]").forEach((button) => button.a
   const draft = accountSettingsDraft;
   unlockOutcomeAudio().then(() => {
     if (accountSettingsDraft !== draft) return;
-    return playOutcomeSound(key, draft.sounds[key], draft.ownVolume, stagedRollSounds[key]?.source || "");
+    return playOutcomeSound(key, draft.sounds[key], draft.ownVolume, stagedRollSounds[key]?.kind === "youtube" ? stagedRollSounds[key] : stagedRollSounds[key]?.source || "");
   }).catch((error) => {
     if (accountSettingsDraft !== draft) return;
     const message = error?.name === "NotSupportedError"
@@ -27061,15 +27218,832 @@ document.querySelector("#roll-audio-notice-close").addEventListener("click", hid
 document.addEventListener("pointerdown", () => unlockOutcomeAudio().catch(() => {}), { passive: true });
 document.addEventListener("keydown", (event) => {
   if (event.isTrusted && !event.repeat) unlockOutcomeAudio().catch(() => {});
-  const modal = !rollAccountUi.settingsModal.hidden ? rollAccountUi.settingsModal : !rollAccountUi.historyModal.hidden ? rollAccountUi.historyModal : null;
+  const modal = !audioClipUi.modal.hidden ? audioClipUi.modal : !rollAccountUi.settingsModal.hidden ? rollAccountUi.settingsModal : !rollAccountUi.historyModal.hidden ? rollAccountUi.historyModal : null;
   if (!modal) return;
-  if (event.key === "Escape") { event.preventDefault(); modal === rollAccountUi.settingsModal ? closeAccountSettings() : closeRollHistory(); }
+  if (event.key === "Escape") { event.preventDefault(); modal === audioClipUi.modal ? closeAudioClipEditor() : modal === rollAccountUi.settingsModal ? closeAccountSettings() : closeRollHistory(); }
   if (event.key !== "Tab") return;
-  const focusable = [...modal.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex="0"]')].filter((element) => !element.closest("[hidden]"));
+  const focusable = [...modal.querySelectorAll('button:not([disabled]), input:not([disabled]), select:not([disabled]), a[href], iframe, audio[controls], [tabindex="0"]')].filter((element) => !element.closest("[hidden]") && element.tabIndex !== -1);
   const first = focusable[0], last = focusable.at(-1);
   if (event.shiftKey && (document.activeElement === first || document.activeElement === modal.querySelector('[role="dialog"]'))) { event.preventDefault(); last?.focus(); }
   else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
 });
+
+
+// Files are decoded locally; only the selected WAV segment is staged for saving.
+const MAX_AUDIO_CLIP_SOURCE_BYTES = 100000000;
+const MAX_AUDIO_CLIP_SOURCE_SECONDS = 15 * 60;
+const MAX_AUDIO_CLIP_DECODE_BYTES = 256 * 1024 * 1024;
+
+function parseAudioClipTime(value) {
+  if (typeof value === "number") return Number.isFinite(value) && value >= 0 ? value : null;
+  if (typeof value !== "string") return null;
+  const text = value.trim().replace(",", ".");
+  if (!text || !/^\d+(?::\d{1,2}){0,2}(?:\.\d+)?$/.test(text)) return null;
+  const pieces = text.split(":");
+  if (pieces.length > 1 && pieces.slice(1).some((part) => Number(part) >= 60)) return null;
+  const seconds = pieces.reduce((total, part) => total * 60 + Number(part), 0);
+  return Number.isFinite(seconds) ? seconds : null;
+}
+
+function formatAudioClipTime(value) {
+  const seconds = Number(value);
+  if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
+  const milliseconds = Math.round(seconds * 1000);
+  const totalSeconds = Math.floor(milliseconds / 1000);
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor(totalSeconds / 60) % 60;
+  const wholeSeconds = totalSeconds % 60;
+  const fraction = milliseconds % 1000;
+  const suffix = fraction ? `.${String(fraction).padStart(3, "0").replace(/0+$/, "")}` : "";
+  return `${hours ? `${hours}:${String(minutes).padStart(2, "0")}` : Math.floor(totalSeconds / 60)}:${String(wholeSeconds).padStart(2, "0")}${suffix}`;
+}
+
+function audioClipOutputChannels(numberOfChannels) {
+  return Number(numberOfChannels) === 1 ? 1 : 2;
+}
+
+function validateAudioClipRange(startValue, endValue, totalDuration, options = {}) {
+  const start = parseAudioClipTime(startValue);
+  let end = parseAudioClipTime(endValue);
+  const total = Number(totalDuration);
+  // Inputs show milliseconds; keep a rounded-up whole-file endpoint inside its real buffer.
+  if (end != null && Number.isFinite(total) && end > total && end - total <= .000501) end = total;
+  const sampleRate = Number(options.sampleRate || 44100);
+  const channels = audioClipOutputChannels(options.channels || 2);
+  const maxBytes = options.maxBytes ?? MAX_ROLL_SOUND_BYTES;
+  const result = { ok: false, start, end, duration: end == null || start == null ? 0 : end - start, error: "" };
+  if (start == null || end == null) result.error = "Informe os tempos em segundos ou no formato 0:00.";
+  else if (!Number.isFinite(total) || total <= 0) result.error = "A duração deste áudio não está disponível.";
+  else if (end <= start) result.error = "O fim do trecho precisa ser depois do início.";
+  else if (start >= total || end > total) result.error = "O trecho precisa ficar dentro da duração do áudio.";
+  else if (!Number.isFinite(sampleRate) || sampleRate < 8000 || sampleRate > 384000) result.error = "A taxa de áudio deste arquivo não é compatível.";
+  if (result.error) return result;
+  const totalFrames = Number.isInteger(options.frames) ? options.frames : Math.round(total * sampleRate);
+  const frameStart = Math.max(0, Math.min(totalFrames, Math.round(start * sampleRate)));
+  const frameEnd = Math.max(0, Math.min(totalFrames, Math.round(end * sampleRate)));
+  const frameCount = frameEnd - frameStart;
+  const byteSize = 44 + frameCount * channels * 2;
+  Object.assign(result, { frameStart, frameEnd, frameCount, byteSize, channels, sampleRate });
+  if (frameCount < 1) result.error = "Escolha um trecho um pouco maior.";
+  else if (byteSize > maxBytes) {
+    const maxSeconds = Math.floor((maxBytes - 44) / (channels * 2)) / sampleRate;
+    result.error = `O trecho precisa ter até ${formatAudioClipTime(maxSeconds)} para caber no limite de 20 MB.`;
+  }
+  result.ok = !result.error;
+  return result;
+}
+
+function encodeAudioClipWav(buffer, start, end) {
+  if (!buffer || typeof buffer.getChannelData !== "function" || !Number.isInteger(buffer.numberOfChannels) || buffer.numberOfChannels < 1 || buffer.numberOfChannels > 32 || !Number.isInteger(buffer.length)) {
+    throw new Error("Não foi possível ler os canais deste áudio.");
+  }
+  const range = validateAudioClipRange(start, end, buffer.duration, { sampleRate: buffer.sampleRate, channels: buffer.numberOfChannels, frames: buffer.length });
+  if (!range.ok) throw new Error(range.error);
+  const samples = Array.from({ length: buffer.numberOfChannels }, (_, index) => buffer.getChannelData(index));
+  if (samples.some((channel) => channel.length < range.frameEnd)) throw new Error("O arquivo de áudio está incompleto.");
+  const data = new ArrayBuffer(range.byteSize);
+  const view = new DataView(data);
+  const writeText = (offset, value) => [...value].forEach((character, index) => view.setUint8(offset + index, character.charCodeAt(0)));
+  writeText(0, "RIFF"); view.setUint32(4, range.byteSize - 8, true); writeText(8, "WAVE");
+  writeText(12, "fmt "); view.setUint32(16, 16, true); view.setUint16(20, 1, true);
+  view.setUint16(22, range.channels, true); view.setUint32(24, range.sampleRate, true);
+  view.setUint32(28, range.sampleRate * range.channels * 2, true);
+  view.setUint16(32, range.channels * 2, true); view.setUint16(34, 16, true);
+  writeText(36, "data"); view.setUint32(40, range.byteSize - 44, true);
+  let offset = 44;
+  const extraWeight = buffer.numberOfChannels > 2 ? .5 / (buffer.numberOfChannels - 2) : 0;
+  for (let frame = range.frameStart; frame < range.frameEnd; frame += 1) {
+    let extra = 0;
+    if (extraWeight) for (let channel = 2; channel < samples.length; channel += 1) extra += (Number.isFinite(samples[channel][frame]) ? samples[channel][frame] : 0) * extraWeight;
+    for (let channel = 0; channel < range.channels; channel += 1) {
+      let sample = Number.isFinite(samples[channel][frame]) ? samples[channel][frame] : 0;
+      if (extraWeight) sample = sample * .5 + extra;
+      sample = Math.max(-1, Math.min(1, sample));
+      view.setInt16(offset, Math.round(sample * (sample < 0 ? 32768 : 32767)), true);
+      offset += 2;
+    }
+  }
+  return new Blob([data], { type: "audio/wav" });
+}
+
+function audioClipAbortError() {
+  return Object.assign(new Error("A seleção do áudio foi cancelada."), { name: "AbortError" });
+}
+
+function awaitAudioClipOperation(operation, signal, timeoutMs, timeoutMessage) {
+  return new Promise((resolve, reject) => {
+    if (signal?.aborted) { reject(audioClipAbortError()); return; }
+    let settled = false;
+    const finish = (action, result) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      signal?.removeEventListener("abort", abort);
+      action(result);
+    };
+    const abort = () => finish(reject, audioClipAbortError());
+    const timer = setTimeout(() => finish(reject, new Error(timeoutMessage)), timeoutMs);
+    signal?.addEventListener("abort", abort, { once: true });
+    Promise.resolve(operation).then((result) => finish(resolve, result), (error) => finish(reject, error));
+  });
+}
+
+async function readAudioClipMetadata(file, { signal } = {}) {
+  const source = URL.createObjectURL(file);
+  const audio = new Audio();
+  audio.preload = "metadata";
+  try {
+    const ready = new Promise((resolve, reject) => {
+      audio.onloadedmetadata = () => {
+        if (!Number.isFinite(audio.duration) || audio.duration <= 0) reject(new Error("Não foi possível descobrir a duração deste áudio. Tente um MP3 ou WAV."));
+        else resolve(audio.duration);
+      };
+      audio.onerror = () => reject(new Error("Não foi possível abrir este áudio. Tente um MP3 ou WAV."));
+      audio.src = source;
+      audio.load();
+    });
+    return await awaitAudioClipOperation(ready, signal, 30000, "O arquivo demorou demais para abrir. Tente um MP3 ou WAV.");
+  } finally {
+    audio.onloadedmetadata = audio.onerror = null;
+    audio.pause(); audio.removeAttribute("src"); audio.load();
+    URL.revokeObjectURL(source);
+  }
+}
+
+async function decodeAudioClipFile(file, { signal, isCurrent = () => true } = {}) {
+  const mimeType = getRollSoundMimeType(file);
+  if (!file || !ROLL_AUDIO_TYPES.has(mimeType)) throw new Error("Escolha um áudio MP3, WAV, OGG, WebM ou M4A.");
+  if (!file.size || file.size > MAX_AUDIO_CLIP_SOURCE_BYTES) throw new Error("O arquivo completo precisa ter até 100 MB.");
+  if (!isCurrent() || signal?.aborted) return null;
+  const duration = await readAudioClipMetadata(file, { signal });
+  if (!isCurrent() || signal?.aborted) return null;
+  if (duration > MAX_AUDIO_CLIP_SOURCE_SECONDS) throw new Error("Escolha um arquivo com até 15 minutos para recortar o trecho.");
+  const AudioContextApi = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextApi) throw new Error("Este navegador não consegue recortar áudio. Tente uma versão recente do Chrome, Edge, Firefox ou Safari.");
+  let context;
+  try {
+    try { context = new AudioContextApi({ sampleRate: 44100 }); }
+    catch { context = new AudioContextApi(); }
+    if (duration * context.sampleRate * 2 * 4 > MAX_AUDIO_CLIP_DECODE_BYTES) throw new Error("O arquivo é longo demais para recortar neste navegador. Escolha uma versão mais curta.");
+    const bytes = await awaitAudioClipOperation(file.arrayBuffer(), signal, 30000, "Não foi possível ler o áudio a tempo. Escolha o arquivo novamente.");
+    if (!isCurrent() || signal?.aborted) return null;
+    let buffer;
+    try {
+      buffer = await awaitAudioClipOperation(context.decodeAudioData(bytes), signal, 90000, "Não foi possível preparar o áudio a tempo. Tente um arquivo menor.");
+    } catch (error) {
+      if (error?.name === "AbortError") throw error;
+      throw new Error(error?.name === "EncodingError" || error?.name === "NotSupportedError" ? "Não foi possível decodificar este áudio. Tente um MP3 ou WAV." : error?.message || "Não foi possível preparar este áudio.");
+    }
+    if (!isCurrent() || signal?.aborted) return null;
+    if (!Number.isFinite(buffer.duration) || buffer.duration <= 0 || buffer.duration > MAX_AUDIO_CLIP_SOURCE_SECONDS || buffer.length * buffer.numberOfChannels * 4 > MAX_AUDIO_CLIP_DECODE_BYTES) throw new Error("O áudio ocupa memória demais para recortar. Escolha um arquivo menor.");
+    return { buffer, name: String(file.name || "Áudio").slice(0, 120), mimeType, duration: buffer.duration, sourceBytes: file.size };
+  } finally {
+    if (context && context.state !== "closed") await context.close().catch(() => {});
+  }
+}
+
+function audioClipFileName(name, start, end) {
+  const base = String(name || "Áudio").replace(/\.[^.]+$/, "").slice(0, 72);
+  return `${base} (${formatAudioClipTime(start)}–${formatAudioClipTime(end)}).wav`.slice(0, 120);
+}
+
+
+// O trecho do YouTube usa o player oficial, sem baixar ou separar o áudio.
+const MAX_YOUTUBE_ROLL_TIME = 86400;
+const MAX_YOUTUBE_ROLL_CLIP = 600;
+let youtubeRollApiPromise = null;
+let youtubeRollPlayer = null;
+let youtubeRollSession = null;
+let youtubeRollRequestVersion = 0;
+let youtubeRollFrameVersion = 0;
+
+function parseYoutubeRollTime(value) {
+  const text = String(value ?? "").trim().toLowerCase();
+  if (!text) return null;
+  let seconds;
+  if (/^\d+(?:\.\d+)?s?$/.test(text)) seconds = Number(text.replace(/s$/, ""));
+  else if (/^\d+(?::\d{1,2}){1,2}(?:\.\d+)?$/.test(text)) {
+    const parts = text.split(":").map(Number);
+    if (parts.slice(1).some((part) => part >= 60)) return null;
+    seconds = parts.reduce((total, part) => total * 60 + part, 0);
+  } else {
+    const match = text.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+(?:\.\d+)?)s)?$/);
+    if (!match || !match.slice(1).some((part) => part != null)) return null;
+    seconds = Number(match[1] || 0) * 3600 + Number(match[2] || 0) * 60 + Number(match[3] || 0);
+  }
+  return Number.isFinite(seconds) && seconds >= 0 && seconds <= MAX_YOUTUBE_ROLL_TIME
+    ? Math.round(seconds * 1000) / 1000 : null;
+}
+
+function normalizeYoutubeRollClip(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
+  if (!/^[A-Za-z0-9_-]{11}$/.test(String(raw.videoId || ""))) return null;
+  const startSeconds = Number(raw.startSeconds);
+  const endSeconds = Number(raw.endSeconds);
+  if (typeof raw.startSeconds !== "number" || typeof raw.endSeconds !== "number"
+    || !Number.isFinite(startSeconds) || !Number.isFinite(endSeconds)
+    || startSeconds < 0 || endSeconds > MAX_YOUTUBE_ROLL_TIME || endSeconds <= startSeconds
+    || endSeconds - startSeconds > MAX_YOUTUBE_ROLL_CLIP) return null;
+  const start = Math.round(startSeconds * 1000) / 1000;
+  const end = Math.round(endSeconds * 1000) / 1000;
+  if (end <= start) return null;
+  return {
+    kind: "youtube", mimeType: "video/youtube", videoId: String(raw.videoId),
+    startSeconds: start, endSeconds: end,
+    name: String(raw.name || `YouTube · ${raw.videoId}`).trim().slice(0, 120) || "Trecho do YouTube",
+  };
+}
+
+function parseYoutubeRollLink(value) {
+  let source = String(value || "").trim();
+  if (source.length > 2048) throw new Error("O link do YouTube é muito longo.");
+  if (/^(?:www\.|m\.|music\.)?(?:youtube\.com|youtu\.be)\//i.test(source)) source = `https://${source}`;
+  let url;
+  try { url = new URL(source); } catch { throw new Error("Insira um link de vídeo do YouTube."); }
+  if (!["https:", "http:"].includes(url.protocol) || url.username || url.password || (url.port && !["80", "443"].includes(url.port))) throw new Error("Insira um link de vídeo do YouTube.");
+  const host = url.hostname.toLowerCase();
+  const parts = url.pathname.split("/").filter(Boolean);
+  let videoId = "";
+  if (["youtu.be", "www.youtu.be"].includes(host) && parts.length === 1) videoId = parts[0];
+  else if (["youtube.com", "www.youtube.com", "m.youtube.com", "music.youtube.com", "youtube-nocookie.com", "www.youtube-nocookie.com"].includes(host)) {
+    if (parts.length === 1 && parts[0] === "watch") videoId = url.searchParams.get("v") || "";
+    if (parts.length === 2 && ["shorts", "embed", "v", "live"].includes(parts[0])) videoId = parts[1];
+  }
+  if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) throw new Error("Esse link não contém um vídeo válido do YouTube.");
+  const hash = new URLSearchParams(url.hash.replace(/^#/, ""));
+  const rawStart = url.searchParams.get("start") ?? url.searchParams.get("t") ?? hash.get("t") ?? "0";
+  const startSeconds = parseYoutubeRollTime(rawStart);
+  const rawEnd = url.searchParams.get("end");
+  const endSeconds = rawEnd == null ? Math.min(MAX_YOUTUBE_ROLL_TIME, startSeconds + 10) : parseYoutubeRollTime(rawEnd);
+  if (startSeconds == null || endSeconds == null || endSeconds <= startSeconds) throw new Error("O tempo do link não é válido. Escolha o início e o fim do trecho.");
+  // Um link longo ainda pode ser carregado; o usuário ajusta o intervalo antes de salvar.
+  return { videoId, startSeconds, endSeconds, url: `https://www.youtube.com/watch?v=${videoId}` };
+}
+
+function youtubeRollClipUrl(raw) {
+  const clip = normalizeYoutubeRollClip(raw);
+  return clip ? `https://www.youtube.com/watch?v=${clip.videoId}&t=${Math.floor(clip.startSeconds)}s` : "";
+}
+
+async function uploadYoutubeRollSound(raw, user, onProgress = () => {}) {
+  const clip = normalizeYoutubeRollClip(raw);
+  if (!clip || !user?.uid) throw new Error("Escolha um trecho válido do YouTube, de até 10 minutos.");
+  const ref = firestoreApi.doc(firestoreApi.collection(firestoreDb, "users", user.uid, "rollSounds"));
+  await withCloudTimeout(firestoreApi.setDoc(ref, {
+    ownerUid: user.uid, ...clip, byteSize: 0, chunkCount: 0,
+    createdAt: firestoreApi.serverTimestamp(),
+  }), 20000, "O trecho demorou demais para salvar. Tente novamente.");
+  onProgress(100);
+  return { uid: user.uid, id: ref.id, ...clip };
+}
+
+async function readSharedYoutubeRollClip(raw) {
+  const ref = normalizeRollSoundRef(raw);
+  if (!ref || ref.kind !== "youtube" || !currentFirebaseUser) throw new Error("O trecho do YouTube não está disponível.");
+  const snapshot = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "users", ref.uid, "rollSounds", ref.id));
+  if (!snapshot.exists()) throw new Error("O trecho do YouTube não está mais disponível.");
+  const meta = snapshot.data();
+  const clip = meta.kind === "youtube" && meta.mimeType === "video/youtube" ? normalizeYoutubeRollClip(meta) : null;
+  if (!clip || meta.ownerUid !== ref.uid || meta.byteSize !== 0 || meta.chunkCount !== 0
+    || clip.videoId !== ref.videoId || clip.startSeconds !== ref.startSeconds || clip.endSeconds !== ref.endSeconds) throw new Error("O trecho do YouTube é inválido.");
+  return { uid: ref.uid, id: ref.id, ...clip };
+}
+
+function youtubeRollPlayerError(code) {
+  const local = window.location?.protocol === "file:";
+  const messages = {
+    2: "O YouTube não reconheceu este vídeo ou o tempo selecionado.",
+    5: "O navegador não conseguiu reproduzir este vídeo. Tente outro vídeo ou um arquivo de áudio.",
+    100: "Este vídeo foi removido, é privado ou não está disponível.",
+    101: "O autor não permite reproduzir este vídeo dentro do site. Tente outro vídeo ou um arquivo de áudio.",
+    150: "O autor não permite reproduzir este vídeo dentro do site. Tente outro vídeo ou um arquivo de áudio.",
+    153: local
+      ? "O YouTube pode bloquear a reprodução quando o index.html é aberto como arquivo. Use um arquivo de áudio para tocar o trecho na ficha; o link “Abrir no YouTube” permite conferir o início escolhido."
+      : "O YouTube bloqueou a identificação desta página. Confira as permissões do navegador ou use um arquivo de áudio.",
+  };
+  return Object.assign(new Error(messages[code] || "Não foi possível reproduzir este vídeo do YouTube. Tente um arquivo de áudio."), { name: "YoutubePlaybackError", youtubeCode: code });
+}
+
+function loadYoutubeRollApi() {
+  if (window.YT?.Player) return Promise.resolve(window.YT);
+  if (youtubeRollApiPromise) return youtubeRollApiPromise;
+  const loading = new Promise((resolve, reject) => {
+    const previous = window.onYouTubeIframeAPIReady;
+    let finished = false;
+    const finish = (error) => {
+      if (finished) return;
+      finished = true; clearTimeout(timeout);
+      if (window.onYouTubeIframeAPIReady === ready) window.onYouTubeIframeAPIReady = previous;
+      if (error) reject(error); else resolve(window.YT);
+    };
+    const ready = () => {
+      try { if (typeof previous === "function") previous(); }
+      finally { finish(window.YT?.Player ? null : new Error("O player do YouTube não ficou disponível.")); }
+    };
+    const timeout = setTimeout(() => finish(new Error("O YouTube demorou para responder. Tente novamente ou use um arquivo de áudio.")), 15000);
+    window.onYouTubeIframeAPIReady = ready;
+    let script = document.querySelector("#roll-youtube-api");
+    if (!script) {
+      script = document.createElement("script"); script.id = "roll-youtube-api";
+      script.src = "https://www.youtube.com/iframe_api"; script.async = true;
+      document.head.append(script);
+    }
+    script.addEventListener("error", () => { script.remove(); finish(new Error("Não foi possível carregar o YouTube. Verifique a conexão ou use um arquivo de áudio.")); }, { once: true });
+  });
+  youtubeRollApiPromise = loading;
+  loading.catch(() => { if (youtubeRollApiPromise === loading) youtubeRollApiPromise = null; });
+  return loading;
+}
+
+function ensureYoutubeRollPanel() {
+  let panel = document.querySelector("#roll-youtube-player-panel");
+  if (!panel) {
+    panel = document.createElement("section"); panel.id = "roll-youtube-player-panel";
+    panel.className = "roll-youtube-player-panel"; panel.hidden = true;
+    panel.setAttribute("aria-label", "Trecho do YouTube");
+    const header = document.createElement("div"); header.className = "roll-youtube-player-head";
+    const title = document.createElement("strong"); title.textContent = "Trecho do YouTube";
+    const close = document.createElement("button"); close.type = "button"; close.id = "roll-youtube-close";
+    close.className = "button button-secondary"; close.textContent = "Fechar";
+    const host = document.createElement("div"); host.id = "roll-youtube-player-host"; host.className = "roll-youtube-player-host";
+    const status = document.createElement("p"); status.id = "roll-youtube-status"; status.setAttribute("role", "status");
+    const controls = document.createElement("div"); controls.className = "roll-youtube-player-actions";
+    const replay = document.createElement("button"); replay.type = "button"; replay.id = "roll-youtube-replay";
+    replay.className = "button button-secondary"; replay.textContent = "Reproduzir trecho";
+    const link = document.createElement("a"); link.id = "roll-youtube-open";
+    link.target = "_blank"; link.rel = "noopener noreferrer"; link.textContent = "Abrir no YouTube";
+    header.append(title, close); controls.append(replay, link); panel.append(header, host, status, controls); document.body.append(panel);
+  }
+  if (panel.dataset.bound !== "true") {
+    panel.dataset.bound = "true";
+    document.querySelector("#roll-youtube-close")?.addEventListener("click", () => stopYoutubeRollPlayback({ closePanel: true }));
+    document.querySelector("#roll-youtube-replay")?.addEventListener("click", () => replayYoutubeRollClip());
+  }
+  return panel;
+}
+
+function updateYoutubeRollPanel(clip, message, error = false) {
+  const panel = ensureYoutubeRollPanel(); panel.hidden = false;
+  const status = document.querySelector("#roll-youtube-status");
+  if (status) { status.textContent = message; status.dataset.error = String(error); }
+  const link = document.querySelector("#roll-youtube-open");
+  if (link) link.href = youtubeRollClipUrl(clip);
+}
+
+function stopYoutubeRollPlayback({ closePanel = false, hostId = "" } = {}) {
+  if (hostId && youtubeRollSession?.hostId !== hostId) return;
+  youtubeRollRequestVersion += 1;
+  const session = youtubeRollSession; youtubeRollSession = null;
+  if (session) { clearInterval(session.interval); clearTimeout(session.readyTimeout); session.observer?.disconnect(); session.rejectReady?.(Object.assign(new Error("A reprodução foi interrompida."), { name: "AbortError" })); }
+  const player = youtubeRollPlayer; youtubeRollPlayer = null;
+  if (player) { try { player.stopVideo(); } catch {} try { player.destroy(); } catch {} }
+  if (closePanel) { const panel = document.querySelector("#roll-youtube-player-panel"); if (panel) panel.hidden = true; }
+}
+
+function pauseYoutubeRollPlayback() {
+  try { youtubeRollPlayer?.pauseVideo(); } catch {}
+}
+
+async function startYoutubeRollClip(hostId, raw, volume = .7, options = {}) {
+  const clip = normalizeYoutubeRollClip(raw);
+  if (!clip) throw new Error("Escolha um trecho válido do YouTube, de até 10 minutos.");
+  stopYoutubeRollPlayback({ closePanel: hostId !== "roll-youtube-player-host" });
+  const requestVersion = youtubeRollRequestVersion;
+  const isCurrent = () => requestVersion === youtubeRollRequestVersion
+    && (!options.canPlay || options.canPlay()) && (!options.isCurrent || options.isCurrent());
+  const api = await loadYoutubeRollApi();
+  if (!isCurrent()) return null;
+  const host = document.getElementById(hostId);
+  if (!host || !host.isConnected) return null;
+  const mount = document.createElement("div"); mount.id = `roll-youtube-frame-${++youtubeRollFrameVersion}`;
+  host.replaceChildren(mount);
+  const playerVars = { controls: 1, playsinline: 1, autoplay: 0, rel: 0 };
+  if (["http:", "https:"].includes(window.location?.protocol)) playerVars.origin = window.location.origin;
+  const session = { hostId, clip, volume: clampRollVolume(volume), options, interval: null, duration: 0, metadataAttempts: 0, readyTimeout: null, rejectReady: null, observer: null };
+  youtubeRollSession = session;
+  const report = (error) => {
+    if (!isCurrent() || youtubeRollSession !== session) return;
+    if (hostId === "roll-youtube-player-host") updateYoutubeRollPanel(clip, error.message, true);
+    options.onError?.(error);
+  };
+  return await new Promise((resolve, reject) => {
+    let settled = false;
+    const finish = (error, player) => {
+      if (settled) return;
+      settled = true; clearTimeout(session.readyTimeout); session.rejectReady = null;
+      if (error) reject(error); else resolve(player);
+    };
+    session.rejectReady = (error) => finish(error);
+    session.readyTimeout = setTimeout(() => {
+      if (!isCurrent()) { finish(Object.assign(new Error("A reprodução foi interrompida."), { name: "AbortError" })); return; }
+      const error = new Error("O vídeo demorou para carregar. Você ainda pode escolher o início e o fim manualmente, ou usar um arquivo de áudio.");
+      report(error); finish(error); stopYoutubeRollPlayback({ hostId });
+    }, 15000);
+    const checkMetadata = (player) => {
+      if (!isCurrent() || youtubeRollSession !== session) return;
+      let duration = 0;
+      try { duration = Number(player.getDuration()); } catch {}
+      if (Number.isFinite(duration) && duration > 0 && duration !== session.duration) { session.duration = duration; options.onDuration?.(duration, player); }
+    };
+    try {
+      const player = new api.Player(mount.id, {
+        width: "100%", height: "100%", videoId: clip.videoId, playerVars,
+        events: {
+          onReady(event) {
+            if (!isCurrent() || youtubeRollSession !== session) { try { event.target.destroy(); } catch {} finish(Object.assign(new Error("A reprodução foi interrompida."), { name: "AbortError" })); return; }
+            const readyPlayer = event.target;
+            youtubeRollPlayer = readyPlayer;
+            const frame = readyPlayer.getIframe?.();
+            frame?.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
+            frame?.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
+            readyPlayer.setVolume(Math.round(session.volume * 100));
+            const params = { videoId: clip.videoId, startSeconds: clip.startSeconds, endSeconds: clip.endSeconds };
+            if (options.autoplay) readyPlayer.loadVideoById(params); else readyPlayer.cueVideoById(params);
+            checkMetadata(readyPlayer); options.onReady?.(readyPlayer, session.duration);
+            session.interval = setInterval(() => {
+              if (!isCurrent() || youtubeRollSession !== session) { stopYoutubeRollPlayback({ hostId }); return; }
+              if (!host.isConnected || host.closest("[hidden]") || document.hidden) { pauseYoutubeRollPlayback(); return; }
+              if (session.metadataAttempts < 60) {
+                session.metadataAttempts += 1; checkMetadata(readyPlayer);
+                if (session.metadataAttempts === 60 && session.duration === 0) options.onMetadataUnavailable?.();
+              }
+              const position = Number(readyPlayer.getCurrentTime?.());
+              const state = readyPlayer.getPlayerState?.();
+              if (Number.isFinite(position)) options.onPosition?.(position, readyPlayer);
+              if (state === 1 && position >= clip.endSeconds) { readyPlayer.pauseVideo(); options.onEnded?.(); }
+            }, 250);
+            if (typeof IntersectionObserver === "function") {
+              session.observer = new IntersectionObserver((entries) => { if (entries.some((entry) => !entry.isIntersecting || entry.intersectionRatio < .5)) pauseYoutubeRollPlayback(); }, { threshold: .5 });
+              session.observer.observe(frame || host);
+            }
+            finish(null, readyPlayer);
+          },
+          onStateChange(event) {
+            if (!isCurrent() || youtubeRollSession !== session) return;
+            if (event.data === 1) {
+              if (document.hidden || host.closest("[hidden]")) { event.target.pauseVideo(); return; }
+              checkMetadata(event.target);
+              if (hostId === "roll-youtube-player-host") updateYoutubeRollPanel(clip, `Reproduzindo ${clip.name}.`);
+            } else if (event.data === 0) options.onEnded?.();
+          },
+          onError(event) {
+            if (!isCurrent() || youtubeRollSession !== session) return;
+            const error = youtubeRollPlayerError(event.data); report(error); finish(error); stopYoutubeRollPlayback({ hostId });
+          },
+          onAutoplayBlocked() { report(Object.assign(new Error("O navegador bloqueou a reprodução do YouTube. Clique no play do vídeo ou em “Reproduzir trecho”."), { name: "NotAllowedError" })); },
+        },
+      });
+      youtubeRollPlayer = player;
+    } catch (error) { report(error); finish(error); }
+  });
+}
+
+function cueYoutubeClipPreview(hostId, clip, options = {}) {
+  return startYoutubeRollClip(hostId, clip, options.volume ?? .7, { ...options, autoplay: false });
+}
+
+function playYoutubeRollClip(clip, volume = .7, options = {}) {
+  const hostId = options.hostId || "roll-youtube-player-host";
+  if (hostId === "roll-youtube-player-host") updateYoutubeRollPanel(clip, "Carregando o trecho do YouTube…");
+  return startYoutubeRollClip(hostId, clip, volume, { ...options, autoplay: true });
+}
+
+function playYoutubeOutcomeClip(clip, volume, canPlay = () => true) {
+  if (!canPlay()) return Promise.resolve(null);
+  return playYoutubeRollClip(clip, volume, { canPlay, onError: reportOutcomeAudioError });
+}
+
+async function previewYoutubeRollClip(clip, volume = .7, options = {}) {
+  const player = await playYoutubeRollClip(clip, volume, options);
+  return player ? { pause: () => { if (youtubeRollPlayer === player) stopYoutubeRollPlayback({ hostId: options.hostId || "roll-youtube-player-host" }); } } : null;
+}
+
+function stopYoutubeRollPlayer() {
+  stopYoutubeRollPlayback({ closePanel: true });
+}
+
+function replayYoutubeRollClip() {
+  const session = youtubeRollSession;
+  if (!session || (session.options.canPlay && !session.options.canPlay()) || (session.options.isCurrent && !session.options.isCurrent())) return;
+  if (youtubeRollPlayer) {
+    youtubeRollPlayer.setVolume(Math.round(session.volume * 100));
+    youtubeRollPlayer.loadVideoById({ videoId: session.clip.videoId, startSeconds: session.clip.startSeconds, endSeconds: session.clip.endSeconds });
+  }
+}
+
+document.addEventListener("visibilitychange", () => { if (document.hidden) pauseYoutubeRollPlayback(); });
+
+
+const audioClipUi = {
+  modal: document.querySelector("#audio-clip-modal"),
+  dialog: document.querySelector("#audio-clip-dialog"),
+  file: document.querySelector("#audio-clip-file"),
+  youtubeUrl: document.querySelector("#audio-clip-youtube-url"),
+  start: document.querySelector("#audio-clip-start"),
+  end: document.querySelector("#audio-clip-end"),
+  startRange: document.querySelector("#audio-clip-start-range"),
+  endRange: document.querySelector("#audio-clip-end-range"),
+  duration: document.querySelector("#audio-clip-duration"),
+  sourceName: document.querySelector("#audio-clip-source-name"),
+  sourceDuration: document.querySelector("#audio-clip-source-duration"),
+  audio: document.querySelector("#audio-clip-audio"),
+  empty: document.querySelector("#audio-clip-empty"),
+  youtubeStage: document.querySelector("#audio-clip-youtube-stage"),
+  status: document.querySelector("#audio-clip-status"),
+  preview: document.querySelector("#audio-clip-preview"),
+  stop: document.querySelector("#audio-clip-stop"),
+  apply: document.querySelector("#audio-clip-apply"),
+};
+let audioClipSession = null;
+
+function isAudioClipSessionCurrent(session) {
+  return Boolean(session) && audioClipSession === session && session.draft === accountSettingsDraft && session.epoch === accountRollEpoch;
+}
+
+function setAudioClipStatus(message, state = "idle") {
+  audioClipUi.status.textContent = message;
+  audioClipUi.status.dataset.state = state;
+  audioClipUi.status.setAttribute("role", state === "error" ? "alert" : "status");
+}
+
+function stopAudioClipPreview() {
+  const session = audioClipSession;
+  if (session) session.previewVersion = (session.previewVersion || 0) + 1;
+  session?.preview?.pause();
+  if (session) session.preview = null;
+  try { session?.player?.pauseVideo(); } catch {}
+  audioClipUi.audio.pause();
+  audioClipUi.stop.disabled = true;
+}
+
+function clearAudioClipSource() {
+  stopAudioClipPreview();
+  const session = audioClipSession;
+  if (!session) return;
+  session.abort?.abort();
+  session.loadVersion += 1;
+  if (session.objectUrl) URL.revokeObjectURL(session.objectUrl);
+  Object.assign(session, { objectUrl: "", buffer: null, file: null, clip: null, duration: 0, player: null, busy: false });
+  audioClipUi.audio.removeAttribute("src"); audioClipUi.audio.load();
+  audioClipUi.audio.hidden = true;
+  audioClipUi.youtubeStage.hidden = true;
+  audioClipUi.empty.hidden = false;
+  audioClipUi.sourceName.textContent = "Nenhum áudio escolhido";
+  audioClipUi.sourceDuration.textContent = "—";
+  stopYoutubeRollPlayer();
+}
+
+function setAudioClipSourceMode(mode) {
+  if (!audioClipSession || !["file", "youtube"].includes(mode)) return;
+  if (audioClipSession.mode !== mode) clearAudioClipSource();
+  audioClipSession.mode = mode;
+  document.querySelectorAll("[data-audio-clip-source]").forEach((tab) => {
+    const selected = tab.dataset.audioClipSource === mode;
+    tab.setAttribute("aria-selected", String(selected)); tab.tabIndex = selected ? 0 : -1;
+  });
+  document.querySelector("#audio-clip-file-panel").hidden = mode !== "file";
+  document.querySelector("#audio-clip-youtube-panel").hidden = mode !== "youtube";
+  syncAudioClipControls();
+}
+
+function getAudioClipSelection(session = audioClipSession) {
+  if (!session?.buffer && !session?.clip) return { ok: false, error: "Escolha um áudio para começar.", duration: 0 };
+  if (session.mode === "file") return validateAudioClipRange(audioClipUi.start.value, audioClipUi.end.value, session.duration, {
+    sampleRate: session.buffer.sampleRate, channels: session.buffer.numberOfChannels, frames: session.buffer.length,
+  });
+  const start = parseAudioClipTime(audioClipUi.start.value), end = parseAudioClipTime(audioClipUi.end.value);
+  const range = validateAudioClipRange(start, end, session.duration || Math.max(start || 0, end || 0) + 1, { maxBytes: Number.MAX_SAFE_INTEGER });
+  if (range.ok && !normalizeYoutubeRollClip({ ...session.clip, startSeconds: start, endSeconds: end })) {
+    range.ok = false; range.error = "Escolha um trecho de até 10 minutos, com início e fim válidos.";
+  }
+  return range;
+}
+
+function syncAudioClipControls({ showError = false } = {}) {
+  const session = audioClipSession;
+  const ready = Boolean(session?.buffer || session?.clip);
+  const busy = Boolean(session?.busy);
+  const range = getAudioClipSelection();
+  [audioClipUi.start, audioClipUi.end, audioClipUi.startRange, audioClipUi.endRange].forEach((input) => { input.disabled = !ready || busy; });
+  [audioClipUi.file, audioClipUi.youtubeUrl, document.querySelector("#audio-clip-load-youtube"), ...document.querySelectorAll("[data-audio-clip-source]")].forEach((input) => { input.disabled = busy; });
+  audioClipUi.apply.disabled = !range.ok || busy;
+  audioClipUi.preview.disabled = !range.ok || busy;
+  audioClipUi.duration.textContent = `${formatAudioClipTime(Math.max(0, range.duration || 0))} selecionados`;
+  const max = session?.duration || Math.max(300, (range.start || 0) + 60, range.end || 0);
+  for (const [slider, seconds] of [[audioClipUi.startRange, range.start], [audioClipUi.endRange, range.end]]) {
+    slider.max = String(max); slider.value = String(seconds || 0);
+    slider.setAttribute("aria-valuetext", formatAudioClipTime(seconds || 0));
+  }
+  audioClipUi.sourceDuration.textContent = session?.duration ? `Total ${formatAudioClipTime(session.duration)}` : ready ? "Duração a confirmar" : "—";
+  if (showError && ready && !range.ok) setAudioClipStatus(range.error, "error");
+  else if (ready && !busy && audioClipUi.status.dataset.state === "error" && range.ok) setAudioClipStatus("Trecho válido. Clique em “Ouvir trecho” para conferir.", "ready");
+}
+
+function setAudioClipRange(start, end) {
+  audioClipUi.start.value = formatAudioClipTime(start);
+  audioClipUi.end.value = formatAudioClipTime(end);
+  syncAudioClipControls();
+}
+
+async function loadAudioClipFile(file, initialRange = null) {
+  const session = audioClipSession;
+  if (!isAudioClipSessionCurrent(session) || !file) return;
+  clearAudioClipSource();
+  session.abort = new AbortController();
+  const version = session.loadVersion;
+  const isCurrent = () => isAudioClipSessionCurrent(session) && session.loadVersion === version;
+  session.busy = true;
+  setAudioClipStatus(`Preparando “${file.name}”…`, "loading");
+  syncAudioClipControls();
+  try {
+    const candidate = await readSettingsMedia(() => decodeAudioClipFile(file, { signal: session.abort.signal, isCurrent }));
+    if (!candidate || !isCurrent()) return;
+    Object.assign(session, candidate, { file, busy: false });
+    session.objectUrl = URL.createObjectURL(file);
+    audioClipUi.audio.src = session.objectUrl; audioClipUi.audio.volume = session.draft.ownVolume;
+    audioClipUi.audio.hidden = false; audioClipUi.empty.hidden = true;
+    audioClipUi.sourceName.textContent = candidate.name;
+    const start = initialRange?.start ?? 0;
+    const end = initialRange?.end ?? Math.min(candidate.duration, 10);
+    setAudioClipRange(Math.min(start, candidate.duration), Math.min(end, candidate.duration));
+    setAudioClipStatus("Música carregada. Escolha o início e o fim; apenas esse trecho será salvo.", "ready");
+  } catch (error) {
+    if (!isCurrent() || error?.name === "AbortError") return;
+    session.busy = false;
+    setAudioClipStatus(audioAdditionErrorMessage(error), "error");
+  } finally { if (isCurrent()) { session.busy = false; syncAudioClipControls(); } }
+}
+
+async function loadAudioClipYoutube(clipToEdit = null) {
+  const session = audioClipSession;
+  if (!isAudioClipSessionCurrent(session)) return;
+  let parsed;
+  try { parsed = clipToEdit || parseYoutubeRollLink(audioClipUi.youtubeUrl.value); }
+  catch (error) { setAudioClipStatus(audioAdditionErrorMessage(error), "error"); audioClipUi.youtubeUrl.focus(); return; }
+  if (!parsed) { setAudioClipStatus("Cole um link válido de uma música ou vídeo do YouTube.", "error"); audioClipUi.youtubeUrl.focus(); return; }
+  const clip = normalizeYoutubeRollClip({ ...parsed, kind: "youtube", mimeType: "video/youtube", name: clipToEdit?.name || "Trecho do YouTube" });
+  if (!clip) { setAudioClipStatus("O link tem tempos inválidos. Escolha um início e um fim com até 10 minutos de intervalo.", "error"); return; }
+  clearAudioClipSource();
+  session.clip = clip;
+  audioClipUi.sourceName.textContent = clip.name;
+  audioClipUi.youtubeStage.hidden = false; audioClipUi.empty.hidden = true;
+  document.querySelector("#audio-clip-youtube-open").href = youtubeRollClipUrl(clip);
+  setAudioClipRange(clip.startSeconds, clip.endSeconds);
+  setAudioClipStatus("Carregando vídeo… Você já pode digitar o início e o fim do trecho.", "loading");
+  const version = session.loadVersion;
+  const canPlay = () => isAudioClipSessionCurrent(session) && session.loadVersion === version && !document.hidden;
+  try {
+    const player = await cueYoutubeClipPreview("audio-clip-youtube-player", clip, {
+      canPlay,
+      volume: session.draft.ownVolume,
+      onReady(player) { if (canPlay()) session.player = player; },
+      onDuration(duration) {
+        if (!canPlay() || !Number.isFinite(duration) || duration <= 0) return;
+        session.duration = duration;
+        if (parseAudioClipTime(audioClipUi.end.value) > duration) audioClipUi.end.value = formatAudioClipTime(duration);
+        syncAudioClipControls({ showError: true });
+        if (getAudioClipSelection().ok) setAudioClipStatus("Vídeo carregado. Escolha o início e o fim e teste o trecho.", "ready");
+      },
+      onError(error) { if (canPlay()) setAudioClipStatus(`${audioAdditionErrorMessage(error)} Você pode escolher os tempos e salvar o link, ou enviar o arquivo da música.`, "error"); },
+    });
+    if (canPlay()) session.player = player;
+  } catch (error) {
+    if (canPlay() && error?.name !== "AbortError") setAudioClipStatus(`${audioAdditionErrorMessage(error)} Você ainda pode definir os tempos e salvar o link.`, "error");
+  }
+}
+
+async function openAudioClipEditor(key, { mode = "file", file = null, editExisting = false } = {}) {
+  if (!ROLL_SOUND_KEYS.includes(key) || !accountSettingsDraft || settingsBusy) return;
+  if (audioClipSession) closeAudioClipEditor({ restoreSettings: false });
+  const session = audioClipSession = { key, draft: accountSettingsDraft, epoch: accountRollEpoch, mode, loadVersion: 0, busy: false, opener: document.activeElement };
+  audioClipUi.file.value = ""; audioClipUi.youtubeUrl.value = "";
+  audioClipUi.start.value = "0:00"; audioClipUi.end.value = "0:00";
+  document.querySelector("#audio-clip-outcome").textContent = document.querySelector(`[data-outcome="${key}"] strong`)?.textContent || "Som da rolagem";
+  rollAccountUi.settingsModal.hidden = true;
+  audioClipUi.modal.hidden = false;
+  setAudioClipSourceMode(mode); clearAudioClipSource();
+  setAudioClipStatus("O áudio atual será mantido até você aplicar o novo trecho.");
+  syncModalLock(); audioClipUi.dialog.focus();
+  if (file) { await loadAudioClipFile(file); return; }
+  if (!editExisting) { (mode === "youtube" ? audioClipUi.youtubeUrl : audioClipUi.file).focus(); return; }
+  const staged = stagedRollSounds[key], ref = session.draft.sounds[key];
+  const existing = staged || ref;
+  if (existing?.kind === "youtube") {
+    setAudioClipSourceMode("youtube");
+    audioClipUi.youtubeUrl.value = `https://www.youtube.com/watch?v=${existing.videoId}`;
+    await loadAudioClipYoutube(existing); return;
+  }
+  if (staged?.sourceFile) { await loadAudioClipFile(staged.sourceFile, staged.selectedRange); return; }
+  if (!staged?.source && !ref) return;
+  session.busy = true; syncAudioClipControls(); setAudioClipStatus("Carregando seu áudio salvo…", "loading");
+  try {
+    const source = staged?.source || await readSharedRollAudio(ref);
+    if (!isAudioClipSessionCurrent(session)) return;
+    const response = await fetch(source), blob = await response.blob();
+    if (!isAudioClipSessionCurrent(session)) return;
+    const savedFile = new File([blob], existing.name || "Áudio.wav", { type: existing.mimeType });
+    await loadAudioClipFile(savedFile, { start: 0, end: Number.MAX_SAFE_INTEGER });
+  } catch (error) { if (isAudioClipSessionCurrent(session)) { session.busy = false; setAudioClipStatus(audioAdditionErrorMessage(error), "error"); syncAudioClipControls(); } }
+}
+
+function closeAudioClipEditor({ restoreSettings = true, applied = false } = {}) {
+  const session = audioClipSession;
+  if (!session) return;
+  settingsSoundReadVersions[session.key] = (settingsSoundReadVersions[session.key] || 0) + 1;
+  clearAudioClipSource(); audioClipSession = null;
+  audioClipUi.modal.hidden = true;
+  if (restoreSettings && session.draft === accountSettingsDraft) {
+    rollAccountUi.settingsModal.hidden = false;
+    if (!applied) {
+      const staged = stagedRollSounds[session.key], saved = session.draft.sounds[session.key];
+      setSettingsSoundFeedback(session.key, staged ? "selected" : saved ? "saved" : "default",
+        staged ? "O trecho anterior foi mantido. Salve as configurações para confirmar." : saved ? "Seu som salvo foi mantido." : "Som padrão ativo.");
+    }
+    updateSettingsFormAvailability();
+    (session.opener?.isConnected ? session.opener : rollAccountUi.settingsDialog).focus();
+  }
+  syncModalLock();
+}
+
+async function previewAudioClipSelection() {
+  const session = audioClipSession, range = getAudioClipSelection();
+  if (!isAudioClipSessionCurrent(session) || !range.ok || session.busy) return;
+  stopAudioClipPreview();
+  const previewVersion = session.previewVersion;
+  const canPlay = () => isAudioClipSessionCurrent(session) && session.previewVersion === previewVersion && !document.hidden;
+  let playback;
+  try {
+    if (session.mode === "youtube") {
+      playback = await previewYoutubeRollClip({ ...session.clip, startSeconds: range.start, endSeconds: range.end }, session.draft.ownVolume, {
+        hostId: "audio-clip-youtube-player", canPlay,
+        onError(error) { if (canPlay()) setAudioClipStatus(audioAdditionErrorMessage(error), "error"); },
+      });
+      if (!playback) return;
+    } else {
+      const context = await unlockOutcomeAudio();
+      if (!canPlay()) return;
+      if (!context) throw new Error("Este navegador não consegue reproduzir a prévia do trecho.");
+      playback = playBufferedOutcomeSound(session.buffer, session.draft.ownVolume, context, range.start, range.duration);
+    }
+    if (!canPlay()) { playback?.pause(); return; }
+    session.preview = playback;
+    audioClipUi.stop.disabled = false;
+    setAudioClipStatus(`Prévia do trecho ${formatAudioClipTime(range.start)}–${formatAudioClipTime(range.end)}.`, "ready");
+  } catch (error) { if (canPlay() && error?.name !== "AbortError") setAudioClipStatus(audioAdditionErrorMessage(error), "error"); }
+}
+
+async function applyAudioClipSelection() {
+  const session = audioClipSession, range = getAudioClipSelection();
+  if (!isAudioClipSessionCurrent(session) || session.busy) return;
+  if (!range.ok) { setAudioClipStatus(range.error, "error"); return; }
+  stopAudioClipPreview(); session.busy = true; syncAudioClipControls();
+  setAudioClipStatus("Preparando o trecho escolhido…", "processing");
+  try {
+    if (session.mode === "youtube") {
+      stagedRollSounds[session.key] = normalizeYoutubeRollClip({ ...session.clip, startSeconds: range.start, endSeconds: range.end,
+        name: `YouTube · ${formatAudioClipTime(range.start)}–${formatAudioClipTime(range.end)}` });
+    } else {
+      const wav = encodeAudioClipWav(session.buffer, range.start, range.end);
+      const file = new File([wav], audioClipFileName(session.file.name, range.start, range.end), { type: "audio/wav" });
+      const staged = await readSettingsMedia(() => stageRollSound(session.key, file));
+      if (!staged || !isAudioClipSessionCurrent(session)) return;
+      stagedRollSounds[session.key].sourceFile = session.file;
+      stagedRollSounds[session.key].selectedRange = { start: range.start, end: range.end };
+    }
+    if (!isAudioClipSessionCurrent(session)) return;
+    const key = session.key;
+    renderSettingsSoundNames();
+    closeAudioClipEditor({ applied: true });
+    setSettingsSoundFeedback(key, "selected", "Trecho escolhido! Clique em “Ouvir” para testar e em “Salvar configurações” para confirmar.");
+    setRollFeatureStatus(rollAccountUi.settingsStatus, "Trecho preparado. Salve as configurações para usá-lo nas rolagens.");
+  } catch (error) { if (isAudioClipSessionCurrent(session)) setAudioClipStatus(audioAdditionErrorMessage(error), "error"); }
+  finally { if (isAudioClipSessionCurrent(session)) { session.busy = false; syncAudioClipControls(); } }
+}
+
+document.querySelectorAll("[data-close-audio-clip]").forEach((button) => button.addEventListener("click", () => closeAudioClipEditor()));
+document.querySelectorAll("[data-audio-clip-source]").forEach((tab) => {
+  tab.addEventListener("click", () => { setAudioClipSourceMode(tab.dataset.audioClipSource); syncAudioClipControls(); });
+  tab.addEventListener("keydown", (event) => {
+    if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+    event.preventDefault(); const mode = event.key === "Home" ? "file" : event.key === "End" ? "youtube" : tab.dataset.audioClipSource === "file" ? "youtube" : "file";
+    setAudioClipSourceMode(mode); document.querySelector(`[data-audio-clip-source="${mode}"]`).focus();
+  });
+});
+audioClipUi.file.addEventListener("change", () => loadAudioClipFile(audioClipUi.file.files?.[0]));
+document.querySelector("#audio-clip-load-youtube").addEventListener("click", () => loadAudioClipYoutube());
+audioClipUi.youtubeUrl.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); loadAudioClipYoutube(); } });
+for (const [slider, input] of [[audioClipUi.startRange, audioClipUi.start], [audioClipUi.endRange, audioClipUi.end]]) {
+  slider.addEventListener("input", () => { stopAudioClipPreview(); input.value = formatAudioClipTime(Number(slider.value)); syncAudioClipControls({ showError: true }); });
+  input.addEventListener("input", () => { stopAudioClipPreview(); syncAudioClipControls({ showError: true }); });
+  input.addEventListener("change", () => { const value = parseAudioClipTime(input.value); if (value != null) input.value = formatAudioClipTime(value); syncAudioClipControls({ showError: true }); });
+}
+audioClipUi.preview.addEventListener("click", previewAudioClipSelection);
+audioClipUi.stop.addEventListener("click", stopAudioClipPreview);
+audioClipUi.apply.addEventListener("click", applyAudioClipSelection);
+audioClipUi.audio.addEventListener("play", () => { if (audioClipSession) { audioClipSession.previewVersion = (audioClipSession.previewVersion || 0) + 1; audioClipSession.preview?.pause(); audioClipSession.preview = null; audioClipUi.stop.disabled = false; } });
+document.querySelectorAll("[data-youtube-audio-outcome]").forEach((button) => button.addEventListener("click", () => openAudioClipEditor(button.dataset.youtubeAudioOutcome, { mode: "youtube" })));
+document.querySelectorAll("[data-edit-audio-outcome]").forEach((button) => button.addEventListener("click", () => openAudioClipEditor(button.dataset.editAudioOutcome, { editExisting: true })));
+document.addEventListener("visibilitychange", () => { if (document.hidden) stopAudioClipPreview(); });
 
 
 window.AbyssCloud = Object.freeze({
