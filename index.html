@@ -8686,6 +8686,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                   <input
                     id="character-name"
                     type="text"
+                    maxlength="120"
                     autocomplete="off"
                     placeholder="Nome do personagem"
                   />
@@ -9900,7 +9901,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
           <form id="startup-create-form" aria-labelledby="startup-create-title" hidden>
             <h2 id="startup-create-title">Criar nova ficha</h2>
             <div class="startup-create-fields">
-              <label class="builder-field"><span>Nome da ficha</span><input id="startup-create-name" type="text" maxlength="60" autocomplete="off" placeholder="Nome do personagem" /></label>
+              <label class="builder-field"><span>Nome do personagem</span><input id="startup-create-name" type="text" maxlength="120" autocomplete="off" placeholder="Nome do personagem" /></label>
               <label class="builder-field"><span>Pasta</span><select id="startup-create-folder" aria-label="Pasta da nova ficha"><option value="__unfiled__">Sem pasta</option></select></label>
             </div>
             <p id="startup-create-status" role="status" aria-live="polite"></p>
@@ -10068,7 +10069,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
         <div class="sheet-transfer-content">
           <label id="sheet-transfer-slot-field" class="builder-field sheet-transfer-slot-field" hidden>
             <span>Nome do novo Slot</span>
-            <input id="sheet-transfer-slot-name" type="text" maxlength="60" autocomplete="off" placeholder="Usar o nome recebido no código" />
+            <input id="sheet-transfer-slot-name" type="text" maxlength="120" autocomplete="off" placeholder="Usar o nome do personagem recebido" />
             <small class="ability-field-help">Se ficar vazio, será usado o nome do personagem ou do Slot exportado.</small>
           </label>
           <textarea id="sheet-transfer-code" class="sheet-transfer-code" spellcheck="false" autocomplete="off" aria-label="Código da ficha"></textarea>
@@ -11027,7 +11028,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
             <input
               id="new-slot-name"
               type="text"
-              maxlength="60"
+              maxlength="120"
               autocomplete="off"
               placeholder="Nome do personagem ou da ficha"
             />
@@ -11326,7 +11327,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
           </div>
           <div class="roll-history-privacy">
             <label class="settings-check"><input id="roll-history-hidden" type="checkbox" /><span>Ocultar minhas rolagens nas Campanhas</span></label>
-            <p class="settings-note">Quando ativado, suas rolagens e os sons delas ficam privados.</p>
+            <p class="settings-note">Quando ativado, suas rolagens e os sons delas ficam privados, inclusive quando o Mestre usa sua ficha. Desativado, novas rolagens e sons são compartilhados mesmo com a ficha privada. A ficha continua fechada para os outros jogadores.</p>
           </div>
           <p id="roll-history-status" role="status" aria-live="polite"></p>
           <div id="roll-history-list" aria-label="Rolagens registradas"></div>
@@ -24074,8 +24075,8 @@ async function submitCampaignSlot(event) {
       ownerName: getEffectiveIdentity().displayName,
       ownerPhotoURL: getEffectiveIdentity().photoURL,
       slotId,
-      slotName: slot.name,
-      characterName: String(profile.name || slot.name).slice(0, 120),
+      slotName: characterSlotName(profile.name, slot.name),
+      characterName: characterSlotName(profile.name, slot.name),
       portrait,
       privateToPlayers,
       addedAt: firestoreApi.serverTimestamp(),
@@ -24524,7 +24525,7 @@ async function submitStartupCreateSheet(event) {
   if (!currentFirebaseUser || firebaseUi.startupGate.hidden || firebaseUi.startupCreateForm.hidden || startupCreateBusy || isHydratingCloudState) return;
   const user = currentFirebaseUser;
   const epoch = accountRollEpoch;
-  const name = normalizeSlotName(firebaseUi.startupCreateName.value, `Personagem ${currentSlots.length + 1}`);
+  const name = characterSlotName(firebaseUi.startupCreateName.value, `Personagem ${currentSlots.length + 1}`);
   const selectedFolder = firebaseUi.startupCreateFolder.value;
   const folderId = normalizeSlotFolderId(selectedFolder);
   if (selectedFolder !== UNFILED_SLOT_FOLDER && !folderId) {
@@ -24673,7 +24674,7 @@ async function encodeSheetTransferCode(state, options = {}) {
     type: "abyss-rpg-sheet",
     version: 1,
     exportedAt: new Date().toISOString(),
-    slotName: normalizeSlotName(options.slotName, ""),
+    slotName: characterSlotName(state?.profile?.name, characterSlotName(options.slotName, "")),
     state,
   };
   const raw = new TextEncoder().encode(JSON.stringify(payload));
@@ -24709,7 +24710,7 @@ async function decodeSheetTransferCode(code) {
   }
   return {
     state: payload.state,
-    slotName: normalizeSlotName(payload.slotName, ""),
+    slotName: characterSlotName(payload.state?.profile?.name, characterSlotName(payload.slotName, "")),
   };
 }
 
@@ -24951,8 +24952,8 @@ async function importSheetTransferAsNewSlot() {
     return;
   }
 
-  const suggestedName = normalizeSlotName(
-    firebaseUi.transferSlotName.value || decoded.slotName || decoded.state?.profile?.name,
+  const suggestedName = characterSlotName(
+    firebaseUi.transferSlotName.value || decoded.state?.profile?.name || decoded.slotName,
     `Ficha importada ${currentSlots.length + 1}`,
   );
   firebaseUi.transferSlotName.value = suggestedName;
@@ -25001,6 +25002,7 @@ async function importSheetTransferAsNewSlot() {
   try {
     setSheetTransferStatus("Preparando os dados da ficha recebida…");
     const normalizedState = normalizeImportedSheetState(decoded.state);
+    normalizedState.profile.name = suggestedName;
     uploadedReferences = await prepareImportedAbilityMedia(normalizedState, {
       uid: currentFirebaseUser.uid,
       slotId: slot.id,
@@ -25122,6 +25124,58 @@ async function compressPortraitForFirestore(source) {
 
 function normalizeSlotName(value, fallback = "Personagem") {
   return String(value || "").trim().replace(/\s+/g, " ").slice(0, 60) || fallback;
+}
+
+function characterSlotName(value, fallback = "Personagem") {
+  return String(value ?? "").trim().slice(0, 120) || fallback;
+}
+
+function syncCharacterSlotName(ownerUid, slotId, value) {
+  const name = characterSlotName(value);
+  let directoryChanged = false;
+  if (currentFirebaseUser?.uid === ownerUid) {
+    const slot = currentSlots.find((entry) => entry.id === slotId);
+    if (slot && slot.name !== name) {
+      slot.name = name;
+      directoryChanged = true;
+    }
+  }
+  if (campaignSheetSession?.ownerUid === ownerUid && campaignSheetSession.slotId === slotId) {
+    campaignSheetSession.slotName = name;
+    campaignUi.sheetSessionTitle.textContent = name;
+  }
+  activeCampaignSheets.forEach((sheet) => {
+    if (sheet.ownerUid === ownerUid && sheet.slotId === slotId) {
+      sheet.slotName = name;
+      sheet.characterName = name;
+    }
+  });
+  if (directoryChanged) {
+    renderSlots();
+    if (!firebaseUi.startupGate.hidden && !isHydratingCloudState) renderStartupSlotChoices();
+  } else {
+    updateActiveSlotDisplay();
+  }
+  return name;
+}
+
+async function getCampaignSlotNameRefs(ownerUid, slotId, session = null) {
+  let campaignIds = [];
+  if (currentFirebaseUser?.uid === ownerUid) {
+    const index = await firestoreApi.getDocs(
+      firestoreApi.collection(firestoreDb, "users", ownerUid, "campaigns"),
+    );
+    campaignIds = index.docs.map((entry) => entry.id);
+  } else if (session?.ownerUid === ownerUid && session.slotId === slotId && session.canEdit) {
+    campaignIds = [session.campaignId];
+  }
+  const snapshots = await Promise.allSettled([...new Set(campaignIds)].map(async (campaignId) => {
+    const reference = firestoreApi.doc(firestoreDb, "campaigns", campaignId, "sheets", campaignSheetLinkId(ownerUid, slotId));
+    const snapshot = await firestoreApi.getDoc(reference);
+    return snapshot.exists() ? reference : null;
+  }));
+  // A stale membership index must not prevent saving the character's own sheet.
+  return snapshots.filter((entry) => entry.status === "fulfilled" && entry.value).map((entry) => entry.value);
 }
 
 function getCloudDocumentRefs(uid, slotId) {
@@ -25394,9 +25448,16 @@ async function readCloudSheet(user, slotId) {
 async function writeCloudSheet(user, slotId, state, options = {}) {
   if (!slotId) throw new Error("Nenhum Slot está ativo.");
 
+  const actorUid = currentFirebaseUser?.uid;
+  const actorEpoch = accountRollEpoch;
+  const name = characterSlotName(state.profile?.name);
   const refs = getCloudDocumentRefs(user.uid, slotId);
   const timestamp = firestoreApi.serverTimestamp();
   const portrait = await compactPortraitForFirestore(String(state.profile?.portrait || ""));
+  const campaignNameRefs = await getCampaignSlotNameRefs(user.uid, slotId, options.campaignSession);
+  if (currentFirebaseUser?.uid !== actorUid || accountRollEpoch !== actorEpoch) {
+    throw new Error("A conta mudou durante a sincronização da ficha.");
+  }
   const attributes = {};
   ["FOR", "AGI", "INT", "CON", "POD"].forEach((attribute) => {
     attributes[attribute] = finiteAttributeValue(state.profile?.attributes?.[attribute]);
@@ -25440,22 +25501,27 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     batch.set(
       refs.slot,
       {
-        name: normalizeSlotName(
-          options.slotName || currentSlots.find((slot) => slot.id === slotId)?.name,
-          "Personagem",
-        ),
+        name,
         portrait,
         updatedAt: timestamp,
         ...(options.created ? { createdAt: timestamp, folderId: normalizeSlotFolderId(options.folderId) } : {}),
       },
       { merge: true },
     );
+  } else {
+    batch.set(refs.slot, { name, updatedAt: timestamp }, { merge: true });
   }
+  campaignNameRefs.forEach((reference) => batch.set(reference, {
+    slotName: name, characterName: name, portrait, updatedAt: timestamp,
+  }, { merge: true }));
   batch.set(refs.profile, {
     schemaVersion: 12,
-    name: String(state.profile?.name || "").slice(0, 120),
+    name: String(state.profile?.name || "").trim().slice(0, 120),
     background: String(state.profile?.background || "").slice(0, 240),
     portrait,
+    ...(Object.hasOwn(state.profile || {}, "rollSounds")
+      ? { rollSounds: sheetBridge.normalizeRollSounds(state.profile.rollSounds) }
+      : {}),
     echo: String(state.profile?.echo || "").slice(0, 24),
     echoPoints: Math.min(5, Math.max(0, Number.parseInt(state.profile?.echoPoints ?? 0, 10) || 0)),
     appearance: state.profile?.appearance || {},
@@ -25501,7 +25567,15 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     updatedAt: timestamp,
   });
   await batch.commit();
-  if (!options.skipDirectoryWrites && currentFirebaseUser?.uid === user.uid) {
+  if (currentFirebaseUser?.uid === actorUid && accountRollEpoch === actorEpoch) {
+    const liveOwnerUid = campaignSheetSession?.ownerUid || currentFirebaseUser?.uid;
+    const liveSlotId = campaignSheetSession?.slotId || currentSlotId;
+    const liveName = liveOwnerUid === user.uid && liveSlotId === slotId
+      ? sheetBridge.captureState().profile?.name
+      : name;
+    syncCharacterSlotName(user.uid, slotId, liveName);
+  }
+  if (!options.skipDirectoryWrites && currentFirebaseUser?.uid === user.uid && accountRollEpoch === actorEpoch) {
     const slot = currentSlots.find((entry) => entry.id === slotId);
     if (slot) {
       slot.portrait = portrait;
@@ -25913,21 +25987,19 @@ function renderSlots() {
 }
 
 async function loadSlotDirectory(user) {
+  const epoch = accountRollEpoch;
+  const sameAccount = () => currentFirebaseUser?.uid === user.uid && accountRollEpoch === epoch;
   const [userSnapshot, slotsSnapshot] = await Promise.all([
     firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "users", user.uid)),
     firestoreApi.getDocs(firestoreApi.collection(firestoreDb, "users", user.uid, "slots")),
   ]);
 
-  currentSlotFolders = normalizeSlotFolders(userSnapshot.exists() ? userSnapshot.data().slotFolders : []);
-  currentSlotFolderId = null;
-  startupSlotFolderId = null;
-
-  currentSlots = slotsSnapshot.docs
+  const slots = slotsSnapshot.docs
     .map((snapshot) => {
       const data = snapshot.data();
       return {
         id: snapshot.id,
-        name: normalizeSlotName(data.name, "Personagem"),
+        name: characterSlotName(data.name),
         folderId: normalizeSlotFolderId(data.folderId),
         portrait: String(data.portrait || ""),
         createdAt: slotTimestampValue(data.createdAt),
@@ -25940,16 +26012,41 @@ async function loadSlotDirectory(user) {
         a.name.localeCompare(b.name, "pt-BR"),
     );
 
-  await Promise.all(currentSlots.map(async (slot) => {
+  const nameRepairs = [];
+  await Promise.all(slots.map(async (slot) => {
     try {
       const profileSnapshot = await firestoreApi.getDoc(
         firestoreApi.doc(firestoreDb, "users", user.uid, "slots", slot.id, "data", "profile"),
       );
-      if (profileSnapshot.exists()) slot.portrait = String(profileSnapshot.data().portrait || "");
+      if (profileSnapshot.exists()) {
+        const profile = profileSnapshot.data();
+        slot.portrait = String(profile.portrait || "");
+        const name = characterSlotName(profile.name, slot.name);
+        if (name !== slot.name) {
+          slot.name = name;
+          nameRepairs.push({ reference: firestoreApi.doc(firestoreDb, "users", user.uid, "slots", slot.id), name });
+        }
+        if (!String(profile.name || "").trim()) {
+          nameRepairs.push({ reference: firestoreApi.doc(firestoreDb, "users", user.uid, "slots", slot.id, "data", "profile"), name });
+        }
+      }
     } catch {
       slot.portrait = slot.portrait || "";
     }
   }));
+
+  if (!sameAccount()) return { activeSlotId: "", stale: true };
+  for (let offset = 0; offset < nameRepairs.length; offset += 400) {
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    nameRepairs.slice(offset, offset + 400).forEach((repair) => batch.set(repair.reference,
+      { name: repair.name, updatedAt: firestoreApi.serverTimestamp() }, { merge: true }));
+    await batch.commit();
+    if (!sameAccount()) return { activeSlotId: "", stale: true };
+  }
+  currentSlots = slots;
+  currentSlotFolders = normalizeSlotFolders(userSnapshot.exists() ? userSnapshot.data().slotFolders : []);
+  currentSlotFolderId = null;
+  startupSlotFolderId = null;
 
   return {
     activeSlotId: userSnapshot.exists()
@@ -25971,7 +26068,7 @@ async function createCloudSlot(name, { announce = true, folderId = "" } = {}) {
   );
   const slot = {
     id: slotRef.id,
-    name: normalizeSlotName(name, `Personagem ${currentSlots.length + 1}`),
+    name: characterSlotName(name, `Personagem ${currentSlots.length + 1}`),
     folderId: normalizeSlotFolderId(folderId),
     portrait: "",
     createdAt: Date.now(),
@@ -25984,6 +26081,7 @@ async function createCloudSlot(name, { announce = true, folderId = "" } = {}) {
 
   try {
     const clean = sheetBridge.createCleanState();
+    clean.profile.name = slot.name;
     sheetBridge.applyState(clean, { persistLocal: false });
     await writeCloudSheet(user, slot.id, clean, {
       slotName: slot.name,
@@ -26033,7 +26131,10 @@ async function hydrateSlot(user, slotId, { announce = true } = {}) {
     if (sequence !== authChangeSequence || currentFirebaseUser?.uid !== user.uid) return;
 
     currentSlotId = slotId;
+    const slot = currentSlots.find((entry) => entry.id === slotId);
+    if (!String(state.profile?.name || "").trim()) state.profile.name = characterSlotName(slot?.name);
     sheetBridge.applyState(state, { persistLocal: false });
+    syncCharacterSlotName(user.uid, slotId, state.profile.name);
     await firestoreApi.setDoc(
       firestoreApi.doc(firestoreDb, "users", user.uid),
       {
@@ -26045,6 +26146,8 @@ async function hydrateSlot(user, slotId, { announce = true } = {}) {
       },
       { merge: true },
     );
+
+    if (sequence !== authChangeSequence || currentFirebaseUser?.uid !== user.uid) return;
 
     lastSavedRevision = stateRevision;
     renderSlots();
@@ -26061,6 +26164,7 @@ async function hydrateSlot(user, slotId, { announce = true } = {}) {
 
 async function initializeUserSlots(user) {
   const directory = await loadSlotDirectory(user);
+  if (directory.stale || currentFirebaseUser?.uid !== user.uid) return;
 
   if (!currentSlots.length) {
     const slot = await createCloudSlot("Personagem 1", { announce: false });
@@ -26089,16 +26193,34 @@ async function switchCloudSlot(slotId) {
 async function renameCloudSlot(slotId, proposedName) {
   if (!currentFirebaseUser) return;
 
+  const user = currentFirebaseUser;
+  const epoch = accountRollEpoch;
   const slot = currentSlots.find((item) => item.id === slotId);
   if (!slot) return;
 
-  const name = normalizeSlotName(proposedName, slot.name);
-  await firestoreApi.setDoc(
-    firestoreApi.doc(firestoreDb, "users", currentFirebaseUser.uid, "slots", slotId),
-    { name, updatedAt: firestoreApi.serverTimestamp() },
-    { merge: true },
-  );
-  slot.name = name;
+  const name = characterSlotName(proposedName, slot.name);
+  const editsOpenSheet = campaignSheetSession
+    ? campaignSheetSession.ownerUid === user.uid && campaignSheetSession.slotId === slotId && campaignSheetSession.canEdit
+    : slotId === currentSlotId;
+  if (editsOpenSheet) {
+    const input = document.querySelector("#character-name");
+    input.value = name;
+    input.dispatchEvent(new Event("input", { bubbles: true }));
+    if (!(await flushCloudSave())) throw new Error("O novo nome ainda não pôde ser salvo. Tente sincronizar novamente.");
+  } else {
+    const refs = getCloudDocumentRefs(user.uid, slotId);
+    const campaignRefs = await getCampaignSlotNameRefs(user.uid, slotId);
+    if (currentFirebaseUser?.uid !== user.uid || accountRollEpoch !== epoch) return;
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    const timestamp = firestoreApi.serverTimestamp();
+    batch.set(refs.slot, { name, updatedAt: timestamp }, { merge: true });
+    batch.set(refs.profile, { name, updatedAt: timestamp }, { merge: true });
+    campaignRefs.forEach((reference) => batch.set(reference,
+      { slotName: name, characterName: name, updatedAt: timestamp }, { merge: true }));
+    await batch.commit();
+  }
+  if (currentFirebaseUser?.uid !== user.uid || accountRollEpoch !== epoch) return;
+  syncCharacterSlotName(user.uid, slotId, editsOpenSheet ? sheetBridge.captureState().profile?.name : name);
   slot.updatedAt = Date.now();
   renderSlots();
 
@@ -26121,9 +26243,9 @@ function beginSlotRename(slotId) {
 
   const input = document.createElement("input");
   input.type = "text";
-  input.maxLength = 60;
+  input.maxLength = 120;
   input.value = slot.name;
-  input.setAttribute("aria-label", "Novo nome do Slot");
+  input.setAttribute("aria-label", "Novo nome do personagem e do Slot");
 
   const save = document.createElement("button");
   save.type = "submit";
@@ -26236,6 +26358,7 @@ async function resetCurrentSlot() {
   isHydratingCloudState = true;
   try {
     const clean = sheetBridge.createCleanState();
+    clean.profile.name = characterSlotName(currentState.profile?.name, slot?.name || "Personagem");
     sheetBridge.applyState(clean, { persistLocal: false });
     stateRevision += 1;
     await writeCloudSheet(currentFirebaseUser, currentSlotId, clean, {
@@ -26872,11 +26995,12 @@ function normalizeCompletedRoll(raw = {}) {
   };
 }
 
-function shouldPublishCampaignRoll(record, campaign, link) {
+function shouldPublishCampaignRoll(record, campaign, link, ownerSharesRolls = false) {
   return !currentAccountSettings.hideRolls && !record.hidden && Boolean(record.actorUid)
     && record.actorUid === currentFirebaseUser?.uid
-    && link?.privateToPlayers === false
+    && Boolean(link)
     && link.ownerUid === record.sheetOwnerUid && link.slotId === record.slotId
+    && (record.sheetOwnerUid === record.actorUid || ownerSharesRolls === true)
     && (record.sheetOwnerUid === record.actorUid || campaign?.ownerUid === record.actorUid);
 }
 
@@ -26892,7 +27016,12 @@ async function getRollCampaignLinks(record, context) {
     const link = snapshot.data();
     if (link.ownerUid !== record.sheetOwnerUid || link.slotId !== record.slotId) return null;
     if (record.actorUid !== link.ownerUid && record.actorUid !== campaign.ownerUid) return null;
-    return { campaign, link };
+    let ownerSharesRolls = !currentAccountSettings.hideRolls;
+    if (link.ownerUid !== record.actorUid) {
+      const owner = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "campaigns", campaign.id, "members", link.ownerUid));
+      ownerSharesRolls = owner.exists() && owner.data()?.hideRolls !== true;
+    }
+    return { campaign, link, ownerSharesRolls };
   }));
   const failure = links.find((result) => result.status === "rejected");
   if (failure) reportRollHistoryError(failure.reason);
@@ -26932,7 +27061,7 @@ async function recordCompletedRoll(event) {
     record.campaignIds = links.map(({ campaign }) => campaign.id);
     record.hidden = record.hidden || currentAccountSettings.hideRolls;
     await firestoreApi.setDoc(privateRef, { campaignIds: record.campaignIds, hidden: record.hidden }, { merge: true });
-    const publicLinks = links.filter(({ campaign, link }) => shouldPublishCampaignRoll(record, campaign, link));
+    const publicLinks = links.filter(({ campaign, link, ownerSharesRolls }) => shouldPublishCampaignRoll(record, campaign, link, ownerSharesRolls));
     const writes = await Promise.allSettled(publicLinks.map(({ campaign }) =>
       firestoreApi.setDoc(firestoreApi.doc(firestoreDb, "campaigns", campaign.id, "rollHistory", user.uid, "entries", record.id), {
         ...record, visibility: "public", createdAt: firestoreApi.serverTimestamp(),
@@ -27037,6 +27166,28 @@ function isFreshCampaignRoll(roll, initial = false) {
   return !initial && Number.isFinite(timestamp) && age >= -5000 && age < 30000;
 }
 
+function campaignRollStreamKey(actorUid, ownerUid) {
+  return JSON.stringify([actorUid, ownerUid]);
+}
+
+function campaignRollMemberShares(subscription, uid) {
+  const member = subscription.members.get(uid);
+  return Boolean(member) && member.hideRolls !== true
+    && (uid !== currentFirebaseUser?.uid || !currentAccountSettings.hideRolls);
+}
+
+function canReadCampaignRollOwner(subscription, actorUid, ownerUid, viewerUid = currentFirebaseUser?.uid) {
+  return subscription.members.has(viewerUid) && subscription.members.has(actorUid) && subscription.members.has(ownerUid)
+    && (actorUid === viewerUid || (campaignRollMemberShares(subscription, actorUid)
+      && (ownerUid === viewerUid || campaignRollMemberShares(subscription, ownerUid))));
+}
+
+function canReceiveSharedCampaignRoll(subscription, roll) {
+  return !roll.hidden && subscription.members.has(currentFirebaseUser?.uid)
+    && campaignRollMemberShares(subscription, roll.actorUid)
+    && campaignRollMemberShares(subscription, roll.sheetOwnerUid);
+}
+
 function syncCampaignActorHistory(subscription) {
   const selfUid = currentFirebaseUser?.uid;
   subscription.retryAttempts ??= new Map();
@@ -27047,30 +27198,41 @@ function syncCampaignActorHistory(subscription) {
     subscription.retryAttempts.clear();
     return;
   }
-  const visibleUids = new Set([...subscription.members.values()]
-    .filter((member) => member.uid === selfUid || member.hideRolls !== true).map((member) => member.uid));
-  subscription.actors.forEach((actor, uid) => {
-    if (!visibleUids.has(uid)) {
+  // Cada stream tem um único dono de ficha, para respeitar a escolha dele também quando o Mestre rola.
+  const visibleStreams = new Map();
+  subscription.members.forEach((member, actorUid) => {
+    const ownerUids = actorUid === subscription.campaign.ownerUid ? [...subscription.members.keys()] : [actorUid];
+    ownerUids.forEach((ownerUid) => {
+      if (canReadCampaignRollOwner(subscription, actorUid, ownerUid, selfUid)) {
+        visibleStreams.set(campaignRollStreamKey(actorUid, ownerUid), { actorUid, ownerUid });
+      }
+    });
+  });
+  subscription.actors.forEach((actor, streamKey) => {
+    if (!visibleStreams.has(streamKey)) {
       stopCampaignActorHistory(actor);
-      subscription.actors.delete(uid);
-      subscription.retryAttempts.delete(uid);
+      subscription.actors.delete(streamKey);
+      subscription.retryAttempts.delete(streamKey);
     }
   });
   const epoch = accountRollEpoch;
-  visibleUids.forEach((uid) => {
-    if (subscription.actors.has(uid)) return;
-    const actor = { records: [], unsubscribe: null, retryTimer: null, failed: false, initial: true, observedIds: new Set() };
-    subscription.actors.set(uid, actor);
+  visibleStreams.forEach(({ actorUid: uid, ownerUid }, streamKey) => {
+    if (subscription.actors.has(streamKey)) return;
+    const actor = { actorUid: uid, ownerUid, records: [], unsubscribe: null, retryTimer: null, failed: false, initial: true, observedIds: new Set() };
+    subscription.actors.set(streamKey, actor);
     const query = firestoreApi.query(
       firestoreApi.collection(firestoreDb, "campaigns", subscription.campaign.id, "rollHistory", uid, "entries"),
+      firestoreApi.where("sheetOwnerUid", "==", ownerUid),
       firestoreApi.orderBy("createdAt", "desc"), firestoreApi.limit(rollHistoryLimit),
     );
     actor.unsubscribe = firestoreApi.onSnapshot(query, { includeMetadataChanges: true }, (snapshot) => {
-      if (epoch !== accountRollEpoch || subscription.actors.get(uid) !== actor) return;
-      if (!snapshot.metadata?.fromCache && !snapshot.metadata?.hasPendingWrites) subscription.retryAttempts.delete(uid);
+      if (epoch !== accountRollEpoch || subscription.actors.get(streamKey) !== actor
+        || !canReadCampaignRollOwner(subscription, uid, ownerUid, selfUid)) return;
+      if (!snapshot.metadata?.fromCache && !snapshot.metadata?.hasPendingWrites) subscription.retryAttempts.delete(streamKey);
       const initial = actor.initial;
       actor.initial = false;
-      actor.records = snapshot.docs.map((item) => normalizeCompletedRoll({ ...item.data(), id: item.id })).filter(Boolean);
+      actor.records = snapshot.docs.map((item) => normalizeCompletedRoll({ ...item.data(), id: item.id }))
+        .filter((roll) => roll && roll.actorUid === uid && roll.sheetOwnerUid === ownerUid && !roll.hidden);
       if (initial) {
         snapshot.docs.forEach((item) => actor.observedIds.add(item.id));
       } else if (!snapshot.metadata?.fromCache) {
@@ -27080,7 +27242,7 @@ function syncCampaignActorHistory(subscription) {
           actor.observedIds.add(item.id);
           if (uid === selfUid) return;
           const roll = recordsById.get(item.id);
-          if (!roll || roll.hidden || roll.actorUid !== uid || !isFreshCampaignRoll(roll)) return;
+          if (!roll || !canReceiveSharedCampaignRoll(subscription, roll) || !isFreshCampaignRoll(roll)) return;
           const sound = outcomeSoundKey(roll.outcome);
           const volume = getReceivedRollVolume(uid);
           const videoClip = normalizeVideoRollClip(roll.soundRef);
@@ -27090,8 +27252,7 @@ function syncCampaignActorHistory(subscription) {
           playedCampaignRolls.add(key);
           if (playedCampaignRolls.size > 1000) playedCampaignRolls.delete(playedCampaignRolls.values().next().value);
           playOutcomeSound(sound, roll.soundRef, volume, "", () =>
-            subscription.actors.get(uid) === actor && !actor.failed && subscription.members.has(selfUid)
-              && subscription.members.has(uid) && subscription.members.get(uid)?.hideRolls !== true
+            subscription.actors.get(streamKey) === actor && !actor.failed && canReceiveSharedCampaignRoll(subscription, roll)
               && (Boolean(videoClip) || getReceivedRollVolume(uid) > 0),
             { getVolume: () => getReceivedRollVolume(uid) },
           ).catch(reportOutcomeAudioError);
@@ -27100,21 +27261,20 @@ function syncCampaignActorHistory(subscription) {
       }
       renderRollHistory();
     }, (error) => {
-      if (epoch !== accountRollEpoch || subscription.actors.get(uid) !== actor) return;
+      if (epoch !== accountRollEpoch || subscription.actors.get(streamKey) !== actor) return;
       actor.records = [];
       actor.failed = true;
       stopCampaignActorHistory(actor);
-      const attempt = (subscription.retryAttempts.get(uid) || 0) + 1;
-      subscription.retryAttempts.set(uid, attempt);
+      const attempt = (subscription.retryAttempts.get(streamKey) || 0) + 1;
+      subscription.retryAttempts.set(streamKey, attempt);
       const maxAttempts = 3;
       if (attempt <= maxAttempts) {
         const delays = [1000, 2000, 4000];
         actor.retryTimer = window.setTimeout(() => {
           actor.retryTimer = null;
-          if (epoch !== accountRollEpoch || currentFirebaseUser?.uid !== selfUid || subscription.actors.get(uid) !== actor || !subscription.members.has(selfUid)) return;
-          const member = subscription.members.get(uid);
-          if (!member || (uid !== selfUid && member.hideRolls === true)) return;
-          subscription.actors.delete(uid);
+          if (epoch !== accountRollEpoch || currentFirebaseUser?.uid !== selfUid || subscription.actors.get(streamKey) !== actor
+            || !canReadCampaignRollOwner(subscription, uid, ownerUid, selfUid)) return;
+          subscription.actors.delete(streamKey);
           syncCampaignActorHistory(subscription);
         }, delays[attempt - 1]);
       }
@@ -27138,9 +27298,9 @@ function getVisibleRollHistory(scope = "personal") {
   if (scope === "personal") return [...personalRollHistory];
   const subscription = rollCampaignSubscriptions.get(scope);
   const records = new Map();
-  subscription?.actors.forEach((actor, uid) => {
-    if (uid !== currentFirebaseUser?.uid && subscription.members.get(uid)?.hideRolls === true) return;
-    actor.records.forEach((record) => records.set(`${record.actorUid}:${record.id}`, record));
+  subscription?.actors.forEach((actor) => {
+    if (!canReadCampaignRollOwner(subscription, actor.actorUid, actor.ownerUid)) return;
+    actor.records.filter((record) => !record.hidden).forEach((record) => records.set(`${record.actorUid}:${record.id}`, record));
   });
   personalRollHistory.filter((record) => record.campaignIds.includes(scope)).forEach((record) => records.set(`${record.actorUid}:${record.id}`, record));
   return [...records.values()];
@@ -27766,7 +27926,7 @@ async function persistRollPrivacy(hidden) {
     await propagateAccountIdentity(user, currentAccountSettings);
     historyLastError = "";
     renderRollHistory();
-    setRollFeatureStatus(rollAccountUi.historyStatus, hidden ? "Suas rolagens e seus sons estão ocultos nas Campanhas, inclusive do Mestre. Você continua vendo seu histórico." : "Novas rolagens de fichas públicas serão compartilhadas. Rolagens feitas enquanto estavam ocultas continuam privadas.");
+    setRollFeatureStatus(rollAccountUi.historyStatus, hidden ? "Novas rolagens e sons das suas fichas ficam privados, inclusive se o Mestre usar a ficha. Você continua vendo seu histórico." : "Novas rolagens e sons das suas fichas serão compartilhados, mesmo com a ficha privada. Rolagens feitas enquanto estavam ocultas continuam privadas.");
   } catch (error) {
     if (epoch === accountRollEpoch) {
       const saved = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "users", user.uid)).catch(() => null);
@@ -28721,12 +28881,13 @@ async function flushCloudSave() {
   firebaseUi.syncNow.disabled = true;
   cloudSavePromise = (async () => {
     try {
-      await writeCloudSheet(user, slotId, state, { skipDirectoryWrites: Boolean(session) });
+      await writeCloudSheet(user, slotId, state, { skipDirectoryWrites: Boolean(session), campaignSession: session });
       if (session) {
         await firestoreApi.setDoc(
           firestoreApi.doc(firestoreDb, "campaigns", session.campaignId, "sheets", session.sheetId),
           {
-            characterName: String(state.profile?.name || session.slotName || "Personagem").slice(0, 120),
+            slotName: characterSlotName(state.profile?.name),
+            characterName: characterSlotName(state.profile?.name),
             portrait: await compactPortraitForFirestore(String(state.profile?.portrait || "")),
             updatedAt: firestoreApi.serverTimestamp(),
           },
@@ -29002,7 +29163,7 @@ firebaseUi.slotsFolderBack.addEventListener("click", () => {
 
 firebaseUi.createSlotForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  const name = normalizeSlotName(
+  const name = characterSlotName(
     firebaseUi.newSlotName.value,
     `Personagem ${currentSlots.length + 1}`,
   );
@@ -29086,7 +29247,14 @@ firebaseUi.slotsList.addEventListener("click", async (event) => {
 });
 
 window.addEventListener("abyss:slot-sounds-loaded", handleSlotSoundsLoaded);
-window.addEventListener("abyss:sheet-changed", () => {
+window.addEventListener("abyss:sheet-changed", (event) => {
+  if (!isHydratingCloudState && event.detail?.reason === "profile" && currentFirebaseUser) {
+    const ownerUid = campaignSheetSession?.ownerUid || currentFirebaseUser.uid;
+    const slotId = campaignSheetSession?.slotId || currentSlotId;
+    if (slotId && (!campaignSheetSession || campaignSheetSession.canEdit)) {
+      syncCharacterSlotName(ownerUid, slotId, sheetBridge.captureState().profile?.name);
+    }
+  }
   stateRevision += 1;
   if (currentFirebaseUser) scheduleCloudSave();
 });
