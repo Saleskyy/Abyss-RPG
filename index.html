@@ -3361,8 +3361,10 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 }
 
 #grimoire-picker-dialog {
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: auto auto auto auto minmax(0, 1fr) auto;
 }
+#grimoire-picker-list, #grimoire-picker-empty { grid-row: 5; min-height: 0; }
+#grimoire-picker-dialog > .ability-dialog-footer { grid-row: 6; }
 
 .minerva-dialog {
   grid-template-rows: auto minmax(0, 1fr) auto;
@@ -3548,6 +3550,87 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 
 .grimoire-toolbar .filter-input-shell {
   max-width: 370px;
+}
+
+.grimoire-picker-types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 18px 23px 0;
+}
+.grimoire-picker-types button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid var(--theme-border-2d2e33, #2d2e33);
+  border-radius: 4px;
+  color: var(--theme-muted-99958d, #99958d);
+  background: rgba(255, 255, 255, .025);
+  font: inherit;
+  font-size: .7rem;
+  cursor: pointer;
+}
+.grimoire-picker-types button[aria-pressed="true"] {
+  border-color: var(--theme-accent-88764f, #88764f);
+  color: var(--theme-accent-cfad62, #cfad62);
+  background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1);
+}
+.grimoire-picker-types button small { opacity: .75; font-size: .62rem; }
+.grimoire-picker-types button:focus-visible,
+.grimoire-picker-category-field select:focus-visible {
+  outline: 2px solid var(--theme-accent-cfad62, #cfad62);
+  outline-offset: 2px;
+}
+.grimoire-picker-filters {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 23px 0;
+}
+.grimoire-picker-category-field { display: grid; gap: 5px; width: min(260px, 100%); }
+.grimoire-picker-category-field > span {
+  color: var(--theme-accent-88764f, #88764f);
+  font-size: .6rem;
+  font-weight: 750;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.grimoire-picker-category-field select {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 9px;
+  border: 1px solid var(--theme-border-2d2e33, #2d2e33);
+  border-radius: 3px;
+  color: var(--theme-text-e9e2d5, #e9e2d5);
+  background: var(--theme-surface-090a0d, #090a0d);
+  font: inherit;
+  font-size: .72rem;
+}
+.grimoire-picker-summary { margin: 0 0 8px; color: var(--theme-muted-8c8982, #8c8982); font-size: .68rem; }
+.grimoire-picker-group { display: grid; gap: 9px; min-width: 0; }
+.grimoire-picker-group + .grimoire-picker-group { margin-top: 10px; }
+.grimoire-picker-group-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0;
+  padding-bottom: 7px;
+  border-bottom: 1px solid var(--theme-border-2d2e33, #2d2e33);
+  color: var(--theme-accent-cfad62, #cfad62);
+  font-size: .7rem;
+  font-weight: 650;
+}
+.grimoire-picker-group-title small { color: var(--theme-muted-8c8982, #8c8982); font-weight: 400; }
+@media (max-width: 560px) {
+  .grimoire-picker-types { padding-inline: 14px; }
+  .grimoire-picker-filters { padding-inline: 14px; }
+  .grimoire-picker-types button { min-height: 38px; }
+  .grimoire-picker-summary { margin-bottom: 0; }
 }
 
 .grimoire-list {
@@ -6632,6 +6715,9 @@ body.campaign-mode > :is(.skip-link, .topbar, .sidebar, .main-content) { display
 .campaign-sheet-actions button { min-height: 32px; padding: 0 9px; border: 1px solid var(--theme-border-34353a, #34353a); border-radius: 3px; color: var(--theme-muted-b0aba1, #b0aba1); background: rgba(255,255,255,.025); cursor: pointer; font-size: .58rem; font-weight: 800; }
 .campaign-sheet-actions button.is-primary { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .38); color: var(--theme-accent-f0d58f, #f0d58f); }
 .campaign-sheet-actions button.is-danger { border-color: rgba(211,72,85,.28); color: #e98b95; }
+.campaign-sheet-actions button:disabled { opacity: .65; cursor: default; }
+.campaign-sheet-actions button.is-locked { display: inline-flex; align-items: center; gap: 6px; color: #df939d; border-color: rgba(193,104,117,.28); }
+.campaign-sheet-actions button.is-locked svg { display: block; width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
 .campaign-panel-empty { grid-column: 1 / -1; padding: 50px 20px; color: var(--theme-muted-77736c, #77736c); text-align: center; }
 .campaign-panel-empty strong { display: block; color: var(--theme-muted-aaa69d, #aaa69d); font: 600 .94rem Georgia, "Times New Roman", serif; }
 .campaign-panel-empty p { margin: 5px 0 0; font-size: .66rem; }
@@ -8081,18 +8167,37 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
 #theme-dialog .theme-target-field > span,
 #theme-dialog .theme-lightness > span { color: #b9a67e; font-size: .62rem; font-weight: 700; line-height: 1.4; letter-spacing: .035em; text-transform: uppercase; }
 #theme-dialog #theme-target {
+  display: flex;
+  align-items: center;
+  gap: 9px;
   width: 100%;
   min-width: 0;
   height: 36px;
   min-height: 36px;
-  padding: 0 26px 0 10px;
+  padding: 0 10px;
   border: 1px solid #383941;
   border-radius: 4px;
   color: #ebe7df;
   background: #0c0d11;
   font-size: .76rem;
+  text-align: left;
+  cursor: pointer;
 }
-#theme-dialog #theme-target option { color: #ebe7df; background: #14151b; }
+#theme-dialog .theme-target-picker { position: relative; min-width: 0; }
+#theme-dialog .theme-target-swatch { display: block; flex: 0 0 14px; width: 14px; height: 14px; border: 1px solid #ffffff40; border-radius: 2px; box-shadow: 0 0 0 1px #0005; }
+#theme-dialog #theme-target-label { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#theme-dialog .theme-target-chevron { flex: 0 0 12px; width: 12px; height: 12px; color: #a9a398; transition: transform 120ms ease; }
+#theme-dialog #theme-target[aria-expanded="true"] .theme-target-chevron { transform: rotate(180deg); }
+#theme-dialog #theme-target:focus-visible,
+#theme-dialog .theme-target-option:focus-visible { outline: 2px solid #d9bd79; outline-offset: -2px; }
+#theme-dialog .theme-target-options { position: absolute; z-index: 4; top: calc(100% + 5px); left: 0; right: 0; max-height: 248px; overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid #484236; border-radius: 5px; background: #111217; box-shadow: 0 8px 24px #0008; scrollbar-width: thin; scrollbar-color: #555043 #121318; }
+#theme-dialog .theme-target-options[hidden] { display: none; }
+#theme-dialog .theme-target-group-label { margin: 7px 5px 4px; color: #b6a682; font-size: .58rem; font-weight: 700; line-height: 1.5; letter-spacing: .025em; text-transform: uppercase; }
+#theme-dialog .theme-target-group:first-child .theme-target-group-label { margin-top: 2px; }
+#theme-dialog .theme-target-option { display: flex; align-items: center; gap: 9px; width: 100%; min-height: 30px; padding: 5px 7px; border: 1px solid transparent; border-radius: 3px; color: #dedad2; background: transparent; text-align: left; font-size: .7rem; line-height: 1.4; cursor: pointer; }
+#theme-dialog .theme-target-option > span:last-child { min-width: 0; }
+#theme-dialog .theme-target-option:hover { background: #23242c; }
+#theme-dialog .theme-target-option[aria-selected="true"] { border-color: #cfad623d; background: #cfad621d; color: #fff0cf; }
 #theme-dialog .theme-wheel-stage { display: grid; place-items: center; min-width: 0; padding: 2px 0 3px; }
 #theme-dialog .theme-color-wheel {
   --wheel-value: 1;
@@ -8268,8 +8373,6 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
 .audio-clip-empty { display: grid; justify-items: center; gap: 10px; padding: 20px 12px; color: var(--theme-muted-858179, #858179); font-size: .72rem; line-height: 1.6; text-align: center; }
 .audio-clip-empty svg { width: 30px; height: 30px; fill: none; stroke: var(--theme-accent-cfad62, #cfad62); stroke-width: 1.2; stroke-linecap: round; stroke-linejoin: round; }
 #audio-clip-audio { display: block; width: 100%; height: 38px; }
-#audio-clip-youtube-stage { justify-self: center; width: min(100%, 480px); min-width: 200px; min-height: 200px; overflow: hidden; border-radius: 3px; background: #000; }
-#audio-clip-youtube-player, #audio-clip-youtube-stage iframe { display: block; width: 100%; min-width: 200px; height: 270px; border: 0; }
 .audio-clip-selection { min-width: 0; display: grid; gap: 12px; padding-top: 2px; }
 .audio-clip-selection-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; }
 .audio-clip-selection-head h3 { margin: 0; color: var(--theme-text-e2dbce, #e2dbce); font: 600 1.12rem Georgia, "Times New Roman", serif; }
@@ -8305,23 +8408,27 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
   .audio-clip-time { grid-template-columns: minmax(0, 1fr); gap: 7px; }
   .audio-clip-time input[type="text"] { text-align: left; }
   .audio-clip-player { padding: 10px; }
-  #audio-clip-youtube-player, #audio-clip-youtube-stage iframe { height: 200px; }
   #audio-clip-dialog .ability-dialog-footer { padding: 12px 16px max(14px, env(safe-area-inset-bottom, 0px)); }
   #audio-clip-dialog .ability-dialog-footer .dialog-button { flex: 1 1 auto; }
 }
 
-#audio-clip-youtube-open { display: block; padding: 8px 11px; color: var(--theme-accent-dfca86, #dfca86); font-size: .7rem; background: var(--theme-surface-090a0d, #090a0d); }
-.roll-youtube-player-panel { position: fixed; right: 18px; bottom: 18px; z-index: 176; width: min(380px, calc(100vw - 36px)); padding: 13px; border: 1px solid var(--theme-accent-cfad62, #cfad62); border-radius: 5px; background: var(--theme-panel-15161b, #15161b); color: var(--theme-text-e2dbce, #e2dbce); box-shadow: 0 8px 28px #0008; }
-.roll-youtube-player-panel[hidden] { display: none; }
-.roll-youtube-player-head, .roll-youtube-player-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.roll-youtube-player-head { margin-bottom: 10px; font-size: .78rem; }
-.roll-youtube-player-panel .button { min-height: 30px; padding: 0 10px; font-size: .7rem; }
-.roll-youtube-player-host { height: 210px; min-height: 200px; background: #000; }
-.roll-youtube-player-host iframe { display: block; width: 100%; height: 100%; min-height: 200px; border: 0; }
-#roll-youtube-status { margin: 10px 0; font-size: .72rem; line-height: 1.55; }
-#roll-youtube-status[data-error="true"] { color: #ef8c98; }
-#roll-youtube-open { color: var(--theme-accent-dfca86, #dfca86); font-size: .7rem; }
-@media(max-height: 480px) { .roll-youtube-player-panel { max-height: calc(100dvh - 24px); overflow-y: auto; bottom: 12px; } }
+.roll-media-player-panel { max-height: calc(100dvh - 36px); overflow-y: auto; }
+.roll-media-player-video { display: block; width: 100%; max-height: min(42dvh, 260px); background: #000; aspect-ratio: 16 / 9; object-fit: contain; border-radius: 3px; }
+#roll-media-player-status { margin: 10px 0; font-size: .72rem; line-height: 1.55; }
+#roll-media-player-status[data-error="true"] { color: #ef8c98; }
+#audio-clip-video-stage[hidden] { display: none; }
+#audio-clip-video-stage { max-width: 100%; padding: 8px; border: 1px solid var(--theme-border-34343a, #34343a); border-radius: 4px; background: #08090b; }
+#audio-clip-video-stage .roll-media-player-video { max-height: 220px; }
+.audio-clip-mp4-options { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; font-size: .78rem; }
+.audio-clip-mp4-options select { width: auto; max-width: 100%; min-width: 165px; min-height: 34px; padding: 5px 26px 5px 10px; }
+
+.roll-media-player-panel { position: fixed; right: 18px; bottom: 18px; z-index: 176; width: min(380px, calc(100vw - 36px)); padding: 13px; border: 1px solid var(--theme-accent-cfad62, #cfad62); border-radius: 5px; background: var(--theme-panel-15161b, #15161b); color: var(--theme-text-e2dbce, #e2dbce); box-shadow: 0 8px 28px #0008; }
+.roll-media-player-panel[hidden] { display: none; }
+.roll-media-player-head, .roll-media-player-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.roll-media-player-head { margin-bottom: 10px; font-size: .78rem; }
+.roll-media-player-panel .button { min-height: 30px; padding: 0 10px; font-size: .7rem; }
+#audio-clip-video-player video { display: block; width: 100%; max-height: 240px; background: #000; }
+@media(max-height:480px) { .roll-media-player-panel { max-height: calc(100dvh - 24px); overflow-y: auto; bottom: 12px; } }
 
 </style>
 </head>
@@ -9762,9 +9869,9 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
             <label class="mechanics-switch">
               <input id="campaign-slot-private" type="checkbox" />
               <span aria-hidden="true"></span>
-              <strong>Ocultar dos outros jogadores</strong>
+              <strong>Privar ficha para outros jogadores</strong>
             </label>
-            <small class="ability-field-help">O Mestre sempre poderá visualizar e editar a ficha.</small>
+            <small class="ability-field-help">O cartão continua visível na Campanha. Somente você e o Mestre poderão abrir a ficha privada.</small>
             <p id="campaign-slot-error" class="campaign-form-error" role="alert" hidden></p>
             <div class="campaign-form-actions">
               <button class="campaign-ghost-button" type="button" data-close-campaign-slot>Cancelar</button>
@@ -9904,7 +10011,15 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
           <button class="result-close" type="button" data-close-theme aria-label="Fechar paleta de cores">×</button>
         </header>
         <div class="theme-popover-content">
-          <label class="theme-target-field"><span>Alterar cor de</span><select id="theme-target" aria-label="Parte da paleta que será alterada"></select></label>
+          <div class="theme-target-field">
+            <span id="theme-target-caption">Alterar cor de</span>
+            <div class="theme-target-picker">
+              <button id="theme-target" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="theme-target-options" aria-labelledby="theme-target-caption theme-target-label">
+                <span id="theme-target-swatch" class="theme-target-swatch" aria-hidden="true"></span><span id="theme-target-label">Destaques</span><svg class="theme-target-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg>
+              </button>
+              <div id="theme-target-options" class="theme-target-options" role="listbox" aria-label="Partes da paleta" hidden></div>
+            </div>
+          </div>
           <div class="theme-wheel-stage">
             <div id="theme-color-wheel" class="theme-color-wheel" role="slider" tabindex="0" aria-label="Escolher cor" aria-valuemin="0" aria-valuemax="360" aria-valuenow="0" aria-describedby="theme-wheel-help"><span id="theme-wheel-thumb" aria-hidden="true"></span></div>
           </div>
@@ -10427,6 +10542,8 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                 <label class="builder-field editor-field-origin">
                 <span>Origem <small>(opcional)</small></span>
                 <input id="ability-origin" type="text" maxlength="120" placeholder="Ex.: técnica, tradição ou fonte da habilidade" />
+                <datalist id="ability-power-origins"><option value="Poder de Classe"></option><option value="Poder de Entidade"></option></datalist>
+                <small id="ability-power-origin-help" class="ability-field-help" hidden>Escolha Poder de Classe ou Poder de Entidade para organizar o Grimório. Você também pode escrever outra origem.</small>
               </label>
                 <label class="builder-field editor-field-description">
                 <span>Descrição</span>
@@ -10755,7 +10872,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
           <div>
             <p class="eyebrow">Acervo compartilhado</p>
             <h2 id="grimoire-picker-title">Grimório de Minerva</h2>
-            <p>Escolha uma habilidade para copiar para o Slot atual.</p>
+            <p>Escolha um tipo e uma categoria para encontrar o que sua ficha precisa.</p>
           </div>
           <button
             class="result-close"
@@ -10769,7 +10886,8 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
           </button>
         </header>
 
-        <div class="grimoire-toolbar">
+        <div id="grimoire-picker-types" class="grimoire-picker-types" role="group" aria-label="Tipos do Grimório"></div>
+        <div class="grimoire-toolbar grimoire-picker-toolbar">
           <label class="filter-input-shell">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <circle cx="10.5" cy="10.5" r="6.5"></circle>
@@ -10785,6 +10903,10 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
           </label>
         </div>
 
+        <div class="grimoire-picker-filters">
+          <label id="grimoire-picker-category-field" class="grimoire-picker-category-field"><span>Categoria</span><select id="grimoire-picker-category" aria-label="Categoria do Grimório"></select></label>
+          <p id="grimoire-picker-summary" class="grimoire-picker-summary" role="status" aria-live="polite"></p>
+        </div>
         <div id="grimoire-picker-list" class="grimoire-list"></div>
         <div id="grimoire-picker-empty" class="grimoire-empty" hidden>
           Nenhuma habilidade disponível no Grimório.
@@ -11074,14 +11196,15 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
               </div>
             </section>
             <section class="settings-section" aria-labelledby="settings-sounds-title">
-              <h3 id="settings-sounds-title">Sons das suas rolagens</h3>
-              <p class="settings-section-copy">Escolha um áudio para cada resultado. Carregue a música inteira por arquivo ou cole um link do YouTube, escolha o início e o fim e teste o trecho antes de usá-lo. Arquivos completos: até 100 MB; trecho salvo: até 20 MB. Depois clique em “Salvar configurações”. Os participantes da mesma Campanha podem ouvi-lo nas suas rolagens públicas. O som de Dano Crítico toca quando o crítico é ativado na rolagem de dano.</p>
+              <h3 id="settings-sounds-title">Sons desta ficha</h3>
+              <p id="settings-slot-sound-note" class="settings-note"></p>
+              <p class="settings-section-copy">Escolha um áudio para cada resultado. Escolha um arquivo de áudio ou MP4 e marque o início e o fim. “Somente áudio” salva o som do trecho; “Vídeo MP4” reproduz o intervalo com imagem na caixa do canto. Áudio de origem: até 100 MB; trecho de áudio ou MP4 completo: até 20 MB. Depois clique em “Salvar configurações”. Os participantes da mesma Campanha podem ouvi-lo nas suas rolagens públicas. O som de Dano Crítico toca quando o crítico é ativado na rolagem de dano.</p>
               <div class="settings-sound-list">
                 <div class="settings-sound-row" data-outcome="extreme">
                   <div class="settings-sound-copy"><strong>Sucesso Extremo</strong><output id="settings-sound-name-extreme">Som padrão</output></div>
                   <div class="settings-sound-actions">
                     <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-extreme" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Sucesso Extremo" aria-describedby="settings-sound-status-extreme" /></label>
-                    <button class="dialog-button" type="button" data-youtube-audio-outcome="extreme">YouTube</button>
+                    <button class="dialog-button" type="button" data-video-audio-outcome="extreme">MP4</button>
                     <button class="dialog-button" type="button" data-edit-audio-outcome="extreme" disabled>Editar trecho</button>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="extreme"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="extreme">Padrão</button>
@@ -11092,7 +11215,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                   <div class="settings-sound-copy"><strong>Falha</strong><output id="settings-sound-name-failure">Som padrão</output></div>
                   <div class="settings-sound-actions">
                     <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-failure" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha" aria-describedby="settings-sound-status-failure" /></label>
-                    <button class="dialog-button" type="button" data-youtube-audio-outcome="failure">YouTube</button>
+                    <button class="dialog-button" type="button" data-video-audio-outcome="failure">MP4</button>
                     <button class="dialog-button" type="button" data-edit-audio-outcome="failure" disabled>Editar trecho</button>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="failure"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="failure">Padrão</button>
@@ -11103,7 +11226,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                   <div class="settings-sound-copy"><strong>Falha Crítica</strong><output id="settings-sound-name-critical-failure">Som padrão</output></div>
                   <div class="settings-sound-actions">
                     <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-critical-failure" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Falha Crítica" aria-describedby="settings-sound-status-critical-failure" /></label>
-                    <button class="dialog-button" type="button" data-youtube-audio-outcome="criticalFailure">YouTube</button>
+                    <button class="dialog-button" type="button" data-video-audio-outcome="criticalFailure">MP4</button>
                     <button class="dialog-button" type="button" data-edit-audio-outcome="criticalFailure" disabled>Editar trecho</button>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="criticalFailure"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="criticalFailure">Padrão</button>
@@ -11114,7 +11237,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
                   <div class="settings-sound-copy"><strong>Dano Crítico</strong><output id="settings-sound-name-critical-damage">Som padrão</output></div>
                   <div class="settings-sound-actions">
                     <label class="dialog-button settings-file-button">Escolher áudio<input id="settings-sound-critical-damage" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher som de Dano Crítico" aria-describedby="settings-sound-status-critical-damage" /></label>
-                    <button class="dialog-button" type="button" data-youtube-audio-outcome="criticalDamage">YouTube</button>
+                    <button class="dialog-button" type="button" data-video-audio-outcome="criticalDamage">MP4</button>
                     <button class="dialog-button" type="button" data-edit-audio-outcome="criticalDamage" disabled>Editar trecho</button>
                     <button class="dialog-button settings-preview-button" type="button" data-preview-outcome="criticalDamage"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir</button>
                     <button class="dialog-button" type="button" data-reset-outcome="criticalDamage">Padrão</button>
@@ -11154,25 +11277,22 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
         </header>
         <div class="audio-clip-content">
           <div class="audio-clip-tabs" role="tablist" aria-label="Origem do áudio">
-            <button id="audio-clip-file-tab" class="audio-clip-tab" type="button" role="tab" data-audio-clip-source="file" aria-controls="audio-clip-file-panel" aria-selected="true" tabindex="0"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2.5h7l3 3v12H5Z M12 2.5v3h3 M8 10v4.5 M8 10l5-1v4.5 M8 14.5c0 .6-.7 1-1.5 1S5 15.1 5 14.5s.7-1 1.5-1 1.5.4 1.5 1Z M13 13.5c0 .6-.7 1-1.5 1s-1.5-.4-1.5-1 .7-1 1.5-1 1.5.4 1.5 1Z"></path></svg>Arquivo</button>
-            <button id="audio-clip-youtube-tab" class="audio-clip-tab" type="button" role="tab" data-audio-clip-source="youtube" aria-controls="audio-clip-youtube-panel" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="4.5" width="16" height="11" rx="3"></rect><path d="m8 7 5 3-5 3Z"></path></svg>Link do YouTube</button>
+            <button id="audio-clip-file-tab" class="audio-clip-tab" type="button" role="tab" data-audio-clip-source="file" aria-controls="audio-clip-file-panel" aria-selected="true" tabindex="0"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 2.5h7l3 3v12H5Z M12 2.5v3h3 M8 10v4.5 M8 10l5-1v4.5 M8 14.5c0 .6-.7 1-1.5 1S5 15.1 5 14.5s.7-1 1.5-1 1.5.4 1.5 1Z M13 13.5c0 .6-.7 1-1.5 1s-1.5-.4-1.5-1 .7-1 1.5-1 1.5.4 1.5 1Z"></path></svg>Somente áudio</button>
+            <button id="audio-clip-video-tab" class="audio-clip-tab" type="button" role="tab" data-audio-clip-source="video" aria-controls="audio-clip-video-panel" aria-selected="false" tabindex="-1"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="4.5" width="16" height="11" rx="2"></rect><path d="m8 7 5 3-5 3Z"></path></svg>Vídeo MP4</button>
           </div>
           <div id="audio-clip-file-panel" class="audio-clip-source" role="tabpanel" aria-labelledby="audio-clip-file-tab">
             <label class="dialog-button settings-file-button audio-clip-file-button"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 13V3 M6.5 6.5 10 3l3.5 3.5 M3 12v4.5h14V12"></path></svg>Escolher arquivo<input id="audio-clip-file" type="file" accept=".mp3,.wav,.ogg,.webm,.m4a,.mp4,audio/mpeg,audio/wav,audio/x-wav,audio/ogg,audio/webm,audio/mp4" aria-label="Escolher arquivo para recortar" /></label>
             <p class="audio-clip-hint">Carregue a música inteira (até 100 MB e 15 minutos). Apenas o trecho será salvo, com limite de 20 MB.</p>
           </div>
-          <div id="audio-clip-youtube-panel" class="audio-clip-source" role="tabpanel" aria-labelledby="audio-clip-youtube-tab" hidden>
-            <div class="audio-clip-link-row">
-              <label class="settings-field"><span>Link da música ou vídeo</span><input id="audio-clip-youtube-url" type="url" inputmode="url" autocomplete="off" placeholder="https://www.youtube.com/watch?v=…" /></label>
-              <button id="audio-clip-load-youtube" class="dialog-button" type="button">Carregar</button>
-            </div>
-            <p class="audio-clip-hint">Use o vídeo para encontrar o trecho que quer ouvir.</p>
+          <div id="audio-clip-video-panel" class="audio-clip-source" role="tabpanel" aria-labelledby="audio-clip-video-tab" hidden>
+            <label class="dialog-button settings-file-button audio-clip-file-button">Escolher MP4<input id="audio-clip-video-file" type="file" accept=".mp4,video/mp4" aria-label="Escolher vídeo MP4" /></label>
+            <p class="audio-clip-hint">MP4 completo de até 20 MB e 15 minutos. O vídeo é salvo inteiro e reproduz apenas o intervalo escolhido na caixa do canto. Para extrair apenas o som, use a aba “Somente áudio”.</p>
           </div>
           <section class="audio-clip-player" aria-label="Prévia do áudio">
             <div class="audio-clip-source-summary"><strong id="audio-clip-source-name">Nenhum áudio escolhido</strong><output id="audio-clip-source-duration">—</output></div>
-            <div id="audio-clip-empty" class="audio-clip-empty"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 21V8l13-3v14 M12 21c0 2-2 3.5-4.5 3.5S3 23 3 21s2-3.5 4.5-3.5S12 19 12 21Z M25 19c0 2-2 3.5-4.5 3.5S16 21 16 19s2-3.5 4.5-3.5S25 17 25 19Z"></path></svg><span>Escolha um arquivo ou cole um link para começar.</span></div>
+            <div id="audio-clip-empty" class="audio-clip-empty"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M12 21V8l13-3v14 M12 21c0 2-2 3.5-4.5 3.5S3 23 3 21s2-3.5 4.5-3.5S12 19 12 21Z M25 19c0 2-2 3.5-4.5 3.5S16 21 16 19s2-3.5 4.5-3.5S25 17 25 19Z"></path></svg><span>Escolha um arquivo de áudio ou vídeo para começar.</span></div>
             <audio id="audio-clip-audio" controls preload="metadata" hidden aria-label="Áudio original"></audio>
-            <div id="audio-clip-youtube-stage" hidden><div id="audio-clip-youtube-player"></div><a id="audio-clip-youtube-open" target="_blank" rel="noopener noreferrer">Abrir no YouTube</a></div>
+            <div id="audio-clip-video-stage" hidden><div id="audio-clip-video-player"></div></div>
           </section>
           <section class="audio-clip-selection" aria-labelledby="audio-clip-selection-title">
             <div class="audio-clip-selection-head"><h3 id="audio-clip-selection-title">Seu trecho</h3><output id="audio-clip-duration">0:00 selecionados</output></div>
@@ -11183,7 +11303,7 @@ body.is-readonly [data-open-item-upgrades], body.is-readonly [data-remove-item-u
             <p id="audio-clip-time-help" class="audio-clip-hint">Arraste as barras ou digite os tempos, como 1:30.</p>
             <div class="audio-clip-preview-actions"><button id="audio-clip-preview" class="dialog-button settings-preview-button" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"></path></svg>Ouvir trecho</button><button id="audio-clip-stop" class="dialog-button settings-preview-button" type="button" disabled><svg viewBox="0 0 16 16" aria-hidden="true"><rect x="4" y="4" width="8" height="8"></rect></svg>Parar</button></div>
           </section>
-          <p id="audio-clip-status" class="audio-clip-status" data-state="idle" role="status" aria-live="polite" aria-atomic="true">O áudio atual será mantido até você aplicar o novo trecho.</p>
+          <p id="audio-clip-status" class="audio-clip-status" data-state="idle" role="status" aria-live="polite" aria-atomic="true">O som atual da ficha será mantido até você aplicar o novo trecho.</p>
         </div>
         <footer class="ability-dialog-footer">
           <button class="dialog-button" type="button" data-close-audio-clip>Cancelar</button>
@@ -13409,6 +13529,88 @@ function themeWheelCoordinates({ clientX, clientY }, rect) {
   return { h, s: radius ? Math.min(1, Math.hypot(x, y) / radius) : 0 };
 }
 
+function syncThemeTargetPicker(field) {
+  const trigger = document.querySelector("#theme-target");
+  const color = themeSettings[field.key] || field.default;
+  trigger.value = field.key;
+  trigger.title = `${field.label}: ${color.toUpperCase()}`;
+  document.querySelector("#theme-target-label").textContent = field.label;
+  document.querySelector("#theme-target-swatch").style.backgroundColor = color;
+  document.querySelector("#theme-target-options").querySelectorAll("[data-theme-option]").forEach((option) => {
+    const entry = THEME_FIELDS.find((item) => item.key === option.dataset.themeOption);
+    if (!entry) return;
+    const entryColor = themeSettings[entry.key] || entry.default;
+    option.setAttribute("aria-selected", String(entry.key === field.key));
+    option.setAttribute("aria-label", `${entry.label}: ${entryColor.toUpperCase()}`);
+    option.querySelector(".theme-target-swatch").style.backgroundColor = entryColor;
+  });
+}
+
+function closeThemeTargetPicker({ restoreFocus = false } = {}) {
+  const list = document.querySelector("#theme-target-options");
+  const wasOpen = !list.hidden;
+  list.hidden = true;
+  list.dataset.themeSearch = "";
+  document.querySelector("#theme-target").setAttribute("aria-expanded", "false");
+  if (restoreFocus && wasOpen) document.querySelector("#theme-target").focus({ preventScroll: true });
+}
+
+function openThemeTargetPicker() {
+  const list = document.querySelector("#theme-target-options");
+  list.hidden = false;
+  list.dataset.themeSearch = "";
+  document.querySelector("#theme-target").setAttribute("aria-expanded", "true");
+  const option = list.querySelector('[aria-selected="true"]') || list.querySelector("[data-theme-option]");
+  option?.focus({ preventScroll: true });
+  option?.scrollIntoView({ block: "nearest" });
+}
+
+function handleThemeTargetKeydown(event) {
+  if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+  event.preventDefault();
+  openThemeTargetPicker();
+}
+
+function handleThemeTargetOptionsKeydown(event) {
+  if (event.key === "Tab") { closeThemeTargetPicker(); return; }
+  if (event.key === "Escape") {
+    event.preventDefault();
+    event.stopPropagation();
+    closeThemeTargetPicker({ restoreFocus: true });
+    return;
+  }
+  const list = document.querySelector("#theme-target-options");
+  const options = [...list.querySelectorAll("[data-theme-option]")];
+  const current = event.target.closest("[data-theme-option]");
+  if (!current || !options.length) return;
+  if (event.key === "Enter" || event.key === " ") {
+    event.preventDefault();
+    selectThemeTarget(current.dataset.themeOption);
+    closeThemeTargetPicker({ restoreFocus: true });
+    return;
+  }
+  let index = options.indexOf(current);
+  if (event.key === "ArrowDown") index = Math.min(options.length - 1, index + 1);
+  else if (event.key === "ArrowUp") index = Math.max(0, index - 1);
+  else if (event.key === "Home") index = 0;
+  else if (event.key === "End") index = options.length - 1;
+  else if (event.key.length === 1 && !event.ctrlKey && !event.altKey && !event.metaKey) {
+    const now = Date.now();
+    const normalize = (text) => text.toLocaleLowerCase("pt-BR").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const previous = now - Number(list.dataset.themeSearchTime || 0) < 700 ? list.dataset.themeSearch || "" : "";
+    const letter = normalize(event.key);
+    const search = previous === letter ? letter : previous + letter;
+    list.dataset.themeSearch = search;
+    list.dataset.themeSearchTime = String(now);
+    const ordered = [...options.slice(index + 1), ...options.slice(0, index + 1)];
+    const match = ordered.find((option) => normalize(THEME_FIELDS.find((field) => field.key === option.dataset.themeOption)?.label || "").startsWith(search));
+    if (match) index = options.indexOf(match);
+  } else return;
+  event.preventDefault();
+  options[index].focus({ preventScroll: true });
+  options[index].scrollIntoView({ block: "nearest" });
+}
+
 function syncThemePicker({ readColor = true } = {}) {
   const field = THEME_FIELDS.find((entry) => entry.key === activeThemeKey) || THEME_FIELDS.find((entry) => entry.key === "accent");
   activeThemeKey = field.key;
@@ -13441,7 +13643,7 @@ function syncThemePicker({ readColor = true } = {}) {
   hex.removeAttribute("aria-invalid");
   document.querySelector("#theme-hex-feedback").hidden = true;
   document.querySelector("#theme-current-swatch").style.backgroundColor = color;
-  document.querySelector("#theme-target").value = field.key;
+  syncThemeTargetPicker(field);
   document.querySelector("#theme-reset").disabled = readOnly;
   document.querySelector("#theme-preview-status").textContent = readOnly ? "Esta ficha está em modo de leitura." : "A cor muda na ficha enquanto você escolhe.";
   themeFields.querySelectorAll("[data-theme-key]").forEach((control) => {
@@ -13539,9 +13741,10 @@ function handleThemeHexInput(event) {
 
 function renderThemeFields() {
   releaseThemeWheelPointer();
+  closeThemeTargetPicker();
   themeFields.replaceChildren();
-  const select = document.querySelector("#theme-target");
-  select.replaceChildren();
+  const list = document.querySelector("#theme-target-options");
+  list.replaceChildren();
   const groups = new Map();
   THEME_FIELDS.forEach((field) => {
     if (!groups.has(field.group)) {
@@ -13553,15 +13756,32 @@ function renderThemeFields() {
       fields.className = "theme-group-fields";
       group.append(legend, fields);
       themeFields.append(group);
-      const options = document.createElement("optgroup");
-      options.label = field.group;
-      select.append(options);
+      const options = document.createElement("div");
+      options.className = "theme-target-group";
+      options.setAttribute("role", "group");
+      options.setAttribute("aria-label", field.group);
+      const heading = document.createElement("p");
+      heading.className = "theme-target-group-label";
+      heading.textContent = field.group;
+      heading.setAttribute("aria-hidden", "true");
+      options.append(heading);
+      list.append(options);
       groups.set(field.group, { fields, options });
     }
     const color = themeSettings[field.key] || field.default;
-    const option = document.createElement("option");
-    option.value = field.key;
-    option.textContent = field.label;
+    const option = document.createElement("button");
+    option.type = "button";
+    option.className = "theme-target-option";
+    option.dataset.themeOption = field.key;
+    option.tabIndex = -1;
+    option.setAttribute("role", "option");
+    const optionSwatch = document.createElement("span");
+    optionSwatch.className = "theme-target-swatch";
+    optionSwatch.setAttribute("aria-hidden", "true");
+    optionSwatch.style.backgroundColor = color;
+    const optionLabel = document.createElement("span");
+    optionLabel.textContent = field.label;
+    option.append(optionSwatch, optionLabel);
     groups.get(field.group).options.append(option);
     const control = document.createElement("button");
     control.type = "button";
@@ -13921,6 +14141,10 @@ const grimoirePickerDialog = document.querySelector("#grimoire-picker-dialog");
 const grimoirePickerList = document.querySelector("#grimoire-picker-list");
 const grimoirePickerEmpty = document.querySelector("#grimoire-picker-empty");
 const grimoireSearchInput = document.querySelector("#grimoire-search");
+const grimoirePickerTypes = document.querySelector("#grimoire-picker-types");
+const grimoirePickerCategorySelect = document.querySelector("#grimoire-picker-category");
+const grimoirePickerCategoryField = document.querySelector("#grimoire-picker-category-field");
+const grimoirePickerSummary = document.querySelector("#grimoire-picker-summary");
 const minervaModal = document.querySelector("#minerva-modal");
 const minervaDialog = document.querySelector("#minerva-dialog");
 const minervaList = document.querySelector("#minerva-list");
@@ -14036,6 +14260,8 @@ let itemEditorScope = "inventory";
 let pendingAbilityPreviewUrl = "";
 let grimoireAbilities = [];
 let grimoireItems = [];
+let activeGrimoirePickerType = "attacks";
+let activeGrimoirePickerCategory = "";
 let activeMinervaSection = "attacks";
 let walletBalance = 0;
 let purchaseHistory = [];
@@ -14048,6 +14274,8 @@ let activeAbilityDetailTrigger = null;
 let activeItemId = null;
 let activeItemTrigger = null;
 let themeSettings = {};
+let sheetRollSounds = {};
+let slotRollSoundsInitialized = false;
 let systemPromptResolver = null;
 let systemPromptTrigger = null;
 const resourceMaxManual = { pv: false, pa: false, sa: false };
@@ -15510,6 +15738,58 @@ function auditTrainingLimit() {
     .forEach((entry) => queueTrainingLimitRequest(entry, "leigo"));
 }
 
+function normalizeSheetRollSounds(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return {};
+  const sounds = {};
+  const audioTypes = new Set(["audio/mpeg", "audio/wav", "audio/x-wav", "audio/ogg", "audio/webm", "audio/mp4"]);
+  ["extreme", "failure", "criticalFailure", "criticalDamage"].forEach((key) => {
+    const ref = raw[key];
+    if (!ref || typeof ref !== "object" || Array.isArray(ref)) return;
+    const uid = String(ref.uid || "");
+    const id = String(ref.id || "");
+    if (!/^[A-Za-z0-9_-]{1,128}$/.test(uid) || !/^[A-Za-z0-9_-]{1,128}$/.test(id)) return;
+    const name = String(ref.name || "Áudio").trim().slice(0, 120) || "Áudio";
+    if (ref.kind === "youtube" && ref.mimeType === "video/youtube") {
+      if (!/^[A-Za-z0-9_-]{11}$/.test(String(ref.videoId || ""))) return;
+      if (typeof ref.startSeconds !== "number" || typeof ref.endSeconds !== "number"
+        || !Number.isFinite(ref.startSeconds) || !Number.isFinite(ref.endSeconds)
+        || ref.startSeconds < 0 || ref.endSeconds > 86400 || ref.endSeconds <= ref.startSeconds
+        || ref.endSeconds - ref.startSeconds > 600) return;
+      const startSeconds = Math.round(ref.startSeconds * 1000) / 1000;
+      const endSeconds = Math.round(ref.endSeconds * 1000) / 1000;
+      if (endSeconds <= startSeconds) return;
+      sounds[key] = { uid, id, name, kind: "youtube", mimeType: "video/youtube", videoId: String(ref.videoId), startSeconds, endSeconds };
+      return;
+    }
+    if (ref.kind === "video" ? ref.mimeType !== "video/mp4" : !audioTypes.has(ref.mimeType)) return;
+    const result = { uid, id, name, mimeType: ref.mimeType };
+    if (ref.kind === "video") {
+      result.kind = "video";
+      if (typeof ref.startSeconds !== "number" || typeof ref.endSeconds !== "number" || typeof ref.sourceDuration !== "number"
+        || !Number.isFinite(ref.startSeconds) || !Number.isFinite(ref.endSeconds) || !Number.isFinite(ref.sourceDuration)
+        || ref.sourceDuration <= 0 || ref.sourceDuration > 900 || ref.startSeconds < 0
+        || ref.endSeconds > ref.sourceDuration || ref.endSeconds <= ref.startSeconds
+        || ref.endSeconds - ref.startSeconds > 600) return;
+      result.startSeconds = ref.startSeconds;
+      result.endSeconds = ref.endSeconds;
+      result.sourceDuration = ref.sourceDuration;
+      if (result.endSeconds <= result.startSeconds || result.endSeconds > result.sourceDuration) return;
+    }
+    sounds[key] = result;
+  });
+  return sounds;
+}
+
+function setSheetRollSounds(raw, { notify = true } = {}) {
+  if (isNotebookReadOnly()) return false;
+  const sounds = normalizeSheetRollSounds(raw);
+  const changed = !slotRollSoundsInitialized || JSON.stringify(sounds) !== JSON.stringify(sheetRollSounds);
+  sheetRollSounds = sounds;
+  slotRollSoundsInitialized = true;
+  if (notify && changed) notifySheetChanged("roll-sounds");
+  return true;
+}
+
 function captureCompleteSheetState() {
   const attributes = {};
   document.querySelectorAll("[data-attribute]").forEach((input) => {
@@ -15538,6 +15818,7 @@ function captureCompleteSheetState() {
       echo: ECHOES[characterEchoSelect.value] ? characterEchoSelect.value : "",
       echoPoints: clampInteger(echoPoints, 0, 5, 0),
       appearance: sanitizeTheme(themeSettings),
+      ...(slotRollSoundsInitialized ? { rollSounds: normalizeSheetRollSounds(sheetRollSounds) } : {}),
       classKey: CHARACTER_CLASSES[characterClassSelect.value] ? characterClassSelect.value : "",
       level: getCharacterLevel(),
       attributes,
@@ -15663,6 +15944,7 @@ function createCleanSheetState() {
       echo: "",
       echoPoints: 0,
       appearance: {},
+      rollSounds: {},
       classKey: "",
       level: 1,
       attributes: { FOR: 1, AGI: 1, INT: 1, CON: 1, POD: 1 },
@@ -15813,6 +16095,7 @@ function applyCompleteSheetState(rawState, options = {}) {
   if (!rawState || typeof rawState !== "object") return false;
   const profile = rawState.profile && typeof rawState.profile === "object" ? rawState.profile : {};
   const sheet = rawState.sheet && typeof rawState.sheet === "object" ? rawState.sheet : {};
+  let appliedSuccessfully = false;
   isApplyingExternalState = true;
 
   try {
@@ -15858,6 +16141,9 @@ function applyCompleteSheetState(rawState, options = {}) {
     characterEchoSelect.value = ECHOES[profile.echo] ? profile.echo : "";
     echoPoints = clampInteger(profile.echoPoints, 0, 5, 0);
     themeSettings = sanitizeTheme(profile.appearance);
+    slotRollSoundsInitialized = Object.hasOwn(profile, "rollSounds") && Boolean(profile.rollSounds)
+      && typeof profile.rollSounds === "object" && !Array.isArray(profile.rollSounds);
+    sheetRollSounds = normalizeSheetRollSounds(profile.rollSounds);
     applyTheme();
     renderThemeFields();
     characterClassSelect.value = CHARACTER_CLASSES[profile.classKey] ? profile.classKey : "";
@@ -15990,9 +16276,11 @@ function applyCompleteSheetState(rawState, options = {}) {
     filterSkills();
     updateTrainingCapStatus();
     queueMicrotask(() => auditTrainingLimit());
+    appliedSuccessfully = true;
     return true;
   } finally {
     isApplyingExternalState = false;
+    if (appliedSuccessfully) window.dispatchEvent(new CustomEvent("abyss:slot-sounds-loaded"));
   }
 }
 
@@ -17958,6 +18246,13 @@ function updateAbilityEchoField() {
   const isEcho = abilitySectionSelect.value === "echoes";
   abilityEchoField.hidden = !isEcho;
   abilityEchoSelect.required = isEcho;
+  const isPower = abilitySectionSelect.value === "powers";
+  document.querySelector("#ability-power-origin-help").hidden = !isPower;
+  if (isPower) abilityOriginInput.setAttribute("list", "ability-power-origins");
+  else abilityOriginInput.removeAttribute("list");
+  abilityOriginInput.placeholder = isPower
+    ? "Poder de Classe, Poder de Entidade ou outra origem"
+    : "Ex.: técnica, tradição ou fonte da habilidade";
 }
 
 function updateAbilityShopFields() {
@@ -19320,22 +19615,128 @@ async function purchaseShopProduct(kind, productId, trigger) {
   });
 }
 
-function renderGrimoirePicker() {
-  const query = normalizeSearchTerm(grimoireSearchInput.value);
-  const visible = grimoireAbilities
-    .filter((ability) => {
-      if (ability.shopListed || ability.section === "upgrades") return false;
-      const searchable = normalizeSearchTerm(
-        `${ability.name} ${ability.description} ${ability.damage} ${abilitySectionLabel(ability.section)} ${abilityOriginLabel(ability, "minerva")}`,
-      );
-      return !query || searchable.includes(query);
-    })
-    .sort((a, b) => portugueseCollator.compare(a.name, b.name));
+function grimoirePickerTypeLabel(type) {
+  return ({ inventory: "Item", attacks: "Ataque", backgrounds: "Antecedência", styles: "Estilo de Luta",
+    powers: "Poder", spells: "Feitiço", tricks: "Truque", echoes: "Eco", classes: "Classe", tree: "Árvore" })[type] || "Todos";
+}
 
-  grimoirePickerList.replaceChildren(
-    ...visible.map((ability) => createGrimoireItem(ability, "picker")),
+function grimoirePickerCategory(creation, type) {
+  if (type === "inventory") {
+    const itemType = sanitizeItemType(creation.itemType, creation.isWeapon);
+    return { key: itemType, label: ITEM_TYPES[itemType] };
+  }
+  if (type === "echoes") return { key: creation.echoKey, label: ECHOES[creation.echoKey] || "Outros Ecos" };
+  const origin = String(creation.origin || "").trim();
+  const normalized = normalizeSearchTerm(origin);
+  if (type === "powers") {
+    if (/\bentidades?\b/.test(normalized)) return { key: "entity", label: "Poder de Entidade" };
+    const isClassOrigin = /\bclasses?\b/.test(normalized) || Object.entries(CHARACTER_CLASSES).some(([key, value]) =>
+      new RegExp(`\\b${normalizeSearchTerm(key)}\\b|\\b${normalizeSearchTerm(value.label)}\\b`).test(normalized));
+    if (isClassOrigin) return { key: "class", label: "Poder de Classe" };
+    return { key: "other", label: "Outros Poderes" };
+  }
+  return origin ? { key: `origin:${normalized}`, label: origin } : { key: "general", label: "Geral" };
+}
+
+function getGrimoirePickerEntries() {
+  return [
+    ...grimoireAbilities.filter((ability) => !ability.shopListed && ability.section !== "upgrades")
+      .map((creation) => ({ kind: "ability", type: creation.section, creation, category: grimoirePickerCategory(creation, creation.section) })),
+    ...grimoireItems.filter((item) => item.shopListed)
+      .map((creation) => ({ kind: "item", type: "inventory", creation, category: grimoirePickerCategory(creation, "inventory") })),
+  ];
+}
+
+function getGrimoirePickerCategories(type, entries) {
+  const fixed = type === "echoes" ? Object.entries(ECHOES)
+    : type === "inventory" ? Object.entries(ITEM_TYPES)
+    : type === "powers" ? [["class", "Poder de Classe"], ["entity", "Poder de Entidade"], ["other", "Outros Poderes"]]
+    : [];
+  const categories = new Map(fixed.map(([key, label]) => [key, { key, label, count: 0 }]));
+  entries.filter((entry) => entry.type === type).forEach((entry) => {
+    if (!categories.has(entry.category.key)) categories.set(entry.category.key, { ...entry.category, count: 0 });
+    categories.get(entry.category.key).count += 1;
+  });
+  return [...categories.values()].sort((a, b) => portugueseCollator.compare(a.label, b.label));
+}
+
+function createGrimoirePickerItem(item) {
+  const card = createGrimoireInventoryItem(item);
+  const actions = card.querySelector(".grimoire-item-actions");
+  const open = document.createElement("button");
+  open.type = "button";
+  open.className = "ability-card-action";
+  open.dataset.openMinervaItem = item.id;
+  open.textContent = "Abrir";
+  const buy = document.createElement("button");
+  buy.type = "button";
+  buy.className = "ability-card-action";
+  buy.dataset.buyShopKind = "item";
+  buy.dataset.buyShopId = item.id;
+  buy.textContent = "Comprar";
+  buy.disabled = !window.AbyssCloud?.hasActiveSlot();
+  actions.replaceChildren(open, buy);
+  return card;
+}
+
+function renderGrimoirePicker() {
+  const entries = getGrimoirePickerEntries();
+  const types = ["", "inventory", ...Object.keys(ABILITY_SECTIONS).filter((type) => type !== "upgrades")];
+  grimoirePickerTypes.replaceChildren(...types.map((type) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.grimoirePickerType = type;
+    button.setAttribute("aria-pressed", String(type === activeGrimoirePickerType));
+    const count = entries.filter((entry) => !type || entry.type === type).length;
+    button.append(document.createTextNode(grimoirePickerTypeLabel(type)),
+      Object.assign(document.createElement("small"), { textContent: String(count) }));
+    return button;
+  }));
+  const categories = getGrimoirePickerCategories(activeGrimoirePickerType, entries);
+  if (!categories.some((category) => category.key === activeGrimoirePickerCategory)) activeGrimoirePickerCategory = "";
+  grimoirePickerCategoryField.hidden = !activeGrimoirePickerType;
+  grimoirePickerCategorySelect.replaceChildren(
+    Object.assign(document.createElement("option"), { value: "", textContent: "Todas as categorias" }),
+    ...categories.map((category) => Object.assign(document.createElement("option"), {
+      value: category.key, textContent: `${category.label} (${category.count})`,
+    })),
   );
-  grimoirePickerEmpty.textContent = "Nenhuma habilidade disponível no Grimório.";
+  grimoirePickerCategorySelect.value = activeGrimoirePickerCategory;
+  const query = normalizeSearchTerm(grimoireSearchInput.value);
+  const visible = entries.filter((entry) => {
+    if (activeGrimoirePickerType && entry.type !== activeGrimoirePickerType) return false;
+    if (activeGrimoirePickerCategory && entry.category.key !== activeGrimoirePickerCategory) return false;
+    const creation = entry.creation;
+    const searchable = normalizeSearchTerm(`${creation.name} ${creation.description} ${creation.damage || ""} ${creation.origin || ""} ${grimoirePickerTypeLabel(entry.type)} ${entry.category.label}`);
+    return !query || searchable.includes(query);
+  }).sort((a, b) => types.indexOf(a.type) - types.indexOf(b.type)
+    || portugueseCollator.compare(a.category.label, b.category.label)
+    || portugueseCollator.compare(a.creation.name, b.creation.name));
+  const groups = new Map();
+  visible.forEach((entry) => {
+    const key = `${entry.type}:${entry.category.key}`;
+    if (!groups.has(key)) groups.set(key, { entry, entries: [] });
+    groups.get(key).entries.push(entry);
+  });
+  grimoirePickerList.replaceChildren(...[...groups.values()].map((group) => {
+    const section = document.createElement("section");
+    section.className = "grimoire-picker-group";
+    const heading = document.createElement("h3");
+    heading.className = "grimoire-picker-group-title";
+    const label = `${grimoirePickerTypeLabel(group.entry.type)} · ${group.entry.category.label}`;
+    section.setAttribute("aria-label", label);
+    heading.append(document.createTextNode(label), Object.assign(document.createElement("small"), {
+      textContent: `${group.entries.length} ${group.entries.length === 1 ? "opção" : "opções"}`,
+    }));
+    section.append(heading, ...group.entries.map(({ kind, creation }) => kind === "item"
+      ? createGrimoirePickerItem(creation) : createGrimoireItem(creation, "picker")));
+    return section;
+  }));
+  grimoirePickerSummary.textContent = `${visible.length} ${visible.length === 1 ? "resultado" : "resultados"}`;
+  grimoirePickerList.hidden = visible.length === 0;
+  grimoirePickerEmpty.textContent = query
+    ? "Nenhum resultado nesta seleção. Tente outro termo, tipo ou categoria."
+    : "Nenhuma opção disponível nesta categoria. Escolha outro tipo ou categoria.";
   grimoirePickerEmpty.hidden = visible.length !== 0;
 }
 
@@ -19400,6 +19801,10 @@ async function openGrimoirePicker() {
     return;
   }
 
+  activeGrimoirePickerType = activeAbilitySection === "upgrades" ? "inventory" : activeAbilitySection;
+  activeGrimoirePickerCategory = "";
+  grimoireSearchInput.value = "";
+  renderGrimoirePicker();
   grimoirePickerModal.hidden = false;
   grimoirePickerList.setAttribute("aria-busy", "true");
   syncModalLock();
@@ -19409,6 +19814,8 @@ async function openGrimoirePicker() {
     await refreshGrimoireFromCloud();
   } catch {
     grimoirePickerList.replaceChildren();
+    grimoirePickerList.hidden = true;
+    grimoirePickerSummary.textContent = "";
     grimoirePickerEmpty.textContent =
       "Não foi possível abrir o Grimório. Verifique sua conexão e tente novamente.";
     grimoirePickerEmpty.hidden = false;
@@ -19509,6 +19916,7 @@ function openThemeEditor() {
 
 function closeThemeEditor({ restoreFocus = true } = {}) {
   releaseThemeWheelPointer();
+  closeThemeTargetPicker();
   themeModal.hidden = true;
   themeButton.setAttribute("aria-expanded", "false");
   if (restoreFocus && themeButton.isConnected) themeButton.focus({ preventScroll: true });
@@ -20949,7 +21357,21 @@ systemPromptCancel.addEventListener("click", () => closeSystemPrompt(false));
 systemPromptConfirm.addEventListener("click", () => closeSystemPrompt(true));
 themeButton.addEventListener("click", openThemeEditor);
 document.querySelector("#theme-reset").addEventListener("click", resetThemePalette);
-document.querySelector("#theme-target").addEventListener("change", (event) => selectThemeTarget(event.currentTarget.value));
+document.querySelector("#theme-target").addEventListener("click", () => {
+  if (document.querySelector("#theme-target-options").hidden) openThemeTargetPicker();
+  else closeThemeTargetPicker();
+});
+document.querySelector("#theme-target").addEventListener("keydown", handleThemeTargetKeydown);
+document.querySelector("#theme-target-options").addEventListener("keydown", handleThemeTargetOptionsKeydown);
+document.querySelector("#theme-target-options").addEventListener("click", (event) => {
+  const option = event.target.closest("[data-theme-option]");
+  if (!option) return;
+  selectThemeTarget(option.dataset.themeOption);
+  closeThemeTargetPicker({ restoreFocus: true });
+});
+document.querySelector("#theme-target-options").addEventListener("focusout", (event) => {
+  if (event.relatedTarget && !document.querySelector(".theme-target-picker").contains(event.relatedTarget)) closeThemeTargetPicker();
+});
 themeFields.addEventListener("click", (event) => {
   const control = event.target.closest("[data-theme-key]");
   if (control) selectThemeTarget(control.dataset.themeKey);
@@ -20968,12 +21390,25 @@ document.querySelector("#theme-hex").addEventListener("input", handleThemeHexInp
 document.querySelector("#theme-hex").addEventListener("change", handleThemeHexInput);
 document.querySelector(".theme-palette-list").addEventListener("toggle", positionThemePopover);
 document.addEventListener("pointerdown", (event) => {
+  if (!document.querySelector(".theme-target-picker").contains(event.target)) closeThemeTargetPicker();
   if (!themeModal.hidden && !themeDialog.contains(event.target) && !themeButton.contains(event.target)) closeThemeEditor({ restoreFocus: false });
 });
 window.addEventListener("resize", positionThemePopover);
 window.visualViewport?.addEventListener("resize", positionThemePopover);
 window.visualViewport?.addEventListener("scroll", positionThemePopover);
 grimoireSearchInput.addEventListener("input", renderGrimoirePicker);
+grimoirePickerTypes.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-grimoire-picker-type]");
+  if (!button) return;
+  activeGrimoirePickerType = button.dataset.grimoirePickerType;
+  activeGrimoirePickerCategory = "";
+  renderGrimoirePicker();
+  grimoirePickerTypes.querySelector('[aria-pressed="true"]')?.focus({ preventScroll: true });
+});
+grimoirePickerCategorySelect.addEventListener("change", () => {
+  activeGrimoirePickerCategory = grimoirePickerCategorySelect.value;
+  renderGrimoirePicker();
+});
 minervaSectionButtons.forEach((button) => {
   button.addEventListener("click", () => selectMinervaSection(button.dataset.minervaSection));
 });
@@ -21130,6 +21565,16 @@ inventoryList.addEventListener("click", async (event) => {
 });
 
 grimoirePickerList.addEventListener("click", (event) => {
+  const openItem = event.target.closest("[data-open-minerva-item]");
+  if (openItem) {
+    openAbilityDetail(openItem.dataset.openMinervaItem, openItem, "minerva-item");
+    return;
+  }
+  const buy = event.target.closest("[data-buy-shop-id]");
+  if (buy) {
+    purchaseShopProduct(buy.dataset.buyShopKind, buy.dataset.buyShopId, buy);
+    return;
+  }
   const open = event.target.closest("[data-open-grimoire-ability]");
   if (open) {
     openAbilityDetail(open.dataset.openGrimoireAbility, open, "minerva");
@@ -22033,6 +22478,10 @@ window.AbyssSheet = Object.freeze({
   captureState: captureCompleteSheetState,
   applyState: applyCompleteSheetState,
   normalizeAttributeValue,
+  normalizeRollSounds: normalizeSheetRollSounds,
+  getRollSounds: () => normalizeSheetRollSounds(sheetRollSounds),
+  hasSlotRollSounds: () => slotRollSoundsInitialized,
+  setRollSounds: setSheetRollSounds,
   serializeAbility: serializeAbilityForCloud,
   serializeItem: serializeInventoryItemForCloud,
   persistLocalNow: writeLocalSheetCache,
@@ -22550,6 +22999,10 @@ function createCampaignMemberRow(member) {
   return row;
 }
 
+function canViewCampaignSheet(sheet, role = activeCampaign?.role, uid = currentFirebaseUser?.uid) {
+  return Boolean(sheet && uid && (sheet.ownerUid === uid || role === "master" || sheet.privateToPlayers === false));
+}
+
 function createCampaignSheetCard(sheet) {
   const card = document.createElement("article");
   card.className = "campaign-sheet-card";
@@ -22592,6 +23045,12 @@ function createCampaignSheetCard(sheet) {
   open.dataset.openCampaignSheet = sheet.id;
   const canEdit = activeCampaign?.role === "master" || sheet.ownerUid === currentFirebaseUser?.uid;
   open.textContent = canEdit ? "Abrir e editar" : "Visualizar";
+  if (!canViewCampaignSheet(sheet)) {
+    open.disabled = true;
+    open.classList.add("is-locked");
+    open.title = "A ficha continua na Campanha, mas somente o dono e o Mestre podem abri-la.";
+    open.innerHTML = '<svg viewBox="0 0 20 20" aria-hidden="true"><rect x="4.5" y="8.5" width="11" height="8" rx="1.5"/><path d="M6.5 8.5V6a3.5 3.5 0 0 1 7 0v2.5M10 12v1.5"/></svg><span>Ficha privada</span>';
+  }
   actions.append(open);
 
   if (sheet.ownerUid === currentFirebaseUser?.uid) {
@@ -22962,25 +23421,17 @@ async function openCampaignDetail(campaignId) {
     const campaignRef = firestoreApi.doc(firestoreDb, "campaigns", campaignId);
     const membersRef = firestoreApi.collection(firestoreDb, "campaigns", campaignId, "members");
     const sheetsRef = firestoreApi.collection(firestoreDb, "campaigns", campaignId, "sheets");
-    const known = campaignRecords.find((record) => record.id === campaignId);
-    const isMaster = known?.role === "master";
-    const [campaignSnapshot, membersSnapshot, publicSheetsSnapshot, ownSheetsSnapshot] = await Promise.all([
+    const [campaignSnapshot, membersSnapshot, sheetsSnapshot] = await Promise.all([
       firestoreApi.getDoc(campaignRef),
       firestoreApi.getDocs(membersRef),
-      isMaster
-        ? firestoreApi.getDocs(sheetsRef)
-        : firestoreApi.getDocs(firestoreApi.query(sheetsRef, firestoreApi.where("privateToPlayers", "==", false))),
-      isMaster
-        ? Promise.resolve(null)
-        : firestoreApi.getDocs(firestoreApi.query(sheetsRef, firestoreApi.where("ownerUid", "==", currentFirebaseUser.uid))),
+      firestoreApi.getDocs(sheetsRef),
     ]);
     if (!campaignSnapshot.exists()) throw new Error("Esta Campanha não existe mais.");
     activeCampaignMembers = membersSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
     const ownMember = activeCampaignMembers.find((member) => member.id === currentFirebaseUser.uid);
     if (!ownMember) throw Object.assign(new Error("Você não faz mais parte desta Campanha."), { code: "permission-denied" });
     const sheets = new Map();
-    publicSheetsSnapshot.docs.forEach((doc) => sheets.set(doc.id, { id: doc.id, ...doc.data() }));
-    ownSheetsSnapshot?.docs.forEach((doc) => sheets.set(doc.id, { id: doc.id, ...doc.data() }));
+    sheetsSnapshot.docs.forEach((doc) => sheets.set(doc.id, { id: doc.id, ...doc.data() }));
     await ensureCurrentUserCampaignSheetAccess(
       campaignId,
       ownMember.role === "master" ? "master" : "player",
@@ -23850,6 +24301,18 @@ async function openCampaignSheet(sheetId, trigger) {
   campaignBusy = true;
   if (trigger) trigger.disabled = true;
   try {
+    if (!canViewCampaignSheet(sheet)) {
+      throw new Error("Esta ficha é privada. Somente o dono e o Mestre podem abri-la.");
+    }
+    const linkSnapshot = await firestoreApi.getDoc(
+      firestoreApi.doc(firestoreDb, "campaigns", activeCampaign.id, "sheets", sheet.id),
+    );
+    if (!linkSnapshot.exists()) throw new Error("Esta ficha não está mais vinculada à Campanha.");
+    sheet.privateToPlayers = linkSnapshot.data().privateToPlayers;
+    if (!canViewCampaignSheet(sheet)) {
+      renderCampaignDetail();
+      throw new Error("Esta ficha foi privada. Somente o dono e o Mestre podem abri-la.");
+    }
     if (cloudSavePromise && !(await cloudSavePromise)) throw new Error("A ficha atual ainda não terminou de salvar.");
     if (stateRevision > lastSavedRevision && !(await flushCloudSave())) {
       throw new Error("Não foi possível salvar a ficha atual antes de abrir a Campanha.");
@@ -23903,7 +24366,7 @@ async function openCampaignSheet(sheetId, trigger) {
     });
   } finally {
     campaignBusy = false;
-    if (trigger) trigger.disabled = false;
+    if (trigger) trigger.disabled = !canViewCampaignSheet(sheet);
   }
 }
 
@@ -24884,6 +25347,7 @@ async function readCloudSheet(user, slotId) {
     profile: {
       ...clean.profile,
       ...profileData,
+      rollSounds: profileData.rollSounds,
       attributes: {
         ...clean.profile.attributes,
         ...(profileData.attributes || {}),
@@ -26040,7 +26504,7 @@ async function deleteMinervaItem(item) {
 const ROLL_SOUND_CHUNK_SIZE = 266664;
 const MAX_ROLL_SOUND_BYTES = 20000000;
 const MAX_ROLL_SOUND_CHUNKS = 101;
-const ROLL_AUDIO_TYPES = new Set(["audio/mpeg", "audio/wav", "audio/x-wav", "audio/ogg", "audio/webm", "audio/mp4"]);
+const ROLL_AUDIO_TYPES = new Set(["audio/mpeg", "audio/wav", "audio/x-wav", "audio/ogg", "audio/webm", "audio/mp4", "video/mp4"]);
 const ROLL_SOUND_KEYS = ["extreme", "failure", "criticalFailure", "criticalDamage"];
 const rollAccountUi = {
   settingsButton: document.querySelector("#account-settings-button"),
@@ -26092,7 +26556,11 @@ function normalizeRollSoundRef(raw) {
     const clip = normalizeYoutubeRollClip(raw);
     return clip ? { uid, id, ...clip } : null;
   }
-  if (!ROLL_AUDIO_TYPES.has(raw.mimeType)) return null;
+  if (raw.kind === "video" && raw.mimeType === "video/mp4") {
+    const clip = normalizeVideoRollClip(raw);
+    return clip ? { uid, id, ...clip } : null;
+  }
+  if (raw.mimeType === "video/mp4" || !ROLL_AUDIO_TYPES.has(raw.mimeType)) return null;
   return { uid, id, name: String(raw.name || "Áudio").slice(0, 120), mimeType: raw.mimeType };
 }
 
@@ -26104,6 +26572,7 @@ function normalizeAccountSettings(raw = {}) {
   });
   return {
     nickname: String(raw.nickname || "").trim().replace(/\s+/g, " ").slice(0, 40),
+    soundScope: raw.soundScope === "slot" ? "slot" : "legacy",
     avatar: normalizeAccountAvatar(raw.avatar),
     sounds: Object.fromEntries(ROLL_SOUND_KEYS.map((key) => [key, normalizeRollSoundRef(raw.sounds?.[key])])),
     ownVolume: clampRollVolume(raw.ownVolume ?? .7),
@@ -26112,6 +26581,119 @@ function normalizeAccountSettings(raw = {}) {
     playerVolumes,
     hideRolls: raw.hideRolls === true,
   };
+}
+
+// Sounds belong to the loaded sheet; identity and listening preferences belong to the account.
+let settingsSoundContext = null;
+let slotSoundLoadEpoch = 0;
+let legacySoundMigrationSlotId = "";
+let legacySoundMigrationPromise = null;
+let legacySoundMigrationTimer = null;
+
+
+function normalizeSlotRollSounds(raw) {
+  return Object.fromEntries(ROLL_SOUND_KEYS.map((key) => {
+    const ref = normalizeRollSoundRef(raw?.[key]);
+    return [key, ref?.kind === "youtube" ? null : ref];
+  }));
+}
+
+function getActiveSlotRollSounds() {
+  return normalizeSlotRollSounds(sheetBridge?.getRollSounds?.() || {});
+}
+
+function getSettingsSoundContext() {
+  const userUid = currentFirebaseUser?.uid || "";
+  const ownerUid = campaignSheetSession?.ownerUid || userUid;
+  const slotId = campaignSheetSession?.slotId || currentSlotId || "";
+  return {
+    userUid, ownerUid, slotId,
+    sessionToken: campaignSheetSession?.token || "",
+    accountEpoch: accountRollEpoch,
+    loadEpoch: slotSoundLoadEpoch,
+    canEdit: Boolean(userUid && slotId && ownerUid === userUid
+      && (!campaignSheetSession || campaignSheetSession.canEdit)
+      && !isHydratingCloudState),
+  };
+}
+
+function isSettingsSoundContextCurrent(context) {
+  if (!context) return false;
+  const current = getSettingsSoundContext();
+  return context.userUid === current.userUid && context.ownerUid === current.ownerUid
+    && context.slotId === current.slotId && context.sessionToken === current.sessionToken
+    && context.accountEpoch === current.accountEpoch && context.loadEpoch === current.loadEpoch;
+}
+
+function canEditSettingsSlotSounds() {
+  return Boolean(accountSettingsDraft && settingsSoundContext?.canEdit
+    && isSettingsSoundContextCurrent(settingsSoundContext) && getSettingsSoundContext().canEdit);
+}
+
+function cancelStaleSlotSoundSettings() {
+  closeAudioClipEditor({ restoreSettings: false });
+  stopMp4RollPlayback();
+  rollAccountUi.settingsModal.hidden = true;
+  accountSettingsDraft = null;
+  stagedRollSounds = {};
+  settingsSoundContext = null;
+  settingsBusy = false;
+  rollAccountUi.hidden.disabled = !currentFirebaseUser || rollPrivacySaving;
+  pendingSettingsMedia.clear();
+  rollAccountUi.save.textContent = "Salvar configurações";
+  updateSettingsFormAvailability();
+  syncModalLock();
+}
+
+function scheduleLegacySlotSoundMigration() {
+  window.clearTimeout(legacySoundMigrationTimer);
+  const context = getSettingsSoundContext();
+  if (!context.userUid || !context.slotId || context.ownerUid !== context.userUid
+    || currentAccountSettings.soundScope === "slot") return;
+  legacySoundMigrationTimer = window.setTimeout(() => {
+    legacySoundMigrationTimer = null;
+    if (!isSettingsSoundContextCurrent(context)) return;
+    if (isHydratingCloudState || settingsBusy) { scheduleLegacySlotSoundMigration(); return; }
+    migrateLegacySlotSounds().catch((error) => {
+      if (isSettingsSoundContextCurrent(context)) setRollFeatureStatus(rollAccountUi.settingsStatus,
+        `Seus sons anteriores ainda precisam ser sincronizados. ${audioAdditionErrorMessage(error)}`, true);
+    });
+  }, 150);
+}
+
+async function migrateLegacySlotSounds() {
+  const context = getSettingsSoundContext();
+  const user = currentFirebaseUser;
+  if (!context.canEdit || !user || currentAccountSettings.soundScope === "slot") return false;
+  if (legacySoundMigrationPromise) return legacySoundMigrationPromise;
+  if (legacySoundMigrationSlotId && legacySoundMigrationSlotId !== context.slotId) return false;
+  if (sheetBridge?.hasSlotRollSounds?.() && !legacySoundMigrationSlotId) return false;
+  const sounds = normalizeSlotRollSounds(currentAccountSettings.sounds);
+  if (!ROLL_SOUND_KEYS.some((key) => sounds[key])) return false;
+  legacySoundMigrationSlotId = context.slotId;
+  const operation = (async () => {
+    if (!sheetBridge.hasSlotRollSounds()) {
+      if (!isSettingsSoundContextCurrent(context) || !sheetBridge.setRollSounds(sounds)) return false;
+    }
+    // A previous upload may have prepared local references while the sheet write failed.
+    if (!(await flushCloudSave()) || !isSettingsSoundContextCurrent(context)) return false;
+    if (!isSettingsSoundContextCurrent(context)) return false;
+    await firestoreApi.setDoc(firestoreApi.doc(firestoreDb, "users", user.uid),
+      { appSettings: { soundScope: "slot" } }, { merge: true });
+    if (!isSettingsSoundContextCurrent(context)) return false;
+    currentAccountSettings.soundScope = "slot";
+    return true;
+  })();
+  legacySoundMigrationPromise = operation;
+  try { return await operation; }
+  finally { if (legacySoundMigrationPromise === operation) legacySoundMigrationPromise = null; }
+}
+
+function handleSlotSoundsLoaded() {
+  slotSoundLoadEpoch += 1;
+  stopMp4RollPlayback();
+  if (accountSettingsDraft || audioClipSession) cancelStaleSlotSoundSettings();
+  scheduleLegacySlotSoundMigration();
 }
 
 let currentAccountSettings = normalizeAccountSettings();
@@ -26159,8 +26741,14 @@ function setRollFeatureStatus(element, message = "", error = false) {
 
 function resetAccountRollSession() {
   accountRollEpoch += 1;
+  window.clearTimeout(legacySoundMigrationTimer);
+  legacySoundMigrationTimer = null;
+  legacySoundMigrationSlotId = "";
+  legacySoundMigrationPromise = null;
+  settingsSoundContext = null;
+  slotSoundLoadEpoch += 1;
   closeAudioClipEditor({ restoreSettings: false });
-  stopYoutubeRollPlayer();
+  stopMp4RollPlayback();
   startupCreateBusy = false;
   firebaseUi.startupCreateForm.hidden = true;
   firebaseUi.startupCreateButton.hidden = true;
@@ -26209,10 +26797,12 @@ async function initializeAccountRollSession(user) {
     const snapshot = await firestoreApi.getDoc(userRef);
     if (epoch !== accountRollEpoch || currentFirebaseUser?.uid !== user.uid) return;
     currentAccountSettings = normalizeAccountSettings(snapshot.data()?.appSettings);
+    scheduleLegacySlotSoundMigration();
     renderAccountIdentity(user);
     accountSettingsUnsubscribe = firestoreApi.onSnapshot(userRef, (nextSnapshot) => {
       if (epoch !== accountRollEpoch) return;
       currentAccountSettings = normalizeAccountSettings(nextSnapshot.data()?.appSettings);
+    scheduleLegacySlotSoundMigration();
       rollAccountUi.hidden.checked = currentAccountSettings.hideRolls;
       renderAccountIdentity(currentFirebaseUser);
       renderRollHistory();
@@ -26254,7 +26844,7 @@ function normalizeCompletedRoll(raw = {}) {
   const actorUid = String(raw.actorUid || context.actorUid || "").slice(0, 128);
   const sheetOwnerUid = String(raw.sheetOwnerUid || context.sheetOwnerUid || "").slice(0, 128);
   const slotId = String(raw.slotId || context.slotId || "").slice(0, 128);
-  const knownOutcomes = ["extreme", "extreme-critical", "failure", "critical-failure", "criticalFailure", "critical-damage", "partial", "normal", "good"];
+  const knownOutcomes = ["extreme", "extreme-critical", "failure", "critical-failure", "criticalFailure", "critical-damage", "criticalDamage", "partial", "normal", "good"];
   const outcome = knownOutcomes.includes(raw.outcome || raw.outcomeKey) ? (raw.outcome || raw.outcomeKey) : "";
   const soundRef = normalizeRollSoundRef(raw.soundRef);
   return {
@@ -26278,7 +26868,7 @@ function normalizeCompletedRoll(raw = {}) {
     publicCampaignIds: Array.isArray(raw.publicCampaignIds) ? raw.publicCampaignIds.filter((id) => typeof id === "string" && !id.includes("/")).slice(0, 100) : [],
     hidden: raw.hidden === true,
     visibility: raw.visibility === "public" ? "public" : "private",
-    soundRef: soundRef?.uid === actorUid ? soundRef : null,
+    soundRef,
   };
 }
 
@@ -26318,10 +26908,13 @@ async function recordCompletedRoll(event) {
   if (!record) return;
   record.id = `roll_${globalThis.crypto?.randomUUID?.() || `${Date.now()}_${Math.random().toString(36).slice(2)}`}`;
   const soundKey = outcomeSoundKey(record.outcome);
-  record.soundRef = soundKey ? currentAccountSettings.sounds[soundKey] : null;
+  record.soundRef = soundKey ? getActiveSlotRollSounds()[soundKey] : null;
   const ownVolume = currentAccountSettings.ownVolume;
+  const soundContext = getSettingsSoundContext();
+  const canPlayOwnOutcome = () => epoch === accountRollEpoch && isSettingsSoundContextCurrent(soundContext);
   const playOwnOutcome = () => {
-    if (epoch === accountRollEpoch && soundKey) playOutcomeSound(soundKey, record.soundRef, ownVolume).catch(reportOutcomeAudioError);
+    if (canPlayOwnOutcome() && soundKey) playOutcomeSound(soundKey, record.soundRef, ownVolume, "", canPlayOwnOutcome,
+      { getVolume: () => currentAccountSettings.ownVolume }).catch(reportOutcomeAudioError);
   };
   const soundDelay = Math.max(0, Math.min(2000, Number(event.soundDelay) || 0));
   if (soundDelay) window.setTimeout(playOwnOutcome, soundDelay);
@@ -26487,16 +27080,20 @@ function syncCampaignActorHistory(subscription) {
           actor.observedIds.add(item.id);
           if (uid === selfUid) return;
           const roll = recordsById.get(item.id);
-          if (!roll || roll.actorUid !== uid || !isFreshCampaignRoll(roll)) return;
+          if (!roll || roll.hidden || roll.actorUid !== uid || !isFreshCampaignRoll(roll)) return;
           const sound = outcomeSoundKey(roll.outcome);
           const volume = getReceivedRollVolume(uid);
-          if (!sound || volume <= 0) return;
+          const videoClip = normalizeVideoRollClip(roll.soundRef);
+          if (!sound || (volume <= 0 && !videoClip)) return;
           const key = `${uid}:${roll.id}`;
           if (playedCampaignRolls.has(key)) return;
           playedCampaignRolls.add(key);
           if (playedCampaignRolls.size > 1000) playedCampaignRolls.delete(playedCampaignRolls.values().next().value);
           playOutcomeSound(sound, roll.soundRef, volume, "", () =>
-            subscription.actors.get(uid) === actor && !actor.failed && subscription.members.get(uid)?.hideRolls !== true && getReceivedRollVolume(uid) > 0,
+            subscription.actors.get(uid) === actor && !actor.failed && subscription.members.has(selfUid)
+              && subscription.members.has(uid) && subscription.members.get(uid)?.hideRolls !== true
+              && (Boolean(videoClip) || getReceivedRollVolume(uid) > 0),
+            { getVolume: () => getReceivedRollVolume(uid) },
           ).catch(reportOutcomeAudioError);
         });
         while (actor.observedIds.size > Math.max(1000, rollHistoryLimit * 2)) actor.observedIds.delete(actor.observedIds.values().next().value);
@@ -26690,6 +27287,10 @@ async function readSharedRollAudio(ref) {
     if (!metaSnapshot.exists()) throw new Error("O áudio selecionado não está disponível.");
     const meta = metaSnapshot.data();
     if (meta.ownerUid !== ref.uid || !ROLL_AUDIO_TYPES.has(meta.mimeType) || !Number.isInteger(meta.chunkCount) || meta.chunkCount < 1 || meta.chunkCount > MAX_ROLL_SOUND_CHUNKS || (meta.byteSize != null && (!Number.isInteger(meta.byteSize) || meta.byteSize < 1 || meta.byteSize > MAX_ROLL_SOUND_BYTES))) throw new Error("Áudio inválido.");
+    if (ref.kind === "video") {
+      const clip = normalizeVideoRollClip(meta);
+      if (!clip || clip.startSeconds !== ref.startSeconds || clip.endSeconds !== ref.endSeconds || clip.sourceDuration !== ref.sourceDuration) throw new Error("O trecho de MP4 é inválido.");
+    }
     const chunks = await Promise.all(Array.from({ length: meta.chunkCount }, (_, index) => firestoreApi.getDoc(firestoreApi.doc(metaRef, "chunks", String(index)))));
     const data = chunks.map((snapshot, index) => {
       const text = snapshot.data()?.data;
@@ -26758,14 +27359,35 @@ function playBufferedOutcomeSound(buffer, volume, audioContext, offset = 0, dura
   return playback;
 }
 
-async function playOutcomeSound(key, ref, volume, localSource = "", canPlay = () => true) {
+async function playOutcomeSound(key, ref, volume, localSource = "", canPlay = () => true, playbackOptions = {}) {
   volume = clampRollVolume(volume, 0);
-  if (!ROLL_SOUND_KEYS.includes(key) || volume === 0 || !canPlay()) return;
+  const videoClip = localSource?.kind === "video" ? normalizeVideoRollClip(localSource) : ref?.kind === "video" ? normalizeVideoRollClip(ref) : null;
+  if (!ROLL_SOUND_KEYS.includes(key) || (volume === 0 && !videoClip) || !canPlay()) return;
   const epoch = accountRollEpoch;
-  const youtubeClip = localSource?.kind === "youtube" ? normalizeYoutubeRollClip(localSource) : ref?.kind === "youtube" ? await readSharedYoutubeRollClip(ref) : null;
-  if (youtubeClip) {
-    if (epoch !== accountRollEpoch || !canPlay()) return;
-    await playYoutubeOutcomeClip(youtubeClip, volume, () => epoch === accountRollEpoch && canPlay());
+  if (ref?.kind === "youtube" || localSource?.kind === "youtube") return;
+  const local = typeof localSource === "string" ? localSource : localSource?.source || "";
+  if (videoClip) {
+    stopMp4RollPlayback({ closePanel: false });
+    const requestVersion = mp4RollPlaybackVersion;
+    ensureMp4RollPanel().hidden = false;
+    document.querySelector("#roll-media-player-title").textContent = videoClip.name;
+    document.querySelector("#roll-media-player-host").replaceChildren();
+    const status = document.querySelector("#roll-media-player-status");
+    status.textContent = "Recebendo o trecho de MP4…";
+    status.dataset.error = "false";
+    try {
+      const source = local || await readSharedRollAudio(ref);
+      if (requestVersion !== mp4RollPlaybackVersion) return;
+      if (epoch !== accountRollEpoch || !canPlay()) { stopMp4RollPlayback(); return; }
+      await playMp4OutcomeClip(source, videoClip, volume, () => epoch === accountRollEpoch && canPlay(),
+        { ...playbackOptions, requestVersion });
+    } catch (error) {
+      if (requestVersion !== mp4RollPlaybackVersion || epoch !== accountRollEpoch) return;
+      if (!canPlay()) { stopMp4RollPlayback(); return; }
+      status.textContent = "Não foi possível receber este MP4. Tente sincronizar novamente.";
+      status.dataset.error = "true";
+      throw error;
+    }
     return;
   }
   let audioContext;
@@ -26773,22 +27395,19 @@ async function playOutcomeSound(key, ref, volume, localSource = "", canPlay = ()
     if (error?.name === "NotAllowedError" && epoch === accountRollEpoch && canPlay()) queuePendingOutcomeSound({ key, ref, volume, localSource, canPlay, epoch });
     throw error;
   }
-  const source = localSource || (ref ? await readSharedRollAudio(ref) : "");
+  const source = local || (ref ? await readSharedRollAudio(ref) : "");
   if (epoch !== accountRollEpoch || !canPlay()) return;
   if (!source) { playDefaultOutcomeSound(key, volume); return; }
   if (audioContext) {
-    const buffer = await decodeRollAudio(source, localSource ? null : ref, audioContext);
+    const buffer = await decodeRollAudio(source, local ? null : ref, audioContext);
     if (epoch !== accountRollEpoch || !canPlay()) return;
     if (audioContext.state !== "running") {
       queuePendingOutcomeSound({ key, ref, volume, localSource, canPlay, epoch });
       throw Object.assign(new Error("Clique em “Ativar sons” para liberar o áudio."), { name: "NotAllowedError" });
     }
-    playBufferedOutcomeSound(buffer, volume, audioContext);
-    return;
+    playBufferedOutcomeSound(buffer, volume, audioContext); return;
   }
-  const audio = new Audio(source);
-  audio.volume = volume;
-  activeOutcomeAudio.add(audio);
+  const audio = new Audio(source); audio.volume = volume; activeOutcomeAudio.add(audio);
   audio.onended = audio.onerror = () => activeOutcomeAudio.delete(audio);
   try { await audio.play(); } catch (error) { activeOutcomeAudio.delete(audio); throw error; }
 }
@@ -26813,14 +27432,14 @@ function getRollSoundMimeType(file) {
 }
 
 async function stageRollSound(key, file) {
-  if (!file || !accountSettingsDraft) return false;
+  if (!file || !canEditSettingsSlotSounds()) return false;
   const version = settingsSoundReadVersions[key] = (settingsSoundReadVersions[key] || 0) + 1;
   const mimeType = getRollSoundMimeType(file);
   if (!ROLL_AUDIO_TYPES.has(mimeType)) throw new Error("Escolha um áudio MP3, WAV, OGG, WebM ou M4A.");
   if (!file.size || file.size > MAX_ROLL_SOUND_BYTES) throw new Error("O áudio precisa ter até 20 MB.");
   const draft = accountSettingsDraft;
   const source = await readFileDataUrl(file);
-  if (accountSettingsDraft !== draft || version !== settingsSoundReadVersions[key]) return false;
+  if (accountSettingsDraft !== draft || !canEditSettingsSlotSounds() || version !== settingsSoundReadVersions[key]) return false;
   const data = source.slice(source.indexOf(",") + 1);
   if (!data || data.length % 4 || data.length > 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3) || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) throw new Error("O arquivo de áudio é inválido ou muito grande.");
   const byteSize = data.length * 3 / 4 - (data.endsWith("==") ? 2 : data.endsWith("=") ? 1 : 0);
@@ -26831,7 +27450,7 @@ async function stageRollSound(key, file) {
 }
 
 async function uploadRollSound(clip, user, onProgress = () => {}) {
-  if (clip?.kind === "youtube") return uploadYoutubeRollSound(clip, user, onProgress);
+  if (clip?.kind === "video") return uploadVideoRollSound(clip, user, onProgress);
   const data = clip.data;
   if (typeof data !== "string" || !data.length || data.length % 4 || data.length > 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3) || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) throw new Error("O áudio é inválido ou ultrapassa o limite de 20 MB.");
   const byteSize = data.length * 3 / 4 - (data.endsWith("==") ? 2 : data.endsWith("=") ? 1 : 0);
@@ -26886,7 +27505,7 @@ function audioAdditionErrorMessage(error) {
 
 async function handleSettingsSoundSelection(key, input) {
   const file = input.files?.[0];
-  if (!file || !accountSettingsDraft || settingsBusy) return;
+  if (!file || !canEditSettingsSlotSounds() || settingsBusy) return;
   setSettingsSoundFeedback(key, "loading", "Escolha o início e o fim do áudio no editor de trecho.");
   input.value = "";
   await openAudioClipEditor(key, { file });
@@ -26896,7 +27515,7 @@ function renderSettingsSoundNames() {
   ROLL_SOUND_KEYS.forEach((key) => {
     document.querySelector(`#settings-sound-name-${settingsSoundFieldKey(key)}`).textContent = stagedRollSounds[key]?.name || accountSettingsDraft?.sounds[key]?.name || "Som padrão";
     const edit = document.querySelector(`[data-edit-audio-outcome="${key}"]`);
-    if (edit) edit.disabled = settingsBusy || !Boolean(stagedRollSounds[key] || accountSettingsDraft?.sounds[key]);
+    if (edit) edit.disabled = settingsBusy || !canEditSettingsSlotSounds() || !Boolean(stagedRollSounds[key] || accountSettingsDraft?.sounds[key]);
   });
 }
 
@@ -26931,14 +27550,27 @@ function renderSettingsPlayerVolumes() {
 function openAccountSettings() {
   if (!currentFirebaseUser) return;
   closeAccountMenu();
+  settingsSoundContext = getSettingsSoundContext();
+  settingsSoundContext.initialSounds = getActiveSlotRollSounds();
   accountSettingsDraft = normalizeAccountSettings(currentAccountSettings);
+  accountSettingsDraft.sounds = getActiveSlotRollSounds();
   stagedRollSounds = {};
   rollAccountUi.nickname.value = accountSettingsDraft.nickname || getEffectiveIdentity().displayName;
   rollAccountUi.avatarUrl.value = accountSettingsDraft.avatar.startsWith("data:") ? "" : accountSettingsDraft.avatar;
   rollAccountUi.avatarFile.value = "";
+  const note = document.querySelector("#settings-slot-sound-note");
+  if (note) {
+    const name = getRollContext().characterName;
+    note.textContent = settingsSoundContext.canEdit
+      ? `Os sons serão salvos apenas na ficha “${name}”. Cada Slot tem seus próprios sons.`
+      : settingsSoundContext.slotId
+        ? `Sons da ficha “${name}”. Apenas o proprietário pode alterá-los.`
+        : "Abra uma ficha para escolher seus sons. O nick e os volumes continuam disponíveis.";
+  }
   ROLL_SOUND_KEYS.forEach((key) => {
     document.querySelector(`#settings-sound-${settingsSoundFieldKey(key)}`).value = "";
-    setSettingsSoundFeedback(key, accountSettingsDraft.sounds[key] ? "saved" : "default", accountSettingsDraft.sounds[key] ? "Som personalizado salvo na sua conta." : "Som padrão ativo.");
+    setSettingsSoundFeedback(key, accountSettingsDraft.sounds[key] ? "saved" : "default",
+      accountSettingsDraft.sounds[key] ? "Som personalizado salvo nesta ficha." : "Som padrão ativo.");
   });
   rollAccountUi.ownVolume.value = String(Math.round(accountSettingsDraft.ownVolume * 100));
   rollAccountUi.ownVolumeValue.textContent = `${rollAccountUi.ownVolume.value}%`;
@@ -26958,17 +27590,22 @@ function openAccountSettings() {
 function closeAccountSettings() {
   if (settingsBusy) return;
   closeAudioClipEditor({ restoreSettings: false });
-  stopYoutubeRollPlayer();
+  stopMp4RollPlayback();
   rollAccountUi.settingsModal.hidden = true;
-  accountSettingsDraft = null; stagedRollSounds = {};
+  accountSettingsDraft = null; stagedRollSounds = {}; settingsSoundContext = null;
   syncModalLock(); firebaseUi.button.focus();
 }
 
 function updateSettingsFormAvailability() {
   rollAccountUi.settingsForm.querySelectorAll("input, button").forEach((element) => { element.disabled = settingsBusy; });
+  const canEditSounds = canEditSettingsSlotSounds();
+  document.querySelectorAll(".settings-sound-actions input, .settings-sound-actions button").forEach((element) => {
+    if (element.dataset.previewOutcome) return;
+    element.disabled = settingsBusy || !canEditSounds;
+  });
   document.querySelectorAll("[data-edit-audio-outcome]").forEach((button) => {
     const key = button.dataset.editAudioOutcome;
-    button.disabled = settingsBusy || !Boolean(stagedRollSounds[key] || accountSettingsDraft?.sounds[key]);
+    button.disabled = settingsBusy || !canEditSounds || !Boolean(stagedRollSounds[key] || accountSettingsDraft?.sounds[key]);
   });
   rollAccountUi.save.disabled = settingsBusy || pendingSettingsMedia.size > 0;
   rollAccountUi.othersVolume.disabled = settingsBusy || !accountSettingsDraft?.othersEnabled;
@@ -27015,68 +27652,100 @@ async function saveAccountSettings(event) {
   event.preventDefault();
   if (settingsBusy || !currentFirebaseUser || !accountSettingsDraft) return;
   if (pendingSettingsMedia.size) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Aguarde o arquivo terminar de carregar."); return; }
-  const user = currentFirebaseUser; const epoch = accountRollEpoch;
+  const user = currentFirebaseUser, epoch = accountRollEpoch;
+  const draft = accountSettingsDraft, soundContext = settingsSoundContext;
+  const isCurrent = () => epoch === accountRollEpoch && currentFirebaseUser?.uid === user.uid
+    && accountSettingsDraft === draft && isSettingsSoundContextCurrent(soundContext);
+  if (!isCurrent()) { cancelStaleSlotSoundSettings(); return; }
   const nickname = rollAccountUi.nickname.value.trim().replace(/\s+/g, " ").slice(0, 40);
   if (!nickname) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Digite seu nick.", true); rollAccountUi.nickname.focus(); return; }
   const typedAvatar = rollAccountUi.avatarUrl.value.trim();
   if (typedAvatar && !normalizeAccountAvatar(typedAvatar)) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Use um link de imagem que comece com https:// ou http://.", true); return; }
+  const initialSounds = soundContext.initialSounds || getActiveSlotRollSounds();
   const pendingSoundKeys = ROLL_SOUND_KEYS.filter((key) => Boolean(stagedRollSounds[key]));
-  const hasSoundChanges = pendingSoundKeys.length > 0 || ROLL_SOUND_KEYS.some((key) => JSON.stringify(accountSettingsDraft.sounds[key]) !== JSON.stringify(currentAccountSettings.sounds[key]));
-  let uploadingSoundKey = "";
-  settingsBusy = true; rollAccountUi.save.disabled = true;
-  if (accountSettingsDraft.othersEnabled) unlockOutcomeAudio().catch(reportOutcomeAudioError);
+  const hasSoundChanges = soundContext.soundWritePending === true || pendingSoundKeys.length > 0
+    || ROLL_SOUND_KEYS.some((key) => JSON.stringify(draft.sounds[key]) !== JSON.stringify(initialSounds[key]));
+  if (hasSoundChanges && !canEditSettingsSlotSounds()) {
+    setRollFeatureStatus(rollAccountUi.settingsStatus, "Abra uma ficha sua para alterar os sons.", true); return;
+  }
+  let uploadingSoundKey = "", slotSoundsSaved = false;
+  settingsBusy = true;
+  if (draft.othersEnabled) unlockOutcomeAudio().catch(reportOutcomeAudioError);
   updateSettingsFormAvailability();
   rollAccountUi.save.textContent = "Salvando…";
   rollAccountUi.hidden.disabled = true;
-  setRollFeatureStatus(rollAccountUi.settingsStatus, "Salvando perfil e preferências…");
+  setRollFeatureStatus(rollAccountUi.settingsStatus, "Salvando configurações…");
   try {
-    const settings = normalizeAccountSettings({ ...accountSettingsDraft, nickname, hideRolls: currentAccountSettings.hideRolls });
+    const settings = normalizeAccountSettings({ ...draft, nickname, hideRolls: currentAccountSettings.hideRolls });
+    settings.sounds = normalizeSlotRollSounds(draft.sounds);
     for (const key of pendingSoundKeys) {
+      if (!isCurrent()) return;
       uploadingSoundKey = key;
-      const isYoutube = stagedRollSounds[key].kind === "youtube";
-      setSettingsSoundFeedback(key, "uploading", isYoutube ? "Salvando trecho do YouTube…" : "Enviando trecho do áudio para sua conta…");
-      settings.sounds[key] = await uploadRollSound(stagedRollSounds[key], user, (progress) => {
-        if (epoch === accountRollEpoch) setSettingsSoundFeedback(key, "uploading", `${isYoutube ? "Salvando trecho do YouTube" : "Enviando trecho do áudio"}… ${progress}%`);
+      const staged = stagedRollSounds[key];
+      setSettingsSoundFeedback(key, "uploading", "Enviando o trecho para esta ficha…");
+      const uploaded = staged.uploadedRef || await uploadRollSound(staged, user, (progress) => {
+        if (isCurrent()) setSettingsSoundFeedback(key, "uploading", `Enviando o trecho… ${progress}%`);
       });
-      if (epoch !== accountRollEpoch) return;
-      setSettingsSoundFeedback(key, "uploading", "Trecho preparado. Finalizando o salvamento…");
+      if (!isCurrent()) return;
+      staged.uploadedRef = uploaded;
+      settings.sounds[key] = uploaded;
+      draft.sounds[key] = uploaded;
+      setSettingsSoundFeedback(key, "uploading", "Trecho preparado. Salvando na ficha…");
     }
     uploadingSoundKey = "";
-    if (epoch !== accountRollEpoch) return;
-    // A privacidade tem sua própria gravação; um salvamento de volume não pode desfazê-la.
-    const { hideRolls: ignoredPrivacy, ...savedSettings } = settings;
+    if (!isCurrent()) return;
+    if (hasSoundChanges) {
+      soundContext.soundWritePending = true;
+      if (!getSettingsSoundContext().canEdit || !sheetBridge.setRollSounds(settings.sounds)) throw new Error("Não foi possível alterar os sons desta ficha.");
+      if (!(await flushCloudSave())) throw new Error("A ficha ainda não foi sincronizada. Reconecte-se e tente salvar novamente.");
+      if (!isCurrent()) return;
+      slotSoundsSaved = true;
+      stagedRollSounds = {};
+      settings.soundScope = "slot";
+      draft.soundScope = "slot";
+      soundContext.initialSounds = normalizeSlotRollSounds(settings.sounds);
+      soundContext.soundWritePending = false;
+      renderSettingsSoundNames();
+      ROLL_SOUND_KEYS.forEach((key) => setSettingsSoundFeedback(key, settings.sounds[key] ? "saved" : "default",
+        settings.sounds[key] ? "Som adicionado e salvo nesta ficha!" : "Som padrão salvo nesta ficha."));
+    }
+    const { hideRolls: ignoredPrivacy, sounds: ignoredAccountSounds, ...savedSettings } = settings;
     await firestoreApi.setDoc(firestoreApi.doc(firestoreDb, "users", user.uid), { appSettings: savedSettings }, { merge: true });
-    if (epoch !== accountRollEpoch) return;
+    if (!isCurrent()) return;
     settings.hideRolls = currentAccountSettings.hideRolls;
-    currentAccountSettings = settings;
-    accountSettingsDraft = normalizeAccountSettings(settings); stagedRollSounds = {};
+    const legacySounds = currentAccountSettings.sounds;
+    currentAccountSettings = normalizeAccountSettings({ ...settings, sounds: legacySounds });
+    accountSettingsDraft = normalizeAccountSettings(settings);
+    accountSettingsDraft.sounds = getActiveSlotRollSounds();
+    stagedRollSounds = {};
     renderAccountIdentity(user); renderSettingsSoundNames(); renderRollHistory();
-    ROLL_SOUND_KEYS.forEach((key) => setSettingsSoundFeedback(key, settings.sounds[key] ? "saved" : "default",
-      settings.sounds[key] ? "Som adicionado e salvo com sucesso! Já pode ser usado nas suas rolagens." : "Som padrão ativo.",
-    ));
-    const savedMessage = hasSoundChanges ? "Sons salvos com sucesso! Suas rolagens já usarão as escolhas que você fez." : "Configurações salvas.";
+    const savedMessage = hasSoundChanges ? "Sons salvos nesta ficha! Configurações salvas." : "Configurações salvas.";
     setRollFeatureStatus(rollAccountUi.settingsStatus, savedMessage);
     try {
       await propagateAccountIdentity(user, settings);
-      if (epoch === accountRollEpoch) setRollFeatureStatus(rollAccountUi.settingsStatus, savedMessage);
+      if (epoch === accountRollEpoch && isSettingsSoundContextCurrent(soundContext)) setRollFeatureStatus(rollAccountUi.settingsStatus, savedMessage);
     } catch (error) {
-      if (epoch === accountRollEpoch) setRollFeatureStatus(rollAccountUi.settingsStatus, `${savedMessage} A atualização do perfil nas Campanhas está pendente. Tente salvar novamente.`, true);
+      if (epoch === accountRollEpoch && isSettingsSoundContextCurrent(soundContext)) setRollFeatureStatus(rollAccountUi.settingsStatus, `${savedMessage} A atualização do perfil nas Campanhas está pendente. Tente salvar novamente.`, true);
     }
   } catch (error) {
-    if (epoch === accountRollEpoch) {
+    if (isCurrent()) {
       const reason = audioAdditionErrorMessage(error);
-      pendingSoundKeys.forEach((key) => setSettingsSoundFeedback(key, "error", key === uploadingSoundKey
-        ? `Áudio não adicionado: ${reason}`
-        : `Áudio ainda não salvo: ${reason} Tente salvar novamente.`,
-      ));
-      setRollFeatureStatus(rollAccountUi.settingsStatus, hasSoundChanges ? `Os sons não foram salvos. ${reason}` : rollFeatureError(error), true);
+      if (slotSoundsSaved) {
+        draft.sounds = getActiveSlotRollSounds();
+        setRollFeatureStatus(rollAccountUi.settingsStatus, `Os sons foram salvos nesta ficha. O perfil e os volumes ainda precisam ser sincronizados. ${reason}`, true);
+      } else {
+        pendingSoundKeys.forEach((key) => setSettingsSoundFeedback(key, "error", key === uploadingSoundKey
+          ? `Trecho não adicionado: ${reason}` : `Trecho ainda não salvo: ${reason} Tente novamente.`));
+        setRollFeatureStatus(rollAccountUi.settingsStatus, hasSoundChanges ? `Os sons ainda não foram sincronizados nesta ficha. ${reason}` : rollFeatureError(error), true);
+      }
     }
   } finally {
-    if (epoch === accountRollEpoch) {
-      settingsBusy = false; rollAccountUi.save.disabled = false;
+    if (epoch === accountRollEpoch && isSettingsSoundContextCurrent(soundContext)) {
+      settingsBusy = false;
       updateSettingsFormAvailability();
       rollAccountUi.save.textContent = "Salvar configurações";
       rollAccountUi.hidden.disabled = !currentFirebaseUser || rollPrivacySaving;
+      scheduleLegacySlotSoundMigration();
     }
   }
 }
@@ -27190,10 +27859,11 @@ document.querySelectorAll("[data-preview-outcome]").forEach((button) => button.a
   if (!accountSettingsDraft) return;
   const key = button.dataset.previewOutcome;
   activeOutcomeAudio.forEach((audio) => audio.pause()); activeOutcomeAudio.clear();
+  stopMp4RollPlayback();
   const draft = accountSettingsDraft;
   unlockOutcomeAudio().then(() => {
     if (accountSettingsDraft !== draft) return;
-    return playOutcomeSound(key, draft.sounds[key], draft.ownVolume, stagedRollSounds[key]?.kind === "youtube" ? stagedRollSounds[key] : stagedRollSounds[key]?.source || "");
+    return playOutcomeSound(key, draft.sounds[key], draft.ownVolume, stagedRollSounds[key] || "");
   }).catch((error) => {
     if (accountSettingsDraft !== draft) return;
     const message = error?.name === "NotSupportedError"
@@ -27207,6 +27877,7 @@ document.querySelectorAll("[data-preview-outcome]").forEach((button) => button.a
 }));
 document.querySelectorAll("[data-reset-outcome]").forEach((button) => button.addEventListener("click", () => {
   if (!accountSettingsDraft) return;
+  if (!canEditSettingsSlotSounds() || settingsBusy) return;
   const key = button.dataset.resetOutcome;
   settingsSoundReadVersions[key] = (settingsSoundReadVersions[key] || 0) + 1;
   accountSettingsDraft.sounds[key] = null; delete stagedRollSounds[key];
@@ -27408,33 +28079,8 @@ function audioClipFileName(name, start, end) {
 }
 
 
-// O trecho do YouTube usa o player oficial, sem baixar ou separar o áudio.
 const MAX_YOUTUBE_ROLL_TIME = 86400;
 const MAX_YOUTUBE_ROLL_CLIP = 600;
-let youtubeRollApiPromise = null;
-let youtubeRollPlayer = null;
-let youtubeRollSession = null;
-let youtubeRollRequestVersion = 0;
-let youtubeRollFrameVersion = 0;
-
-function parseYoutubeRollTime(value) {
-  const text = String(value ?? "").trim().toLowerCase();
-  if (!text) return null;
-  let seconds;
-  if (/^\d+(?:\.\d+)?s?$/.test(text)) seconds = Number(text.replace(/s$/, ""));
-  else if (/^\d+(?::\d{1,2}){1,2}(?:\.\d+)?$/.test(text)) {
-    const parts = text.split(":").map(Number);
-    if (parts.slice(1).some((part) => part >= 60)) return null;
-    seconds = parts.reduce((total, part) => total * 60 + part, 0);
-  } else {
-    const match = text.match(/^(?:(\d+)h)?(?:(\d+)m)?(?:(\d+(?:\.\d+)?)s)?$/);
-    if (!match || !match.slice(1).some((part) => part != null)) return null;
-    seconds = Number(match[1] || 0) * 3600 + Number(match[2] || 0) * 60 + Number(match[3] || 0);
-  }
-  return Number.isFinite(seconds) && seconds >= 0 && seconds <= MAX_YOUTUBE_ROLL_TIME
-    ? Math.round(seconds * 1000) / 1000 : null;
-}
-
 function normalizeYoutubeRollClip(raw) {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return null;
   if (!/^[A-Za-z0-9_-]{11}$/.test(String(raw.videoId || ""))) return null;
@@ -27454,291 +28100,285 @@ function normalizeYoutubeRollClip(raw) {
   };
 }
 
-function parseYoutubeRollLink(value) {
-  let source = String(value || "").trim();
-  if (source.length > 2048) throw new Error("O link do YouTube é muito longo.");
-  if (/^(?:www\.|m\.|music\.)?(?:youtube\.com|youtu\.be)\//i.test(source)) source = `https://${source}`;
-  let url;
-  try { url = new URL(source); } catch { throw new Error("Insira um link de vídeo do YouTube."); }
-  if (!["https:", "http:"].includes(url.protocol) || url.username || url.password || (url.port && !["80", "443"].includes(url.port))) throw new Error("Insira um link de vídeo do YouTube.");
-  const host = url.hostname.toLowerCase();
-  const parts = url.pathname.split("/").filter(Boolean);
-  let videoId = "";
-  if (["youtu.be", "www.youtu.be"].includes(host) && parts.length === 1) videoId = parts[0];
-  else if (["youtube.com", "www.youtube.com", "m.youtube.com", "music.youtube.com", "youtube-nocookie.com", "www.youtube-nocookie.com"].includes(host)) {
-    if (parts.length === 1 && parts[0] === "watch") videoId = url.searchParams.get("v") || "";
-    if (parts.length === 2 && ["shorts", "embed", "v", "live"].includes(parts[0])) videoId = parts[1];
+// MP4 clips keep their original video, with a bounded playback interval.
+const MAX_VIDEO_ROLL_CLIP_SECONDS = 600;
+const MAX_VIDEO_ROLL_SOURCE_SECONDS = 900;
+let activeMp4RollPlayback = null;
+let mp4RollPlaybackVersion = 0;
+
+function getRollVideoMimeType(file) {
+  const type = String(file?.type || "").toLowerCase().split(";")[0].trim();
+  const extension = String(file?.name || "").split(".").at(-1)?.toLowerCase();
+  return type === "video/mp4" || extension === "mp4" ? "video/mp4" : "";
+}
+
+function normalizeVideoRollClip(raw) {
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)
+    || raw.kind !== "video" || raw.mimeType !== "video/mp4") return null;
+  const { startSeconds, endSeconds, sourceDuration } = raw;
+  if (![startSeconds, endSeconds, sourceDuration].every((value) => typeof value === "number" && Number.isFinite(value))
+    || startSeconds < 0 || endSeconds <= startSeconds || sourceDuration <= 0
+    || endSeconds > sourceDuration || sourceDuration > MAX_VIDEO_ROLL_SOURCE_SECONDS
+    || endSeconds - startSeconds > MAX_VIDEO_ROLL_CLIP_SECONDS) return null;
+  // Keep the real endpoint: rounding can otherwise place the selected end past a short source.
+  return {
+    kind: "video", mimeType: "video/mp4", startSeconds, endSeconds, sourceDuration,
+    name: String(raw.name || "Trecho de MP4").trim().slice(0, 120) || "Trecho de MP4",
+  };
+}
+
+async function readVideoClipMetadata(file, { signal } = {}) {
+  const objectUrl = URL.createObjectURL(file);
+  const video = document.createElement("video");
+  video.preload = "metadata"; video.playsInline = true; video.muted = true;
+  try {
+    const operation = new Promise((resolve, reject) => {
+      video.onloadedmetadata = () => Number.isFinite(video.duration) && video.duration > 0
+        ? resolve(video.duration)
+        : reject(new Error("Não foi possível descobrir a duração deste MP4."));
+      video.onerror = () => reject(new Error("Este MP4 não é compatível com o navegador. Tente um MP4 com vídeo H.264 e áudio AAC."));
+      video.src = objectUrl; video.load();
+    });
+    return await awaitAudioClipOperation(operation, signal, 30000, "O MP4 demorou demais para abrir. Escolha um arquivo menor.");
+  } finally {
+    video.onloadedmetadata = video.onerror = null;
+    video.pause(); video.removeAttribute("src"); video.load(); URL.revokeObjectURL(objectUrl);
   }
-  if (!/^[A-Za-z0-9_-]{11}$/.test(videoId)) throw new Error("Esse link não contém um vídeo válido do YouTube.");
-  const hash = new URLSearchParams(url.hash.replace(/^#/, ""));
-  const rawStart = url.searchParams.get("start") ?? url.searchParams.get("t") ?? hash.get("t") ?? "0";
-  const startSeconds = parseYoutubeRollTime(rawStart);
-  const rawEnd = url.searchParams.get("end");
-  const endSeconds = rawEnd == null ? Math.min(MAX_YOUTUBE_ROLL_TIME, startSeconds + 10) : parseYoutubeRollTime(rawEnd);
-  if (startSeconds == null || endSeconds == null || endSeconds <= startSeconds) throw new Error("O tempo do link não é válido. Escolha o início e o fim do trecho.");
-  // Um link longo ainda pode ser carregado; o usuário ajusta o intervalo antes de salvar.
-  return { videoId, startSeconds, endSeconds, url: `https://www.youtube.com/watch?v=${videoId}` };
 }
 
-function youtubeRollClipUrl(raw) {
-  const clip = normalizeYoutubeRollClip(raw);
-  return clip ? `https://www.youtube.com/watch?v=${clip.videoId}&t=${Math.floor(clip.startSeconds)}s` : "";
+async function readVideoClipFile(file, { signal, isCurrent = () => true } = {}) {
+  if (!file || !getRollVideoMimeType(file)) throw new Error("Escolha um arquivo MP4.");
+  if (!Number.isInteger(file.size) || file.size < 1 || file.size > MAX_ROLL_SOUND_BYTES) {
+    throw new Error("Para usar o vídeo, o MP4 completo precisa ter até 20 MB. Para usar só o áudio, escolha “Somente áudio”.");
+  }
+  if (!isCurrent() || signal?.aborted) return null;
+  const duration = await readVideoClipMetadata(file, { signal });
+  if (!isCurrent() || signal?.aborted) return null;
+  if (duration > MAX_VIDEO_ROLL_SOURCE_SECONDS) throw new Error("Escolha um MP4 com até 15 minutos.");
+  const clip = normalizeVideoRollClip({ kind: "video", mimeType: "video/mp4", name: file.name,
+    startSeconds: 0, endSeconds: Math.min(duration, 10), sourceDuration: duration });
+  return { clip, name: clip.name, mimeType: clip.mimeType, duration, sourceBytes: file.size };
 }
 
-async function uploadYoutubeRollSound(raw, user, onProgress = () => {}) {
-  const clip = normalizeYoutubeRollClip(raw);
-  if (!clip || !user?.uid) throw new Error("Escolha um trecho válido do YouTube, de até 10 minutos.");
+async function stageVideoRollSound(file, start, end, { sourceDuration, signal, isCurrent = () => true } = {}) {
+  if (!file || !getRollVideoMimeType(file) || !file.size || file.size > MAX_ROLL_SOUND_BYTES) {
+    throw new Error("O MP4 completo precisa ter até 20 MB.");
+  }
+  const clip = normalizeVideoRollClip({ kind: "video", mimeType: "video/mp4", name: file.name,
+    startSeconds: start, endSeconds: end, sourceDuration });
+  if (!clip) throw new Error("Escolha um trecho válido de MP4 com até 10 minutos.");
+  if (!isCurrent() || signal?.aborted) return null;
+  const source = await awaitAudioClipOperation(readFileDataUrl(file), signal, 30000, "Não foi possível ler o MP4 a tempo.");
+  if (!isCurrent() || signal?.aborted) return null;
+  const data = source.slice(source.indexOf(",") + 1);
+  if (!data || data.length % 4 || data.length > 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3)
+    || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) throw new Error("O MP4 é inválido ou ultrapassa 20 MB.");
+  const byteSize = data.length * 3 / 4 - (data.endsWith("==") ? 2 : data.endsWith("=") ? 1 : 0);
+  if (byteSize !== file.size || byteSize > MAX_ROLL_SOUND_BYTES) throw new Error("O MP4 está incompleto ou ultrapassa 20 MB.");
+  return { ...clip, byteSize, data, source: `data:video/mp4;base64,${data}`, sourceFile: file,
+    selectedRange: { start, end } };
+}
+
+async function uploadVideoRollSound(raw, user, onProgress = () => {}) {
+  const clip = normalizeVideoRollClip(raw);
+  if (!clip || !user?.uid) throw new Error("Escolha um trecho válido de MP4.");
+  const data = raw.data;
+  if (typeof data !== "string" || !data.length || data.length % 4
+    || data.length > 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3)
+    || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) throw new Error("O MP4 é inválido ou ultrapassa 20 MB.");
+  const byteSize = data.length * 3 / 4 - (data.endsWith("==") ? 2 : data.endsWith("=") ? 1 : 0);
+  if (byteSize < 1 || byteSize > MAX_ROLL_SOUND_BYTES) throw new Error("O MP4 precisa ter até 20 MB.");
   const ref = firestoreApi.doc(firestoreApi.collection(firestoreDb, "users", user.uid, "rollSounds"));
-  await withCloudTimeout(firestoreApi.setDoc(ref, {
-    ownerUid: user.uid, ...clip, byteSize: 0, chunkCount: 0,
-    createdAt: firestoreApi.serverTimestamp(),
-  }), 20000, "O trecho demorou demais para salvar. Tente novamente.");
-  onProgress(100);
+  const chunks = Array.from({ length: Math.ceil(data.length / ROLL_SOUND_CHUNK_SIZE) }, (_, index) => data.slice(index * ROLL_SOUND_CHUNK_SIZE, (index + 1) * ROLL_SOUND_CHUNK_SIZE));
+  if (!chunks.length || chunks.length > MAX_ROLL_SOUND_CHUNKS) throw new Error("O MP4 precisa ter até 20 MB.");
+  for (let offset = 0; offset < chunks.length; offset += 8) {
+    const batch = firestoreApi.writeBatch(firestoreDb);
+    const end = Math.min(offset + 8, chunks.length);
+    for (let index = offset; index < end; index += 1) batch.set(firestoreApi.doc(ref, "chunks", String(index)), { data: chunks[index] });
+    if (end === chunks.length) batch.set(ref, { ownerUid: user.uid, ...clip, byteSize,
+      chunkCount: chunks.length, createdAt: firestoreApi.serverTimestamp() });
+    await withCloudTimeout(batch.commit(), 45000, "O envio do MP4 demorou demais. Tente novamente.");
+    onProgress(Math.round(end / chunks.length * 100));
+  }
+  rollAudioCache.set(`${user.uid}/${ref.id}`, `data:video/mp4;base64,${data}`);
   return { uid: user.uid, id: ref.id, ...clip };
 }
 
-async function readSharedYoutubeRollClip(raw) {
-  const ref = normalizeRollSoundRef(raw);
-  if (!ref || ref.kind !== "youtube" || !currentFirebaseUser) throw new Error("O trecho do YouTube não está disponível.");
-  const snapshot = await firestoreApi.getDoc(firestoreApi.doc(firestoreDb, "users", ref.uid, "rollSounds", ref.id));
-  if (!snapshot.exists()) throw new Error("O trecho do YouTube não está mais disponível.");
-  const meta = snapshot.data();
-  const clip = meta.kind === "youtube" && meta.mimeType === "video/youtube" ? normalizeYoutubeRollClip(meta) : null;
-  if (!clip || meta.ownerUid !== ref.uid || meta.byteSize !== 0 || meta.chunkCount !== 0
-    || clip.videoId !== ref.videoId || clip.startSeconds !== ref.startSeconds || clip.endSeconds !== ref.endSeconds) throw new Error("O trecho do YouTube é inválido.");
-  return { uid: ref.uid, id: ref.id, ...clip };
-}
-
-function youtubeRollPlayerError(code) {
-  const local = window.location?.protocol === "file:";
-  const messages = {
-    2: "O YouTube não reconheceu este vídeo ou o tempo selecionado.",
-    5: "O navegador não conseguiu reproduzir este vídeo. Tente outro vídeo ou um arquivo de áudio.",
-    100: "Este vídeo foi removido, é privado ou não está disponível.",
-    101: "O autor não permite reproduzir este vídeo dentro do site. Tente outro vídeo ou um arquivo de áudio.",
-    150: "O autor não permite reproduzir este vídeo dentro do site. Tente outro vídeo ou um arquivo de áudio.",
-    153: local
-      ? "O YouTube pode bloquear a reprodução quando o index.html é aberto como arquivo. Use um arquivo de áudio para tocar o trecho na ficha; o link “Abrir no YouTube” permite conferir o início escolhido."
-      : "O YouTube bloqueou a identificação desta página. Confira as permissões do navegador ou use um arquivo de áudio.",
-  };
-  return Object.assign(new Error(messages[code] || "Não foi possível reproduzir este vídeo do YouTube. Tente um arquivo de áudio."), { name: "YoutubePlaybackError", youtubeCode: code });
-}
-
-function loadYoutubeRollApi() {
-  if (window.YT?.Player) return Promise.resolve(window.YT);
-  if (youtubeRollApiPromise) return youtubeRollApiPromise;
-  const loading = new Promise((resolve, reject) => {
-    const previous = window.onYouTubeIframeAPIReady;
-    let finished = false;
-    const finish = (error) => {
-      if (finished) return;
-      finished = true; clearTimeout(timeout);
-      if (window.onYouTubeIframeAPIReady === ready) window.onYouTubeIframeAPIReady = previous;
-      if (error) reject(error); else resolve(window.YT);
-    };
-    const ready = () => {
-      try { if (typeof previous === "function") previous(); }
-      finally { finish(window.YT?.Player ? null : new Error("O player do YouTube não ficou disponível.")); }
-    };
-    const timeout = setTimeout(() => finish(new Error("O YouTube demorou para responder. Tente novamente ou use um arquivo de áudio.")), 15000);
-    window.onYouTubeIframeAPIReady = ready;
-    let script = document.querySelector("#roll-youtube-api");
-    if (!script) {
-      script = document.createElement("script"); script.id = "roll-youtube-api";
-      script.src = "https://www.youtube.com/iframe_api"; script.async = true;
-      document.head.append(script);
-    }
-    script.addEventListener("error", () => { script.remove(); finish(new Error("Não foi possível carregar o YouTube. Verifique a conexão ou use um arquivo de áudio.")); }, { once: true });
-  });
-  youtubeRollApiPromise = loading;
-  loading.catch(() => { if (youtubeRollApiPromise === loading) youtubeRollApiPromise = null; });
-  return loading;
-}
-
-function ensureYoutubeRollPanel() {
-  let panel = document.querySelector("#roll-youtube-player-panel");
-  if (!panel) {
-    panel = document.createElement("section"); panel.id = "roll-youtube-player-panel";
-    panel.className = "roll-youtube-player-panel"; panel.hidden = true;
-    panel.setAttribute("aria-label", "Trecho do YouTube");
-    const header = document.createElement("div"); header.className = "roll-youtube-player-head";
-    const title = document.createElement("strong"); title.textContent = "Trecho do YouTube";
-    const close = document.createElement("button"); close.type = "button"; close.id = "roll-youtube-close";
-    close.className = "button button-secondary"; close.textContent = "Fechar";
-    const host = document.createElement("div"); host.id = "roll-youtube-player-host"; host.className = "roll-youtube-player-host";
-    const status = document.createElement("p"); status.id = "roll-youtube-status"; status.setAttribute("role", "status");
-    const controls = document.createElement("div"); controls.className = "roll-youtube-player-actions";
-    const replay = document.createElement("button"); replay.type = "button"; replay.id = "roll-youtube-replay";
-    replay.className = "button button-secondary"; replay.textContent = "Reproduzir trecho";
-    const link = document.createElement("a"); link.id = "roll-youtube-open";
-    link.target = "_blank"; link.rel = "noopener noreferrer"; link.textContent = "Abrir no YouTube";
-    header.append(title, close); controls.append(replay, link); panel.append(header, host, status, controls); document.body.append(panel);
-  }
-  if (panel.dataset.bound !== "true") {
-    panel.dataset.bound = "true";
-    document.querySelector("#roll-youtube-close")?.addEventListener("click", () => stopYoutubeRollPlayback({ closePanel: true }));
-    document.querySelector("#roll-youtube-replay")?.addEventListener("click", () => replayYoutubeRollClip());
-  }
+function ensureMp4RollPanel() {
+  let panel = document.querySelector("#roll-media-player-panel");
+  if (panel) return panel;
+  panel = document.createElement("section"); panel.id = "roll-media-player-panel";
+  panel.className = "roll-media-player-panel"; panel.hidden = true;
+  panel.setAttribute("role", "region"); panel.setAttribute("aria-label", "Vídeo da rolagem");
+  const header = document.createElement("div"); header.className = "roll-media-player-head";
+  const title = document.createElement("strong"); title.id = "roll-media-player-title";
+  const close = document.createElement("button"); close.type = "button"; close.className = "button button-quiet";
+  close.textContent = "Fechar"; close.setAttribute("aria-label", "Fechar vídeo da rolagem");
+  close.addEventListener("click", () => stopMp4RollPlayback()); header.append(title, close);
+  const host = document.createElement("div"); host.id = "roll-media-player-host";
+  const status = document.createElement("p"); status.id = "roll-media-player-status"; status.setAttribute("role", "status");
+  const actions = document.createElement("div"); actions.className = "roll-media-player-actions";
+  const replay = document.createElement("button"); replay.type = "button"; replay.className = "button button-quiet";
+  replay.textContent = "Reproduzir trecho"; replay.addEventListener("click", () => activeMp4RollPlayback?.replay());
+  actions.append(replay); panel.append(header, host, status, actions); document.body.append(panel);
   return panel;
 }
 
-function updateYoutubeRollPanel(clip, message, error = false) {
-  const panel = ensureYoutubeRollPanel(); panel.hidden = false;
-  const status = document.querySelector("#roll-youtube-status");
-  if (status) { status.textContent = message; status.dataset.error = String(error); }
-  const link = document.querySelector("#roll-youtube-open");
-  if (link) link.href = youtubeRollClipUrl(clip);
+function stopMp4RollPlayback({ closePanel = true } = {}) {
+  mp4RollPlaybackVersion += 1;
+  activeMp4RollPlayback?.pause(); activeMp4RollPlayback = null;
+  if (closePanel) { const panel = document.querySelector("#roll-media-player-panel"); if (panel) panel.hidden = true; }
 }
 
-function stopYoutubeRollPlayback({ closePanel = false, hostId = "" } = {}) {
-  if (hostId && youtubeRollSession?.hostId !== hostId) return;
-  youtubeRollRequestVersion += 1;
-  const session = youtubeRollSession; youtubeRollSession = null;
-  if (session) { clearInterval(session.interval); clearTimeout(session.readyTimeout); session.observer?.disconnect(); session.rejectReady?.(Object.assign(new Error("A reprodução foi interrompida."), { name: "AbortError" })); }
-  const player = youtubeRollPlayer; youtubeRollPlayer = null;
-  if (player) { try { player.stopVideo(); } catch {} try { player.destroy(); } catch {} }
-  if (closePanel) { const panel = document.querySelector("#roll-youtube-player-panel"); if (panel) panel.hidden = true; }
-}
-
-function pauseYoutubeRollPlayback() {
-  try { youtubeRollPlayer?.pauseVideo(); } catch {}
-}
-
-async function startYoutubeRollClip(hostId, raw, volume = .7, options = {}) {
-  const clip = normalizeYoutubeRollClip(raw);
-  if (!clip) throw new Error("Escolha um trecho válido do YouTube, de até 10 minutos.");
-  stopYoutubeRollPlayback({ closePanel: hostId !== "roll-youtube-player-host" });
-  const requestVersion = youtubeRollRequestVersion;
-  const isCurrent = () => requestVersion === youtubeRollRequestVersion
-    && (!options.canPlay || options.canPlay()) && (!options.isCurrent || options.isCurrent());
-  const api = await loadYoutubeRollApi();
-  if (!isCurrent()) return null;
-  const host = document.getElementById(hostId);
-  if (!host || !host.isConnected) return null;
-  const mount = document.createElement("div"); mount.id = `roll-youtube-frame-${++youtubeRollFrameVersion}`;
-  host.replaceChildren(mount);
-  const playerVars = { controls: 1, playsinline: 1, autoplay: 0, rel: 0 };
-  if (["http:", "https:"].includes(window.location?.protocol)) playerVars.origin = window.location.origin;
-  const session = { hostId, clip, volume: clampRollVolume(volume), options, interval: null, duration: 0, metadataAttempts: 0, readyTimeout: null, rejectReady: null, observer: null };
-  youtubeRollSession = session;
-  const report = (error) => {
-    if (!isCurrent() || youtubeRollSession !== session) return;
-    if (hostId === "roll-youtube-player-host") updateYoutubeRollPanel(clip, error.message, true);
-    options.onError?.(error);
+async function playMp4RollClip(source, raw, volume = .7, options = {}) {
+  const clip = normalizeVideoRollClip(raw);
+  if (!clip || typeof source !== "string" || !/^(?:data:video\/mp4;base64,|blob:)/.test(source)) throw new Error("O MP4 escolhido não está disponível.");
+  const canPlay = options.canPlay || (() => true);
+  if (!canPlay() || (options.requestVersion != null && options.requestVersion !== mp4RollPlaybackVersion)) return null;
+  stopMp4RollPlayback({ closePanel: false });
+  const version = mp4RollPlaybackVersion;
+  const hostId = options.hostId || "roll-media-player-host";
+  const corner = hostId === "roll-media-player-host";
+  if (corner) {
+    ensureMp4RollPanel().hidden = false;
+    document.querySelector("#roll-media-player-title").textContent = clip.name;
+  } else { const panel = document.querySelector("#roll-media-player-panel"); if (panel) panel.hidden = true; }
+  const host = document.querySelector(`#${hostId}`);
+  if (!host || !host.isConnected || host.closest("[hidden]")) return null;
+  const video = document.createElement("video");
+  video.className = "roll-media-player-video"; video.controls = true; video.playsInline = true;
+  video.preload = "metadata";
+  const syncVolume = () => {
+    video.volume = clampRollVolume(options.getVolume ? options.getVolume() : volume, 0);
+    video.muted = video.volume === 0;
   };
-  return await new Promise((resolve, reject) => {
-    let settled = false;
-    const finish = (error, player) => {
-      if (settled) return;
-      settled = true; clearTimeout(session.readyTimeout); session.rejectReady = null;
-      if (error) reject(error); else resolve(player);
-    };
-    session.rejectReady = (error) => finish(error);
-    session.readyTimeout = setTimeout(() => {
-      if (!isCurrent()) { finish(Object.assign(new Error("A reprodução foi interrompida."), { name: "AbortError" })); return; }
-      const error = new Error("O vídeo demorou para carregar. Você ainda pode escolher o início e o fim manualmente, ou usar um arquivo de áudio.");
-      report(error); finish(error); stopYoutubeRollPlayback({ hostId });
-    }, 15000);
-    const checkMetadata = (player) => {
-      if (!isCurrent() || youtubeRollSession !== session) return;
-      let duration = 0;
-      try { duration = Number(player.getDuration()); } catch {}
-      if (Number.isFinite(duration) && duration > 0 && duration !== session.duration) { session.duration = duration; options.onDuration?.(duration, player); }
-    };
-    try {
-      const player = new api.Player(mount.id, {
-        width: "100%", height: "100%", videoId: clip.videoId, playerVars,
-        events: {
-          onReady(event) {
-            if (!isCurrent() || youtubeRollSession !== session) { try { event.target.destroy(); } catch {} finish(Object.assign(new Error("A reprodução foi interrompida."), { name: "AbortError" })); return; }
-            const readyPlayer = event.target;
-            youtubeRollPlayer = readyPlayer;
-            const frame = readyPlayer.getIframe?.();
-            frame?.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
-            frame?.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");
-            readyPlayer.setVolume(Math.round(session.volume * 100));
-            const params = { videoId: clip.videoId, startSeconds: clip.startSeconds, endSeconds: clip.endSeconds };
-            if (options.autoplay) readyPlayer.loadVideoById(params); else readyPlayer.cueVideoById(params);
-            checkMetadata(readyPlayer); options.onReady?.(readyPlayer, session.duration);
-            session.interval = setInterval(() => {
-              if (!isCurrent() || youtubeRollSession !== session) { stopYoutubeRollPlayback({ hostId }); return; }
-              if (!host.isConnected || host.closest("[hidden]") || document.hidden) { pauseYoutubeRollPlayback(); return; }
-              if (session.metadataAttempts < 60) {
-                session.metadataAttempts += 1; checkMetadata(readyPlayer);
-                if (session.metadataAttempts === 60 && session.duration === 0) options.onMetadataUnavailable?.();
-              }
-              const position = Number(readyPlayer.getCurrentTime?.());
-              const state = readyPlayer.getPlayerState?.();
-              if (Number.isFinite(position)) options.onPosition?.(position, readyPlayer);
-              if (state === 1 && position >= clip.endSeconds) { readyPlayer.pauseVideo(); options.onEnded?.(); }
-            }, 250);
-            if (typeof IntersectionObserver === "function") {
-              session.observer = new IntersectionObserver((entries) => { if (entries.some((entry) => !entry.isIntersecting || entry.intersectionRatio < .5)) pauseYoutubeRollPlayback(); }, { threshold: .5 });
-              session.observer.observe(frame || host);
-            }
-            finish(null, readyPlayer);
-          },
-          onStateChange(event) {
-            if (!isCurrent() || youtubeRollSession !== session) return;
-            if (event.data === 1) {
-              if (document.hidden || host.closest("[hidden]")) { event.target.pauseVideo(); return; }
-              checkMetadata(event.target);
-              if (hostId === "roll-youtube-player-host") updateYoutubeRollPanel(clip, `Reproduzindo ${clip.name}.`);
-            } else if (event.data === 0) options.onEnded?.();
-          },
-          onError(event) {
-            if (!isCurrent() || youtubeRollSession !== session) return;
-            const error = youtubeRollPlayerError(event.data); report(error); finish(error); stopYoutubeRollPlayback({ hostId });
-          },
-          onAutoplayBlocked() { report(Object.assign(new Error("O navegador bloqueou a reprodução do YouTube. Clique no play do vídeo ou em “Reproduzir trecho”."), { name: "NotAllowedError" })); },
-        },
-      });
-      youtubeRollPlayer = player;
-    } catch (error) { report(error); finish(error); }
+  syncVolume();
+  video.setAttribute("aria-label", `${clip.name}, trecho selecionado`);
+  host.replaceChildren(video);
+  let timer = null, frameRequest = null, disposed = false, ended = false, cancelLoad = null;
+  const current = () => !disposed && version === mp4RollPlaybackVersion && activeMp4RollPlayback === playback;
+  const status = (message, error = false) => {
+    if (corner) { const element = document.querySelector("#roll-media-player-status"); element.textContent = message; element.dataset.error = String(error); }
+    options.onStatus?.(message, error);
+  };
+  const clearWatch = () => {
+    clearTimeout(timer); timer = null;
+    if (frameRequest != null && video.cancelVideoFrameCallback) video.cancelVideoFrameCallback(frameRequest);
+    frameRequest = null;
+  };
+  const finish = () => {
+    clearWatch(); ended = true; video.pause(); activeOutcomeAudio.delete(playback);
+    if (video.currentTime >= clip.endSeconds) video.currentTime = Math.max(clip.startSeconds, clip.endSeconds - .002);
+    if (current()) status("Trecho concluído. Clique em “Reproduzir trecho” para assistir novamente.");
+  };
+  const checkBoundary = () => {
+    if (!current()) return false;
+    if (!canPlay() || !host.isConnected || host.closest("[hidden]")) {
+      playback.pause();
+      if (corner) { const panel = document.querySelector("#roll-media-player-panel"); if (panel) panel.hidden = true; }
+      return false;
+    }
+    syncVolume();
+    if (document.hidden) { video.pause(); clearWatch(); activeOutcomeAudio.delete(playback); return false; }
+    if (video.currentTime >= clip.endSeconds - .002) { finish(); return false; }
+    if (video.currentTime < clip.startSeconds) video.currentTime = clip.startSeconds;
+    return true;
+  };
+  const watch = () => {
+    clearWatch(); if (!checkBoundary()) return;
+    if (!video.paused && video.requestVideoFrameCallback) frameRequest = video.requestVideoFrameCallback(() => { frameRequest = null; checkBoundary(); });
+    const remaining = Math.max(0, clip.endSeconds - video.currentTime) / Math.max(.1, video.playbackRate || 1);
+    timer = setTimeout(watch, video.paused ? 250 : Math.min(50, Math.max(5, remaining * 1000)));
+  };
+  const start = async () => {
+    if (!current() || !canPlay() || document.hidden || host.closest("[hidden]")) { playback.pause(); return false; }
+    if (ended || video.currentTime >= clip.endSeconds || video.currentTime < clip.startSeconds) video.currentTime = clip.startSeconds;
+    ended = false; syncVolume(); activeOutcomeAudio.add(playback);
+    try { await video.play(); if (!checkBoundary()) return false; watch(); status(`Reproduzindo ${formatAudioClipTime(clip.startSeconds)}–${formatAudioClipTime(clip.endSeconds)}.`); return true; }
+    catch (error) {
+      activeOutcomeAudio.delete(playback); clearWatch();
+      if (current()) {
+        status(error?.name === "NotAllowedError" ? "Vídeo pronto. Clique em “Reproduzir trecho” para assistir e ouvir." : "Não foi possível reproduzir este MP4.", true);
+        watch(); options.onError?.(error);
+      }
+      return false;
+    }
+  };
+  const playback = {
+    video, clip,
+    pause() {
+      if (disposed) return;
+      disposed = true; clearWatch(); video.pause();
+      cancelLoad?.(); cancelLoad = null;
+      video.onloadedmetadata = video.onerror = null;
+      video.removeAttribute("src"); video.load(); activeOutcomeAudio.delete(playback);
+      if (activeMp4RollPlayback === playback) activeMp4RollPlayback = null;
+    },
+    replay: () => start(),
+  };
+  activeMp4RollPlayback = playback;
+  video.addEventListener("play", () => {
+    if (!current() || !canPlay() || document.hidden) { video.pause(); return; }
+    if (ended || video.currentTime >= clip.endSeconds || video.currentTime < clip.startSeconds) video.currentTime = clip.startSeconds;
+    ended = false; activeOutcomeAudio.add(playback); watch();
+    status(`Reproduzindo ${formatAudioClipTime(clip.startSeconds)}–${formatAudioClipTime(clip.endSeconds)}.`);
   });
-}
-
-function cueYoutubeClipPreview(hostId, clip, options = {}) {
-  return startYoutubeRollClip(hostId, clip, options.volume ?? .7, { ...options, autoplay: false });
-}
-
-function playYoutubeRollClip(clip, volume = .7, options = {}) {
-  const hostId = options.hostId || "roll-youtube-player-host";
-  if (hostId === "roll-youtube-player-host") updateYoutubeRollPanel(clip, "Carregando o trecho do YouTube…");
-  return startYoutubeRollClip(hostId, clip, volume, { ...options, autoplay: true });
-}
-
-function playYoutubeOutcomeClip(clip, volume, canPlay = () => true) {
-  if (!canPlay()) return Promise.resolve(null);
-  return playYoutubeRollClip(clip, volume, { canPlay, onError: reportOutcomeAudioError });
-}
-
-async function previewYoutubeRollClip(clip, volume = .7, options = {}) {
-  const player = await playYoutubeRollClip(clip, volume, options);
-  return player ? { pause: () => { if (youtubeRollPlayer === player) stopYoutubeRollPlayback({ hostId: options.hostId || "roll-youtube-player-host" }); } } : null;
-}
-
-function stopYoutubeRollPlayer() {
-  stopYoutubeRollPlayback({ closePanel: true });
-}
-
-function replayYoutubeRollClip() {
-  const session = youtubeRollSession;
-  if (!session || (session.options.canPlay && !session.options.canPlay()) || (session.options.isCurrent && !session.options.isCurrent())) return;
-  if (youtubeRollPlayer) {
-    youtubeRollPlayer.setVolume(Math.round(session.volume * 100));
-    youtubeRollPlayer.loadVideoById({ videoId: session.clip.videoId, startSeconds: session.clip.startSeconds, endSeconds: session.clip.endSeconds });
+  video.addEventListener("seeking", () => {
+    if (!current()) return;
+    if (video.currentTime < clip.startSeconds) video.currentTime = clip.startSeconds;
+    else if (video.currentTime >= clip.endSeconds) finish();
+  });
+  video.addEventListener("timeupdate", checkBoundary);
+  video.addEventListener("ended", finish);
+  video.addEventListener("ratechange", () => { if (current() && !ended) watch(); });
+  status("Carregando o trecho de MP4…");
+  try {
+    const metadata = new Promise((resolve, reject) => {
+      cancelLoad = () => reject(audioClipAbortError());
+      video.onloadedmetadata = () => resolve(video.duration);
+      video.onerror = () => reject(new Error("Este MP4 não pode ser reproduzido neste navegador."));
+      video.src = source; video.load();
+    });
+    const duration = await awaitAudioClipOperation(metadata, options.signal, 30000, "O MP4 demorou demais para carregar.");
+    cancelLoad = null;
+    if (!current() || !canPlay()) { playback.pause(); return null; }
+    if (!Number.isFinite(duration) || duration <= clip.startSeconds || clip.endSeconds > duration + .001) throw new Error("O trecho selecionado está fora da duração deste MP4.");
+    video.onloadedmetadata = null;
+    video.onerror = () => { if (current()) { const error = new Error("Não foi possível reproduzir este MP4."); status(error.message, true); options.onError?.(error); playback.pause(); } };
+    video.currentTime = clip.startSeconds;
+    if (options.autoplay !== false) await start();
+    return current() ? playback : null;
+  } catch (error) {
+    if (current()) { status(error.message || "Não foi possível abrir este MP4.", true); options.onError?.(error); playback.pause(); }
+    if (error?.name !== "AbortError") throw error;
+    return null;
   }
 }
 
-document.addEventListener("visibilitychange", () => { if (document.hidden) pauseYoutubeRollPlayback(); });
+function playMp4OutcomeClip(source, clip, volume, canPlay = () => true, options = {}) {
+  return playMp4RollClip(source, clip, volume, { ...options, canPlay, onError: (error) => {
+    if (error?.name === "NotAllowedError") {
+      showOutcomeAudioNotice("O vídeo da rolagem está pronto no canto da tela. Clique em “Reproduzir trecho” para assistir.");
+      return;
+    }
+    reportOutcomeAudioError(error);
+  } });
+}
+
+function previewMp4RollClip(source, clip, volume, options = {}) {
+  return playMp4RollClip(source, clip, volume, options);
+}
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden && activeMp4RollPlayback) activeMp4RollPlayback.video.pause();
+});
 
 
 const audioClipUi = {
   modal: document.querySelector("#audio-clip-modal"),
   dialog: document.querySelector("#audio-clip-dialog"),
   file: document.querySelector("#audio-clip-file"),
-  youtubeUrl: document.querySelector("#audio-clip-youtube-url"),
+  videoFile: document.querySelector("#audio-clip-video-file"),
   start: document.querySelector("#audio-clip-start"),
   end: document.querySelector("#audio-clip-end"),
   startRange: document.querySelector("#audio-clip-start-range"),
@@ -27748,7 +28388,7 @@ const audioClipUi = {
   sourceDuration: document.querySelector("#audio-clip-source-duration"),
   audio: document.querySelector("#audio-clip-audio"),
   empty: document.querySelector("#audio-clip-empty"),
-  youtubeStage: document.querySelector("#audio-clip-youtube-stage"),
+  videoStage: document.querySelector("#audio-clip-video-stage"),
   status: document.querySelector("#audio-clip-status"),
   preview: document.querySelector("#audio-clip-preview"),
   stop: document.querySelector("#audio-clip-stop"),
@@ -27757,7 +28397,7 @@ const audioClipUi = {
 let audioClipSession = null;
 
 function isAudioClipSessionCurrent(session) {
-  return Boolean(session) && audioClipSession === session && session.draft === accountSettingsDraft && session.epoch === accountRollEpoch;
+  return Boolean(session) && audioClipSession === session && session.draft === accountSettingsDraft && session.epoch === accountRollEpoch && isSettingsSoundContextCurrent(session.soundContext);
 }
 
 function setAudioClipStatus(message, state = "idle") {
@@ -27771,7 +28411,7 @@ function stopAudioClipPreview() {
   if (session) session.previewVersion = (session.previewVersion || 0) + 1;
   session?.preview?.pause();
   if (session) session.preview = null;
-  try { session?.player?.pauseVideo(); } catch {}
+  session?.sourceVideo?.pause();
   audioClipUi.audio.pause();
   audioClipUi.stop.disabled = true;
 }
@@ -27782,19 +28422,21 @@ function clearAudioClipSource() {
   if (!session) return;
   session.abort?.abort();
   session.loadVersion += 1;
+  if (session.sourceVideo) { session.sourceVideo.pause(); session.sourceVideo.removeAttribute("src"); session.sourceVideo.load(); }
+  document.querySelector("#audio-clip-video-player").replaceChildren();
   if (session.objectUrl) URL.revokeObjectURL(session.objectUrl);
-  Object.assign(session, { objectUrl: "", buffer: null, file: null, clip: null, duration: 0, player: null, busy: false });
+  Object.assign(session, { objectUrl: "", buffer: null, file: null, clip: null, duration: 0, sourceVideo: null, busy: false });
   audioClipUi.audio.removeAttribute("src"); audioClipUi.audio.load();
   audioClipUi.audio.hidden = true;
-  audioClipUi.youtubeStage.hidden = true;
+  audioClipUi.videoStage.hidden = true;
   audioClipUi.empty.hidden = false;
   audioClipUi.sourceName.textContent = "Nenhum áudio escolhido";
   audioClipUi.sourceDuration.textContent = "—";
-  stopYoutubeRollPlayer();
+  stopMp4RollPlayback();
 }
 
 function setAudioClipSourceMode(mode) {
-  if (!audioClipSession || !["file", "youtube"].includes(mode)) return;
+  if (!audioClipSession || !["file", "video"].includes(mode)) return;
   if (audioClipSession.mode !== mode) clearAudioClipSource();
   audioClipSession.mode = mode;
   document.querySelectorAll("[data-audio-clip-source]").forEach((tab) => {
@@ -27802,19 +28444,18 @@ function setAudioClipSourceMode(mode) {
     tab.setAttribute("aria-selected", String(selected)); tab.tabIndex = selected ? 0 : -1;
   });
   document.querySelector("#audio-clip-file-panel").hidden = mode !== "file";
-  document.querySelector("#audio-clip-youtube-panel").hidden = mode !== "youtube";
+  document.querySelector("#audio-clip-video-panel").hidden = mode !== "video";
   syncAudioClipControls();
 }
 
 function getAudioClipSelection(session = audioClipSession) {
-  if (!session?.buffer && !session?.clip) return { ok: false, error: "Escolha um áudio para começar.", duration: 0 };
+  if (!session?.buffer && !session?.clip) return { ok: false, error: "Escolha um arquivo para começar.", duration: 0 };
   if (session.mode === "file") return validateAudioClipRange(audioClipUi.start.value, audioClipUi.end.value, session.duration, {
     sampleRate: session.buffer.sampleRate, channels: session.buffer.numberOfChannels, frames: session.buffer.length,
   });
-  const start = parseAudioClipTime(audioClipUi.start.value), end = parseAudioClipTime(audioClipUi.end.value);
-  const range = validateAudioClipRange(start, end, session.duration || Math.max(start || 0, end || 0) + 1, { maxBytes: Number.MAX_SAFE_INTEGER });
-  if (range.ok && !normalizeYoutubeRollClip({ ...session.clip, startSeconds: start, endSeconds: end })) {
-    range.ok = false; range.error = "Escolha um trecho de até 10 minutos, com início e fim válidos.";
+  const range = validateAudioClipRange(audioClipUi.start.value, audioClipUi.end.value, session.duration, { maxBytes: Number.MAX_SAFE_INTEGER });
+  if (range.ok && !normalizeVideoRollClip({ ...session.clip, startSeconds: range.start, endSeconds: range.end })) {
+    range.ok = false; range.error = "Escolha um trecho de MP4 com até 10 minutos, dentro da duração do vídeo.";
   }
   return range;
 }
@@ -27825,7 +28466,7 @@ function syncAudioClipControls({ showError = false } = {}) {
   const busy = Boolean(session?.busy);
   const range = getAudioClipSelection();
   [audioClipUi.start, audioClipUi.end, audioClipUi.startRange, audioClipUi.endRange].forEach((input) => { input.disabled = !ready || busy; });
-  [audioClipUi.file, audioClipUi.youtubeUrl, document.querySelector("#audio-clip-load-youtube"), ...document.querySelectorAll("[data-audio-clip-source]")].forEach((input) => { input.disabled = busy; });
+  [audioClipUi.file, audioClipUi.videoFile, ...document.querySelectorAll("[data-audio-clip-source]")].forEach((input) => { input.disabled = busy; });
   audioClipUi.apply.disabled = !range.ok || busy;
   audioClipUi.preview.disabled = !range.ok || busy;
   audioClipUi.duration.textContent = `${formatAudioClipTime(Math.max(0, range.duration || 0))} selecionados`;
@@ -27848,101 +28489,64 @@ function setAudioClipRange(start, end) {
 async function loadAudioClipFile(file, initialRange = null) {
   const session = audioClipSession;
   if (!isAudioClipSessionCurrent(session) || !file) return;
-  clearAudioClipSource();
-  session.abort = new AbortController();
+  clearAudioClipSource(); session.abort = new AbortController();
   const version = session.loadVersion;
   const isCurrent = () => isAudioClipSessionCurrent(session) && session.loadVersion === version;
-  session.busy = true;
-  setAudioClipStatus(`Preparando “${file.name}”…`, "loading");
-  syncAudioClipControls();
+  session.busy = true; setAudioClipStatus(`Preparando “${file.name}”…`, "loading"); syncAudioClipControls();
   try {
-    const candidate = await readSettingsMedia(() => decodeAudioClipFile(file, { signal: session.abort.signal, isCurrent }));
+    const candidate = await readSettingsMedia(() => session.mode === "video"
+      ? readVideoClipFile(file, { signal: session.abort.signal, isCurrent })
+      : decodeAudioClipFile(file, { signal: session.abort.signal, isCurrent }));
     if (!candidate || !isCurrent()) return;
     Object.assign(session, candidate, { file, busy: false });
-    session.objectUrl = URL.createObjectURL(file);
-    audioClipUi.audio.src = session.objectUrl; audioClipUi.audio.volume = session.draft.ownVolume;
-    audioClipUi.audio.hidden = false; audioClipUi.empty.hidden = true;
+    session.objectUrl = URL.createObjectURL(file); audioClipUi.empty.hidden = true;
+    if (session.mode === "video") {
+      audioClipUi.videoStage.hidden = false;
+      const video = document.createElement("video"); video.controls = true; video.playsInline = true; video.preload = "metadata";
+      video.src = session.objectUrl; video.volume = session.draft.ownVolume;
+      video.setAttribute("aria-label", "Vídeo original para escolher o trecho");
+      video.addEventListener("play", () => {
+        if (!isCurrent()) { video.pause(); return; }
+        session.previewVersion = (session.previewVersion || 0) + 1; session.preview?.pause(); session.preview = null; audioClipUi.stop.disabled = false;
+      });
+      session.sourceVideo = video; document.querySelector("#audio-clip-video-player").replaceChildren(video);
+    } else {
+      audioClipUi.audio.src = session.objectUrl; audioClipUi.audio.volume = session.draft.ownVolume; audioClipUi.audio.hidden = false;
+    }
     audioClipUi.sourceName.textContent = candidate.name;
-    const start = initialRange?.start ?? 0;
-    const end = initialRange?.end ?? Math.min(candidate.duration, 10);
-    setAudioClipRange(Math.min(start, candidate.duration), Math.min(end, candidate.duration));
-    setAudioClipStatus("Música carregada. Escolha o início e o fim; apenas esse trecho será salvo.", "ready");
-  } catch (error) {
-    if (!isCurrent() || error?.name === "AbortError") return;
-    session.busy = false;
-    setAudioClipStatus(audioAdditionErrorMessage(error), "error");
-  } finally { if (isCurrent()) { session.busy = false; syncAudioClipControls(); } }
+    setAudioClipRange(Math.min(initialRange?.start ?? 0, candidate.duration), Math.min(initialRange?.end ?? 10, candidate.duration));
+    setAudioClipStatus(session.mode === "video" ? "MP4 carregado. O vídeo será salvo e tocará apenas no intervalo escolhido, na caixa do canto." : "Arquivo carregado. Apenas o áudio do trecho escolhido será salvo.", "ready");
+  } catch (error) { if (isCurrent() && error?.name !== "AbortError") { session.busy = false; setAudioClipStatus(audioAdditionErrorMessage(error), "error"); } }
+  finally { if (isCurrent()) { session.busy = false; syncAudioClipControls(); } }
 }
 
-async function loadAudioClipYoutube(clipToEdit = null) {
-  const session = audioClipSession;
-  if (!isAudioClipSessionCurrent(session)) return;
-  let parsed;
-  try { parsed = clipToEdit || parseYoutubeRollLink(audioClipUi.youtubeUrl.value); }
-  catch (error) { setAudioClipStatus(audioAdditionErrorMessage(error), "error"); audioClipUi.youtubeUrl.focus(); return; }
-  if (!parsed) { setAudioClipStatus("Cole um link válido de uma música ou vídeo do YouTube.", "error"); audioClipUi.youtubeUrl.focus(); return; }
-  const clip = normalizeYoutubeRollClip({ ...parsed, kind: "youtube", mimeType: "video/youtube", name: clipToEdit?.name || "Trecho do YouTube" });
-  if (!clip) { setAudioClipStatus("O link tem tempos inválidos. Escolha um início e um fim com até 10 minutos de intervalo.", "error"); return; }
-  clearAudioClipSource();
-  session.clip = clip;
-  audioClipUi.sourceName.textContent = clip.name;
-  audioClipUi.youtubeStage.hidden = false; audioClipUi.empty.hidden = true;
-  document.querySelector("#audio-clip-youtube-open").href = youtubeRollClipUrl(clip);
-  setAudioClipRange(clip.startSeconds, clip.endSeconds);
-  setAudioClipStatus("Carregando vídeo… Você já pode digitar o início e o fim do trecho.", "loading");
-  const version = session.loadVersion;
-  const canPlay = () => isAudioClipSessionCurrent(session) && session.loadVersion === version && !document.hidden;
-  try {
-    const player = await cueYoutubeClipPreview("audio-clip-youtube-player", clip, {
-      canPlay,
-      volume: session.draft.ownVolume,
-      onReady(player) { if (canPlay()) session.player = player; },
-      onDuration(duration) {
-        if (!canPlay() || !Number.isFinite(duration) || duration <= 0) return;
-        session.duration = duration;
-        if (parseAudioClipTime(audioClipUi.end.value) > duration) audioClipUi.end.value = formatAudioClipTime(duration);
-        syncAudioClipControls({ showError: true });
-        if (getAudioClipSelection().ok) setAudioClipStatus("Vídeo carregado. Escolha o início e o fim e teste o trecho.", "ready");
-      },
-      onError(error) { if (canPlay()) setAudioClipStatus(`${audioAdditionErrorMessage(error)} Você pode escolher os tempos e salvar o link, ou enviar o arquivo da música.`, "error"); },
-    });
-    if (canPlay()) session.player = player;
-  } catch (error) {
-    if (canPlay() && error?.name !== "AbortError") setAudioClipStatus(`${audioAdditionErrorMessage(error)} Você ainda pode definir os tempos e salvar o link.`, "error");
-  }
-}
+
 
 async function openAudioClipEditor(key, { mode = "file", file = null, editExisting = false } = {}) {
-  if (!ROLL_SOUND_KEYS.includes(key) || !accountSettingsDraft || settingsBusy) return;
+  if (!ROLL_SOUND_KEYS.includes(key) || !accountSettingsDraft || settingsBusy || !settingsSoundContext?.canEdit) return;
   if (audioClipSession) closeAudioClipEditor({ restoreSettings: false });
-  const session = audioClipSession = { key, draft: accountSettingsDraft, epoch: accountRollEpoch, mode, loadVersion: 0, busy: false, opener: document.activeElement };
-  audioClipUi.file.value = ""; audioClipUi.youtubeUrl.value = "";
-  audioClipUi.start.value = "0:00"; audioClipUi.end.value = "0:00";
+  const session = audioClipSession = { key, draft: accountSettingsDraft, epoch: accountRollEpoch, soundContext: settingsSoundContext,
+    mode, loadVersion: 0, busy: false, opener: document.activeElement };
+  audioClipUi.file.value = ""; audioClipUi.videoFile.value = ""; audioClipUi.start.value = "0:00"; audioClipUi.end.value = "0:00";
   document.querySelector("#audio-clip-outcome").textContent = document.querySelector(`[data-outcome="${key}"] strong`)?.textContent || "Som da rolagem";
-  rollAccountUi.settingsModal.hidden = true;
-  audioClipUi.modal.hidden = false;
-  setAudioClipSourceMode(mode); clearAudioClipSource();
-  setAudioClipStatus("O áudio atual será mantido até você aplicar o novo trecho.");
-  syncModalLock(); audioClipUi.dialog.focus();
+  rollAccountUi.settingsModal.hidden = true; audioClipUi.modal.hidden = false;
+  setAudioClipSourceMode(mode); clearAudioClipSource(); setAudioClipStatus("O som atual da ficha será mantido até você aplicar o novo trecho.");
+  syncAudioClipControls(); syncModalLock(); audioClipUi.dialog.focus();
   if (file) { await loadAudioClipFile(file); return; }
-  if (!editExisting) { (mode === "youtube" ? audioClipUi.youtubeUrl : audioClipUi.file).focus(); return; }
-  const staged = stagedRollSounds[key], ref = session.draft.sounds[key];
-  const existing = staged || ref;
-  if (existing?.kind === "youtube") {
-    setAudioClipSourceMode("youtube");
-    audioClipUi.youtubeUrl.value = `https://www.youtube.com/watch?v=${existing.videoId}`;
-    await loadAudioClipYoutube(existing); return;
-  }
+  if (!editExisting) { (mode === "video" ? audioClipUi.videoFile : audioClipUi.file).focus(); return; }
+  const staged = stagedRollSounds[key], ref = session.draft.sounds[key], existing = staged || ref;
+  if (existing?.kind === "youtube") { setAudioClipStatus("A opção do YouTube foi removida. Envie um arquivo de áudio ou MP4 para substituir esse som.", "error"); return; }
+  if (existing?.kind === "video") setAudioClipSourceMode("video");
   if (staged?.sourceFile) { await loadAudioClipFile(staged.sourceFile, staged.selectedRange); return; }
   if (!staged?.source && !ref) return;
-  session.busy = true; syncAudioClipControls(); setAudioClipStatus("Carregando seu áudio salvo…", "loading");
+  session.busy = true; syncAudioClipControls(); setAudioClipStatus("Carregando o arquivo salvo nesta ficha…", "loading");
   try {
     const source = staged?.source || await readSharedRollAudio(ref);
     if (!isAudioClipSessionCurrent(session)) return;
     const response = await fetch(source), blob = await response.blob();
     if (!isAudioClipSessionCurrent(session)) return;
     const savedFile = new File([blob], existing.name || "Áudio.wav", { type: existing.mimeType });
-    await loadAudioClipFile(savedFile, { start: 0, end: Number.MAX_SAFE_INTEGER });
+    await loadAudioClipFile(savedFile, existing.kind === "video" ? { start: existing.startSeconds, end: existing.endSeconds } : { start: 0, end: Number.MAX_SAFE_INTEGER });
   } catch (error) { if (isAudioClipSessionCurrent(session)) { session.busy = false; setAudioClipStatus(audioAdditionErrorMessage(error), "error"); syncAudioClipControls(); } }
 }
 
@@ -27968,27 +28572,23 @@ function closeAudioClipEditor({ restoreSettings = true, applied = false } = {}) 
 async function previewAudioClipSelection() {
   const session = audioClipSession, range = getAudioClipSelection();
   if (!isAudioClipSessionCurrent(session) || !range.ok || session.busy) return;
-  stopAudioClipPreview();
-  const previewVersion = session.previewVersion;
+  stopAudioClipPreview(); const previewVersion = session.previewVersion;
   const canPlay = () => isAudioClipSessionCurrent(session) && session.previewVersion === previewVersion && !document.hidden;
   let playback;
   try {
-    if (session.mode === "youtube") {
-      playback = await previewYoutubeRollClip({ ...session.clip, startSeconds: range.start, endSeconds: range.end }, session.draft.ownVolume, {
-        hostId: "audio-clip-youtube-player", canPlay,
-        onError(error) { if (canPlay()) setAudioClipStatus(audioAdditionErrorMessage(error), "error"); },
+    if (session.mode === "video") {
+      playback = await previewMp4RollClip(session.objectUrl, { ...session.clip, startSeconds: range.start, endSeconds: range.end }, session.draft.ownVolume, {
+        hostId: "audio-clip-video-player", canPlay, onStatus(message, error) { if (canPlay()) setAudioClipStatus(message, error ? "error" : "ready"); },
       });
       if (!playback) return;
     } else {
-      const context = await unlockOutcomeAudio();
-      if (!canPlay()) return;
+      const context = await unlockOutcomeAudio(); if (!canPlay()) return;
       if (!context) throw new Error("Este navegador não consegue reproduzir a prévia do trecho.");
       playback = playBufferedOutcomeSound(session.buffer, session.draft.ownVolume, context, range.start, range.duration);
     }
     if (!canPlay()) { playback?.pause(); return; }
-    session.preview = playback;
-    audioClipUi.stop.disabled = false;
-    setAudioClipStatus(`Prévia do trecho ${formatAudioClipTime(range.start)}–${formatAudioClipTime(range.end)}.`, "ready");
+    session.preview = playback; audioClipUi.stop.disabled = false;
+    if (session.mode === "file") setAudioClipStatus(`Prévia do trecho ${formatAudioClipTime(range.start)}–${formatAudioClipTime(range.end)}.`, "ready");
   } catch (error) { if (canPlay() && error?.name !== "AbortError") setAudioClipStatus(audioAdditionErrorMessage(error), "error"); }
 }
 
@@ -27996,26 +28596,27 @@ async function applyAudioClipSelection() {
   const session = audioClipSession, range = getAudioClipSelection();
   if (!isAudioClipSessionCurrent(session) || session.busy) return;
   if (!range.ok) { setAudioClipStatus(range.error, "error"); return; }
-  stopAudioClipPreview(); session.busy = true; syncAudioClipControls();
-  setAudioClipStatus("Preparando o trecho escolhido…", "processing");
+  stopAudioClipPreview(); session.busy = true; syncAudioClipControls(); setAudioClipStatus("Preparando o trecho escolhido…", "processing");
   try {
-    if (session.mode === "youtube") {
-      stagedRollSounds[session.key] = normalizeYoutubeRollClip({ ...session.clip, startSeconds: range.start, endSeconds: range.end,
-        name: `YouTube · ${formatAudioClipTime(range.start)}–${formatAudioClipTime(range.end)}` });
+    if (session.mode === "video") {
+      const version = settingsSoundReadVersions[session.key] = (settingsSoundReadVersions[session.key] || 0) + 1;
+      const staged = await readSettingsMedia(() => stageVideoRollSound(session.file, range.start, range.end, {
+        sourceDuration: session.duration, signal: session.abort?.signal,
+        isCurrent: () => isAudioClipSessionCurrent(session) && version === settingsSoundReadVersions[session.key],
+      }));
+      if (!staged || !isAudioClipSessionCurrent(session) || version !== settingsSoundReadVersions[session.key]) return;
+      stagedRollSounds[session.key] = staged;
     } else {
       const wav = encodeAudioClipWav(session.buffer, range.start, range.end);
       const file = new File([wav], audioClipFileName(session.file.name, range.start, range.end), { type: "audio/wav" });
       const staged = await readSettingsMedia(() => stageRollSound(session.key, file));
       if (!staged || !isAudioClipSessionCurrent(session)) return;
-      stagedRollSounds[session.key].sourceFile = session.file;
-      stagedRollSounds[session.key].selectedRange = { start: range.start, end: range.end };
+      stagedRollSounds[session.key].sourceFile = session.file; stagedRollSounds[session.key].selectedRange = { start: range.start, end: range.end };
     }
     if (!isAudioClipSessionCurrent(session)) return;
-    const key = session.key;
-    renderSettingsSoundNames();
-    closeAudioClipEditor({ applied: true });
-    setSettingsSoundFeedback(key, "selected", "Trecho escolhido! Clique em “Ouvir” para testar e em “Salvar configurações” para confirmar.");
-    setRollFeatureStatus(rollAccountUi.settingsStatus, "Trecho preparado. Salve as configurações para usá-lo nas rolagens.");
+    const key = session.key; renderSettingsSoundNames(); closeAudioClipEditor({ applied: true });
+    setSettingsSoundFeedback(key, "selected", "Trecho escolhido! Clique em “Ouvir” para testar e em “Salvar configurações” para salvar nesta ficha.");
+    setRollFeatureStatus(rollAccountUi.settingsStatus, "Trecho preparado. Salve as configurações para usá-lo nas rolagens desta ficha.");
   } catch (error) { if (isAudioClipSessionCurrent(session)) setAudioClipStatus(audioAdditionErrorMessage(error), "error"); }
   finally { if (isAudioClipSessionCurrent(session)) { session.busy = false; syncAudioClipControls(); } }
 }
@@ -28025,13 +28626,12 @@ document.querySelectorAll("[data-audio-clip-source]").forEach((tab) => {
   tab.addEventListener("click", () => { setAudioClipSourceMode(tab.dataset.audioClipSource); syncAudioClipControls(); });
   tab.addEventListener("keydown", (event) => {
     if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
-    event.preventDefault(); const mode = event.key === "Home" ? "file" : event.key === "End" ? "youtube" : tab.dataset.audioClipSource === "file" ? "youtube" : "file";
+    event.preventDefault(); const mode = event.key === "Home" ? "file" : event.key === "End" ? "video" : tab.dataset.audioClipSource === "file" ? "video" : "file";
     setAudioClipSourceMode(mode); document.querySelector(`[data-audio-clip-source="${mode}"]`).focus();
   });
 });
 audioClipUi.file.addEventListener("change", () => loadAudioClipFile(audioClipUi.file.files?.[0]));
-document.querySelector("#audio-clip-load-youtube").addEventListener("click", () => loadAudioClipYoutube());
-audioClipUi.youtubeUrl.addEventListener("keydown", (event) => { if (event.key === "Enter") { event.preventDefault(); loadAudioClipYoutube(); } });
+audioClipUi.videoFile.addEventListener("change", () => loadAudioClipFile(audioClipUi.videoFile.files?.[0]));
 for (const [slider, input] of [[audioClipUi.startRange, audioClipUi.start], [audioClipUi.endRange, audioClipUi.end]]) {
   slider.addEventListener("input", () => { stopAudioClipPreview(); input.value = formatAudioClipTime(Number(slider.value)); syncAudioClipControls({ showError: true }); });
   input.addEventListener("input", () => { stopAudioClipPreview(); syncAudioClipControls({ showError: true }); });
@@ -28041,7 +28641,7 @@ audioClipUi.preview.addEventListener("click", previewAudioClipSelection);
 audioClipUi.stop.addEventListener("click", stopAudioClipPreview);
 audioClipUi.apply.addEventListener("click", applyAudioClipSelection);
 audioClipUi.audio.addEventListener("play", () => { if (audioClipSession) { audioClipSession.previewVersion = (audioClipSession.previewVersion || 0) + 1; audioClipSession.preview?.pause(); audioClipSession.preview = null; audioClipUi.stop.disabled = false; } });
-document.querySelectorAll("[data-youtube-audio-outcome]").forEach((button) => button.addEventListener("click", () => openAudioClipEditor(button.dataset.youtubeAudioOutcome, { mode: "youtube" })));
+document.querySelectorAll("[data-video-audio-outcome]").forEach((button) => button.addEventListener("click", () => openAudioClipEditor(button.dataset.videoAudioOutcome, { mode: "video" })));
 document.querySelectorAll("[data-edit-audio-outcome]").forEach((button) => button.addEventListener("click", () => openAudioClipEditor(button.dataset.editAudioOutcome, { editExisting: true })));
 document.addEventListener("visibilitychange", () => { if (document.hidden) stopAudioClipPreview(); });
 
@@ -28485,6 +29085,7 @@ firebaseUi.slotsList.addEventListener("click", async (event) => {
   }
 });
 
+window.addEventListener("abyss:slot-sounds-loaded", handleSlotSoundsLoaded);
 window.addEventListener("abyss:sheet-changed", () => {
   stateRevision += 1;
   if (currentFirebaseUser) scheduleCloudSave();
