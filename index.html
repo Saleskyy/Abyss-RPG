@@ -25,7 +25,7 @@
 
     <link rel="stylesheet" href="css/05-theme-audio-slots.css" />
 
-    <link rel="stylesheet" href="css/06-grimoire-history.css" />
+    <link rel="stylesheet" href="css/06-grimoire-history.css?v=minerva-fit-20261009" />
 
   </head>
   <body class="slot-gate-open">
@@ -2624,8 +2624,9 @@
         </div>
         <div class="grimoire-picker-workspace minerva-catalog-workspace">
           <aside class="grimoire-picker-catalog" aria-label="Criações do Grimório">
-            <label class="grimoire-picker-search"><span class="sr-only">Buscar nas criações</span>
-              <span class="filter-input"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 4 4"></path></svg><input id="minerva-search" type="search" placeholder="Buscar nas criações..." autocomplete="off" /></span>
+            <label class="filter-input-shell grimoire-picker-search">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+              <input id="minerva-search" class="filter-input" type="search" placeholder="Buscar nas criações..." autocomplete="off" aria-label="Buscar nas criações" />
             </label>
             <div class="grimoire-picker-catalog-heading"><span>Acervo de criações</span><p id="minerva-count" role="status" aria-live="polite"></p></div>
             <div class="grimoire-picker-results">
