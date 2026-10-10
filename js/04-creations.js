@@ -2774,9 +2774,20 @@ const GRIMOIRE_SPELL_TAGS = {
   ley: GRIMOIRE_POWER_TAGS.ley,
 };
 
+const GRIMOIRE_ECHO_TAGS = {
+  determinado: "O Determinado",
+  justo: "O Justiceiro",
+  bondoso: "O Bondoso",
+  paciente: "O Paciente",
+  integro: "O Íntegro",
+  bravo: "O Bravo",
+  perseverante: "O Perseverante",
+};
+
 function getGrimoirePickerTagLabels(type) {
   if (type === "powers") return GRIMOIRE_POWER_TAGS;
   if (type === "spells") return GRIMOIRE_SPELL_TAGS;
+  if (type === "echoes") return GRIMOIRE_ECHO_TAGS;
   return null;
 }
 
@@ -2793,7 +2804,7 @@ function grimoirePickerCategory(creation, type) {
     const itemType = sanitizeItemType(creation.itemType, creation.isWeapon);
     return { key: itemType, label: ITEM_TYPES[itemType] };
   }
-  if (type === "echoes") return { key: creation.echoKey, label: ECHOES[creation.echoKey] || "Outros Ecos" };
+  if (type === "echoes") return { key: creation.echoKey, label: GRIMOIRE_ECHO_TAGS[creation.echoKey] || "Outros Ecos" };
   const origin = String(creation.origin || "").trim();
   const normalized = normalizeSearchTerm(origin);
   const tagLabels = getGrimoirePickerTagLabels(type);
@@ -2808,7 +2819,7 @@ function grimoirePickerCategory(creation, type) {
 
 function getGrimoirePickerEntries() {
   return [
-    ...grimoireAbilities.filter((ability) => !ability.shopListed && ability.section !== "upgrades")
+    ...grimoireAbilities.filter((ability) => !ability.shopListed && !["upgrades", "classes"].includes(ability.section))
       .map((creation) => ({ kind: "ability", type: creation.section, creation, category: grimoirePickerCategory(creation, creation.section) })),
     ...grimoireItems.filter((item) => item.shopListed)
       .map((creation) => ({ kind: "item", type: "inventory", creation, category: grimoirePickerCategory(creation, "inventory") })),
@@ -2816,8 +2827,7 @@ function getGrimoirePickerEntries() {
 }
 
 function getGrimoirePickerCategories(type, entries) {
-  const fixed = type === "echoes" ? Object.entries(ECHOES)
-    : type === "inventory" ? Object.entries(ITEM_TYPES)
+  const fixed = type === "inventory" ? Object.entries(ITEM_TYPES)
     : getGrimoirePickerTagLabels(type) ? Object.entries(getGrimoirePickerTagLabels(type))
     : [];
   const categories = new Map(fixed.map(([key, label]) => [key, { key, label, count: 0 }]));
@@ -2853,11 +2863,13 @@ function createGrimoirePowerTag(category) {
   button.type = "button";
   button.className = "grimoire-power-tag";
   button.dataset.grimoirePowerTag = category.key;
+  button.dataset.grimoireTag = category.key;
   const isSelected = activeGrimoirePickerCategory === category.key;
   button.setAttribute("aria-pressed", String(isSelected));
   const isSpell = activeGrimoirePickerType === "spells";
-  const singular = isSpell ? "feitiço" : "poder";
-  const plural = isSpell ? "feitiços" : "poderes";
+  const isEcho = activeGrimoirePickerType === "echoes";
+  const singular = isEcho ? "eco" : isSpell ? "feitiço" : "poder";
+  const plural = isEcho ? "ecos" : isSpell ? "feitiços" : "poderes";
   button.setAttribute("aria-label", category.label + ", " + category.count + " " + (category.count === 1 ? singular : plural));
   button.title = isSelected ? "Clique novamente para ver todos os " + plural : "Filtrar por " + category.label;
   const imageSource = GRIMOIRE_POWER_TAG_IMAGES[category.key];
@@ -2889,6 +2901,15 @@ function selectGrimoirePickerPowerTag(key) {
 
 function grimoirePickerEntryKey(entry) {
   return `${entry.kind}:${entry.creation.id}`;
+}
+
+function createGrimoireCategoryTag(entry) {
+  const tag = document.createElement("span");
+  tag.className = "grimoire-category-tag";
+  tag.textContent = entry.category.label;
+  const labels = getGrimoirePickerTagLabels(entry.type);
+  if (labels && Object.hasOwn(labels, entry.category.key)) tag.dataset.grimoireTag = entry.category.key;
+  return tag;
 }
 
 function setGrimoirePickerFeedback(message = "", error = false) {
@@ -2941,10 +2962,14 @@ function createGrimoirePickerChoice(entry, index) {
   button.tabIndex = selected || (!activeGrimoirePickerEntryKey && index === 0) ? 0 : -1;
   const copy = document.createElement("span");
   copy.className = "grimoire-picker-choice-copy";
-  copy.append(Object.assign(document.createElement("strong"), { textContent: entry.creation.name }),
-    Object.assign(document.createElement("small"), {
-      textContent: `${grimoirePickerTypeLabel(entry.type)} · ${entry.category.label}${entry.kind === "item" ? ` · ${formatVerdeons(entry.creation.shopPrice)}` : ""}`,
-    }));
+  const details = document.createElement("small");
+  if (getGrimoirePickerTagLabels(entry.type)) {
+    details.className = "grimoire-picker-choice-meta";
+    details.append(document.createTextNode(grimoirePickerTypeLabel(entry.type)), createGrimoireCategoryTag(entry));
+  } else {
+    details.textContent = `${grimoirePickerTypeLabel(entry.type)} · ${entry.category.label}${entry.kind === "item" ? ` · ${formatVerdeons(entry.creation.shopPrice)}` : ""}`;
+  }
+  copy.append(Object.assign(document.createElement("strong"), { textContent: entry.creation.name }), details);
   const arrow = document.createElement("span");
   arrow.className = "grimoire-picker-choice-arrow";
   arrow.setAttribute("aria-hidden", "true");
@@ -2973,7 +2998,7 @@ function renderGrimoirePickerPreview() {
   const tags = document.createElement("div");
   tags.className = "grimoire-picker-preview-tags";
   tags.append(Object.assign(document.createElement("span"), { textContent: grimoirePickerTypeLabel(entry.type) }),
-    Object.assign(document.createElement("span"), { textContent: entry.category.label }));
+    createGrimoireCategoryTag(entry));
   const name = Object.assign(document.createElement("h3"), { textContent: creation.name, id: "grimoire-picker-selection-name" });
   const origin = document.createElement("p");
   origin.className = "grimoire-picker-preview-origin";
@@ -3062,7 +3087,7 @@ async function handleGrimoirePickerAction(event) {
 
 function renderGrimoirePicker() {
   const entries = getGrimoirePickerEntries();
-  const types = ["", "inventory", ...Object.keys(ABILITY_SECTIONS).filter((type) => type !== "upgrades")];
+  const types = ["", "inventory", ...Object.keys(ABILITY_SECTIONS).filter((type) => !["upgrades", "classes"].includes(type))];
   grimoirePickerTypes.replaceChildren(...types.map((type) => {
     const button = document.createElement("button");
     button.type = "button";
@@ -3076,7 +3101,7 @@ function renderGrimoirePicker() {
   const categories = getGrimoirePickerCategories(activeGrimoirePickerType, entries);
   if (!categories.some((category) => category.key === activeGrimoirePickerCategory)) activeGrimoirePickerCategory = "";
   const isTaggedType = Boolean(getGrimoirePickerTagLabels(activeGrimoirePickerType));
-  const taggedTypeName = activeGrimoirePickerType === "spells" ? "Feitiços" : "Poderes";
+  const taggedTypeName = activeGrimoirePickerType === "echoes" ? "Ecos" : activeGrimoirePickerType === "spells" ? "Feitiços" : "Poderes";
   grimoirePickerCategoryField.hidden = !activeGrimoirePickerType || isTaggedType;
   grimoirePickerPowerTagsField.hidden = !isTaggedType;
   grimoirePickerPowerTags.setAttribute("aria-label", "Tags dos " + taggedTypeName);
@@ -3103,27 +3128,34 @@ function renderGrimoirePicker() {
     activeGrimoirePickerEntryKey = "";
     setGrimoirePickerFeedback();
   }
-  const groups = new Map();
-  visibleGrimoirePickerEntries.forEach((entry, index) => {
-    const key = `${entry.type}:${entry.category.key}`;
-    if (!groups.has(key)) groups.set(key, { entry, entries: [] });
-    groups.get(key).entries.push({ entry, index });
-  });
-  grimoirePickerList.replaceChildren(...[...groups.values()].map((group) => {
-    const section = document.createElement("div");
-    section.className = "grimoire-picker-group";
-    section.setAttribute("role", "group");
-    const heading = document.createElement("div");
-    heading.className = "grimoire-picker-group-title";
-    heading.setAttribute("aria-hidden", "true");
-    const label = `${grimoirePickerTypeLabel(group.entry.type)} · ${group.entry.category.label}`;
-    section.setAttribute("aria-label", label);
-    heading.append(document.createTextNode(label), Object.assign(document.createElement("small"), {
-      textContent: String(group.entries.length),
+  if (isTaggedType) {
+    grimoirePickerList.replaceChildren(...visibleGrimoirePickerEntries.map(createGrimoirePickerChoice));
+  } else {
+    const groups = new Map();
+    visibleGrimoirePickerEntries.forEach((entry, index) => {
+      const key = `${entry.type}:${entry.category.key}`;
+      if (!groups.has(key)) groups.set(key, { entry, entries: [] });
+      groups.get(key).entries.push({ entry, index });
+    });
+    grimoirePickerList.replaceChildren(...[...groups.values()].map((group) => {
+      const section = document.createElement("div");
+      section.className = "grimoire-picker-group";
+      section.setAttribute("role", "group");
+      const label = `${grimoirePickerTypeLabel(group.entry.type)} · ${group.entry.category.label}`;
+      section.setAttribute("aria-label", label);
+      if (!getGrimoirePickerTagLabels(group.entry.type)) {
+        const heading = document.createElement("div");
+        heading.className = "grimoire-picker-group-title";
+        heading.setAttribute("aria-hidden", "true");
+        heading.append(document.createTextNode(label), Object.assign(document.createElement("small"), {
+          textContent: String(group.entries.length),
+        }));
+        section.append(heading);
+      }
+      section.append(...group.entries.map(({ entry, index }) => createGrimoirePickerChoice(entry, index)));
+      return section;
     }));
-    section.append(heading, ...group.entries.map(({ entry, index }) => createGrimoirePickerChoice(entry, index)));
-    return section;
-  }));
+  }
   const count = visibleGrimoirePickerEntries.length;
   grimoirePickerSummary.textContent = `${count} ${count === 1 ? "resultado" : "resultados"}`;
   grimoirePickerList.hidden = count === 0;
@@ -3198,7 +3230,7 @@ function renderMinervaPreview() {
   const tags = document.createElement("div");
   tags.className = "grimoire-picker-preview-tags";
   tags.append(Object.assign(document.createElement("span"), { textContent: entry.type === "upgrades" ? "Melhoria" : grimoirePickerTypeLabel(entry.type) }),
-    Object.assign(document.createElement("span"), { textContent: entry.category.label }));
+    createGrimoireCategoryTag(entry));
   const name = Object.assign(document.createElement("h3"), { textContent: creation.name, id: "minerva-selection-name" });
   const origin = document.createElement("p");
   origin.className = "grimoire-picker-preview-origin";
