@@ -562,6 +562,14 @@ body.is-slot-dragging, body.is-slot-dragging * { cursor: grabbing !important; us
 #theme-background-image { display: block; width: 100%; height: 100%; object-fit: cover; }
 body.has-theme-background > .main-content { position: relative; z-index: 1; }
 body.has-theme-background .campaign-app { background-color: transparent; background-image: radial-gradient(circle at 10% -10%, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .14), transparent 34rem), radial-gradient(circle at 92% 92%, rgba(91, 69, 122, .14), transparent 32rem); }
+/* A opção altera somente os fundos, preservando a opacidade do conteúdo. */
+body.has-theme-background.theme-background-through :is(.topbar, .sidebar, .campaign-topbar) { background-color: rgba(var(--theme-background-090a0c-rgb, 9, 10, 12), .62); background-image: none; backdrop-filter: none; }
+body.has-theme-background.theme-background-through :is(.identity-panel, .attributes-panel, .vitals-panel, .combat-panel, .echo-panel, .skills-panel, .sheet-features-panel, .special-tests-panel, .abilities-panel, .notes-panel, .shop-wallet, .campaign-section-panel) { background-color: rgba(var(--theme-surface-0b0c0f-rgb, 11, 12, 15), .28); background-image: none; }
+body.has-theme-background.theme-background-through :is(.resource-card, .combat-stat, .echo-lore-card, .echo-ability-card, .echo-ability-row, .special-test-card, .skill-row, .selected-feature-card, .ability-card, .shop-card, .campaign-card, .campaign-sheet-card) { background-color: rgba(var(--palette-container-rgb, 17, 18, 23), .28); background-image: none; }
+body.has-theme-background.theme-background-through :is(.ability-dialog, .roll-dialog, .ability-roll-dialog, .grimoire-dialog, .slots-dialog, .campaign-dialog):not(#theme-dialog) { background-color: rgba(var(--theme-surface-0b0c0f-rgb, 11, 12, 15), .72); background-image: none; }
+body.has-theme-background.theme-background-through :is(.ability-dialog, .roll-dialog, .ability-roll-dialog, .grimoire-dialog, .slots-dialog, .campaign-dialog):not(#theme-dialog) :is(.ability-dialog-head, .ability-dialog-footer, .grimoire-picker-controls, .minerva-catalog-controls, .grimoire-picker-catalog, .grimoire-picker-preview, .creation-editor-sidebar, .ability-editor-content, .slots-manager-tools, .slots-folders-sidebar) { background-color: rgba(var(--theme-surface-0b0c0f-rgb, 11, 12, 15), .1); background-image: none; }
+body.has-theme-background.theme-background-through :is(.ability-dialog, .roll-dialog, .ability-roll-dialog, .grimoire-dialog, .slots-dialog, .campaign-dialog):not(#theme-dialog) :is(.grimoire-picker-choice, .grimoire-item, .creation-detail-section, .rd-item, .slot-item) { background-color: rgba(var(--palette-container-rgb, 17, 18, 23), .28); background-image: none; }
+body.has-theme-background.theme-background-through :is(.roll-backdrop, .campaign-modal-backdrop) { background-color: rgba(2, 3, 5, .38); backdrop-filter: none; }
 #theme-dialog .theme-background-section { padding-top: 10px; border-top: 1px solid #303137; }
 #theme-dialog .theme-background-section > summary { display: flex; align-items: center; gap: 7px; color: #ded2b9; font-size: .71rem; font-weight: 600; cursor: pointer; list-style: none; }
 #theme-dialog .theme-background-section > summary::-webkit-details-marker { display: none; }
@@ -577,6 +585,8 @@ body.has-theme-background .campaign-app { background-color: transparent; backgro
 #theme-dialog #theme-background-controls { display: grid; gap: 9px; }
 #theme-dialog .theme-background-preview { display: block; width: 100%; height: 84px; overflow: hidden; border: 1px solid #3a3832; border-radius: 5px; background: #08090b; }
 #theme-dialog #theme-background-preview { display: block; width: 100%; height: 100%; object-fit: cover; }
+#theme-dialog .theme-background-toggle { display: flex; align-items: flex-start; gap: 8px; color: #ded2b9; font-size: .68rem; line-height: 1.5; cursor: pointer; }
+#theme-dialog .theme-background-toggle input { flex: 0 0 15px; width: 15px; height: 15px; min-height: 0; margin: 2px 0 0; padding: 0; accent-color: #c7ad78; cursor: pointer; }
 #theme-dialog .theme-background-slider { display: grid; gap: 5px; }
 #theme-dialog .theme-background-slider > span { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; color: #c8c0b1; font-size: .64rem; }
 #theme-dialog .theme-background-slider output { color: #b9a67e; font-size: .62rem; font-variant-numeric: tabular-nums; }
