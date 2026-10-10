@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet" />
     <!-- Estilos separados por área, carregados na ordem original. -->
-    <link rel="stylesheet" href="css/01-foundation.css" />
+    <link rel="stylesheet" href="css/01-foundation.css?v=picker-compact-20261010" />
 
     <link rel="stylesheet" href="css/02-profile-mobile.css" />
 
@@ -2522,18 +2522,14 @@
       <section id="grimoire-picker-dialog" class="grimoire-dialog" role="dialog" aria-modal="true" aria-labelledby="grimoire-picker-title" tabindex="-1">
         <span class="dialog-corner dialog-corner-top" aria-hidden="true"></span>
         <span class="dialog-corner dialog-corner-bottom" aria-hidden="true"></span>
-        <header class="ability-dialog-head">
-          <div>
-            <p class="eyebrow">Arquivo de conhecimentos</p>
-            <h2 id="grimoire-picker-title">Adicionar à ficha</h2>
-            <p>Explore o Grimório de Minerva e escolha o que seu personagem aprenderá ou levará consigo.</p>
-          </div>
-          <button class="result-close" type="button" data-close-grimoire-picker aria-label="Fechar Grimório">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
-          </button>
-        </header>
+        <h2 id="grimoire-picker-title" class="sr-only">Adicionar à ficha</h2>
         <div class="grimoire-picker-controls">
-          <div id="grimoire-picker-types" class="grimoire-picker-types" role="group" aria-label="Tipos do Grimório"></div>
+          <div class="grimoire-picker-topbar">
+            <div id="grimoire-picker-types" class="grimoire-picker-types" role="group" aria-label="Tipos do Grimório"></div>
+            <button class="result-close" type="button" data-close-grimoire-picker aria-label="Fechar Grimório">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 7 10 10M17 7 7 17"></path></svg>
+            </button>
+          </div>
           <div class="grimoire-picker-filters">
             <label id="grimoire-picker-category-field" class="grimoire-picker-category-field"><span>Categoria</span><select id="grimoire-picker-category" aria-label="Categoria do Grimório"></select></label>
             <div id="grimoire-picker-power-tags-field" class="grimoire-picker-power-tags-field" hidden>
