@@ -582,14 +582,99 @@ function sanitizeCreationDescription(raw) {
   };
 }
 
+// Format only the displayed text; keep saved markers and editor selections intact.
+function renderCreationDescriptionText(value) {
+  let formatted = false;
+  let changed = false;
+  const wrappers = {
+    "*": ["<em>", "</em>"],
+    "**": ["<strong>", "</strong>"],
+    "***": ["<strong><em>", "</em></strong>"],
+    "_": ["<u>", "</u>"],
+  };
+  const html = String(value).split("\n").map((line) => {
+    const stack = [{ marker: "", html: "" }];
+    for (const token of line.matchAll(/\\[\\*_]|\*+|_+|[^\\*_]+|\\/g)) {
+      const marker = token[0];
+      const current = stack.at(-1);
+      if (marker.startsWith("\\") && marker.length === 2) {
+        current.html += escapeHtml(marker[1]);
+        changed = true;
+        continue;
+      }
+      if (!Object.hasOwn(wrappers, marker)) {
+        current.html += escapeHtml(marker);
+        continue;
+      }
+      const before = line[token.index - 1] || "";
+      const after = line[token.index + marker.length] || "";
+      // Underscores in identifiers and URLs are ordinary text.
+      const word = line.slice(0, token.index).match(/\S*$/)[0];
+      const ordinaryUnderscore = marker === "_" && (
+        /[\p{L}\p{N}]/u.test(before) && /[\p{L}\p{N}]/u.test(after)
+        || /^(?:https?:\/\/|www\.)/i.test(word)
+      );
+      const canOpen = !ordinaryUnderscore && after !== "" && !/\s/.test(after);
+      const canClose = !ordinaryUnderscore && before !== "" && !/\s/.test(before);
+      const closingIndex = canClose ? stack.map((frame) => frame.marker).lastIndexOf(marker) : -1;
+      if (closingIndex > 0) {
+        // A stray inner marker must not block a complete outer pair.
+        while (stack.length - 1 > closingIndex) {
+          const incomplete = stack.pop();
+          stack.at(-1).html += escapeHtml(incomplete.marker) + incomplete.html;
+        }
+        const paired = stack.pop();
+        const [open, close] = wrappers[marker];
+        stack.at(-1).html += open + paired.html + close;
+        formatted = true;
+        changed = true;
+      } else if (canOpen && stack.length < 17) {
+        stack.push({ marker, html: "" });
+      } else {
+        current.html += escapeHtml(marker);
+      }
+    }
+    // Incomplete pairs stay visible, including any valid formatting inside them.
+    while (stack.length > 1) {
+      const current = stack.pop();
+      stack.at(-1).html += escapeHtml(current.marker) + current.html;
+    }
+    return stack[0].html;
+  }).join("\n");
+  return { html, formatted, changed };
+}
+
+function renderCreationDescriptionHtml(value) {
+  const template = document.createElement("template");
+  template.innerHTML = sanitizeCreationDescriptionHtml(value);
+  let formatted = false;
+  let changed = false;
+  function renderNode(node) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const result = renderCreationDescriptionText(node.textContent);
+      formatted ||= result.formatted;
+      changed ||= result.changed;
+      return result.html;
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) return "";
+    const tag = node.tagName.toLowerCase();
+    if (tag === "br") return "<br>";
+    return `<${tag}>${Array.from(node.childNodes, renderNode).join("")}</${tag}>`;
+  }
+  return { html: Array.from(template.content.childNodes, renderNode).join(""), formatted, changed };
+}
+
 function setCreationDescription(element, creation, options = {}) {
   if (!element) return;
   const description = sanitizeCreationDescription(creation);
+  const text = description.description || (options.fallback ?? "Sem descrição.");
+  const rendered = renderCreationDescriptionHtml(description.descriptionHtml || escapeHtml(text).replaceAll("\n", "<br>"));
+  const rich = Boolean(description.descriptionHtml) || rendered.formatted;
   element.classList.add("creation-description");
-  element.classList.toggle("is-rich-description", Boolean(description.descriptionHtml));
-  element.classList.toggle("is-plain-description", !description.descriptionHtml);
-  if (description.descriptionHtml) element.innerHTML = description.descriptionHtml;
-  else element.textContent = description.description || (options.fallback ?? "Sem descrição.");
+  element.classList.toggle("is-rich-description", rich);
+  element.classList.toggle("is-plain-description", !rich);
+  if (rich || rendered.changed) element.innerHTML = rendered.html;
+  else element.textContent = text;
 }
 
 function rememberCreationDescriptionSelection(state) {
@@ -680,7 +765,8 @@ function initializeCreationDescriptionEditor(textarea) {
   const footer = document.createElement("div");
   footer.className = "creation-text-footer";
   const hint = document.createElement("span");
-  hint.textContent = "Enter: novo parágrafo · Shift+Enter: quebra de linha";
+  hint.textContent = "Ao visualizar: *itálico* · **negrito** · ***ambos*** · _sublinhado_";
+  hint.title = "Enter: novo parágrafo · Shift+Enter: quebra de linha. Use uma barra invertida antes de um marcador para exibi-lo como texto.";
   const counter = document.createElement("span");
   counter.className = "creation-text-count";
   counter.textContent = `0 / ${MAX_CREATION_DESCRIPTION_TEXT}`;
