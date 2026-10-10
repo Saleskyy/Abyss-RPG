@@ -530,7 +530,7 @@ function sanitizeThemeBackground(raw) {
     const number = typeof value === "number" ? value : Number.NaN;
     return Number.isFinite(number) ? Math.min(100, Math.max(0, Math.round(number))) : fallback;
   };
-  return { src, x: percent(raw.x, 50), y: percent(raw.y, 50), opacity: percent(raw.opacity, 35) };
+  return { src, x: percent(raw.x, 50), y: percent(raw.y, 50), opacity: percent(raw.opacity, 35), showThroughContainers: raw.showThroughContainers === true };
 }
 
 function applyThemeBackground() {
@@ -538,6 +538,7 @@ function applyThemeBackground() {
   const layer = document.querySelector("#theme-background-layer");
   const image = document.querySelector("#theme-background-image");
   document.body.classList.toggle("has-theme-background", Boolean(background));
+  document.body.classList.toggle("theme-background-through", Boolean(background?.showThroughContainers));
   layer.hidden = !background;
   if (!background) {
     image.removeAttribute("src");
@@ -585,15 +586,18 @@ function syncThemeBackgroundControls() {
     input.disabled = readOnly || themeBackgroundBusy || !background;
     document.querySelector("#theme-background-" + key + "-value").textContent = input.value + "%";
   });
+  const throughContainers = document.querySelector("#theme-background-through-containers");
+  throughContainers.checked = background?.showThroughContainers === true;
+  throughContainers.disabled = readOnly || themeBackgroundBusy || !background;
   document.querySelector("#theme-background-center").disabled = readOnly || themeBackgroundBusy || !background;
   document.querySelector("#theme-background-remove").disabled = readOnly || !background;
 }
 
 function updateThemeBackgroundSetting(key, value) {
-  if (isNotebookReadOnly() || themeBackgroundBusy || !["x", "y", "opacity"].includes(key)) return false;
+  if (isNotebookReadOnly() || themeBackgroundBusy || !["x", "y", "opacity", "showThroughContainers"].includes(key)) return false;
   const background = sanitizeThemeBackground(themeSettings.backgroundImage);
   if (!background) return false;
-  const next = sanitizeThemeBackground({ ...background, [key]: Number(value) });
+  const next = sanitizeThemeBackground({ ...background, [key]: key === "showThroughContainers" ? value === true : Number(value) });
   if (!next || next[key] === background[key]) return false;
   themeSettings.backgroundImage = next;
   applyThemeBackground();
@@ -682,7 +686,7 @@ async function uploadThemeBackground(file) {
     const src = await prepareThemeBackgroundSource(file, isCurrent);
     if (!isCurrent()) return false;
     const previous = sanitizeThemeBackground(themeSettings.backgroundImage);
-    themeSettings.backgroundImage = { src, x: previous?.x ?? 50, y: previous?.y ?? 50, opacity: previous?.opacity ?? 35 };
+    themeSettings.backgroundImage = { src, x: previous?.x ?? 50, y: previous?.y ?? 50, opacity: previous?.opacity ?? 35, showThroughContainers: previous?.showThroughContainers === true };
     applyThemeBackground();
     notifySheetChanged("appearance");
     setThemeBackgroundStatus("Imagem adicionada à ficha. Ajuste a posição e a opacidade abaixo.");
