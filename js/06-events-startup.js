@@ -405,7 +405,7 @@ document.querySelector("#theme-background-file").addEventListener("change", (eve
   uploadThemeBackground(event.target.files?.[0]);
 });
 document.querySelectorAll("[data-background-setting]").forEach((input) => {
-  input.addEventListener("input", () => updateThemeBackgroundSetting(input.dataset.backgroundSetting, input.value));
+  input.addEventListener("input", () => updateThemeBackgroundSetting(input.dataset.backgroundSetting, input.type === "checkbox" ? input.checked : input.value));
 });
 document.querySelector("#theme-background-center").addEventListener("click", centerThemeBackground);
 document.querySelector("#theme-background-remove").addEventListener("click", removeThemeBackground);
