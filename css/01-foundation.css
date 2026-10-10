@@ -3786,6 +3786,68 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 }
 .grimoire-power-tag[aria-pressed="true"] { color: var(--theme-accent-cfad62, #cfad62); }
 .grimoire-power-tag:focus-visible { outline: 2px solid var(--theme-accent-cfad62, #cfad62); outline-offset: 3px; }
+
+/* As cores de Ecos e entidades identificam a categoria mesmo em temas personalizados. */
+[data-grimoire-tag="determinado"] { --grimoire-tag-color: #ff7a87; --grimoire-tag-rgb: 255, 122, 135; }
+[data-grimoire-tag="justo"] { --grimoire-tag-color: #f4d56b; --grimoire-tag-rgb: 244, 213, 107; }
+[data-grimoire-tag="bondoso"] { --grimoire-tag-color: #75dca0; --grimoire-tag-rgb: 117, 220, 160; }
+[data-grimoire-tag="paciente"] { --grimoire-tag-color: #8ddbf5; --grimoire-tag-rgb: 141, 219, 245; }
+[data-grimoire-tag="integro"] { --grimoire-tag-color: #355fbd; --grimoire-tag-rgb: 53, 95, 189; }
+[data-grimoire-tag="bravo"] { --grimoire-tag-color: #f6a568; --grimoire-tag-rgb: 246, 165, 104; }
+[data-grimoire-tag="perseverante"] { --grimoire-tag-color: #c49bea; --grimoire-tag-rgb: 196, 155, 234; }
+[data-grimoire-tag="umbra"] { --grimoire-tag-color: #c3c5cc; --grimoire-tag-rgb: 195, 197, 204; }
+[data-grimoire-tag="lumen"] { --grimoire-tag-color: #f4d56b; --grimoire-tag-rgb: 244, 213, 107; }
+[data-grimoire-tag="caos"] { --grimoire-tag-color: #75dc86; --grimoire-tag-rgb: 117, 220, 134; }
+[data-grimoire-tag="eter"] { --grimoire-tag-color: #c49bea; --grimoire-tag-rgb: 196, 155, 234; }
+[data-grimoire-tag="ley"] { --grimoire-tag-color: #70bdf4; --grimoire-tag-rgb: 112, 189, 244; }
+[data-grimoire-tag="integro"] {
+  --grimoire-tag-text: #b3c7ff;
+  --grimoire-tag-fill-opacity: .2;
+  --grimoire-tag-active-fill-opacity: .28;
+}
+
+:is(.grimoire-power-tag, .grimoire-category-tag, .grimoire-picker-preview-tags > span)[data-grimoire-tag]:where(
+  [data-grimoire-tag="determinado"], [data-grimoire-tag="justo"], [data-grimoire-tag="bondoso"],
+  [data-grimoire-tag="paciente"], [data-grimoire-tag="integro"], [data-grimoire-tag="bravo"],
+  [data-grimoire-tag="perseverante"], [data-grimoire-tag="umbra"], [data-grimoire-tag="lumen"],
+  [data-grimoire-tag="caos"], [data-grimoire-tag="eter"], [data-grimoire-tag="ley"]
+) {
+  color: var(--grimoire-tag-text, var(--grimoire-tag-color));
+  border-color: rgba(var(--grimoire-tag-rgb), .42);
+  background: linear-gradient(rgba(var(--grimoire-tag-rgb), var(--grimoire-tag-fill-opacity, .065)), rgba(var(--grimoire-tag-rgb), var(--grimoire-tag-fill-opacity, .065))), #101216;
+}
+.grimoire-power-tag[data-grimoire-tag]:where(
+  [data-grimoire-tag="determinado"], [data-grimoire-tag="justo"], [data-grimoire-tag="bondoso"],
+  [data-grimoire-tag="paciente"], [data-grimoire-tag="integro"], [data-grimoire-tag="bravo"],
+  [data-grimoire-tag="perseverante"], [data-grimoire-tag="umbra"], [data-grimoire-tag="lumen"],
+  [data-grimoire-tag="caos"], [data-grimoire-tag="eter"], [data-grimoire-tag="ley"]
+):is(:hover, [aria-pressed="true"]) {
+  color: var(--grimoire-tag-text, var(--grimoire-tag-color));
+  border-color: var(--grimoire-tag-color);
+  background: linear-gradient(rgba(var(--grimoire-tag-rgb), var(--grimoire-tag-active-fill-opacity, .17)), rgba(var(--grimoire-tag-rgb), var(--grimoire-tag-fill-opacity, .10))), #101216;
+}
+.grimoire-power-tag[data-grimoire-tag]:where(
+  [data-grimoire-tag="determinado"], [data-grimoire-tag="justo"], [data-grimoire-tag="bondoso"],
+  [data-grimoire-tag="paciente"], [data-grimoire-tag="integro"], [data-grimoire-tag="bravo"],
+  [data-grimoire-tag="perseverante"], [data-grimoire-tag="umbra"], [data-grimoire-tag="lumen"],
+  [data-grimoire-tag="caos"], [data-grimoire-tag="eter"], [data-grimoire-tag="ley"]
+):focus-visible {
+  outline-color: var(--grimoire-tag-color);
+}
+.grimoire-picker-choice-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 6px; }
+.grimoire-category-tag {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  padding: 3px 6px;
+  border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .23);
+  border-radius: 3px;
+  color: var(--theme-accent-cfad62, #cfad62);
+  font-size: .6rem;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
 @media (max-width: 560px) {
   .grimoire-picker-power-tags {
     flex-wrap: nowrap;
