@@ -3349,13 +3349,12 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   width: min(1240px, 100%);
   height: min(840px, calc(100dvh - 44px));
   max-height: calc(100dvh - 44px);
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
 }
-#grimoire-picker-dialog > .ability-dialog-head { padding: 23px 28px 20px; }
-#grimoire-picker-dialog .ability-dialog-head h2 { font-size: clamp(1.65rem, 3vw, 2.35rem); }
-#grimoire-picker-dialog .ability-dialog-head p:not(.eyebrow) { max-width: 760px; }
 .grimoire-picker-controls { min-width: 0; padding: 12px 23px; border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .2); background: rgba(0, 0, 0, .12); }
-#grimoire-picker-dialog .grimoire-picker-types { padding: 0; gap: 5px; }
+.grimoire-picker-topbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 12px; }
+.grimoire-picker-topbar > .result-close { width: 36px; height: 36px; }
+#grimoire-picker-dialog .grimoire-picker-types { min-width: 0; padding: 0; gap: 5px; }
 #grimoire-picker-dialog .grimoire-picker-types button { min-height: 32px; padding: 5px 10px; }
 #grimoire-picker-dialog .grimoire-picker-filters { padding: 10px 0 0; }
 #grimoire-picker-dialog .grimoire-picker-filters:has(> [hidden]:first-child + [hidden]) { display: none; }
@@ -3435,9 +3434,8 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
 #grimoire-picker-dialog #grimoire-picker-empty { padding: 28px 15px; min-height: 130px; margin: 0; font-size: .75rem; }
 @media (max-width: 760px) {
   #grimoire-picker-dialog { height: calc(100dvh - 24px); max-height: calc(100dvh - 24px); }
-  #grimoire-picker-dialog > .ability-dialog-head { padding: 17px 16px 14px; }
-  #grimoire-picker-dialog .ability-dialog-head p:not(.eyebrow) { font-size: .69rem; }
   .grimoire-picker-controls { padding: 10px 14px; }
+  .grimoire-picker-topbar { gap: 8px; }
   #grimoire-picker-dialog .grimoire-picker-types { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 3px; scrollbar-width: thin; }
   #grimoire-picker-dialog .grimoire-picker-types button { flex: 0 0 auto; font-size: .64rem; }
   #grimoire-picker-dialog .grimoire-picker-power-tags { flex-wrap: nowrap; overflow-x: auto; padding: 3px 2px; }
@@ -3471,12 +3469,9 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   .grimoire-picker-primary-action { width: 100%; min-height: 37px; font-size: .68rem; }
 }
 @media (max-width: 450px) {
-  #grimoire-picker-dialog .ability-dialog-head p:not(.eyebrow) { display: none; }
   .grimoire-picker-preview .creation-detail-list { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-height: 600px) and (min-width: 761px) {
-  #grimoire-picker-dialog > .ability-dialog-head { padding-block: 12px; }
-  #grimoire-picker-dialog .ability-dialog-head p:not(.eyebrow) { display: none; }
   .grimoire-picker-controls { padding-block: 8px; }
 }
 
@@ -3486,9 +3481,6 @@ h2 { color: var(--theme-text-ece6d8, #ece6d8); }
   #grimoire-picker-dialog .grimoire-power-tag { flex: 0 0 auto; }
 }
 @media (max-height: 520px) and (min-width: 500px) and (max-width: 760px) {
-  #grimoire-picker-dialog > .ability-dialog-head { padding-block: 10px; }
-  #grimoire-picker-dialog .ability-dialog-head p:not(.eyebrow) { display: none; }
-  #grimoire-picker-dialog .ability-dialog-head h2 { font-size: 1.45rem; }
   .grimoire-picker-controls { padding-block: 6px; }
   .grimoire-picker-workspace { grid-template-columns: minmax(180px, .9fr) minmax(0, 1.4fr); grid-template-rows: minmax(0, 1fr); }
   .grimoire-picker-catalog { padding: 10px; border-bottom: 0; border-right: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .2); }
