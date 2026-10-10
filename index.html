@@ -15,7 +15,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet" />
     <!-- Estilos separados por área, carregados na ordem original. -->
-    <link rel="stylesheet" href="css/01-foundation.css?v=picker-compact-20261010" />
+    <link rel="stylesheet" href="css/01-foundation.css?v=echo-tags-20261010" />
 
     <link rel="stylesheet" href="css/02-profile-mobile.css" />
 
@@ -23,7 +23,7 @@
 
     <link rel="stylesheet" href="css/04-notebooks-creations.css" />
 
-    <link rel="stylesheet" href="css/05-theme-audio-slots.css" />
+    <link rel="stylesheet" href="css/05-theme-audio-slots.css?v=background-panels-20261010" />
 
     <link rel="stylesheet" href="css/06-grimoire-history.css?v=minerva-fit-20261009" />
 
@@ -1634,6 +1634,8 @@
               <p id="theme-background-help" class="theme-background-help">PNG, JPG ou WebP · até 20 MB. A imagem fica salva nesta ficha.</p>
               <div id="theme-background-controls" hidden>
                 <div class="theme-background-preview" aria-hidden="true"><img id="theme-background-preview" alt="" draggable="false" /></div>
+                <label class="theme-background-toggle"><input id="theme-background-through-containers" data-background-setting="showThroughContainers" type="checkbox" aria-describedby="theme-background-through-help" /><span>Mostrar fundo através dos contêineres</span></label>
+                <p id="theme-background-through-help" class="theme-background-help">Deixa os painéis translúcidos, mantendo textos e botões visíveis.</p>
                 <label class="theme-background-slider"><span>Posição horizontal <output id="theme-background-x-value" for="theme-background-x">50%</output></span><input id="theme-background-x" data-background-setting="x" type="range" min="0" max="100" step="1" value="50" /></label>
                 <label class="theme-background-slider"><span>Posição vertical <output id="theme-background-y-value" for="theme-background-y">50%</output></span><input id="theme-background-y" data-background-setting="y" type="range" min="0" max="100" step="1" value="50" /></label>
                 <label class="theme-background-slider"><span>Opacidade <output id="theme-background-opacity-value" for="theme-background-opacity">35%</output></span><input id="theme-background-opacity" data-background-setting="opacity" type="range" min="0" max="100" step="1" value="35" /></label>
@@ -3002,11 +3004,11 @@
 
     <!-- Scripts em ordem: ficha primeiro, módulo da conta por último. -->
     <script src="js/01-catalogs.js"></script>
-    <script src="js/02-theme.js"></script>
+    <script src="js/02-theme.js?v=background-panels-20261010"></script>
     <script src="js/03-sheet.js?v=description-markers-20261009"></script>
-    <script src="js/04-creations.js"></script>
+    <script src="js/04-creations.js?v=echo-tags-20261010"></script>
     <script src="js/05-rolls-dialogs.js"></script>
-    <script src="js/06-events-startup.js"></script>
+    <script src="js/06-events-startup.js?v=background-panels-20261010"></script>
 
     <script type="module" src="js/07-cloud.js"></script>
   </body>
