@@ -283,7 +283,6 @@
                   <input
                     id="character-name"
                     type="text"
-                    maxlength="120"
                     autocomplete="off"
                     placeholder="Nome do personagem"
                   />
@@ -1394,9 +1393,9 @@
           </header>
           <form id="campaign-editor-form" class="campaign-form" novalidate>
             <div class="campaign-form-grid">
-              <label class="campaign-field is-wide"><span>Nome da Campanha</span><input id="campaign-name" type="text" maxlength="90" required placeholder="Ex.: Ecos sob a Lua Morta" /></label>
-              <label class="campaign-field is-wide"><span>Sinopse</span><textarea id="campaign-synopsis" maxlength="1800" required placeholder="Apresente a premissa, o tom e o ponto de partida da Campanha."></textarea></label>
-              <label class="campaign-field is-wide"><span>Link do Banner <small>(opcional)</small></span><input id="campaign-banner-url" type="url" maxlength="1800" placeholder="https://..." /></label>
+              <label class="campaign-field is-wide"><span>Nome da Campanha</span><input id="campaign-name" type="text" required placeholder="Ex.: Ecos sob a Lua Morta" /></label>
+              <label class="campaign-field is-wide"><span>Sinopse</span><textarea id="campaign-synopsis" required placeholder="Apresente a premissa, o tom e o ponto de partida da Campanha."></textarea></label>
+              <label class="campaign-field is-wide"><span>Link do Banner <small>(opcional)</small></span><input id="campaign-banner-url" type="url" placeholder="https://..." /></label>
               <label class="campaign-field"><span>Arquivo do Banner <small>(opcional)</small></span><input id="campaign-banner-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" /><small class="ability-field-help">Ao escolher uma imagem, você poderá arrastar, centralizar e ajustar o zoom.</small></label>
               <div class="campaign-field"><span>Prévia</span><div id="campaign-banner-preview" class="campaign-banner-preview"><span>Banner da Campanha</span></div></div>
             </div>
@@ -1445,7 +1444,7 @@
             <button class="campaign-dialog-close" type="button" data-close-campaign-join aria-label="Fechar">×</button>
           </header>
           <form id="campaign-join-form" class="campaign-form" novalidate>
-            <label class="campaign-field"><span>Código da Campanha</span><input id="campaign-join-code" class="campaign-code-input" type="text" maxlength="12" autocomplete="off" spellcheck="false" required placeholder="ABYSS000" /></label>
+            <label class="campaign-field"><span>Código da Campanha</span><input id="campaign-join-code" class="campaign-code-input" type="text" autocomplete="off" spellcheck="false" required placeholder="ABYSS000" /></label>
             <p id="campaign-join-error" class="campaign-form-error" role="alert" hidden></p>
             <div class="campaign-form-actions">
               <button class="campaign-ghost-button" type="button" data-close-campaign-join>Cancelar</button>
@@ -1498,7 +1497,7 @@
           <form id="startup-create-form" aria-labelledby="startup-create-title" hidden>
             <h2 id="startup-create-title">Criar nova ficha</h2>
             <div class="startup-create-fields">
-              <label class="builder-field"><span>Nome do personagem</span><input id="startup-create-name" type="text" maxlength="120" autocomplete="off" placeholder="Nome do personagem" /></label>
+              <label class="builder-field"><span>Nome do personagem</span><input id="startup-create-name" type="text" autocomplete="off" placeholder="Nome do personagem" /></label>
               <label class="builder-field"><span>Pasta</span><select id="startup-create-folder" aria-label="Pasta da nova ficha"><option value="__unfiled__">Sem pasta</option></select></label>
             </div>
             <p id="startup-create-status" role="status" aria-live="polite"></p>
@@ -1562,7 +1561,7 @@
                 <form id="rd-create-form" class="rd-create-form">
                   <label>
                     <span class="sr-only">Nome da RD</span>
-                    <input id="rd-name" type="text" maxlength="50" autocomplete="off" placeholder="Nome da RD" required />
+                    <input id="rd-name" type="text" autocomplete="off" placeholder="Nome da RD" required />
                   </label>
                   <label>
                     <span class="sr-only">Valor da RD</span>
@@ -1623,7 +1622,7 @@
           </div>
           <p id="theme-wheel-help" class="sr-only">Arraste na roda para escolher a cor e a intensidade. No teclado, esquerda e direita mudam a cor; cima e baixo mudam a intensidade. Shift aumenta o passo.</p>
           <label class="theme-lightness"><span>Brilho <output id="theme-brightness-value" for="theme-brightness">100%</output></span><input id="theme-brightness" type="range" min="0" max="100" step="1" value="100" /></label>
-          <div class="theme-color-value"><span id="theme-current-swatch" aria-hidden="true"></span><label class="sr-only" for="theme-hex">Código da cor</label><input id="theme-hex" type="text" maxlength="7" autocomplete="off" spellcheck="false" placeholder="#CFAD62" aria-describedby="theme-hex-feedback" /></div>
+          <div class="theme-color-value"><span id="theme-current-swatch" aria-hidden="true"></span><label class="sr-only" for="theme-hex">Código da cor</label><input id="theme-hex" type="text" autocomplete="off" spellcheck="false" placeholder="#CFAD62" aria-describedby="theme-hex-feedback" /></div>
           <p id="theme-hex-feedback" class="theme-hex-feedback" role="status" hidden>Use 6 dígitos, como #CFAD62.</p>
           <details class="theme-palette-list"><summary>Paleta do site</summary><div id="theme-fields" class="theme-fields"></div></details>
           <details class="theme-background-section">
@@ -1684,7 +1683,7 @@
         <div class="sheet-transfer-content">
           <label id="sheet-transfer-slot-field" class="builder-field sheet-transfer-slot-field" hidden>
             <span>Nome do novo Slot</span>
-            <input id="sheet-transfer-slot-name" type="text" maxlength="120" autocomplete="off" placeholder="Usar o nome do personagem recebido" />
+            <input id="sheet-transfer-slot-name" type="text" autocomplete="off" placeholder="Usar o nome do personagem recebido" />
             <small class="ability-field-help">Se ficar vazio, será usado o nome do personagem ou do Slot exportado.</small>
           </label>
           <textarea id="sheet-transfer-code" class="sheet-transfer-code" spellcheck="false" autocomplete="off" aria-label="Código da ficha"></textarea>
@@ -1742,7 +1741,7 @@
               <div class="builder-grid">
                 <label class="builder-field">
                   <span>Nome da Perícia</span>
-                  <input id="custom-skill-name" type="text" maxlength="60" autocomplete="off" placeholder="Ex.: Navegação" required />
+                  <input id="custom-skill-name" type="text" autocomplete="off" placeholder="Ex.: Navegação" required />
                 </label>
 
                 <label class="builder-field">
@@ -1758,7 +1757,7 @@
 
                 <label class="builder-field builder-field-wide">
                   <span>Descrição</span>
-                  <textarea id="custom-skill-description" rows="4" maxlength="1200" placeholder="O que esta Perícia representa?" required></textarea>
+                  <textarea id="custom-skill-description" rows="4" placeholder="O que esta Perícia representa?" required></textarea>
                 </label>
               </div>
             </section>
@@ -2134,7 +2133,6 @@
                 <input
                   id="ability-name"
                   type="text"
-                  maxlength="80"
                   autocomplete="off"
                   placeholder="Ex.: Golpe Abissal"
                   required
@@ -2175,7 +2173,7 @@
               </label>
                 <label class="builder-field editor-field-origin">
                 <span>Origem <small>(opcional)</small></span>
-                <input id="ability-origin" type="text" maxlength="120" placeholder="Ex.: técnica, tradição ou fonte da habilidade" />
+                <input id="ability-origin" type="text" placeholder="Ex.: técnica, tradição ou fonte da habilidade" />
                 <datalist id="ability-power-origins"><option value="Geral"></option><option value="Vanguardista"></option><option value="Especialista"></option><option value="Arcanista"></option><option value="Umbra"></option><option value="Lumen"></option><option value="Caos"></option><option value="Éter"></option><option value="Ley"></option></datalist>
                 <datalist id="ability-spell-origins"><option value="Geral"></option><option value="Umbra"></option><option value="Lumen"></option><option value="Caos"></option><option value="Éter"></option><option value="Ley"></option></datalist>
                 <small id="ability-power-origin-help" class="ability-field-help" hidden>Use Geral, Vanguardista, Especialista, Arcanista, Umbra, Lumen, Caos, Éter ou Ley para organizar a tag do Poder. Se ficar vazio, será Geral.</small>
@@ -2190,7 +2188,6 @@
                 <textarea
                   id="ability-description"
                   rows="3"
-                  maxlength="3000"
                   placeholder="Descreva o efeito, custo, alcance e demais regras."
                 ></textarea>
               </div></div>
@@ -2245,11 +2242,11 @@
                 <div id="ability-damage-fields" class="mechanics-damage-grid" hidden>
                   <label class="builder-field">
                     <span>Dano Principal</span>
-                    <input id="ability-damage" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: 1d10+FOR" />
+                    <input id="ability-damage" type="text" autocomplete="off" placeholder="Ex.: 1d10+FOR" />
                   </label>
                   <label class="builder-field">
                     <span>Dano Adicional <small>(opcional)</small></span>
-                    <input id="ability-additional-damage" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: +1d4 ou +10" />
+                    <input id="ability-additional-damage" type="text" autocomplete="off" placeholder="Ex.: +1d4 ou +10" />
                   </label>
                   <label class="builder-field">
                     <span>Crítico a partir de <small>(opcional)</small></span>
@@ -2257,7 +2254,7 @@
                   </label>
                   <label class="builder-field">
                     <span>Dano Crítico <small>(opcional)</small></span>
-                    <input id="ability-critical-bonus" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: +2d10" />
+                    <input id="ability-critical-bonus" type="text" autocomplete="off" placeholder="Ex.: +2d10" />
                   </label>
                   <small class="ability-field-help mechanics-wide">Aceita dados, números e FOR, AGI, INT, CON ou POD.</small>
                 </div>
@@ -2297,7 +2294,6 @@
                   <input
                     id="ability-media-url"
                     type="url"
-                    maxlength="1600"
                     autocomplete="off"
                     placeholder="https://..."
                   />
@@ -2386,7 +2382,7 @@
               <div class="ability-editor-grid editor-overview editor-basics">
                 <label class="builder-field editor-field-name">
                 <span>Nome</span>
-                <input id="item-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Espada do Eclipse" required />
+                <input id="item-name" type="text" autocomplete="off" placeholder="Ex.: Espada do Eclipse" required />
               </label>
                 <label class="builder-field editor-field-type">
                 <span>Tipo de Item</span>
@@ -2404,7 +2400,7 @@
               <header class="editor-group-heading"><div><h3 id="item-description-title">Descrição</h3><p>Escreva as regras com parágrafos, listas e os destaques que precisar.</p></div></header>
               <div class="editor-description-body"><div class="builder-field editor-field-description">
                 <span>Descrição</span>
-                <textarea id="item-description" rows="3" maxlength="3000" placeholder="Aparência, função e demais regras do item."></textarea>
+                <textarea id="item-description" rows="3" placeholder="Aparência, função e demais regras do item."></textarea>
               </div></div>
             </section>
             <section id="item-publication-group" class="editor-group" data-creation-section="publication" aria-labelledby="item-publication-title" hidden>
@@ -2480,10 +2476,10 @@
                 </label>
                 <div id="item-weapon-fields" class="weapon-fields" hidden>
                   <div class="mechanics-damage-grid">
-                    <label class="builder-field"><span>Dano Principal</span><input id="item-primary-damage" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: 1d12+5" /></label>
-                    <label class="builder-field"><span>Dano Adicional <small>(opcional)</small></span><input id="item-additional-damage" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: +10 ou 1d4" /></label>
+                    <label class="builder-field"><span>Dano Principal</span><input id="item-primary-damage" type="text" autocomplete="off" placeholder="Ex.: 1d12+5" /></label>
+                    <label class="builder-field"><span>Dano Adicional <small>(opcional)</small></span><input id="item-additional-damage" type="text" autocomplete="off" placeholder="Ex.: +10 ou 1d4" /></label>
                     <label class="builder-field"><span>Crítico a partir de <small>(natural)</small></span><input id="item-critical-threshold" type="number" min="1" max="1000" step="1" inputmode="numeric" placeholder="Ex.: 8" /></label>
-                    <label class="builder-field"><span>Dano Crítico <small>(adicionado uma vez)</small></span><input id="item-critical-bonus" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: +2d10" /></label>
+                    <label class="builder-field"><span>Dano Crítico <small>(adicionado uma vez)</small></span><input id="item-critical-bonus" type="text" autocomplete="off" placeholder="Ex.: +2d10" /></label>
                   </div>
                   <p class="ability-field-help">O crítico consulta os resultados naturais do primeiro grupo de dados do Dano Principal. Ex.: em 1d10, margem 8 ativa em 8, 9 ou 10.</p>
                 </div>
@@ -2678,7 +2674,7 @@
             <form id="create-slot-form" class="create-slot-form" hidden>
               <label class="builder-field">
                 <span>Novo personagem</span>
-                <input id="new-slot-name" type="text" maxlength="120" autocomplete="off" placeholder="Nome do personagem" />
+                <input id="new-slot-name" type="text" autocomplete="off" placeholder="Nome do personagem" />
               </label>
               <label class="builder-field"><span>Salvar em</span><select id="new-slot-folder" aria-label="Pasta do novo personagem"><option value="__unfiled__">Sem pasta</option></select></label>
               <button class="create-ability-button" type="submit">
@@ -2707,7 +2703,7 @@
               <p class="slots-drag-hint">Solte uma ficha aqui para organizá-la.</p>
               <div id="slots-folder-list" class="slots-folder-list"></div>
               <form id="create-slot-folder-form" class="create-slot-folder-form" hidden>
-                <label class="builder-field"><span>Nova pasta</span><input id="new-slot-folder-name" type="text" maxlength="60" autocomplete="off" placeholder="Nome da pasta" required /></label>
+                <label class="builder-field"><span>Nova pasta</span><input id="new-slot-folder-name" type="text" autocomplete="off" placeholder="Nome da pasta" required /></label>
                 <button class="create-ability-button" type="submit" aria-label="Criar pasta" title="Criar pasta"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></button>
               </form>
             </aside>
@@ -2851,7 +2847,7 @@
               <div class="settings-profile-grid">
                 <div class="settings-avatar"><img id="account-settings-avatar-preview" alt="Prévia do seu avatar" referrerpolicy="no-referrer" hidden /></div>
                 <div class="settings-profile-fields">
-                  <label class="settings-field"><span>Nick</span><input id="account-settings-nickname" type="text" maxlength="40" autocomplete="nickname" placeholder="Como quer ser chamado" /></label>
+                  <label class="settings-field"><span>Nick</span><input id="account-settings-nickname" type="text" autocomplete="nickname" placeholder="Como quer ser chamado" /></label>
                   <label class="settings-field"><span>Link do avatar</span><input id="account-settings-avatar-url" type="url" inputmode="url" autocomplete="off" placeholder="https://…" /></label>
                   <div class="settings-avatar-actions">
                     <label class="dialog-button settings-file-button">Enviar imagem<input id="account-settings-avatar-file" type="file" accept="image/*" aria-label="Enviar imagem para seu avatar" /></label>
@@ -3005,11 +3001,11 @@
     <!-- Scripts em ordem: ficha primeiro, módulo da conta por último. -->
     <script src="js/01-catalogs.js"></script>
     <script src="js/02-theme.js?v=background-panels-20261010"></script>
-    <script src="js/03-sheet.js?v=description-markers-20261009"></script>
-    <script src="js/04-creations.js?v=echo-tags-20261010"></script>
+    <script src="js/03-sheet.js?v=unlimited-text-20261011"></script>
+    <script src="js/04-creations.js?v=unlimited-text-20261011"></script>
     <script src="js/05-rolls-dialogs.js"></script>
-    <script src="js/06-events-startup.js?v=background-panels-20261010"></script>
+    <script src="js/06-events-startup.js?v=unlimited-text-20261011"></script>
 
-    <script type="module" src="js/07-cloud.js"></script>
+    <script type="module" src="js/07-cloud.js?v=unlimited-text-20261011"></script>
   </body>
 </html>
