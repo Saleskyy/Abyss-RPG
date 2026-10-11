@@ -240,7 +240,7 @@ const campaignBannerCropState = {
 
 
 function normalizeCampaignCode(value) {
-  return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 12);
+  return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
 
 function campaignSheetLinkId(ownerUid, slotId) {
@@ -1187,8 +1187,8 @@ async function submitCampaignEditor(event) {
   if (!currentFirebaseUser || campaignBusy) return;
   setCampaignFormError(campaignUi.editorError);
 
-  const name = campaignUi.name.value.trim().replace(/\s+/g, " ").slice(0, 90);
-  const synopsis = campaignUi.synopsis.value.trim().slice(0, 1800);
+  const name = campaignUi.name.value.trim().replace(/\s+/g, " ");
+  const synopsis = campaignUi.synopsis.value.trim();
   if (!name) {
     setCampaignFormError(campaignUi.editorError, "Dê um nome à Campanha.");
     campaignUi.name.focus();
@@ -2196,7 +2196,7 @@ async function encodeSheetTransferCode(state, options = {}) {
 
 async function decodeSheetTransferCode(code) {
   const compact = String(code || "").replace(/\s+/g, "");
-  if (compact.length < 20 || compact.length > 50 * 1024 * 1024) {
+  if (compact.length < 20) {
     throw new Error("O código está vazio ou ultrapassa o tamanho aceito.");
   }
   const match = compact.match(/^ABYSS1-([GJ])-([A-Za-z0-9_-]+)$/);
@@ -2627,11 +2627,11 @@ async function compressPortraitForFirestore(source) {
 }
 
 function normalizeSlotName(value, fallback = "Personagem") {
-  return String(value || "").trim().replace(/\s+/g, " ").slice(0, 60) || fallback;
+  return String(value || "").trim().replace(/\s+/g, " ") || fallback;
 }
 
 function characterSlotName(value, fallback = "Personagem") {
-  return String(value ?? "").trim().slice(0, 120) || fallback;
+  return String(value ?? "").trim() || fallback;
 }
 
 function syncCharacterSlotName(ownerUid, slotId, value) {
@@ -2979,7 +2979,7 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
     .map((entry) => ({
       id: String(entry?.id || "").slice(0, 120),
       productId: String(entry?.productId || "").slice(0, 120),
-      name: String(entry?.name || "").slice(0, 100),
+      name: String(entry?.name || ""),
       kind: entry?.kind === "item" ? "item" : "ability",
       destination: String(entry?.destination || "inventory").slice(0, 32),
       echoKey: String(entry?.echoKey || "").slice(0, 24),
@@ -3020,8 +3020,8 @@ async function writeCloudSheet(user, slotId, state, options = {}) {
   }, { merge: true }));
   batch.set(refs.profile, {
     schemaVersion: 12,
-    name: String(state.profile?.name || "").trim().slice(0, 120),
-    background: String(state.profile?.background || "").slice(0, 240),
+    name: String(state.profile?.name || "").trim(),
+    background: String(state.profile?.background || ""),
     portrait,
     ...(Object.hasOwn(state.profile || {}, "rollSounds")
       ? { rollSounds: sheetBridge.normalizeRollSounds(state.profile.rollSounds) }
@@ -3362,7 +3362,6 @@ function beginSlotFolderRename(id) {
   form.className = "slot-rename-row";
   const input = document.createElement("input");
   input.type = "text";
-  input.maxLength = 60;
   input.required = true;
   input.value = folder.name;
   input.setAttribute("aria-label", "Nome da pasta");
@@ -4071,7 +4070,6 @@ function beginSlotRename(slotId) {
 
   const input = document.createElement("input");
   input.type = "text";
-  input.maxLength = 120;
   input.value = slot.name;
   input.setAttribute("aria-label", "Novo nome do personagem e do Slot");
 
@@ -4300,7 +4298,7 @@ async function uploadAbilityMedia({ scope, abilityId, file, ownerUid = "", slotI
     await withCloudTimeout(
       firestoreApi.setDoc(refs.metadata, {
         contentType: file.type,
-        fileName: String(file.name || "imagem").slice(0, 180),
+        fileName: String(file.name || "imagem"),
         byteSize: file.size,
         chunkCount: chunks.length,
         version,
@@ -4491,7 +4489,6 @@ function clampRollVolume(value, fallback = .7) {
 function normalizeAccountAvatar(value) {
   const source = typeof value === "string" ? value.trim() : "";
   if (source.length <= 90000 && /^data:image\/(?:png|jpeg|webp);base64,[a-z0-9+/=]+$/i.test(source)) return source;
-  if (source.length > 2048) return "";
   try {
     const url = new URL(source);
     return ["https:", "http:"].includes(url.protocol) ? url.href : "";
@@ -4512,7 +4509,7 @@ function normalizeRollSoundRef(raw) {
     return clip ? { uid, id, ...clip } : null;
   }
   if (raw.mimeType === "video/mp4" || !ROLL_AUDIO_TYPES.has(raw.mimeType)) return null;
-  return { uid, id, name: String(raw.name || "Áudio").slice(0, 120), mimeType: raw.mimeType };
+  return { uid, id, name: String(raw.name || "Áudio"), mimeType: raw.mimeType };
 }
 
 function normalizeAccountSettings(raw = {}) {
@@ -4522,7 +4519,7 @@ function normalizeAccountSettings(raw = {}) {
     if (/^[A-Za-z0-9_-]{1,128}$/.test(uid)) playerVolumes[uid] = clampRollVolume(volume, 1);
   });
   return {
-    nickname: String(raw.nickname || "").trim().replace(/\s+/g, " ").slice(0, 40),
+    nickname: String(raw.nickname || "").trim().replace(/\s+/g, " "),
     soundScope: raw.soundScope === "slot" ? "slot" : "legacy",
     avatar: normalizeAccountAvatar(raw.avatar),
     sounds: Object.fromEntries(ROLL_SOUND_KEYS.map((key) => [key, normalizeRollSoundRef(raw.sounds?.[key])])),
@@ -4778,7 +4775,7 @@ function getRollContext() {
     sheetOwnerUid: campaignSheetSession?.ownerUid || currentFirebaseUser?.uid || "",
     slotId: campaignSheetSession?.slotId || currentSlotId || "",
     campaignId: campaignSheetSession?.campaignId || "",
-    characterName: String(sheetBridge?.captureState?.()?.profile?.name || campaignSheetSession?.slotName || currentSlots.find((slot) => slot.id === currentSlotId)?.name || "Personagem").slice(0, 120),
+    characterName: String(sheetBridge?.captureState?.()?.profile?.name || campaignSheetSession?.slotName || currentSlots.find((slot) => slot.id === currentSlotId)?.name || "Personagem"),
   };
 }
 
@@ -4803,17 +4800,17 @@ function normalizeCompletedRoll(raw = {}) {
     id: String(raw.id || "").slice(0, 128),
     actorUid, sheetOwnerUid, slotId,
     sheetId: campaignSheetLinkId(sheetOwnerUid, slotId),
-    characterName: String(raw.characterName || context.characterName || "Personagem").slice(0, 120),
-    actorNickname: String(raw.actorNickname || "Jogador").slice(0, 120),
-    title: String(raw.title || "Rolagem").slice(0, 160),
+    characterName: String(raw.characterName || context.characterName || "Personagem"),
+    actorNickname: String(raw.actorNickname || "Jogador"),
+    title: String(raw.title || "Rolagem"),
     kind: String(raw.kind || "skill").slice(0, 30),
     total,
     natural: raw.natural != null && Number.isFinite(Number(raw.natural)) ? Number(raw.natural) : null,
     outcome,
-    outcomeLabel: String(raw.outcomeLabel || "").slice(0, 80),
-    formula: String(raw.formula || "").slice(0, 500),
-    breakdown: (Array.isArray(raw.breakdown) ? raw.breakdown.join(" · ") : String(raw.breakdown || "")).slice(0, 5000),
-    difficulty: String(raw.difficulty || "").slice(0, 80),
+    outcomeLabel: String(raw.outcomeLabel || ""),
+    formula: String(raw.formula || ""),
+    breakdown: Array.isArray(raw.breakdown) ? raw.breakdown.join(" · ") : String(raw.breakdown || ""),
+    difficulty: String(raw.difficulty || ""),
     clientTime: Number.isFinite(Number(raw.clientTime)) ? Number(raw.clientTime) : Date.now(),
     createdAt: raw.createdAt || null,
     campaignIds: Array.isArray(raw.campaignIds) ? raw.campaignIds.filter((id) => typeof id === "string" && !id.includes("/")).slice(0, 100) : [],
@@ -5562,7 +5559,7 @@ async function stageRollSound(key, file) {
   if (!data || data.length % 4 || data.length > 4 * Math.ceil(MAX_ROLL_SOUND_BYTES / 3) || !/^[A-Za-z0-9+/]+={0,2}$/.test(data)) throw new Error("O arquivo de áudio é inválido ou muito grande.");
   const byteSize = data.length * 3 / 4 - (data.endsWith("==") ? 2 : data.endsWith("=") ? 1 : 0);
   if (byteSize > MAX_ROLL_SOUND_BYTES) throw new Error("O áudio precisa ter até 20 MB.");
-  stagedRollSounds[key] = { name: file.name.slice(0, 120), mimeType, byteSize, data, source: `data:${mimeType};base64,${data}` };
+  stagedRollSounds[key] = { name: file.name, mimeType, byteSize, data, source: `data:${mimeType};base64,${data}` };
   renderSettingsSoundNames();
   return true;
 }
@@ -5775,7 +5772,7 @@ async function saveAccountSettings(event) {
   const isCurrent = () => epoch === accountRollEpoch && currentFirebaseUser?.uid === user.uid
     && accountSettingsDraft === draft && isSettingsSoundContextCurrent(soundContext);
   if (!isCurrent()) { cancelStaleSlotSoundSettings(); return; }
-  const nickname = rollAccountUi.nickname.value.trim().replace(/\s+/g, " ").slice(0, 40);
+  const nickname = rollAccountUi.nickname.value.trim().replace(/\s+/g, " ");
   if (!nickname) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Digite seu nick.", true); rollAccountUi.nickname.focus(); return; }
   const typedAvatar = rollAccountUi.avatarUrl.value.trim();
   if (typedAvatar && !normalizeAccountAvatar(typedAvatar)) { setRollFeatureStatus(rollAccountUi.settingsStatus, "Use um link de imagem que comece com https:// ou http://.", true); return; }
@@ -6185,15 +6182,15 @@ async function decodeAudioClipFile(file, { signal, isCurrent = () => true } = {}
     }
     if (!isCurrent() || signal?.aborted) return null;
     if (!Number.isFinite(buffer.duration) || buffer.duration <= 0 || buffer.duration > MAX_AUDIO_CLIP_SOURCE_SECONDS || buffer.length * buffer.numberOfChannels * 4 > MAX_AUDIO_CLIP_DECODE_BYTES) throw new Error("O áudio ocupa memória demais para recortar. Escolha um arquivo menor.");
-    return { buffer, name: String(file.name || "Áudio").slice(0, 120), mimeType, duration: buffer.duration, sourceBytes: file.size };
+    return { buffer, name: String(file.name || "Áudio"), mimeType, duration: buffer.duration, sourceBytes: file.size };
   } finally {
     if (context && context.state !== "closed") await context.close().catch(() => {});
   }
 }
 
 function audioClipFileName(name, start, end) {
-  const base = String(name || "Áudio").replace(/\.[^.]+$/, "").slice(0, 72);
-  return `${base} (${formatAudioClipTime(start)}–${formatAudioClipTime(end)}).wav`.slice(0, 120);
+  const base = String(name || "Áudio").replace(/\.[^.]+$/, "");
+  return `${base} (${formatAudioClipTime(start)}–${formatAudioClipTime(end)}).wav`;
 }
 
 
@@ -6214,7 +6211,7 @@ function normalizeYoutubeRollClip(raw) {
   return {
     kind: "youtube", mimeType: "video/youtube", videoId: String(raw.videoId),
     startSeconds: start, endSeconds: end,
-    name: String(raw.name || `YouTube · ${raw.videoId}`).trim().slice(0, 120) || "Trecho do YouTube",
+    name: String(raw.name || `YouTube · ${raw.videoId}`).trim() || "Trecho do YouTube",
   };
 }
 
@@ -6241,7 +6238,7 @@ function normalizeVideoRollClip(raw) {
   // Keep the real endpoint: rounding can otherwise place the selected end past a short source.
   return {
     kind: "video", mimeType: "video/mp4", startSeconds, endSeconds, sourceDuration,
-    name: String(raw.name || "Trecho de MP4").trim().slice(0, 120) || "Trecho de MP4",
+    name: String(raw.name || "Trecho de MP4").trim() || "Trecho de MP4",
   };
 }
 
