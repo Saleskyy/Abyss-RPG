@@ -281,6 +281,9 @@
 #minerva-empty { margin: 0; padding: 20px 12px; min-height: 0; font-size: .75rem; line-height: 1.6; overflow-wrap: anywhere; }
 #minerva-dialog .grimoire-picker-choice { min-width: 0; min-height: 66px; grid-template-columns: 38px minmax(0, 1fr) 12px; gap: 9px; padding: 9px; }
 #minerva-dialog .grimoire-picker-choice > .grimoire-picker-symbol { width: 38px; height: 42px; }
+.grimoire-picker-symbol[data-custom-image] img { width: 100%; height: 100%; object-fit: cover; padding: 0; mix-blend-mode: normal; }
+.item-card-icon { overflow: hidden; }
+.item-card-icon img { display: block; width: 100%; height: 100%; max-width: 100%; object-fit: cover; }
 #minerva-dialog .grimoire-picker-choice-copy strong { font-size: .9rem; }
 #minerva-dialog .grimoire-picker-preview { min-width: 0; min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; padding: 23px 26px; }
 #minerva-dialog .grimoire-picker-preview-head > div { min-width: 0; }
