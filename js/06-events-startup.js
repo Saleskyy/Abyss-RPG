@@ -87,7 +87,7 @@ notesList.addEventListener("input", (event) => {
   const note = getNoteFromCard(card);
   if (!note) return;
   if (event.target.matches("[data-note-title]")) {
-    const title = event.target.value.slice(0, 100);
+    const title = event.target.value;
     if (!updateNotebookPage(bookId, note.id, { title }, event.target)) { event.target.value = note.title; return; }
     const book = getCharacterNotebook(bookId);
     const index = book.pages.indexOf(note);
@@ -1324,7 +1324,7 @@ rdList.addEventListener("input", (event) => {
   const reduction = damageReductions.find((entry) => entry.id === item?.dataset.rdId);
   if (!reduction) return;
   if (event.target.dataset.rdField === "name") {
-    reduction.name = String(event.target.value || "").slice(0, 50);
+    reduction.name = String(event.target.value || "");
   } else if (event.target.dataset.rdField === "value") {
     reduction.value = clampInteger(event.target.value, 0, 999999, 0);
   }
@@ -1338,7 +1338,7 @@ rdList.addEventListener("change", (event) => {
   if (event.target.dataset.rdField === "active") {
     reduction.active = event.target.checked;
   } else if (event.target.dataset.rdField === "name") {
-    reduction.name = String(event.target.value || "").trim().slice(0, 50) || "RD sem nome";
+    reduction.name = String(event.target.value || "").trim() || "RD sem nome";
   } else if (event.target.dataset.rdField === "value") {
     reduction.value = clampInteger(event.target.value, 0, 999999, 0);
   }
