@@ -368,6 +368,9 @@ function sanitizeInventoryItem(rawItem) {
     damageProfile: isWeapon ? damageProfile : sanitizeDamageProfile({}),
     ...mechanics,
     upgrades,
+    mediaUrl: safeAbilityMediaUrl(rawItem.mediaUrl),
+    mediaRefId: String(rawItem.mediaRefId || "").slice(0, 120),
+    mediaOwner: ["slot", "minerva"].includes(rawItem.mediaOwner) ? rawItem.mediaOwner : "link",
     sourceId: String(rawItem.sourceId || "").slice(0, 120),
     shopListed: Boolean(rawItem.shopListed),
     shopPrice: clampInteger(rawItem.shopPrice, 0, 999999999, 0),
@@ -1268,6 +1271,7 @@ function renderAbilityMediaPreview(source = "") {
     image.addEventListener(
       "error",
       () => {
+        if (image.parentElement !== abilityMediaPreview) return;
         abilityMediaPreview.replaceChildren();
         abilityMediaPreview.append(
           Object.assign(document.createElement("span"), { textContent: "✦" }),
@@ -1290,11 +1294,41 @@ function renderAbilityMediaPreview(source = "") {
   );
 }
 
+function revokePendingItemPreview() {
+  if (pendingItemPreviewUrl.startsWith("blob:")) URL.revokeObjectURL(pendingItemPreviewUrl);
+  pendingItemPreviewUrl = "";
+}
+
+function renderItemMediaPreview(source = "") {
+  revokePendingItemPreview();
+  itemMediaPreview.replaceChildren();
+  const safeSource = source.startsWith("blob:") ? source : safeAbilityMediaUrl(source);
+  if (safeSource) {
+    const image = document.createElement("img");
+    image.alt = "Prévia da imagem da criação";
+    image.src = safeSource;
+    image.addEventListener("error", () => {
+      if (image.parentElement !== itemMediaPreview) return;
+      itemMediaPreview.replaceChildren(
+        Object.assign(document.createElement("span"), { textContent: "✦" }),
+        Object.assign(document.createElement("small"), { textContent: "Não foi possível abrir a imagem" }),
+      );
+    }, { once: true });
+    itemMediaPreview.append(image);
+    if (source.startsWith("blob:")) pendingItemPreviewUrl = source;
+    return;
+  }
+  itemMediaPreview.append(
+    Object.assign(document.createElement("span"), { textContent: "✦" }),
+    Object.assign(document.createElement("small"), { textContent: "Prévia do ícone" }),
+  );
+}
+
 function abilitySectionLabel(section) {
   return ABILITY_SECTIONS[section]?.label || ABILITY_SECTIONS.attacks.label;
 }
 
-function createAbilityMediaElement(ability, className) {
+function createAbilityMediaElement(ability, className, fallback = "✦") {
   const media = document.createElement("div");
   media.className = className;
   const source = safeAbilityMediaUrl(ability.mediaUrl);
@@ -1308,14 +1342,14 @@ function createAbilityMediaElement(ability, className) {
       "error",
       () => {
         media.replaceChildren(
-          Object.assign(document.createElement("span"), { textContent: "✦" }),
+          Object.assign(document.createElement("span"), { textContent: fallback }),
         );
       },
       { once: true },
     );
     media.append(image);
   } else {
-    media.append(Object.assign(document.createElement("span"), { textContent: "✦" }));
+    media.append(Object.assign(document.createElement("span"), { textContent: fallback }));
   }
 
   return media;
@@ -1339,7 +1373,7 @@ function openAbilityDetail(abilityId, trigger, scope = "sheet") {
   setCreationDescription(document.querySelector("#ability-detail-description"), ability);
   const media = document.querySelector("#ability-detail-media");
   media.replaceChildren();
-  media.hidden = isInventoryLike || !safeAbilityMediaUrl(ability.mediaUrl);
+  media.hidden = !safeAbilityMediaUrl(ability.mediaUrl);
   if (!media.hidden) media.append(createAbilityMediaElement(ability, "ability-card-media"));
   const damage = document.querySelector("#ability-detail-damage");
   const primaryDamage = ability.damageProfile?.primary || ability.damage || "";
@@ -1486,9 +1520,7 @@ function renderAbilities() {
 
     let media;
     if (isEquippedWeapon) {
-      media = document.createElement("div");
-      media.className = "item-card-icon";
-      media.textContent = "⚔";
+      media = createAbilityMediaElement(ability, "item-card-icon", "⚔");
     } else {
       media = createAbilityMediaElement(ability, "ability-card-media");
     }
@@ -1526,6 +1558,8 @@ function openAbilityEditor(scope, ability = null, trigger = null) {
   activeAbilityId = ability?.id || null;
   activeAbilityTrigger = trigger;
   abilityEditorForm.reset();
+  abilityEditorForm.dataset.editorToken = createAbilityId("ability-editor");
+  saveAbilityButton.disabled = false;
   const upgradeOption = abilitySectionSelect.querySelector('option[value="upgrades"]');
   upgradeOption.hidden = abilityEditorScope !== "minerva";
   upgradeOption.disabled = abilityEditorScope !== "minerva";
@@ -1585,6 +1619,11 @@ function closeAbilityEditor() {
 
 async function submitAbilityEditor(event) {
   event.preventDefault();
+  if (saveAbilityButton.disabled) return;
+  const submittedScope = abilityEditorScope;
+  const submittedToken = abilityEditorForm.dataset.editorToken;
+  const submittedEpoch = notesEpoch;
+  const isCurrentEditor = () => !abilityEditorModal.hidden && abilityEditorForm.dataset.editorToken === submittedToken;
   setAbilityEditorError("");
   if (abilitySectionSelect.value === "upgrades" && (abilityEditorScope !== "minerva" || !sanitizeUpgradeType(abilityUpgradeTypeSelect.value))) {
     setAbilityEditorError("Escolha o tipo de melhoria no Grimório de Minerva.");
@@ -1690,14 +1729,18 @@ async function submitAbilityEditor(event) {
       }
 
       const uploaded = await window.AbyssCloud.uploadAbilityMedia({
-        scope: abilityEditorScope,
+        scope: submittedScope,
         abilityId: id,
         file,
       });
       mediaUrl = uploaded.url;
       mediaRefId = uploaded.refId;
-      mediaOwner = abilityEditorScope === "minerva" ? "minerva" : "slot";
+      mediaOwner = submittedScope === "minerva" ? "minerva" : "slot";
       newlyUploadedMedia = uploaded;
+    }
+
+    if (!isCurrentEditor() || notesEpoch !== submittedEpoch || isNotebookReadOnly()) {
+      throw new Error("A edição mudou durante o envio da imagem. Abra a criação novamente para salvar.");
     }
 
     const nextAbility = sanitizeAbility({
@@ -1738,6 +1781,7 @@ async function submitAbilityEditor(event) {
         throw new Error("Esta conta não possui acesso ao Grimório de Minerva.");
       }
       await window.AbyssCloud.saveMinervaAbility(nextAbility);
+      newlyUploadedMedia = null;
       await refreshGrimoireFromCloud();
       if (nextAbility.section === "upgrades") minervaUpgradeFilter.value = nextAbility.upgradeType;
       selectMinervaSection(nextAbility.section);
@@ -1745,6 +1789,7 @@ async function submitAbilityEditor(event) {
       const index = abilities.findIndex((item) => item.id === id);
       if (index >= 0) abilities[index] = nextAbility;
       else abilities.push(nextAbility);
+      newlyUploadedMedia = null;
 
       selectAbilitySection(nextAbility.section);
       notifySheetChanged(index >= 0 ? "ability-edited" : "ability-created");
@@ -1752,21 +1797,21 @@ async function submitAbilityEditor(event) {
 
     const oldRefId = existing?.mediaRefId || "";
     const ownsOld =
-      abilityEditorScope === "minerva"
+      submittedScope === "minerva"
         ? existing?.mediaOwner === "minerva"
         : existing?.mediaOwner === "slot";
 
     if (oldRefId && oldRefId !== mediaRefId && ownsOld) {
       window.AbyssCloud
         ?.deleteMedia({
-          scope: abilityEditorScope,
+          scope: submittedScope,
           refId: oldRefId,
         })
         .catch(() => {});
     }
 
     newlyUploadedMedia = null;
-    closeAbilityEditor();
+    if (isCurrentEditor()) closeAbilityEditor();
   } catch (error) {
     if (newlyUploadedMedia) {
       window.AbyssCloud?.deleteMedia(newlyUploadedMedia).catch(() => {});
@@ -1774,12 +1819,14 @@ async function submitAbilityEditor(event) {
     const friendlyCloudError = error?.code
       ? window.AbyssCloud?.describeError?.(error)
       : "";
-    setAbilityEditorError(
+    if (isCurrentEditor()) setAbilityEditorError(
       friendlyCloudError || userFacingErrorMessage(error) || "Não foi possível salvar a Habilidade.",
     );
   } finally {
-    saveAbilityButton.disabled = false;
-    saveAbilityButton.textContent = existing ? "Salvar Alterações" : abilitySectionSelect.value === "upgrades" ? "Publicar Melhoria" : "Criar Habilidade";
+    if (abilityEditorForm.dataset.editorToken === submittedToken) {
+      saveAbilityButton.disabled = false;
+      saveAbilityButton.textContent = existing ? "Salvar Alterações" : abilitySectionSelect.value === "upgrades" ? "Publicar Melhoria" : "Criar Habilidade";
+    }
   }
 }
 
@@ -1834,6 +1881,8 @@ function openItemEditor(item = null, trigger = null, scope = "inventory") {
   activeItemId = item?.id || null;
   activeItemTrigger = trigger;
   itemEditorForm.reset();
+  itemEditorForm.dataset.editorToken = createAbilityId("item-editor");
+  saveItemButton.disabled = false;
   itemEditorForm.dataset.sheetEpoch = String(notesEpoch);
   itemTypeSelect.value = sanitizeItemType(item?.itemType, item?.isWeapon);
   itemNameInput.value = item?.name || "";
@@ -1853,6 +1902,11 @@ function openItemEditor(item = null, trigger = null, scope = "inventory") {
   itemEditorForm.dataset.criticalMarginReduction = String(profile.criticalMarginReduction || 0);
   itemGrantsModifiersInput.checked = Boolean(item?.grantsModifiers);
   fillMechanicsEditor("item", item || {});
+  itemMediaUrlInput.value = item?.mediaOwner === "link" ? item.mediaUrl || "" : "";
+  itemMediaFileInput.value = "";
+  itemEditorForm.dataset.mediaCleared = "false";
+  itemFileName.textContent = "PNG, JPG, WEBP ou GIF · até 8 MB. A imagem será usada como ícone da criação.";
+  renderItemMediaPreview(item?.mediaUrl || "");
   updateItemWeaponFields();
   updateItemModifierFields();
   updateItemShopDestinationFields();
@@ -1870,6 +1924,8 @@ function openItemEditor(item = null, trigger = null, scope = "inventory") {
 
 function closeItemEditor() {
   itemEditorModal.hidden = true;
+  revokePendingItemPreview();
+  itemMediaFileInput.value = "";
   activeItemId = null;
   syncModalLock();
   if (activeItemTrigger?.isConnected) activeItemTrigger.focus();
@@ -1878,7 +1934,11 @@ function closeItemEditor() {
 
 async function submitItemEditor(event) {
   event.preventDefault();
+  if (saveItemButton.disabled) return;
   if (isNotebookReadOnly() || (itemEditorScope === "inventory" && itemEditorForm.dataset.sheetEpoch !== String(notesEpoch))) return;
+  const submittedScope = itemEditorScope;
+  const submittedToken = itemEditorForm.dataset.editorToken;
+  const submittedEpoch = notesEpoch;
   setItemEditorError("");
   const name = itemNameInput.value.trim();
   if (!name) {
@@ -1949,7 +2009,20 @@ async function submitItemEditor(event) {
     const confirmed = await showAbyssConfirm({ eyebrow: "Tipo de Item", title: "Remover melhorias incompatíveis?", message: "Ao mudar o tipo deste item, as melhorias incompatíveis serão removidas com seus efeitos.", confirmLabel: "Alterar tipo", tone: "warning", trigger: saveItemButton });
     if (!confirmed || epoch !== notesEpoch || inventoryItems.find((item) => item.id === existing.id) !== existing || isNotebookReadOnly()) return;
   }
-  if (existing?.modifiersActive && itemEditorScope === "inventory") setCreationModifiersActive("inventory", existing.id, false, { notify: false });
+  const file = itemMediaFileInput.files?.[0] || null;
+  const typedUrl = itemMediaUrlInput.value.trim();
+  if (typedUrl && !safeRemoteImageUrl(typedUrl)) {
+    setItemEditorError("O link da imagem precisa começar com http:// ou https://.");
+    focusCreationEditorField(itemMediaUrlInput);
+    return;
+  }
+  if (file && (!["image/png", "image/jpeg", "image/webp", "image/gif"].includes(file.type) || !file.size || file.size > 8 * 1024 * 1024)) {
+    setItemEditorError("Escolha uma imagem ou GIF de até 8 MB.");
+    focusCreationEditorField(itemMediaFileInput);
+    return;
+  }
+  const cleared = itemEditorForm.dataset.mediaCleared === "true";
+  const replaceMedia = Boolean(typedUrl) || cleared;
   const nextItem = sanitizeInventoryItem({
     id: existing?.id || createAbilityId("item"),
     name,
@@ -1971,6 +2044,9 @@ async function submitItemEditor(event) {
     grantsModifiers: itemGrantsModifiersInput.checked,
     modifiersActive: false,
     modifiers: itemGrantsModifiersInput.checked ? mechanics.modifiers : [],
+    mediaUrl: typedUrl ? safeRemoteImageUrl(typedUrl) : cleared ? "" : existing?.mediaUrl || "",
+    mediaRefId: replaceMedia ? "" : existing?.mediaRefId || "",
+    mediaOwner: replaceMedia ? "link" : existing?.mediaOwner || "link",
     sourceId: existing?.sourceId || "",
     shopListed: itemEditorScope === "minerva",
     shopPrice: itemEditorScope === "minerva" ? itemShopPriceInput.value : 0,
@@ -1983,33 +2059,56 @@ async function submitItemEditor(event) {
         ? itemShopEchoSelect.value
         : "",
   });
-  if (itemEditorScope === "minerva") {
-    if (!window.AbyssCloud?.isMinervaAdmin()) {
-      setItemEditorError("Esta conta não possui acesso ao Grimório de Minerva.");
-      return;
+  let newlyUploadedMedia = null;
+  const isCurrentEditor = () => !itemEditorModal.hidden && itemEditorForm.dataset.editorToken === submittedToken;
+  saveItemButton.disabled = true;
+  saveItemButton.textContent = file ? "Enviando imagem…" : "Salvando…";
+  try {
+    if (submittedScope === "minerva" && !window.AbyssCloud?.isMinervaAdmin()) {
+      throw new Error("Esta conta não possui acesso ao Grimório de Minerva.");
     }
-    saveItemButton.disabled = true;
-    saveItemButton.textContent = "Publicando…";
-    try {
+    if (file) {
+      if (!window.AbyssCloud?.isSignedIn()) throw new Error("Entre com o Google para enviar um arquivo. Você ainda pode usar um link de imagem ou GIF.");
+      newlyUploadedMedia = await window.AbyssCloud.uploadAbilityMedia({
+        scope: submittedScope === "minerva" ? "minerva" : "sheet", abilityId: nextItem.id, file,
+      });
+      nextItem.mediaUrl = newlyUploadedMedia.url;
+      nextItem.mediaRefId = newlyUploadedMedia.refId;
+      nextItem.mediaOwner = submittedScope === "minerva" ? "minerva" : "slot";
+    }
+    if (!isCurrentEditor() || isNotebookReadOnly() || submittedEpoch !== notesEpoch) {
+      throw new Error("A edição mudou durante o envio da imagem. Abra a criação novamente para salvar.");
+    }
+    if (submittedScope === "minerva") {
       await window.AbyssCloud.saveMinervaItem(nextItem);
+      newlyUploadedMedia = null;
+      if (existing?.mediaOwner === "minerva" && existing.mediaRefId && existing.mediaRefId !== nextItem.mediaRefId) {
+        window.AbyssCloud?.deleteMedia({ scope: "minerva", refId: existing.mediaRefId }).catch(() => {});
+      }
       await refreshGrimoireFromCloud();
       selectMinervaSection("inventory");
-      closeItemEditor();
-    } catch (error) {
-      setItemEditorError(userFacingErrorMessage(error) || "Não foi possível publicar este Item.");
-    } finally {
-      saveItemButton.disabled = false;
-      saveItemButton.textContent = existing ? "Salvar Alterações" : "Publicar Item";
+    } else {
+      if (existing?.modifiersActive) setCreationModifiersActive("inventory", existing.id, false, { notify: false });
+      if (existingIndex >= 0) inventoryItems[existingIndex] = nextItem;
+      else inventoryItems.push(nextItem);
+      newlyUploadedMedia = null;
+      if (existing?.mediaOwner === "slot" && existing.mediaRefId && existing.mediaRefId !== nextItem.mediaRefId) {
+        window.AbyssCloud?.deleteMedia({ scope: "sheet", refId: existing.mediaRefId }).catch(() => {});
+      }
+      renderInventory();
+      renderAbilities();
+      notifySheetChanged(existing ? "item-edited" : "item-created");
     }
-    return;
+    if (isCurrentEditor()) closeItemEditor();
+  } catch (error) {
+    if (newlyUploadedMedia) window.AbyssCloud?.deleteMedia(newlyUploadedMedia).catch(() => {});
+    if (isCurrentEditor()) setItemEditorError(userFacingErrorMessage(error) || "Não foi possível salvar este Item.");
+  } finally {
+    if (itemEditorForm.dataset.editorToken === submittedToken) {
+      saveItemButton.disabled = false;
+      saveItemButton.textContent = existing ? "Salvar Alterações" : submittedScope === "minerva" ? "Publicar Item" : "Criar Item";
+    }
   }
-
-  if (existingIndex >= 0) inventoryItems[existingIndex] = nextItem;
-  else inventoryItems.push(nextItem);
-  renderInventory();
-  renderAbilities();
-  notifySheetChanged(existing ? "item-edited" : "item-created");
-  closeItemEditor();
 }
 
 function createCriticalMarginControl(item, scope = "inventory") {
@@ -2174,9 +2273,7 @@ function renderInventory() {
     const card = document.createElement("article");
     card.className = `ability-card creation-card inventory-card${item.isWeapon ? " is-weapon" : ""}${item.equipped ? " is-equipped" : ""}${item.modifiersActive ? " is-active" : ""}`;
     card.dataset.itemId = item.id;
-    const icon = document.createElement("div");
-    icon.className = "item-card-icon";
-    icon.textContent = item.isWeapon ? "⚔" : "◇";
+    const icon = createAbilityMediaElement(item, "item-card-icon", item.isWeapon ? "⚔" : "◇");
     const copy = document.createElement("div");
     copy.className = "ability-card-copy";
 
@@ -2264,8 +2361,10 @@ function setWeaponEquipped(itemId, shouldEquip) {
 }
 
 async function deleteInventoryItem(itemId) {
+  if (isNotebookReadOnly()) return;
   const item = inventoryItems.find((entry) => entry.id === itemId);
   if (!item) return;
+  const epoch = notesEpoch;
   const confirmed = await showAbyssConfirm({
     eyebrow: "Inventário",
     title: "Excluir Item?",
@@ -2273,12 +2372,15 @@ async function deleteInventoryItem(itemId) {
     confirmLabel: "Excluir",
     tone: "danger",
   });
-  if (!confirmed) return;
+  if (!confirmed || epoch !== notesEpoch || isNotebookReadOnly() || inventoryItems.find((entry) => entry.id === itemId) !== item) return;
   if (item.modifiersActive) setCreationModifiersActive("inventory", item.id, false, { notify: false });
   inventoryItems = inventoryItems.filter((entry) => entry.id !== itemId);
   renderInventory();
   renderAbilities();
   notifySheetChanged("item-deleted");
+  if (item.mediaOwner === "slot" && item.mediaRefId) {
+    window.AbyssCloud?.deleteMedia({ scope: "sheet", refId: item.mediaRefId }).catch(() => {});
+  }
 }
 
 function rollAbilityDamage(abilityId, trigger) {
@@ -2347,9 +2449,7 @@ function createGrimoireInventoryItem(item) {
   const card = document.createElement("article");
   card.className = "grimoire-item";
 
-  const icon = document.createElement("div");
-  icon.className = "grimoire-item-media item-card-icon";
-  icon.textContent = item.isWeapon ? "⚔" : "◇";
+  const icon = createAbilityMediaElement(item, "grimoire-item-media item-card-icon", item.isWeapon ? "⚔" : "◇");
 
   const copy = document.createElement("div");
   copy.className = "grimoire-item-copy";
@@ -2438,18 +2538,7 @@ function renderShop() {
   products.forEach(({ kind, creation }) => {
     const card = document.createElement("article");
     card.className = "shop-product";
-    const media = document.createElement("div");
-    media.className = "shop-product-media";
-    if (kind === "ability" && safeAbilityMediaUrl(creation.mediaUrl)) {
-      const image = document.createElement("img");
-      image.src = creation.mediaUrl;
-      image.alt = "";
-      image.loading = "lazy";
-      image.addEventListener("error", () => media.replaceChildren(document.createTextNode("✦")), { once: true });
-      media.append(image);
-    } else {
-      media.textContent = kind === "item" ? (creation.isWeapon ? "⚔" : "◇") : "✦";
-    }
+    const media = createAbilityMediaElement(creation, "shop-product-media", kind === "item" ? (creation.isWeapon ? "⚔" : "◇") : "✦");
 
     const copy = document.createElement("div");
     copy.className = "shop-product-copy";
@@ -2699,7 +2788,7 @@ async function purchaseShopProduct(kind, productId, trigger) {
           : "",
       origin: source.origin || (kind === "item" ? "Item da Loja" : ""),
       sourceId: source.id,
-      mediaOwner: kind === "ability" && source.mediaRefId ? "minerva" : "link",
+      mediaOwner: source.mediaRefId ? "minerva" : "link",
       modifiersActive: false,
       modifiers: (source.modifiers || []).map((modifier) => ({ ...modifier, resolvedValue: 0 })),
       shopListed: false,
@@ -2922,29 +3011,42 @@ function createGrimoirePickerSymbol(entry = null) {
   const symbol = document.createElement("span");
   symbol.className = "grimoire-picker-symbol";
   symbol.setAttribute("aria-hidden", "true");
-  const category = entry ? grimoirePickerCategory(entry.creation, entry.type === "spells" ? "spells" : "powers") : null;
-  const source = category && GRIMOIRE_POWER_TAG_IMAGES[category.key];
-  if (source) {
-    symbol.dataset.entity = category.key;
-    const image = document.createElement("img");
-    image.src = source;
-    image.alt = "";
-    image.draggable = false;
-    image.decoding = "async";
-    symbol.append(image);
-  } else if (entry && safeAbilityMediaUrl(entry.creation.mediaUrl)) {
-    const image = document.createElement("img");
-    image.src = safeAbilityMediaUrl(entry.creation.mediaUrl);
-    image.alt = "";
-    image.draggable = false;
-    image.loading = "lazy";
-    image.addEventListener("error", () => { symbol.replaceChildren(); symbol.innerHTML = '<svg viewBox="0 0 24 24"><path d="m12 3 2.4 6.6L21 12l-6.6 2.4L12 21l-2.4-6.6L3 12l6.6-2.4Z"></path></svg>'; }, { once: true });
-    symbol.append(image);
-  } else {
+  const category = entry && ["powers", "spells"].includes(entry.type) ? grimoirePickerCategory(entry.creation, entry.type) : null;
+  const entitySource = category && GRIMOIRE_POWER_TAG_IMAGES[category.key];
+  const showDefault = () => {
+    symbol.replaceChildren();
+    delete symbol.dataset.customImage;
+    delete symbol.dataset.entity;
     const drawing = entry?.kind === "item"
       ? '<path d="m4 7 8-4 8 4v10l-8 4-8-4Z M4 7l8 4 8-4 M12 11v10"></path>'
       : '<path d="M12 5v15M12 5C8 3 5 3 2 4v15c3-1 6-1 10 1 4-2 7-2 10-1V4c-3-1-6-1-10 1ZM5 8l4 1M5 12l4 1M15 8l4-1M15 12l4-1"></path>';
     symbol.innerHTML = `<svg viewBox="0 0 24 24">${drawing}</svg>`;
+  };
+  const showFallback = () => {
+    showDefault();
+    if (!entitySource) return;
+    const image = document.createElement("img");
+    image.src = entitySource;
+    image.alt = "";
+    image.draggable = false;
+    image.decoding = "async";
+    image.addEventListener("error", showDefault, { once: true });
+    symbol.replaceChildren(image);
+    symbol.dataset.entity = category.key;
+  };
+  const customSource = safeAbilityMediaUrl(entry?.creation?.mediaUrl);
+  if (customSource) {
+    const image = document.createElement("img");
+    image.src = customSource;
+    image.alt = "";
+    image.draggable = false;
+    image.loading = "lazy";
+    image.decoding = "async";
+    image.addEventListener("error", showFallback, { once: true });
+    symbol.dataset.customImage = "true";
+    symbol.append(image);
+  } else {
+    showFallback();
   }
   return symbol;
 }
