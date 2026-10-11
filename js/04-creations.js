@@ -133,7 +133,7 @@ function evaluateDamageFormulaDetailed(parsedFormula) {
 
 function sanitizeCreationRoll(rawRoll) {
   if (!rawRoll || typeof rawRoll !== "object") return null;
-  const name = String(rawRoll.name || "").trim().slice(0, 80);
+  const name = String(rawRoll.name || "").trim();
   const parsed = parseDamageFormula(rawRoll.formula);
   if (!name || parsed.error || !parsed.tokens.length) return null;
   return {
@@ -242,7 +242,7 @@ function sanitizeInventoryUpgrades(rawUpgrades, itemType) {
   const sources = new Set();
   return (Array.isArray(rawUpgrades) ? rawUpgrades : []).slice(0, 50).flatMap((raw) => {
     if (!raw || typeof raw !== "object" || sanitizeUpgradeType(raw.upgradeType) !== itemType) return [];
-    const name = String(raw.name || "").trim().slice(0, 80);
+    const name = String(raw.name || "").trim();
     const id = String(raw.id || "").slice(0, 120);
     const sourceId = String(raw.sourceId || raw.id || "").slice(0, 120);
     if (!name || !id || !sourceId || ids.has(id) || sources.has(sourceId)) return [];
@@ -288,7 +288,7 @@ function getEffectiveInventoryItem(item) {
 
 function makeInventoryUpgradeSnapshot(source) {
   if (!source || source.section !== "upgrades" || !sanitizeUpgradeType(source.upgradeType)) return null;
-  const name = String(source.name || "").trim().slice(0, 80);
+  const name = String(source.name || "").trim();
   const sourceId = String(source.id || "").slice(0, 120);
   if (!name || !sourceId) return null;
   const id = createAbilityId("upgrade").slice(0, 120);
@@ -349,7 +349,7 @@ function removeInventoryUpgrade(item, upgradeId) {
 
 function sanitizeInventoryItem(rawItem) {
   if (!rawItem || typeof rawItem !== "object") return null;
-  const name = String(rawItem.name || "").trim().slice(0, 80);
+  const name = String(rawItem.name || "").trim();
   if (!name) return null;
   const mechanics = sanitizeCreationMechanics(rawItem);
   const isWeapon = Boolean(rawItem.isWeapon);
@@ -602,8 +602,8 @@ function createMechanicEditorRow(kind, data = {}) {
 
   if (kind === "roll") {
     row.innerHTML = `
-      <label class="builder-field"><span>Nome da rolagem</span><input data-mechanic-field="roll-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Ataque" /></label>
-      <label class="builder-field"><span>Fórmula</span><input data-mechanic-field="roll-formula" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: 1d20+FOR" /></label>
+      <label class="builder-field"><span>Nome da rolagem</span><input data-mechanic-field="roll-name" type="text" autocomplete="off" placeholder="Ex.: Ataque" /></label>
+      <label class="builder-field"><span>Fórmula</span><input data-mechanic-field="roll-formula" type="text" autocomplete="off" placeholder="Ex.: 1d20+FOR" /></label>
       <button class="mechanics-remove" type="button" data-remove-mechanic aria-label="Remover rolagem">×</button>`;
     row.querySelector('[data-mechanic-field="roll-name"]').value = data.name || "";
     row.querySelector('[data-mechanic-field="roll-formula"]').value = data.formula || "";
@@ -628,7 +628,7 @@ function createMechanicEditorRow(kind, data = {}) {
   row.innerHTML = `
     <label class="builder-field"><span>Modificador</span><select data-mechanic-field="modifier-type">${typeOptions}</select></label>
     <label class="builder-field"><span>Aplicar em</span><select data-mechanic-field="modifier-target"></select></label>
-    <label class="builder-field"><span>Valor</span><input data-mechanic-field="modifier-formula" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: +2 ou 1d4" /></label>
+    <label class="builder-field"><span>Valor</span><input data-mechanic-field="modifier-formula" type="text" autocomplete="off" placeholder="Ex.: +2 ou 1d4" /></label>
     <button class="mechanics-remove" type="button" data-remove-mechanic aria-label="Remover modificador">×</button>`;
   row.querySelector('[data-mechanic-field="modifier-type"]').value = Object.hasOwn(CREATION_MODIFIER_TYPES, data.type) ? data.type : "damage";
   row.querySelector('[data-mechanic-field="modifier-formula"]').value = data.formula || "";
