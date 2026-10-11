@@ -503,8 +503,34 @@ clearAbilityMediaButton.addEventListener("click", () => {
   abilityMediaUrlInput.value = "";
   abilityMediaFileInput.value = "";
   abilityEditorForm.dataset.mediaCleared = "true";
-  abilityFileName.textContent = "A habilidade ficará sem imagem.";
+  abilityFileName.textContent = "O Grimório usará o símbolo padrão desta criação.";
   renderAbilityMediaPreview("");
+});
+
+itemMediaFileInput.addEventListener("change", () => {
+  const file = itemMediaFileInput.files?.[0];
+  if (!file) return;
+  itemMediaUrlInput.value = "";
+  itemEditorForm.dataset.mediaCleared = "false";
+  itemFileName.textContent = `${file.name} · ${Math.ceil(file.size / 1024)} KB`;
+  renderItemMediaPreview(URL.createObjectURL(file));
+});
+
+itemMediaUrlInput.addEventListener("input", () => {
+  if (itemMediaUrlInput.value.trim()) {
+    itemMediaFileInput.value = "";
+    itemFileName.textContent = "A imagem será carregada pelo link informado.";
+  }
+  itemEditorForm.dataset.mediaCleared = "false";
+  renderItemMediaPreview(itemMediaUrlInput.value.trim());
+});
+
+clearItemMediaButton.addEventListener("click", () => {
+  itemMediaUrlInput.value = "";
+  itemMediaFileInput.value = "";
+  itemEditorForm.dataset.mediaCleared = "true";
+  itemFileName.textContent = "O Grimório usará o símbolo padrão deste item.";
+  renderItemMediaPreview("");
 });
 
 abilitiesList.addEventListener("click", async (event) => {
