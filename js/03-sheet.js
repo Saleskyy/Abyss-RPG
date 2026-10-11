@@ -363,6 +363,11 @@ const itemCriticalThresholdInput = document.querySelector("#item-critical-thresh
 const itemCriticalBonusInput = document.querySelector("#item-critical-bonus");
 const itemGrantsModifiersInput = document.querySelector("#item-grants-modifiers");
 const itemModifiersFields = document.querySelector("#item-modifiers-fields");
+const itemMediaUrlInput = document.querySelector("#item-media-url");
+const itemMediaFileInput = document.querySelector("#item-media-file");
+const itemMediaPreview = document.querySelector("#item-media-preview");
+const itemFileName = document.querySelector("#item-file-name");
+const clearItemMediaButton = document.querySelector("#clear-item-media");
 const itemEditorError = document.querySelector("#item-editor-error");
 const saveItemButton = document.querySelector("#save-item");
 const itemUpgradeModal = document.querySelector("#item-upgrade-modal");
@@ -435,6 +440,7 @@ let activeAbilityTrigger = null;
 let abilityEditorScope = "sheet";
 let itemEditorScope = "inventory";
 let pendingAbilityPreviewUrl = "";
+let pendingItemPreviewUrl = "";
 let grimoireAbilities = [];
 let grimoireItems = [];
 let activeGrimoirePickerType = "attacks";
@@ -2520,7 +2526,14 @@ function serializeAbilityForCloud(rawAbility) {
 }
 
 function serializeInventoryItemForCloud(rawItem) {
-  return sanitizeInventoryItem(rawItem);
+  const item = sanitizeInventoryItem(rawItem);
+  if (!item) return null;
+  const hasCloudMedia = Boolean(item.mediaRefId) && ["slot", "minerva"].includes(item.mediaOwner);
+  return {
+    ...item,
+    mediaUrl: hasCloudMedia ? "" : safeRemoteImageUrl(item.mediaUrl),
+    mediaOwner: hasCloudMedia ? item.mediaOwner : "link",
+  };
 }
 
 function sanitizePurchaseHistoryEntry(rawEntry) {
