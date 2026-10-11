@@ -78,7 +78,6 @@ const notesList = document.querySelector("#notes-list");
 const notesEmpty = document.querySelector("#notes-empty");
 const notesCount = document.querySelector("#notes-count");
 // Includes a small reserve so converting existing notes into pages never loses them to the notebook wrapper.
-const MAX_NOTES_BYTES = 651024;
 const MAX_NOTE_IMAGE_CHARS = 150000;
 const MAX_NOTEBOOKS = 100;
 const MAX_NOTEBOOK_PAGES = 200;
@@ -507,33 +506,30 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
-const MAX_CREATION_DESCRIPTION_TEXT = 3000;
-const MAX_CREATION_DESCRIPTION_HTML = 32768;
 const creationDescriptionEditors = new WeakMap();
 
 function sanitizeCreationDescriptionHtml(value) {
   if (!value) return "";
   const template = document.createElement("template");
-  template.innerHTML = String(value).slice(0, MAX_CREATION_DESCRIPTION_HTML);
+  template.innerHTML = String(value);
   const output = document.createElement("div");
   const allowed = new Set(["P", "DIV", "BR", "STRONG", "B", "EM", "I", "U", "S", "STRIKE", "DEL", "H2", "H3", "H4", "UL", "OL", "LI", "BLOCKQUOTE"]);
   const discard = new Set(["SCRIPT", "STYLE", "IFRAME", "OBJECT", "EMBED", "SVG", "MATH", "FORM", "INPUT", "BUTTON", "TEXTAREA", "SELECT", "IMG", "VIDEO", "AUDIO", "SOURCE", "LINK", "META", "BASE", "TEMPLATE"]);
-  let remainingText = MAX_CREATION_DESCRIPTION_TEXT;
-  let remainingNodes = 500;
-  function cleanNode(node, depth = 0) {
-    if (remainingNodes <= 0 || depth > 16) return null;
-    remainingNodes -= 1;
+  // Walk iteratively so large descriptions and deep pasted markup retain their text.
+  const pending = Array.from(template.content.childNodes).reverse().map((node) => ({ node, parent: output }));
+  while (pending.length) {
+    const { node, parent } = pending.pop();
     if (node.nodeType === Node.TEXT_NODE) {
-      const text = node.textContent.slice(0, remainingText);
-      remainingText -= text.length;
-      return text ? document.createTextNode(text) : null;
+      parent.append(document.createTextNode(node.textContent));
+      continue;
     }
-    if (node.nodeType !== Node.ELEMENT_NODE || discard.has(node.tagName)) return null;
-    if (node.tagName === "BR") return document.createElement("br");
-    let result = allowed.has(node.tagName)
-      ? document.createElement(node.tagName.toLowerCase())
-      : document.createDocumentFragment();
-    node.childNodes.forEach((child) => { const clean = cleanNode(child, depth + 1); if (clean) result.append(clean); });
+    if (node.nodeType !== Node.ELEMENT_NODE || discard.has(node.tagName)) continue;
+    if (node.tagName === "BR") { parent.append(document.createElement("br")); continue; }
+    let childParent = parent;
+    if (allowed.has(node.tagName)) {
+      childParent = document.createElement(node.tagName.toLowerCase());
+      parent.append(childParent);
+    }
     if (node.tagName === "SPAN") {
       const style = String(node.getAttribute("style") || "").toLowerCase();
       [
@@ -541,16 +537,17 @@ function sanitizeCreationDescriptionHtml(value) {
         [/font-style\s*:\s*italic/, "em"],
         [/text-decoration(?:-line)?\s*:[^;]*underline/, "u"],
         [/text-decoration(?:-line)?\s*:[^;]*line-through/, "s"],
-      ].forEach(([pattern, tag]) => {
+      ].reverse().forEach(([pattern, tag]) => {
         if (!pattern.test(style)) return;
         const wrapper = document.createElement(tag);
-        wrapper.append(result);
-        result = wrapper;
+        childParent.append(wrapper);
+        childParent = wrapper;
       });
     }
-    return result;
+    for (let index = node.childNodes.length - 1; index >= 0; index -= 1) {
+      pending.push({ node: node.childNodes[index], parent: childParent });
+    }
   }
-  template.content.childNodes.forEach((node) => { const clean = cleanNode(node); if (clean) output.append(clean); });
   return output.innerHTML;
 }
 
@@ -559,25 +556,29 @@ function creationDescriptionToText(html) {
   const template = document.createElement("template");
   template.innerHTML = html;
   const blocks = new Set(["P", "DIV", "H2", "H3", "H4", "UL", "OL", "LI", "BLOCKQUOTE"]);
-  let text = "";
-  function visit(node) {
-    if (node.nodeType === Node.TEXT_NODE) { text += node.textContent; return; }
-    if (node.nodeType !== Node.ELEMENT_NODE) return;
-    if (node.tagName === "BR") { text += "\n"; return; }
+  const parts = [];
+  let endsInNewline = false;
+  const append = (value) => { if (value) { parts.push(value); endsInNewline = value.endsWith("\n"); } };
+  const pending = Array.from(template.content.childNodes).reverse().map((node) => ({ node }));
+  while (pending.length) {
+    const { node, endBlock } = pending.pop();
+    if (endBlock) { if (!endsInNewline) append("\n"); continue; }
+    if (node.nodeType === Node.TEXT_NODE) { append(node.textContent); continue; }
+    if (node.nodeType !== Node.ELEMENT_NODE) continue;
+    if (node.tagName === "BR") { append("\n"); continue; }
     const block = blocks.has(node.tagName);
-    if (block && text && !text.endsWith("\n")) text += "\n";
-    node.childNodes.forEach(visit);
-    if (block && !text.endsWith("\n")) text += "\n";
+    if (block && parts.length && !endsInNewline) append("\n");
+    if (block) pending.push({ endBlock: true });
+    for (let index = node.childNodes.length - 1; index >= 0; index -= 1) pending.push({ node: node.childNodes[index] });
   }
-  template.content.childNodes.forEach(visit);
-  return text.replaceAll("\u00a0", " ").replace(/\r\n?/g, "\n").trim().slice(0, MAX_CREATION_DESCRIPTION_TEXT);
+  return parts.join("").replaceAll("\u00a0", " ").replace(/\r\n?/g, "\n").trim();
 }
 
 function sanitizeCreationDescription(raw) {
   const html = sanitizeCreationDescriptionHtml(raw?.descriptionHtml);
   const richText = creationDescriptionToText(html);
   return {
-    description: richText || String(raw?.description || "").replace(/\r\n?/g, "\n").trim().slice(0, MAX_CREATION_DESCRIPTION_TEXT),
+    description: richText || String(raw?.description || "").replace(/\r\n?/g, "\n").trim(),
     descriptionHtml: richText ? html : "",
   };
 }
@@ -594,8 +595,10 @@ function renderCreationDescriptionText(value) {
   };
   const html = String(value).split("\n").map((line) => {
     const stack = [{ marker: "", html: "" }];
+    let wordStart = 0;
     for (const token of line.matchAll(/\\[\\*_]|\*+|_+|[^\\*_]+|\\/g)) {
       const marker = token[0];
+      for (const space of marker.matchAll(/\s/g)) wordStart = token.index + space.index + 1;
       const current = stack.at(-1);
       if (marker.startsWith("\\") && marker.length === 2) {
         current.html += escapeHtml(marker[1]);
@@ -609,10 +612,9 @@ function renderCreationDescriptionText(value) {
       const before = line[token.index - 1] || "";
       const after = line[token.index + marker.length] || "";
       // Underscores in identifiers and URLs are ordinary text.
-      const word = line.slice(0, token.index).match(/\S*$/)[0];
       const ordinaryUnderscore = marker === "_" && (
         /[\p{L}\p{N}]/u.test(before) && /[\p{L}\p{N}]/u.test(after)
-        || /^(?:https?:\/\/|www\.)/i.test(word)
+        || /^(?:https?:\/\/|www\.)/i.test(line.slice(wordStart, token.index))
       );
       const canOpen = !ordinaryUnderscore && after !== "" && !/\s/.test(after);
       const canClose = !ordinaryUnderscore && before !== "" && !/\s/.test(before);
@@ -649,19 +651,26 @@ function renderCreationDescriptionHtml(value) {
   template.innerHTML = sanitizeCreationDescriptionHtml(value);
   let formatted = false;
   let changed = false;
-  function renderNode(node) {
+  const parts = [];
+  const pending = Array.from(template.content.childNodes).reverse().map((node) => ({ node }));
+  while (pending.length) {
+    const { node, closingTag } = pending.pop();
+    if (closingTag) { parts.push(`</${closingTag}>`); continue; }
     if (node.nodeType === Node.TEXT_NODE) {
       const result = renderCreationDescriptionText(node.textContent);
       formatted ||= result.formatted;
       changed ||= result.changed;
-      return result.html;
+      parts.push(result.html);
+      continue;
     }
-    if (node.nodeType !== Node.ELEMENT_NODE) return "";
+    if (node.nodeType !== Node.ELEMENT_NODE) continue;
     const tag = node.tagName.toLowerCase();
-    if (tag === "br") return "<br>";
-    return `<${tag}>${Array.from(node.childNodes, renderNode).join("")}</${tag}>`;
+    parts.push(`<${tag}>`);
+    if (tag === "br") continue;
+    pending.push({ closingTag: tag });
+    for (let index = node.childNodes.length - 1; index >= 0; index -= 1) pending.push({ node: node.childNodes[index] });
   }
-  return { html: Array.from(template.content.childNodes, renderNode).join(""), formatted, changed };
+  return { html: parts.join(""), formatted, changed };
 }
 
 function setCreationDescription(element, creation, options = {}) {
@@ -683,19 +692,10 @@ function rememberCreationDescriptionSelection(state) {
   state.range = selection.getRangeAt(0).cloneRange();
 }
 
-function syncCreationDescriptionEditor(state, { enforceLimit = false } = {}) {
+function syncCreationDescriptionEditor(state) {
   const normalized = sanitizeCreationDescription({ descriptionHtml: state.editor.innerHTML });
   state.textarea.value = normalized.description;
-  state.counter.textContent = `${normalized.description.length} / ${MAX_CREATION_DESCRIPTION_TEXT}`;
-  if (enforceLimit && (state.editor.innerHTML.length > MAX_CREATION_DESCRIPTION_HTML || creationDescriptionToText(state.editor.innerHTML).length >= MAX_CREATION_DESCRIPTION_TEXT)) {
-    state.editor.innerHTML = normalized.descriptionHtml;
-    const selection = window.getSelection();
-    const range = document.createRange();
-    range.selectNodeContents(state.editor);
-    range.collapse(false);
-    selection?.removeAllRanges();
-    selection?.addRange(range);
-  }
+  state.counter.textContent = `${normalized.description.length} caracteres`;
   return normalized;
 }
 
@@ -708,7 +708,7 @@ function runCreationDescriptionCommand(state, command, value = null) {
   }
   document.execCommand(command, false, value);
   rememberCreationDescriptionSelection(state);
-  syncCreationDescriptionEditor(state, { enforceLimit: true });
+  syncCreationDescriptionEditor(state);
   updateCreationDescriptionToolbar(state);
 }
 
@@ -769,7 +769,7 @@ function initializeCreationDescriptionEditor(textarea) {
   hint.title = "Enter: novo parágrafo · Shift+Enter: quebra de linha. Use uma barra invertida antes de um marcador para exibi-lo como texto.";
   const counter = document.createElement("span");
   counter.className = "creation-text-count";
-  counter.textContent = `0 / ${MAX_CREATION_DESCRIPTION_TEXT}`;
+  counter.textContent = "0 caracteres";
   footer.append(hint, counter);
   wrapper.append(toolbar, editor, footer);
   textarea.hidden = true;
@@ -788,11 +788,11 @@ function initializeCreationDescriptionEditor(textarea) {
     runCreationDescriptionCommand(state, button.dataset.descriptionCommand, button.dataset.descriptionValue || null);
   });
   editor.addEventListener("input", (event) => {
-    if (!event.isComposing) syncCreationDescriptionEditor(state, { enforceLimit: true });
+    if (!event.isComposing) syncCreationDescriptionEditor(state);
     rememberCreationDescriptionSelection(state);
     updateCreationDescriptionToolbar(state);
   });
-  editor.addEventListener("compositionend", () => syncCreationDescriptionEditor(state, { enforceLimit: true }));
+  editor.addEventListener("compositionend", () => syncCreationDescriptionEditor(state));
   editor.addEventListener("keyup", () => { rememberCreationDescriptionSelection(state); updateCreationDescriptionToolbar(state); });
   editor.addEventListener("pointerup", () => { rememberCreationDescriptionSelection(state); updateCreationDescriptionToolbar(state); });
   editor.addEventListener("focus", () => updateCreationDescriptionToolbar(state));
@@ -809,9 +809,9 @@ function initializeCreationDescriptionEditor(textarea) {
     event.preventDefault();
     const html = event.clipboardData?.getData("text/html") || "";
     const plain = event.clipboardData?.getData("text/plain") || "";
-    const safe = html ? sanitizeCreationDescriptionHtml(html) : escapeHtml(plain.slice(0, MAX_CREATION_DESCRIPTION_TEXT)).replace(/\r\n?|\n/g, "<br>");
+    const safe = html ? sanitizeCreationDescriptionHtml(html) : escapeHtml(plain).replace(/\r\n?|\n/g, "<br>");
     document.execCommand("insertHTML", false, safe);
-    syncCreationDescriptionEditor(state, { enforceLimit: true });
+    syncCreationDescriptionEditor(state);
     rememberCreationDescriptionSelection(state);
   });
   editor.addEventListener("drop", (event) => event.preventDefault());
@@ -826,7 +826,7 @@ function setCreationDescriptionEditor(textarea, creation) {
   state.range = null;
   state.editor.innerHTML = description.descriptionHtml || escapeHtml(description.description).replaceAll("\n", "<br>");
   textarea.value = description.description;
-  state.counter.textContent = `${description.description.length} / ${MAX_CREATION_DESCRIPTION_TEXT}`;
+  state.counter.textContent = `${description.description.length} caracteres`;
   state.toolbar.querySelectorAll("[aria-pressed]").forEach((button) => button.setAttribute("aria-pressed", "false"));
 }
 
@@ -838,7 +838,7 @@ function readCreationDescriptionEditor(textarea) {
 
 function sanitizeNoteHtml(value) {
   const template = document.createElement("template");
-  template.innerHTML = String(value || "").slice(0, MAX_NOTES_BYTES);
+  template.innerHTML = String(value || "");
   const clean = document.createElement("div");
   const allowed = new Set([
     "P", "DIV", "BR", "STRONG", "B", "EM", "I", "U", "H2", "H3",
@@ -846,66 +846,59 @@ function sanitizeNoteHtml(value) {
   ]);
   const discard = new Set(["SCRIPT", "STYLE", "IFRAME", "OBJECT", "EMBED", "SVG", "FORM", "INPUT", "BUTTON"]);
 
-  function cleanNode(node) {
+  const pending = Array.from(template.content.childNodes).reverse().map((node) => ({ node, parent: clean }));
+  while (pending.length) {
+    const { node, parent } = pending.pop();
     if (node.nodeType === Node.TEXT_NODE) {
-      return document.createTextNode(node.textContent.slice(0, 200000));
+      parent.append(document.createTextNode(node.textContent));
+      continue;
     }
-    if (node.nodeType !== Node.ELEMENT_NODE || discard.has(node.tagName)) return null;
+    if (node.nodeType !== Node.ELEMENT_NODE || discard.has(node.tagName)) continue;
     if (node.tagName === "IMG") {
       const source = String(node.getAttribute("src") || "").trim();
       const isSmallInlineImage = source.length <= MAX_NOTE_IMAGE_CHARS &&
         /^data:image\/(?:png|jpeg|webp|gif);base64,[a-z0-9+/=]+$/i.test(source);
       const url = isSmallInlineImage ? source : safeRemoteImageUrl(source);
-      if (!url) return null;
+      if (!url) continue;
       const image = document.createElement("img");
       image.src = url;
-      image.alt = String(node.getAttribute("alt") || "Imagem da página").slice(0, 120);
+      image.alt = String(node.getAttribute("alt") || "Imagem da página");
       image.loading = "lazy";
-      return image;
+      parent.append(image);
+      continue;
     }
-    if (node.tagName === "BR") return document.createElement("br");
+    if (node.tagName === "BR") { parent.append(document.createElement("br")); continue; }
+    let childParent = parent;
     if (node.tagName === "A") {
       const href = safeRemoteImageUrl(node.getAttribute("href"));
-      if (!href) {
-        const text = document.createDocumentFragment();
-        node.childNodes.forEach((child) => { const item = cleanNode(child); if (item) text.append(item); });
-        return text;
+      if (href) {
+        const link = document.createElement("a");
+        link.href = href;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        parent.append(link);
+        childParent = link;
       }
-      const link = document.createElement("a");
-      link.href = href;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      node.childNodes.forEach((child) => { const item = cleanNode(child); if (item) link.append(item); });
-      return link;
+    } else if (allowed.has(node.tagName)) {
+      childParent = document.createElement(node.tagName.toLowerCase());
+      parent.append(childParent);
     }
     if (node.tagName === "SPAN") {
       const style = String(node.getAttribute("style") || "").toLowerCase();
-      let result = document.createDocumentFragment();
-      node.childNodes.forEach((child) => { const item = cleanNode(child); if (item) result.append(item); });
       const formats = [
         [/font-weight\s*:\s*(?:bold|[7-9]00)/, "strong"],
         [/font-style\s*:\s*italic/, "em"],
         [/text-decoration(?:-line)?\s*:[^;]*underline/, "u"],
       ];
-      formats.forEach(([pattern, tag]) => {
+      formats.reverse().forEach(([pattern, tag]) => {
         if (!pattern.test(style)) return;
         const wrapper = document.createElement(tag);
-        wrapper.append(result);
-        result = wrapper;
+        childParent.append(wrapper);
+        childParent = wrapper;
       });
-      return result;
     }
-    const result = allowed.has(node.tagName)
-      ? document.createElement(node.tagName.toLowerCase())
-      : document.createDocumentFragment();
-    node.childNodes.forEach((child) => { const item = cleanNode(child); if (item) result.append(item); });
-    return result;
+    for (let index = node.childNodes.length - 1; index >= 0; index -= 1) pending.push({ node: node.childNodes[index], parent: childParent });
   }
-
-  template.content.childNodes.forEach((node) => {
-    const item = cleanNode(node);
-    if (item) clean.append(item);
-  });
   return clean.innerHTML;
 }
 
@@ -913,7 +906,7 @@ function normalizeCharacterNote(raw) {
   if (!raw || typeof raw !== "object") return null;
   const id = String(raw.id || "").replace(/[^a-z0-9_-]/gi, "").slice(0, 90);
   if (!id) return null;
-  return { id, title: String(raw.title || "").trim().slice(0, 100), html: sanitizeNoteHtml(raw.html) };
+  return { id, title: String(raw.title || "").trim(), html: sanitizeNoteHtml(raw.html) };
 }
 
 function notesSizeInBytes(list) {
@@ -941,23 +934,20 @@ function normalizeCharacterNotes(raw) {
       }
       if (legacyBook.pages.length >= MAX_NOTEBOOK_PAGES || legacyBook.pages.some((item) => item.id === page.id)) continue;
       legacyBook.pages.push(page);
-      if (notesSizeInBytes(result) > MAX_NOTES_BYTES) legacyBook.pages.pop();
       continue;
     }
     const id = String(entry.id || "").replace(/[^a-z0-9_-]/gi, "").slice(0, 90);
     if (!id || bookIds.has(id) || result.length >= MAX_NOTEBOOKS) continue;
-    const book = { id, title: String(entry.title || "").trim().slice(0, 100), pages: [] };
+    const book = { id, title: String(entry.title || "").trim(), pages: [] };
     const pageIds = new Set();
     result.push(book);
     for (const rawPage of entry.pages.slice(0, MAX_NOTEBOOK_PAGES)) {
       const page = normalizeCharacterNote(rawPage);
       if (!page || pageIds.has(page.id)) continue;
       book.pages.push(page);
-      if (notesSizeInBytes(result) > MAX_NOTES_BYTES) { book.pages.pop(); continue; }
       pageIds.add(page.id);
     }
     if (!book.pages.length) book.pages.push({ id: `${id.slice(0, 78)}-page-1`, title: "", html: "" });
-    if (notesSizeInBytes(result) > MAX_NOTES_BYTES) { result.pop(); continue; }
     bookIds.add(id);
   }
   return result.filter((book) => book.pages.length > 0);
@@ -999,8 +989,6 @@ function updateNotebookPage(bookId, pageId, changes, trigger) {
   if (isNotebookReadOnly()) return false;
   const page = getCharacterNotebookPage(bookId, pageId);
   if (!page) return false;
-  const proposed = characterNotes.map((book) => book.id === bookId ? { ...book, pages: book.pages.map((item) => item.id === pageId ? { ...item, ...changes } : item) } : book);
-  if (notesSizeInBytes(proposed) > MAX_NOTES_BYTES) { warnNoteCapacity(trigger); return false; }
   if (Object.entries(changes).some(([key, value]) => page[key] !== value)) {
     Object.assign(page, changes);
     notifySheetChanged("notes");
@@ -1012,9 +1000,7 @@ function renameCharacterNotebook(bookId, title, trigger) {
   if (isNotebookReadOnly()) return false;
   const book = getCharacterNotebook(bookId);
   if (!book) return false;
-  const nextTitle = String(title || "").slice(0, 100);
-  const proposed = characterNotes.map((item) => item.id === bookId ? { ...item, title: nextTitle } : item);
-  if (notesSizeInBytes(proposed) > MAX_NOTES_BYTES) { warnNoteCapacity(trigger); return false; }
+  const nextTitle = String(title || "");
   if (book.title !== nextTitle) { book.title = nextTitle; notifySheetChanged("notes"); }
   return true;
 }
@@ -1023,7 +1009,6 @@ function createCharacterNotebook(trigger) {
   if (isNotebookReadOnly()) return null;
   if (characterNotes.length >= MAX_NOTEBOOKS) { warnNoteCapacity(trigger); return null; }
   const book = { id: createCharacterNoteId(), title: "Novo caderno", pages: [{ id: createCharacterNoteId(), title: "", html: "" }] };
-  if (notesSizeInBytes([book, ...characterNotes]) > MAX_NOTES_BYTES) { warnNoteCapacity(trigger); return null; }
   characterNotes.unshift(book);
   activeNotebookId = book.id;
   activeNotebookPageId = book.pages[0].id;
@@ -1037,11 +1022,9 @@ function addCharacterNotebookPage(bookId, sourcePageId, trigger) {
   if (!book) return null;
   if (book.pages.length >= MAX_NOTEBOOK_PAGES) { warnNoteCapacity(trigger); return null; }
   const source = book.pages.find((page) => page.id === sourcePageId);
-  const page = { id: createCharacterNoteId(), title: source ? `${source.title || "Página"} (cópia)`.slice(0, 100) : "", html: source?.html || "" };
+  const page = { id: createCharacterNoteId(), title: source ? `${source.title || "Página"} (cópia)` : "", html: source?.html || "" };
   const pages = [...book.pages];
   pages.splice(source ? pages.indexOf(source) + 1 : pages.length, 0, page);
-  const proposed = characterNotes.map((item) => item.id === bookId ? { ...item, pages } : item);
-  if (notesSizeInBytes(proposed) > MAX_NOTES_BYTES) { warnNoteCapacity(trigger); return null; }
   book.pages = pages;
   activeNotebookId = book.id;
   activeNotebookPageId = page.id;
@@ -1128,7 +1111,7 @@ function renderCharacterNotes() {
   workspace.innerHTML = `
     <header class="notebook-workspace-head">
       <button class="notes-small-button notebook-back" type="button" data-notebook-action="library"><span aria-hidden="true">←</span> Cadernos</button>
-      <input class="notebook-title-input" data-notebook-title type="text" maxlength="100" placeholder="Nome do caderno" aria-label="Nome do caderno" autocomplete="off" />
+      <input class="notebook-title-input" data-notebook-title type="text" placeholder="Nome do caderno" aria-label="Nome do caderno" autocomplete="off" />
       <div class="notebook-actions">
         <button class="notes-small-button" type="button" data-notebook-action="add-page"><span aria-hidden="true">+</span> Nova página</button>
         <button class="notes-small-button is-danger" type="button" data-notebook-action="delete-notebook">Excluir caderno</button>
@@ -1210,7 +1193,7 @@ async function handleNotebookAction(button) {
 function warnNoteCapacity(trigger) {
   showAbyssAlert({
     eyebrow: "Cadernos do personagem", title: "Limite do caderno atingido",
-    message: "Cada personagem pode ter até 100 cadernos, com 200 páginas em cada um. O espaço total de texto e imagens também é limitado. Use imagens menores ou por link, ou remova conteúdo para liberar espaço.",
+    message: "Cada personagem pode ter até 100 cadernos, com 200 páginas em cada um.",
     tone: "warning", trigger,
   });
 }
@@ -1237,7 +1220,7 @@ function createNotebookPageCard(book, note) {
   card.dataset.notesEpoch = String(notesEpoch);
   card.innerHTML = `
     <header class="notes-card-head">
-      <input class="notes-card-title" data-note-title type="text" maxlength="100"
+      <input class="notes-card-title" data-note-title type="text"
         aria-label="Título da página" placeholder="Título da página" autocomplete="off" />
       <div class="notes-card-actions">
         <button class="notes-small-button" type="button" data-note-action="edit" title="Editar texto">Editar</button>
@@ -1390,7 +1373,7 @@ async function insertNoteFile(card, file) {
     if (epoch !== notesEpoch || !card.isConnected || !getNoteFromCard(card) || isNotebookReadOnly()) return;
     const image = document.createElement("img");
     image.src = source;
-    image.alt = String(file.name || "Imagem da página").slice(0, 120);
+    image.alt = String(file.name || "Imagem da página");
     insertNodeIntoNote(card, image);
   } catch (error) {
     if (epoch !== notesEpoch || !card.isConnected || !getNoteFromCard(card)) return;
@@ -2049,7 +2032,7 @@ function normalizeResourceInput(resource, field) {
 
 function sanitizeDamageReduction(rawReduction) {
   if (!rawReduction || typeof rawReduction !== "object") return null;
-  const name = String(rawReduction.name || "").trim().slice(0, 50);
+  const name = String(rawReduction.name || "").trim();
   if (!name) return null;
   return {
     id: String(rawReduction.id || `rd-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`).slice(0, 100),
@@ -2076,7 +2059,6 @@ function renderDamageReductions() {
     const name = document.createElement("input");
     name.type = "text";
     name.value = reduction.name;
-    name.maxLength = 50;
     name.dataset.rdField = "name";
     name.setAttribute("aria-label", "Nome da redução de dano");
 
@@ -2265,7 +2247,7 @@ function normalizeSheetRollSounds(raw) {
     const uid = String(ref.uid || "");
     const id = String(ref.id || "");
     if (!/^[A-Za-z0-9_-]{1,128}$/.test(uid) || !/^[A-Za-z0-9_-]{1,128}$/.test(id)) return;
-    const name = String(ref.name || "Áudio").trim().slice(0, 120) || "Áudio";
+    const name = String(ref.name || "Áudio").trim() || "Áudio";
     if (ref.kind === "youtube" && ref.mimeType === "video/youtube") {
       if (!/^[A-Za-z0-9_-]{11}$/.test(String(ref.videoId || ""))) return;
       if (typeof ref.startSeconds !== "number" || typeof ref.endSeconds !== "number"
@@ -2320,8 +2302,8 @@ function captureCompleteSheetState() {
       training: TRAINING[value.training] ? value.training : "leigo",
       mainDiceCount: String(normalizeMainDiceCountValue(value.mainDiceCount)),
       mainDiceMode: "advantage",
-      diceModifier: String(value.diceModifier || "").trim().slice(0, 512),
-      fixedModifier: String(value.fixedModifier || "").trim().slice(0, 12),
+      diceModifier: String(value.diceModifier || "").trim(),
+      fixedModifier: String(value.fixedModifier || "").trim(),
     };
   });
 
@@ -2329,8 +2311,8 @@ function captureCompleteSheetState() {
   return {
     schemaVersion: 12,
     profile: {
-      name: document.querySelector("#character-name").value.trim().slice(0, 120),
-      background: document.querySelector("#character-background").value.trim().slice(0, 240),
+      name: document.querySelector("#character-name").value.trim(),
+      background: document.querySelector("#character-background").value.trim(),
       portrait: portraitPreview.hidden ? "" : String(portraitPreview.src || ""),
       echo: ECHOES[characterEchoSelect.value] ? characterEchoSelect.value : "",
       echoPoints: clampInteger(echoPoints, 0, 5, 0),
@@ -2446,8 +2428,8 @@ function sanitizeStoredRowState(rawState) {
     training: TRAINING[state.training] ? state.training : "leigo",
     mainDiceCount: String(normalizeMainDiceCountValue(adjustment)),
     mainDiceMode: "advantage",
-    diceModifier: String(state.diceModifier || "").trim().slice(0, 512),
-    fixedModifier: /^[-+]?\d{1,7}$/.test(fixedModifier) ? fixedModifier : "",
+    diceModifier: String(state.diceModifier || "").trim(),
+    fixedModifier: /^[-+]?\d+$/.test(fixedModifier) ? fixedModifier : "",
   };
 }
 
@@ -2543,7 +2525,7 @@ function serializeInventoryItemForCloud(rawItem) {
 
 function sanitizePurchaseHistoryEntry(rawEntry) {
   if (!rawEntry || typeof rawEntry !== "object") return null;
-  const name = String(rawEntry.name || "").trim().slice(0, 100);
+  const name = String(rawEntry.name || "").trim();
   if (!name) return null;
   const parsedDate = new Date(rawEntry.purchasedAt);
   if (Number.isNaN(parsedDate.getTime())) return null;
@@ -2569,7 +2551,7 @@ function sanitizePurchaseHistoryEntry(rawEntry) {
 function sanitizeAbility(rawAbility) {
   if (!rawAbility || typeof rawAbility !== "object") return null;
 
-  const name = String(rawAbility.name || "").trim().slice(0, 80);
+  const name = String(rawAbility.name || "").trim();
   if (!name) return null;
   const section = ABILITY_SECTIONS[rawAbility.section] ? rawAbility.section : "attacks";
   const upgradeType = section === "upgrades" ? sanitizeUpgradeType(rawAbility.upgradeType) : "";
@@ -2588,7 +2570,7 @@ function sanitizeAbility(rawAbility) {
     upgradeType,
     name,
     ...sanitizeCreationDescription(rawAbility),
-    origin: String(rawAbility.origin || "").trim().slice(0, 120),
+    origin: String(rawAbility.origin || "").trim(),
     echoKey,
     hasDamage,
     damage: hasDamage ? damageProfile.primary : "",
@@ -2654,8 +2636,8 @@ function applyCompleteSheetState(rawState, options = {}) {
     });
     renderSkills(rowStates);
 
-    document.querySelector("#character-name").value = String(profile.name || "").slice(0, 120);
-    document.querySelector("#character-background").value = String(profile.background || "").slice(0, 240);
+    document.querySelector("#character-name").value = String(profile.name || "");
+    document.querySelector("#character-background").value = String(profile.background || "");
     characterEchoSelect.value = ECHOES[profile.echo] ? profile.echo : "";
     echoPoints = clampInteger(profile.echoPoints, 0, 5, 0);
     themeSettings = sanitizeTheme(profile.appearance);
@@ -2747,7 +2729,7 @@ function applyCompleteSheetState(rawState, options = {}) {
 
     skillLimitApprovedKeys.clear();
     (Array.isArray(sheet.skillLimitApprovedIds) ? sheet.skillLimitApprovedIds : []).forEach((key) => {
-      if (typeof key === "string" && key.length <= 160) skillLimitApprovedKeys.add(key);
+      if (typeof key === "string") skillLimitApprovedKeys.add(key);
     });
 
     const shouldInitializeClassValues = Boolean(characterClassSelect.value) && ["pv", "pa", "sa"]
@@ -2888,7 +2870,6 @@ function renderSkills(rowStates = captureSkillRowState()) {
             autocomplete="off"
             spellcheck="false"
             placeholder="Ex: 1d8"
-            maxlength="512"
             title="Some ou subtraia grupos: 1d8 + 1d12 − 1d4. Também aceita vírgulas."
             data-dice-modifier="${index}"
             aria-label="Dados extras positivos ou negativos em ${safeName}"
@@ -3001,15 +2982,15 @@ function createCustomSkillId() {
 
 function sanitizeUse(rawUse) {
   if (!rawUse || typeof rawUse !== "object") return null;
-  const name = String(rawUse.name || "").trim().slice(0, 80);
-  const text = String(rawUse.text || "").trim().slice(0, 1800);
+  const name = String(rawUse.name || "").trim();
+  const text = String(rawUse.text || "").trim();
   return name && text ? { name, text } : null;
 }
 
 function sanitizeCompetency(rawCompetency) {
   if (!rawCompetency || typeof rawCompetency !== "object") return null;
-  const name = String(rawCompetency.name || "").trim().slice(0, 80);
-  const description = String(rawCompetency.description || "").trim().slice(0, 1800);
+  const name = String(rawCompetency.name || "").trim();
+  const description = String(rawCompetency.description || "").trim();
   if (!name || !description) return null;
 
   const uses = Array.isArray(rawCompetency.uses)
@@ -3018,9 +2999,9 @@ function sanitizeCompetency(rawCompetency) {
   const specializations = Array.isArray(rawCompetency.specializations)
     ? rawCompetency.specializations.map((rawSpecialization) => {
         if (!rawSpecialization || typeof rawSpecialization !== "object") return null;
-        const specializationName = String(rawSpecialization.name || "").trim().slice(0, 80);
-        const ability = String(rawSpecialization.ability || "").trim().slice(0, 100);
-        const text = String(rawSpecialization.text || "").trim().slice(0, 1800);
+        const specializationName = String(rawSpecialization.name || "").trim();
+        const ability = String(rawSpecialization.ability || "").trim();
+        const text = String(rawSpecialization.text || "").trim();
         return specializationName && ability && text
           ? { name: specializationName, ability, text }
           : null;
@@ -3032,9 +3013,9 @@ function sanitizeCompetency(rawCompetency) {
 
 function sanitizeCustomSkill(rawSkill) {
   if (!rawSkill || typeof rawSkill !== "object") return null;
-  const name = String(rawSkill.name || "").trim().slice(0, 60);
+  const name = String(rawSkill.name || "").trim();
   const attribute = ATTRIBUTES[rawSkill.attribute] ? rawSkill.attribute : "INT";
-  const description = String(rawSkill.description || "").trim().slice(0, 1200);
+  const description = String(rawSkill.description || "").trim();
   if (!name || !description) return null;
 
   const uses = Array.isArray(rawSkill.uses)
@@ -3101,11 +3082,11 @@ function createBuilderUseItem(kind = "skill") {
   item.innerHTML = `
     <label class="builder-field">
       <span>Nome do uso</span>
-      <input class="builder-use-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Orientar" />
+      <input class="builder-use-name" type="text" autocomplete="off" placeholder="Ex.: Orientar" />
     </label>
     <label class="builder-field">
       <span>Descrição do uso</span>
-      <textarea class="builder-use-text" rows="2" maxlength="1800" placeholder="Explique quando e como este uso funciona."></textarea>
+      <textarea class="builder-use-text" rows="2" placeholder="Explique quando e como este uso funciona."></textarea>
     </label>
     <button class="builder-remove-button" type="button" data-remove-builder-use>Remover</button>`;
   return item;
@@ -3118,15 +3099,15 @@ function createBuilderSpecializationItem() {
   item.innerHTML = `
     <label class="builder-field">
       <span>Especialização</span>
-      <input class="builder-specialization-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Cartografia" />
+      <input class="builder-specialization-name" type="text" autocomplete="off" placeholder="Ex.: Cartografia" />
     </label>
     <label class="builder-field">
       <span>Nome do uso</span>
-      <input class="builder-specialization-ability" type="text" maxlength="100" autocomplete="off" placeholder="Ex.: Ler Mapas" />
+      <input class="builder-specialization-ability" type="text" autocomplete="off" placeholder="Ex.: Ler Mapas" />
     </label>
     <label class="builder-field builder-specialization-description">
       <span>Descrição</span>
-      <textarea class="builder-specialization-text" rows="2" maxlength="1800" placeholder="Descreva o benefício ou uso da Especialização."></textarea>
+      <textarea class="builder-specialization-text" rows="2" placeholder="Descreva o benefício ou uso da Especialização."></textarea>
     </label>
     <button class="builder-remove-button" type="button" data-remove-builder-specialization>Remover</button>`;
   return item;
@@ -3151,11 +3132,11 @@ function createBuilderCompetencyCard() {
     <div class="builder-grid builder-competency-fields">
       <label class="builder-field">
         <span>Nome da Competência</span>
-        <input class="builder-competency-name" type="text" maxlength="80" autocomplete="off" placeholder="Ex.: Domínio Náutico" />
+        <input class="builder-competency-name" type="text" autocomplete="off" placeholder="Ex.: Domínio Náutico" />
       </label>
       <label class="builder-field builder-field-wide">
         <span>Descrição</span>
-        <textarea class="builder-competency-description" rows="3" maxlength="1800" placeholder="O que este conhecimento representa?"></textarea>
+        <textarea class="builder-competency-description" rows="3" placeholder="O que este conhecimento representa?"></textarea>
       </label>
     </div>
     <section class="builder-subgroup">
