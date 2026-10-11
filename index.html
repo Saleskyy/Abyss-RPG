@@ -25,7 +25,7 @@
 
     <link rel="stylesheet" href="css/05-theme-audio-slots.css?v=background-panels-20261010" />
 
-    <link rel="stylesheet" href="css/06-grimoire-history.css?v=minerva-fit-20261009" />
+    <link rel="stylesheet" href="css/06-grimoire-history.css?v=creation-images-20261011" />
 
   </head>
   <body class="slot-gate-open">
@@ -2120,7 +2120,7 @@
                 <button class="creation-editor-nav-button" type="button" data-creation-jump="ability-description-section" aria-controls="ability-description-section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h11M4 18h8"/></svg><span>Descrição<small>Texto e formatação</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 7 7-7 7"/></svg></button>
                 <button class="creation-editor-nav-button" type="button" data-creation-jump="ability-shop-fields" aria-controls="ability-shop-fields" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v11h14V9M3 9l2-5h14l2 5M3 9h18M9 20v-7h6v7"/></svg><span>Loja<small>Preço e publicação</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 7 7-7 7"/></svg></button>
                 <button class="creation-editor-nav-button" type="button" data-creation-jump="ability-rules-section" aria-controls="ability-rules-section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 6-3 12H6L3 8zM3 8l9 4 9-4M12 2v10M6 20l6-8 6 8"/></svg><span>Rolagens e efeitos<small>Regras opcionais</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 7 7-7 7"/></svg></button>
-                <button class="creation-editor-nav-button" type="button" data-creation-jump="ability-media-section" aria-controls="ability-media-section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 16l5-5 4 4 3-3 4 4"/><circle cx="15.5" cy="8.5" r="1.5"/></svg><span>Imagem ou GIF<small>Arquivo ou link</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 7 7-7 7"/></svg></button>
+                <button class="creation-editor-nav-button" type="button" data-creation-jump="ability-media-section" aria-controls="ability-media-section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 16l5-5 4 4 3-3 4 4"/><circle cx="15.5" cy="8.5" r="1.5"/></svg><span>Imagem da criação<small>Arquivo ou link</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 7 7-7 7"/></svg></button>
               </nav>
               <p class="creation-editor-sidebar-help">Passe pelas seções para organizar sua criação. Rolagens, efeitos e imagens são opcionais.</p>
             </aside>
@@ -2279,7 +2279,7 @@
             </details>
 
             <details id="ability-media-section" class="editor-optional editor-media" data-editor-panel="media" data-creation-section="media">
-              <summary class="editor-optional-summary"><span><strong id="ability-media-title">Imagem ou GIF</strong><small>Arquivo ou link · opcional</small></span></summary>
+              <summary class="editor-optional-summary"><span><strong id="ability-media-title">Imagem da criação</strong><small>Substitui o símbolo padrão no Grimório · opcional</small></span></summary>
               <section class="ability-media-editor" aria-labelledby="ability-media-title">
               <div id="ability-media-preview" class="ability-media-preview">
                 <span aria-hidden="true">✦</span>
@@ -2290,7 +2290,7 @@
                 
 
                 <label class="builder-field">
-                  <span>Link da mídia</span>
+                  <span>Link da imagem</span>
                   <input
                     id="ability-media-url"
                     type="url"
@@ -2312,10 +2312,10 @@
                 </label>
 
                 <button id="clear-ability-media" class="clear-ability-media" type="button">
-                  Remover mídia
+                  Remover imagem
                 </button>
                 <p id="ability-file-name" class="ability-file-name">
-                  PNG, JPG, WEBP ou GIF · até 8 MB. O arquivo será salvo com a conta.
+                  PNG, JPG, WEBP ou GIF · até 8 MB. Aparece na lista e nos detalhes da criação. O arquivo será salvo com a conta.
                 </p>
               </div>
             </section>
@@ -2373,6 +2373,7 @@
                 <button class="creation-editor-nav-button" type="button" data-creation-jump="item-description-section" aria-controls="item-description-section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 10h16M4 14h11M4 18h8"/></svg><span>Descrição<small>Texto e formatação</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 7 7-7 7"/></svg></button>
                 <button class="creation-editor-nav-button" type="button" data-creation-jump="item-publication-group" aria-controls="item-publication-group" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 9v11h14V9M3 9l2-5h14l2 5M3 9h18M9 20v-7h6v7"/></svg><span>Loja<small>Preço e publicação</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 7 7-7 7"/></svg></button>
                 <button class="creation-editor-nav-button" type="button" data-creation-jump="item-rules-section" aria-controls="item-rules-section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 6-3 12H6L3 8zM3 8l9 4 9-4M12 2v10M6 20l6-8 6 8"/></svg><span>Rolagens e efeitos<small>Regras opcionais</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 7 7-7 7"/></svg></button>
+                <button class="creation-editor-nav-button" type="button" data-creation-jump="item-media-section" aria-controls="item-media-section"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM4 16l5-5 4 4 3-3 4 4"/><circle cx="15.5" cy="8.5" r="1.5"/></svg><span>Imagem da criação<small>Arquivo ou link</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 7 7-7 7"/></svg></button>
               </nav>
               <p class="creation-editor-sidebar-help">Passe pelas seções para organizar sua criação. Rolagens, efeitos e imagens são opcionais.</p>
             </aside>
@@ -2501,6 +2502,29 @@
                 </div>
               </div>
             </section>
+            </details>
+
+            <details id="item-media-section" class="editor-optional editor-media" data-editor-panel="media" data-creation-section="media">
+              <summary class="editor-optional-summary"><span><strong id="item-media-title">Imagem da criação</strong><small>Substitui o símbolo padrão no Grimório · opcional</small></span></summary>
+              <section class="ability-media-editor" aria-labelledby="item-media-title">
+                <div id="item-media-preview" class="ability-media-preview">
+                  <span aria-hidden="true">✦</span>
+                  <small>Prévia</small>
+                </div>
+                <div class="ability-media-fields">
+                  <label class="builder-field">
+                    <span>Link da imagem</span>
+                    <input id="item-media-url" type="url" autocomplete="off" placeholder="https://..." />
+                  </label>
+                  <label class="ability-file-button">
+                    <input id="item-media-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" />
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V4m0 0L8 8m4-4 4 4M5 13v6h14v-6"></path></svg>
+                    <span>Escolher arquivo</span>
+                  </label>
+                  <button id="clear-item-media" class="clear-ability-media" type="button">Remover imagem</button>
+                  <p id="item-file-name" class="ability-file-name">PNG, JPG, WEBP ou GIF · até 8 MB. Aparece na lista e nos detalhes da criação. O arquivo será salvo com a conta.</p>
+                </div>
+              </section>
             </details>
 
             
@@ -3001,11 +3025,11 @@
     <!-- Scripts em ordem: ficha primeiro, módulo da conta por último. -->
     <script src="js/01-catalogs.js"></script>
     <script src="js/02-theme.js?v=background-panels-20261010"></script>
-    <script src="js/03-sheet.js?v=unlimited-text-20261011"></script>
-    <script src="js/04-creations.js?v=unlimited-text-20261011"></script>
+    <script src="js/03-sheet.js?v=creation-images-20261011"></script>
+    <script src="js/04-creations.js?v=creation-images-20261011"></script>
     <script src="js/05-rolls-dialogs.js"></script>
-    <script src="js/06-events-startup.js?v=unlimited-text-20261011"></script>
+    <script src="js/06-events-startup.js?v=creation-images-20261011"></script>
 
-    <script type="module" src="js/07-cloud.js?v=unlimited-text-20261011"></script>
+    <script type="module" src="js/07-cloud.js?v=creation-images-20261011"></script>
   </body>
 </html>
