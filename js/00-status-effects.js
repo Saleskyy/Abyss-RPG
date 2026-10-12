@@ -190,20 +190,8 @@
     const maxPVAdjustment = conditionKeys.has("fragilizado") ? -10 : 0;
     resources.pv.max = Math.max(0, resources.pv.max + maxPVAdjustment);
     if (maxPVAdjustment) resources.pv.current = Math.min(resources.pv.current, resources.pv.max);
-    const healthActive = {
-      machucado: resources.pv.max > 0 && resources.pv.current <= resources.pv.max / 2,
-      perturbado: resources.sa.max > 0 && resources.sa.current <= resources.sa.max / 2,
-      enlouquecido: resources.sa.max > 0 && resources.sa.current <= 0,
-    };
-    // These three conditions are defined by resources even if the Mestre added
-    // a record manually. Keep the record for moderation, but no healed penalty.
-    for (let index = activeEffects.length - 1; index >= 0; index -= 1) {
-      const entry = activeEffects[index];
-      if (entry.type !== "condition" || !Object.hasOwn(healthActive, entry.key) || healthActive[entry.key]) continue;
-      suppressedEffects.unshift({ ...entry, suppressed: true, reason: "Inativa nos recursos atuais." });
-      activeEffects.splice(index, 1);
-      conditionKeys.delete(entry.key);
-    }
+    // A record applied by the Mestre stays active until they remove it. Only
+    // automatically derived health conditions follow the resource thresholds.
     if (resources.pv.max > 0 && resources.pv.current <= resources.pv.max / 2) implyCondition("machucado", null, true);
     if (resources.sa.max > 0 && resources.sa.current <= resources.sa.max / 2) implyCondition("perturbado", null, true);
     if (resources.sa.max > 0 && resources.sa.current <= 0) implyCondition("enlouquecido", null, true);
@@ -225,8 +213,7 @@
       if (["exausto", "envenenado", "congelando"].includes(entry.key)) implyCondition("lento", entry);
       if (entry.key === "envenenado") implyCondition("enjoado", entry);
       if (entry.key === "petrificado") { implyCondition("silenciado", entry); implyCondition("imovel", entry); }
-      if (entry.key === "cego" && context.attackReliesOnSight && !context.canUseOtherSense) implyCondition("desprevenido", entry);
-      if (entry.key === "surdo" && context.attackReliesOnHearing) implyCondition("desprevenido", entry);
+      if (["cego", "surdo"].includes(entry.key)) implyCondition("desprevenido", entry);
     }
 
     const adjustments = { maxPV: maxPVAdjustment, movementFlat: 0, movementHalf: false, movementBlocked: false, blockConstitution: false, globalTest: 0, skillTests: {}, disadvantage: 0, defense: { global: 0, projectile: 0, melee: 0, nextHit: 0 } };
@@ -235,14 +222,6 @@
     const notes = suppressedEffects.map((entry) => ({ ...entry }));
     const skillName = normalizeKey(context.skillName || context.skill);
     const sensesNames = ["sentidos", "ver", "ouvir", "olfato", "tato", "paladar"];
-    const perceptionSkills = [...sensesNames, "intuicao"];
-    const againstSource = Boolean(context.againstSource || context.againstFearSource);
-    const firstTest = context.firstTest ?? runtime.firstTestPending ?? runtime.firstTest;
-    const firstFightOrShot = context.firstFightOrShot ?? runtime.firstFightOrShotPending;
-    const firstStandardAction = context.firstStandardAction ?? runtime.firstStandardActionPending;
-    const firstAgainstSource = context.firstAgainstSource ?? context.firstAgainstFearInTurn ?? runtime.firstAgainstSourcePending;
-    const afterDamage = context.afterDamage ?? runtime.afterDamage;
-    const paActionsThisTurn = finite(context.paActionsThisTurn ?? runtime.paActionsThisTurn);
     let conditionalTest = 0;
     let disadvantage = 0;
 
@@ -259,11 +238,11 @@
     }
     function conditional(effect, label, amount, applies) {
       if (applies) conditionalTest += amount;
-      addModifier(effect, label, "tests", amount, true, applies);
+      addModifier(effect, label, "tests", amount, false, applies);
     }
     function disadvantageFor(effect, label, applies) {
       if (applies) disadvantage += 1;
-      addModifier(effect, label, "disadvantage", 1, true, applies);
+      addModifier(effect, label, "disadvantage", 1, false, applies);
     }
 
     for (const effect of activeEffects) {
@@ -274,14 +253,14 @@
       notes.push({ id: effect.id, name: effect.name, description: effect.description, category: effect.category, derived: Boolean(effect.derived), automatic: Boolean(effect.automatic), sourceName: effect.sourceName || "", rolls: effect.rolls });
       const key = effect.key;
       if (effect.type === "wound") {
-        if (key === "dor-persistente") { flags.paFirstStandard += 1; addModifier(effect, "Primeira Ação Padrão do Turno", "paCost", 1, true, Boolean(context.standardAction && firstStandardAction)); }
+        if (key === "dor-persistente") { flags.paFirstStandard += 1; addModifier(effect, "Ações com custo em PA", "paCost", 1); }
         if (key === "movimentacao-comprometida") { adjustments.movementFlat -= 2; addModifier(effect, "Deslocamento", "movement", -2); }
-        if (key === "coordenacao-prejudicada") disadvantageFor(effect, "Primeira Rolagem de Luta ou Pontaria do Turno", ["luta", "pontaria"].includes(skillName) && Boolean(firstFightOrShot));
+        if (key === "coordenacao-prejudicada") disadvantageFor(effect, "Luta, Pontaria", ["luta", "pontaria"].includes(skillName));
         if (key === "reflexos-abalados") flags.evasionCannotRaiseHardMargin = true;
         if (key === "guarda-comprometida") { adjustments.blockConstitution = true; addModifier(effect, "Bloqueio sem Constituição", "block", -Math.max(0, finite(context.constitution))); }
-        if (key === "folego-curto") flags.paAfterFirstAction += 1;
-        if (key === "sensibilidade-ao-impacto") flags.firstIncomingDamageExtraDice += 1;
-        if (key === "instabilidade") disadvantageFor(effect, "Primeira Rolagem após sofrer dano", Boolean(afterDamage));
+        if (key === "folego-curto") { flags.paAfterFirstAction += 1; addModifier(effect, "Ações com custo em PA", "paCost", 1); }
+        if (key === "sensibilidade-ao-impacto") { flags.firstIncomingDamageExtraDice += 1; addModifier(effect, "Dano recebido", "incomingDamageDice", 1); }
+        if (key === "instabilidade") disadvantageFor(effect, "Todos os Testes", true);
         if (key === "ferimento-limitante") {
           const selected = effect.chosenSkill || effect.skillName || context.limitingSkills?.[effect.id] || context.limitingSkill;
           const valid = limitedSkills.find((name) => normalizeKey(name) === normalizeKey(selected));
@@ -289,16 +268,16 @@
           disadvantageFor(effect, valid ? `Rolagens de ${valid}` : "Escolher Luta, Pontaria, Reflexos, Atletismo ou Fortitude", Boolean(valid && skillName === normalizeKey(valid)));
         }
       } else if (effect.type === "fear") {
-        if (key === "assustado-sobressalto") conditional(effect, "Primeiro Teste do Turno", -2, Boolean(firstTest));
-        if (key === "assustado-tremor") conditional(effect, "Testes de precisão física", -2, Boolean(context.physicalPrecision || context.precision || ["luta", "pontaria", "crime"].includes(skillName)));
+        if (key === "assustado-sobressalto") allTests(effect, -2);
+        if (key === "assustado-tremor") allTests(effect, -2);
         if (key === "assustado-distracao") { skills(effect, ["Intuição", "Sentidos"], -2); if ((sensesNames.includes(skillName) || context.senses) && !["sentidos", "intuicao"].includes(skillName)) conditional(effect, "Testes de Sentidos", -2, true); }
-        if (key === "assustado-hesitacao") conditional(effect, "Primeiro Teste contra a fonte do Medo no Turno", -2, againstSource && Boolean(firstAgainstSource));
+        if (key === "assustado-hesitacao") allTests(effect, -2);
         if (key === "ansioso-agitacao") allTests(effect, -2);
         if (["ansioso-hipervigilancia", "desesperado-colapso", "desesperado-desespero-absoluto"].includes(key)) flags.noCombatReactions = true;
         if (key === "ansioso-inquietacao") { adjustments.movementHalf = true; addModifier(effect, "Deslocamento pela metade", "movementMultiplier", 0.5); }
-        if (key === "ansioso-bloqueio-mental") conditional(effect, "Concentração, raciocínio ou controle emocional", -3, Boolean(context.concentration));
+        if (key === "ansioso-bloqueio-mental") allTests(effect, -3);
         if (["apavorado-fuga-instintiva", "desesperado-panico"].includes(key)) flags.mustWithdrawFromFear = true;
-        if (key === "apavorado-paralisia") { flags.movementActionBlocked = true; allTests(effect, -2); }
+        if (key === "apavorado-paralisia") { flags.movementActionBlocked = true; adjustments.movementBlocked = true; allTests(effect, -2); }
         if (["apavorado-incapaz-de-enfrentar", "desesperado-panico"].includes(key)) flags.approachFearBlocked = true;
         if (key === "apavorado-incapaz-de-enfrentar") flags.requireWillAgainstFear = true;
         if (key === "desesperado-terror-paralisante") flags.oneMainAction = true;
@@ -312,7 +291,7 @@
         if (key === "lento") { adjustments.movementHalf = true; addModifier(effect, "Deslocamento pela metade", "movementMultiplier", 0.5); }
         if (key === "exausto") skills(effect, ["Fortitude"], -2);
         if (key === "enjoado") flags.oneMainAction = true;
-        if (key === "desprevenido") { adjustments.defense.global -= 3; flags.nextIncomingAttackCriticalMarginDelta -= 1; addModifier(effect, "Defesa", "defense", -3); addModifier(effect, "Margem de Crítico do próximo ataque recebido", "incomingCriticalMargin", -1, true); }
+        if (key === "desprevenido") { adjustments.defense.global -= 3; flags.nextIncomingAttackCriticalMarginDelta -= 1; addModifier(effect, "Defesa", "defense", -3); addModifier(effect, "Margem de Crítico dos ataques recebidos", "incomingCriticalMargin", -1); }
         if (key === "cego") flags.automaticFailureSenses.push("Ver");
         if (key === "surdo") flags.automaticFailureSenses.push("Ouvir");
         if (key === "silenciado") flags.noSpeech = true;
@@ -320,13 +299,13 @@
         if (key === "imovel") { flags.standardActionBlocked = true; flags.movementActionBlocked = true; flags.interferenceActionBlocked = true; }
         if (key === "fragilizado") addModifier(effect, "PV Máximos", "maxPV", -10);
         if (key === "debilitado") skills(effect, ["Acrobacia", "Atletismo", "Fortitude", "Furtividade", "Luta", "Pontaria", "Reflexos"], -3);
-        if (key === "vulneravel") { adjustments.defense.nextHit -= 3; flags.nextIncomingDamageExtraDice += 1; addModifier(effect, "Defesa para o próximo ataque que atingir", "defenseNextHit", -3, true, Boolean(context.incomingAttack)); addModifier(effect, "Próximo ataque que atingir", "incomingDamageDice", 1, true); }
+        if (key === "vulneravel") { adjustments.defense.global -= 3; flags.nextIncomingDamageExtraDice += 1; addModifier(effect, "Defesa", "defense", -3); addModifier(effect, "Dano recebido", "incomingDamageDice", 1); }
         if (key === "confuso") { skills(effect, ["Intuição", "Sentidos"], -2); if ((sensesNames.includes(skillName) || context.senses) && !["sentidos", "intuicao"].includes(skillName)) conditional(effect, "Testes de Sentidos", -2, true); }
-        if (key === "amedrontado") { flags.approachFearBlocked = true; conditional(effect, "Testes contra a fonte do Medo", -2, againstSource); }
+        if (key === "amedrontado") { flags.approachFearBlocked = true; allTests(effect, -2); }
         if (key === "perturbado") skills(effect, ["Vontade"], -2);
-        if (key === "encantado") conditional(effect, "Testes Opostos contra quem o Encantou", -2, Boolean(context.opposed && (context.againstEnchantingSource || context.againstSource)));
-        if (key === "desorientado") { flags.noCombatReactions = true; conditional(effect, "Percepção e orientação", -2, Boolean(context.perception || context.senses || perceptionSkills.includes(skillName))); }
-        if (key === "frustrado") { flags.frustrated = true; skills(effect, ["Vontade"], -2); addModifier(effect, "SA perdida ao falhar em um Teste", "failureSA", -1, true); }
+        if (key === "encantado") allTests(effect, -2);
+        if (key === "desorientado") { flags.noCombatReactions = true; allTests(effect, -2); }
+        if (key === "frustrado") { flags.frustrated = true; skills(effect, ["Vontade"], -2); addModifier(effect, "SA perdida ao falhar em um Teste", "failureSA", -1); }
         if (key === "selado") flags.magicSealed = true;
         if (key === "intangivel") { flags.intangible = true; flags.physicalDamageImmune = true; }
       }
@@ -335,10 +314,7 @@
     const constitution = Math.max(0, finite(context.constitution));
     const movement = Math.max(0, finite(context.movement, 6) + adjustments.movementFlat);
     const defenseType = context.attackType === "projectile" ? adjustments.defense.projectile : context.attackType === "melee" ? adjustments.defense.melee : 0;
-    const standardSurcharge = context.standardAction && firstStandardAction ? flags.paFirstStandard : 0;
-    const hasPACost = finite(context.paCost) > 0 || standardSurcharge > 0;
-    const laterActionSurcharge = hasPACost && paActionsThisTurn >= 1 ? flags.paAfterFirstAction : 0;
-    for (const effect of activeEffects) if (effect.type === "wound" && effect.key === "folego-curto") addModifier(effect, "Segunda Ação com custo em PA e seguintes", "paCost", 1, true, hasPACost && paActionsThisTurn >= 1);
+    const hasPACost = finite(context.paCost) > 0;
     adjustments.disadvantage = disadvantage;
     return {
       effects, derivedEffects, activeEffects, suppressedEffects, notes, adjustments, modifiers, flags, resources, runtime,
@@ -347,9 +323,9 @@
       effectiveBlock: Math.max(0, finite(context.block) - (adjustments.blockConstitution ? constitution : 0)),
       testPenalty: adjustments.globalTest + skillAdjustment + conditionalTest,
       disadvantage,
-      defensePenalty: adjustments.defense.global + defenseType + (context.incomingAttack ? adjustments.defense.nextHit : 0),
-      paSurcharge: standardSurcharge + laterActionSurcharge,
-      incomingDamageDiceBonus: flags.nextIncomingDamageExtraDice + (context.firstDamageThisRound ? flags.firstIncomingDamageExtraDice : 0),
+      defensePenalty: adjustments.defense.global + defenseType,
+      paSurcharge: hasPACost ? flags.paFirstStandard + flags.paAfterFirstAction : 0,
+      incomingDamageDiceBonus: flags.nextIncomingDamageExtraDice + flags.firstIncomingDamageExtraDice,
       automaticFailure: flags.automaticFailureSenses.some((name) => normalizeKey(name) === skillName || normalizeKey(name) === normalizeKey(context.sense)),
     };
   }
@@ -401,8 +377,8 @@
       }
       for (const effect of active) if (effect.type === "condition" && effect.key === "energizado") applyPeriodic(effect, 6, "pa", 1);
     } else if (phase === "hit") {
-      consumedEffectIds = effects.filter((effect) => effect.type === "condition" && ["desprevenido", "vulneravel"].includes(effect.key)).map((effect) => effect.id);
-      resultEffects = effects.filter((effect) => !consumedEffectIds.includes(effect.id));
+      // Manual effects, including Vulnerável and Desprevenido, are removed only
+      // by the Mestre. A hit never consumes their modifiers.
       runtime.afterDamage = true;
     }
     const summary = summarize(resultEffects, resources, { runtime });
