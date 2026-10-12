@@ -26,7 +26,6 @@
     <link rel="stylesheet" href="css/05-theme-audio-slots.css?v=background-panels-20261010" />
 
     <link rel="stylesheet" href="css/06-grimoire-history.css?v=creation-images-20261011" />
-    <link rel="stylesheet" href="css/07-status-effects.css?v=status-effects-20261012" />
 
   </head>
   <body class="slot-gate-open">
@@ -381,7 +380,6 @@
               <span class="portrait-corner portrait-corner-bottom"></span>
             </label>
             <input id="portrait-input" type="file" accept="image/png,image/jpeg,image/webp" />
-            <button id="sheet-status-warning" class="status-warning-button sheet-status-warning" type="button" hidden aria-label="Ver condições, ferimentos e medo do personagem">⚠<span id="sheet-status-count">0</span></button>
           </div>
         </section>
 
@@ -478,7 +476,6 @@
                 <button type="button" class="resource-limit-button" data-resource-limit="pv" data-limit="max" aria-label="Restaurar Pontos de Vida ao máximo" title="Restaurar Pontos de Vida ao máximo">↑</button>
               </div>
               <p class="resource-adjust-label">Insira o valor de adição/subtração</p>
-              <p class="resource-threshold"><span>Limite de Ferimento</span><output id="wound-limit" title="Metade dos PV Máximos, arredondada para cima">0</output></p>
               <p class="resource-adjust-feedback" data-resource-feedback="pv" aria-live="polite" hidden></p>
             </article>
 
@@ -532,7 +529,6 @@
                 <button type="button" class="resource-limit-button" data-resource-limit="sa" data-limit="max" aria-label="Restaurar Sanidade ao máximo" title="Restaurar Sanidade ao máximo">↑</button>
               </div>
               <p class="resource-adjust-label">Insira o valor de adição/subtração</p>
-              <p class="resource-threshold"><span>Espírito</span><output id="spirit-value" title="Um terço da SA Máxima, arredondado para cima">0</output></p>
               <p class="resource-adjust-feedback" data-resource-feedback="sa" aria-live="polite" hidden></p>
             </article>
           </div>
@@ -1383,16 +1379,7 @@
               </div>
               <span id="campaign-shield-count" class="abilities-count">0 personagens</span>
             </header>
-          <div id="campaign-shield-roster" class="campaign-shield-roster" aria-live="polite"></div>
-          <section id="campaign-status-controls" class="campaign-status-controls" hidden aria-label="Ferimentos, medo e condições">
-            <label class="status-target-field"><span>Personagem</span><select id="campaign-status-target" aria-label="Personagem que receberá o efeito"></select></label>
-            <div class="status-roll-buttons">
-              <button id="campaign-roll-wound" class="status-die-button is-wound" type="button"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 29 10 25 26 7 26 3 10Z M16 2 7 26 29 10 3 10 25 26Z"/></svg><span>Rolar Ferimento<small>1d10</small></span></button>
-              <button id="campaign-roll-fear" class="status-die-button is-fear" type="button"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2 29 10 25 26 7 26 3 10Z M16 2 7 26 29 10 3 10 25 26Z"/></svg><span>Rolar Medo<small>1d100 + 1d4</small></span></button>
-              <button id="campaign-add-condition" class="dialog-button status-add-condition" type="button">＋ Adicionar Condição</button>
-            </div>
-            <p id="campaign-status-feedback" class="status-feedback" role="status" aria-live="polite"></p>
-          </section>
+            <div id="campaign-shield-roster" class="campaign-shield-roster" aria-live="polite"></div>
           </section>
         </section>
       </main>
@@ -3035,34 +3022,14 @@
 
     <div id="identity-options-menu" class="identity-options-menu" role="listbox" hidden></div>
 
-    <div id="status-effects-modal" class="ability-modal" hidden>
-      <div class="roll-backdrop" data-close-status-effects aria-hidden="true"></div>
-      <section id="status-effects-dialog" class="ability-dialog status-effects-dialog" role="dialog" aria-modal="true" aria-labelledby="status-effects-title" tabindex="-1">
-        <header class="ability-dialog-head"><div><p class="eyebrow">Situação do personagem</p><h2 id="status-effects-title">Condições e notas</h2><p id="status-effects-subtitle"></p></div><button class="result-close" type="button" data-close-status-effects aria-label="Fechar condições e notas">×</button></header>
-        <div class="status-effects-content">
-          <div id="status-last-result" class="status-last-result" role="status" hidden></div>
-          <section id="status-wound-choice" hidden><label class="status-target-field"><span>Perícia afetada pelo Ferimento Limitante</span><select id="status-wound-skill"><option>Luta</option><option>Pontaria</option><option>Reflexos</option><option>Atletismo</option><option>Fortitude</option></select></label><button id="status-apply-wound" class="dialog-button" type="button">Aplicar Ferimento</button></section>
-          <section id="status-condition-chooser" hidden><label class="filter-input-shell"><input id="status-condition-search" class="filter-input" type="search" placeholder="Buscar condição..." aria-label="Buscar condição" /></label><div id="status-condition-list" class="status-condition-list"></div></section>
-          <section id="status-inspector"><div id="status-numeric-summary" class="status-numeric-summary"></div><div id="status-active-effects" class="status-active-effects"></div>
-            <div id="status-turn-controls" class="status-turn-controls" hidden><button class="dialog-button" type="button" data-status-turn="start">Iniciar turno</button><button class="dialog-button" type="button" data-status-turn="end">Encerrar turno</button><button class="dialog-button" type="button" data-status-turn="round">Nova rodada</button><button class="dialog-button" type="button" data-status-turn="hit">Resolver ataque recebido</button></div>
-            <section id="status-hit-fields" class="status-hit-fields" hidden><h3>Ataque recebido</h3><div class="status-hit-grid"><label class="status-target-field"><span>Dano antes dos efeitos</span><input id="status-hit-damage" type="number" min="0" step="1" value="0" /></label><label class="status-target-field"><span>Faces do dado de dano</span><input id="status-hit-die" type="number" min="2" max="1000" step="1" value="8" /></label><label class="status-target-field"><span>Tipo do dano</span><select id="status-hit-type"><option value="other">Outros danos</option><option value="physical">Físico</option></select></label></div><p class="status-context-help">O dado será usado se houver bônus de dano contra este personagem. Condições do próximo ataque serão encerradas após resolver.</p><button id="status-resolve-hit" class="dialog-button" type="button">Aplicar dano e resolver ataque</button></section>
-            <section class="status-notes-section"><h3>Notas do Mestre</h3><textarea id="status-master-notes" rows="5" placeholder="Anotações visíveis para todos os participantes." aria-label="Notas do Mestre"></textarea><button id="status-save-notes" class="dialog-button" type="button" hidden>Salvar notas</button><div id="status-automatic-notes" class="status-automatic-notes"></div></section>
-          </section>
-          <p id="status-modal-feedback" class="status-feedback" role="status" aria-live="polite"></p>
-        </div>
-        <footer class="ability-dialog-footer"><button class="dialog-button" type="button" data-close-status-effects>Fechar</button></footer>
-      </section>
-    </div>
-    <!-- Scripts em ordem: regras, ficha, interface de efeitos e módulo da conta. -->
-    <script src="js/00-status-effects.js?v=status-effects-20261012"></script>
+    <!-- Scripts em ordem: ficha primeiro, módulo da conta por último. -->
     <script src="js/01-catalogs.js"></script>
     <script src="js/02-theme.js?v=background-panels-20261010"></script>
-    <script src="js/03-sheet.js?v=status-effects-20261012"></script>
-    <script src="js/04-creations.js?v=status-effects-20261012"></script>
-    <script src="js/05-rolls-dialogs.js?v=status-effects-20261012"></script>
-    <script src="js/06-events-startup.js?v=status-effects-20261012"></script>
-    <script src="js/08-status-ui.js?v=status-effects-20261012"></script>
+    <script src="js/03-sheet.js?v=creation-images-20261011"></script>
+    <script src="js/04-creations.js?v=creation-images-20261011"></script>
+    <script src="js/05-rolls-dialogs.js"></script>
+    <script src="js/06-events-startup.js?v=creation-images-20261011"></script>
 
-    <script type="module" src="js/07-cloud.js?v=status-effects-20261012"></script>
+    <script type="module" src="js/07-cloud.js?v=creation-images-20261011"></script>
   </body>
 </html>
