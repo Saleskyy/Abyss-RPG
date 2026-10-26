@@ -17,9 +17,9 @@
     <!-- Estilos separados por área, carregados na ordem original. -->
     <link rel="stylesheet" href="css/01-foundation.css?v=echo-tags-20261010" />
 
-    <link rel="stylesheet" href="css/02-profile-mobile.css?v=ammo-editor-focus-20261014r3" />
+    <link rel="stylesheet" href="css/02-profile-mobile.css?v=shield-bases-20261024r8" />
 
-    <link rel="stylesheet" href="css/03-account-shop.css?v=shop-wallet-echo-20261013r3" />
+    <link rel="stylesheet" href="css/03-account-shop.css?v=shield-bases-20261024r8" />
 
     <link rel="stylesheet" href="css/04-notebooks-creations.css" />
 
@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="css/06-grimoire-history.css?v=creation-images-20261011" />
     <link rel="stylesheet" href="css/07-status-effects.css?v=inventory-weight-20261013" />
     <link rel="stylesheet" href="css/08-inventory-weapons.css?v=packages-weapon-skill-20261015r5" />
+    <link rel="stylesheet" href="css/09-minerva-safety.css?v=minerva-safety-20261024r1" />
 
   </head>
   <body class="slot-gate-open">
@@ -553,6 +554,7 @@
                 <h3>Defesa</h3>
                 <span id="defense-base-value" class="defense-base-value">Base —</span>
               </header>
+              <label class="stat-base-control"><span>Base</span><input type="number" step="1" inputmode="numeric" data-stat-base="defense" aria-label="Valor base da Defesa" /></label>
               <div class="combat-phrase">
                 <label>
                   <span class="sr-only">Zona de Dificuldade da Defesa</span>
@@ -593,6 +595,7 @@
                 <h3>Esquiva</h3>
                 <span id="evasion-base-value" class="defense-base-value">Base —</span>
               </header>
+              <div class="stat-base-row"><label class="stat-base-control"><span>Base</span><input type="number" step="1" inputmode="numeric" data-stat-base="evasion" aria-label="Valor base da Esquiva" /></label><button class="dt-auto-button" type="button" data-reset-stat-base="evasion">Usar cálculo</button></div>
               <div class="combat-phrase">
                 <label>
                   <span class="sr-only">Zona de Dificuldade da Esquiva</span>
@@ -658,6 +661,7 @@
                 <h3>Iniciativa</h3>
                 <span id="initiative-formula" class="defense-base-value">4 + AGI</span>
               </header>
+              <div class="stat-base-row"><label class="stat-base-control"><span>Base</span><input type="number" step="1" inputmode="numeric" data-stat-base="initiative" aria-label="Valor base da Iniciativa" /></label><button class="dt-auto-button" type="button" data-reset-stat-base="initiative">Usar cálculo</button></div>
               <div class="derived-combat-summary">
                 <output id="initiative-value" class="derived-combat-value" aria-live="polite">5</output>
                 <p id="initiative-detail" class="derived-combat-detail">Leigo em Reflexos · metade de d8 + AGI</p>
@@ -684,6 +688,7 @@
                 <h3>DT de Feitiçaria</h3>
                 <span id="spell-dt-base" class="defense-base-value">Base 13</span>
               </header>
+              <label class="stat-base-control"><span>Base</span><input type="number" step="1" inputmode="numeric" data-stat-base="spell" aria-label="Valor base da DT de Feitiçaria" /></label>
               <div class="combat-phrase">
                 <label><span class="sr-only">Zona de DT de Feitiçaria</span>
                   <select id="spell-dt-zone" aria-label="Zona de DT de Feitiçaria"><option value="easy">Fácil</option><option value="medium" selected>Normal</option><option value="hard">Difícil</option></select>
@@ -702,6 +707,7 @@
                 <h3>DT de Habilidades</h3>
                 <span id="ability-dt-base" class="defense-base-value">Base 11</span>
               </header>
+              <label class="stat-base-control"><span>Base</span><input type="number" step="1" inputmode="numeric" data-stat-base="ability" aria-label="Valor base da DT de Habilidades" /></label>
               <div class="combat-phrase">
                 <label><span class="sr-only">Zona de DT de Habilidades</span>
                   <select id="ability-dt-zone" aria-label="Zona de DT de Habilidades"><option value="easy">Fácil</option><option value="medium" selected>Normal</option><option value="hard">Difícil</option></select>
@@ -793,7 +799,7 @@
           <div class="skills-panel-head">
             <div>
               <h2>Lista de perícias</h2>
-              <p>Use o melhor Dado de Treinamento com vantagem ou o pior com desvantagem. Aplique o Dado de Atributo e os modificadores; atributos em 0 ou abaixo subtraem dados.</p>
+              <p>O Teste da Perícia é feita com uma Rolagem do seu Dado de Treinamento e aplicando o Dado de Atributo e os modificadores; atributos em 0 ou abaixo subtraem dados.</p>
             </div>
             <div class="skills-panel-actions">
               <span id="training-cap-status" class="training-cap-status" aria-live="polite">Escolha uma Classe no Perfil</span>
@@ -926,6 +932,7 @@
                 <button id="roll-wisdom-test" class="roll-button special-roll-button" type="button" aria-label="Testar Sabedoria" title="Testar Sabedoria"><span data-static-die="20" data-die-empty aria-hidden="true"></span></button>
               </header>
               <div class="wisdom-display"><span>Valor atual</span><output id="wisdom-value">35</output></div>
+              <div class="stat-base-row"><label class="stat-base-control"><span>Base</span><input type="number" step="1" inputmode="numeric" data-stat-base="wisdom" aria-label="Valor base de Sabedoria" /></label><button class="dt-auto-button" type="button" data-reset-stat-base="wisdom">Usar cálculo</button></div>
             </article>
 
             <article class="special-test-card senses-card" data-special-test="senses">
@@ -1376,6 +1383,10 @@
                 <p>Uma visão compartilhada dos personagens em cena. As barras acompanham os valores salvos nas fichas em tempo real.</p>
               </div>
               <div class="campaign-shield-controls">
+                <button id="campaign-shield-history" class="campaign-ghost-button" type="button" aria-haspopup="dialog" aria-controls="roll-history-modal">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10a8 8 0 1 1 .9 7.8M4 4v6h6"></path><path d="M12 7v5l3 2"></path></svg>
+                  Histórico da campanha
+                </button>
                 <label id="campaign-shield-toggle-wrap" class="mechanics-switch" hidden>
                   <input id="campaign-shield-hide-stats" type="checkbox" />
                   <span aria-hidden="true"></span>
@@ -2670,6 +2681,10 @@
           </div>
 
           <div class="minerva-head-actions">
+            <button id="open-minerva-safety" class="dialog-button minerva-safety-open" type="button" aria-haspopup="dialog" aria-controls="minerva-safety-modal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 3 4 6v6c0 4 4 7 8 9 4-2 8-5 8-9V6l-8-3Z"/><path d="m8.5 12 2.5 2.5 4.5-5"/></svg>
+              <span>Backup e recuperação</span>
+            </button>
             <button id="create-minerva-ability" class="create-ability-button" type="button">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M12 5v14M5 12h14"></path>
@@ -3125,16 +3140,54 @@
         <footer class="ability-dialog-footer"><button class="dialog-button" type="button" data-close-status-notice>Entendi</button></footer>
       </section>
     </div>
+    <div id="minerva-safety-modal" class="ability-modal minerva-safety-modal" hidden>
+      <div class="roll-backdrop" data-close-minerva-safety aria-hidden="true"></div>
+      <section id="minerva-safety-dialog" class="minerva-safety-dialog" role="dialog" aria-modal="true" aria-labelledby="minerva-safety-title" tabindex="-1">
+        <header class="minerva-safety-head">
+          <div><p class="eyebrow">Proteja suas criações</p><h2 id="minerva-safety-title">Backup e recuperação</h2><p>Uma cópia fora do site, uma segunda chance dentro dele.</p></div>
+          <button class="result-close" type="button" data-close-minerva-safety aria-label="Fechar backup e recuperação">×</button>
+        </header>
+        <div id="minerva-safety-tabs" class="minerva-safety-tabs" role="tablist" aria-label="Ferramentas de recuperação">
+          <button id="minerva-safety-tab-backup" type="button" role="tab" aria-controls="minerva-safety-panel-backup" aria-selected="true" data-minerva-safety-tab="backup">Backup completo</button>
+          <button id="minerva-safety-tab-trash" type="button" role="tab" aria-controls="minerva-safety-panel-trash" aria-selected="false" tabindex="-1" data-minerva-safety-tab="trash">Lixeira</button>
+          <button id="minerva-safety-tab-versions" type="button" role="tab" aria-controls="minerva-safety-panel-versions" aria-selected="false" tabindex="-1" data-minerva-safety-tab="versions">Versões anteriores</button>
+        </div>
+        <div class="minerva-safety-body">
+          <section id="minerva-safety-panel-backup" role="tabpanel" aria-labelledby="minerva-safety-tab-backup">
+            <div class="minerva-safety-intro"><span class="minerva-safety-emblem" aria-hidden="true">↓</span><div><h3>Seu Grimório com você</h3><p>Exporte as criações e suas imagens em um arquivo. Guarde uma cópia no computador e outra em um lugar seguro fora dele.</p></div></div>
+            <div class="minerva-safety-backup-grid">
+              <section class="minerva-safety-card"><p class="eyebrow">Guardar uma cópia</p><h3>Exportar o Grimório</h3><p>O arquivo inclui o acervo e os registros de recuperação disponíveis. Baixe uma nova cópia depois de mudanças importantes.</p><button id="minerva-backup-export" class="dialog-button minerva-safety-primary" type="button">↓ Exportar backup completo</button><small>A lixeira e as versões ficam na mesma nuvem do site. O arquivo baixado é sua cópia independente.</small></section>
+              <section class="minerva-safety-card"><p class="eyebrow">Trazer de volta</p><h3>Restaurar de um arquivo</h3><p>Escolha um backup para conferir seu conteúdo antes de restaurar. As criações que só existem no Grimório atual serão mantidas.</p><label class="dialog-button minerva-safety-file-label" for="minerva-backup-file">↑ Escolher arquivo de backup<input id="minerva-backup-file" type="file" accept="application/json,.json" /></label><small>Selecione o arquivo JSON exportado por este site.</small></section>
+            </div>
+            <section id="minerva-backup-preview" class="minerva-safety-card minerva-backup-preview" hidden aria-labelledby="minerva-backup-preview-title"><div><p class="eyebrow">Arquivo conferido</p><h3 id="minerva-backup-preview-title">Pronto para restaurar</h3><p id="minerva-backup-file-name"></p><div id="minerva-backup-summary" class="minerva-safety-summary"></div><p class="minerva-safety-restore-note">Criações ativas com o mesmo identificador serão recuperadas a partir do backup. A versão atual ficará guardada no histórico antes da mudança. A lixeira do backup não exclui criações ativas. Se houver uma interrupção, as etapas concluídas ficam salvas e você pode tentar novamente.</p></div><button id="minerva-backup-restore" class="dialog-button minerva-safety-primary" type="button">Restaurar este backup</button></section>
+            <details class="minerva-safety-activation"><summary>Primeira ativação no Firebase</summary><p>O responsável pelo site precisa publicar as regras do arquivo <strong>regras.txt</strong> atualizado no Firebase para ativar a lixeira e o histórico. Se uma operação disser que não há permissão, confira essa publicação antes de tentar novamente.</p></details>
+          </section>
+          <section id="minerva-safety-panel-trash" role="tabpanel" aria-labelledby="minerva-safety-tab-trash" hidden>
+            <div class="minerva-safety-section-heading"><div><h3>Criações excluídas</h3><p>Exclusões passam pela lixeira. Restaure uma criação para devolvê-la ao acervo.</p></div><button id="minerva-trash-refresh" class="dialog-button" type="button">Atualizar</button></div>
+            <label class="minerva-safety-search"><span>Buscar na lixeira</span><input id="minerva-trash-search" type="search" autocomplete="off" placeholder="Nome da criação..." /></label>
+            <div id="minerva-trash-list" class="minerva-safety-trash-list"></div>
+          </section>
+          <section id="minerva-safety-panel-versions" role="tabpanel" aria-labelledby="minerva-safety-tab-versions" hidden>
+            <div class="minerva-safety-section-heading"><div><h3>Uma versão anterior</h3><p>Veja o conteúdo salvo antes de editar e escolha a versão que deseja recuperar.</p></div><button id="minerva-versions-refresh" class="dialog-button" type="button">Atualizar</button></div>
+            <label class="minerva-safety-select"><span>Criação</span><select id="minerva-version-entry"><option value="">Escolha uma criação</option></select></label>
+            <div class="minerva-safety-version-workspace"><div id="minerva-version-list" class="minerva-safety-version-list" aria-label="Versões disponíveis"></div><section id="minerva-version-preview" class="minerva-safety-version-preview" aria-label="Conteúdo da versão selecionada"><p class="minerva-safety-empty">Escolha uma criação para ver suas versões anteriores.</p></section></div>
+          </section>
+        </div>
+        <footer class="minerva-safety-footer"><p id="minerva-safety-feedback" role="status" aria-live="polite"></p><button class="dialog-button" type="button" data-close-minerva-safety>Concluir</button></footer>
+      </section>
+    </div>
     <!-- Scripts em ordem: regras, ficha, interface de efeitos e módulo da conta. -->
     <script src="js/00-status-effects.js?v=grapple-conditions-20261013r2"></script>
     <script src="js/01-catalogs.js?v=medicinal-item-20261015r7"></script>
     <script src="js/02-theme.js?v=background-panels-20261010"></script>
-    <script src="js/03-sheet.js?v=ammo-editor-focus-20261014r3"></script>
-    <script src="js/04-creations.js?v=packages-weapon-skill-20261015r5"></script>
-    <script src="js/05-rolls-dialogs.js?v=inventory-weight-20261013"></script>
-    <script src="js/06-events-startup.js?v=packages-weapon-skill-20261015r5"></script>
+    <script src="js/03-sheet.js?v=percentile-margins-20261024r10"></script>
+    <script src="js/04-creations.js?v=minerva-safety-20261024r1"></script>
+    <script src="js/05-rolls-dialogs.js?v=percentile-margins-20261024r10"></script>
+    <script src="js/06-events-startup.js?v=percentile-margins-20261024r10"></script>
     <script src="js/08-status-ui.js?v=grapple-conditions-20261013r2"></script>
+    <script src="js/10-minerva-backup.js?v=minerva-safety-20261024r1"></script>
+    <script src="js/09-minerva-safety.js?v=minerva-safety-20261024r1"></script>
 
-    <script type="module" src="js/07-cloud.js?v=access-recovery-20261014r2"></script>
+    <script type="module" src="js/07-cloud.js?v=minerva-safety-20261024r1"></script>
   </body>
 </html>
