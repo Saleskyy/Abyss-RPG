@@ -1,0 +1,321 @@
+/* Collections share the same spacing for headers, controls and entries. */
+:is(#abilities-view, #inventory-view, #shop-view, #notes-view) {
+  --collection-gutter: clamp(14px, 2.35vw, 30px);
+  --collection-tint: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08);
+  --collection-border: color-mix(in srgb, var(--accent) 21%, var(--line));
+}
+
+:is(#abilities-view, #inventory-view, #shop-view) .abilities-panel { min-height: 0; }
+
+:is(#abilities-view, #inventory-view, #shop-view) .abilities-panel-head,
+#notes-view .notes-panel-head {
+  min-height: 0;
+  gap: 14px 20px;
+  padding: clamp(16px, 2vw, 24px) var(--collection-gutter);
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+
+:is(#abilities-view, #inventory-view, #shop-view, #notes-view) :is(.create-ability-button, .ability-secondary-button) {
+  min-height: 42px;
+  padding-inline: 14px;
+  border-radius: 6px;
+  font-size: .78rem;
+  line-height: 1.25;
+}
+
+:is(#abilities-view, #inventory-view, #notes-view) .create-ability-button {
+  border-color: color-mix(in srgb, var(--accent) 54%, var(--line));
+  color: var(--accent-bright);
+  background: color-mix(in srgb, var(--accent) 16%, var(--palette-panel, #0d0e12));
+}
+
+:is(#abilities-view, #inventory-view, #notes-view) .create-ability-button:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 24%, var(--palette-panel, #0d0e12));
+}
+
+:is(#abilities-view, #inventory-view, #shop-view, #notes-view) :is(.abilities-count, .notes-count) {
+  padding: 4px 0;
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  font-size: .77rem;
+  font-variant-numeric: tabular-nums;
+  white-space: normal;
+}
+
+:is(#abilities-view, #inventory-view, #shop-view, #notes-view) :is(.abilities-empty, .notes-empty) {
+  display: grid;
+  justify-items: center;
+  place-content: center;
+  min-height: 0;
+  gap: 8px;
+  margin: 0 var(--collection-gutter) var(--collection-gutter);
+  padding: clamp(24px, 4vw, 45px) 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  background: radial-gradient(ellipse at 50% 0, var(--collection-tint), transparent 75%);
+  text-align: center;
+}
+
+:is(#abilities-view, #inventory-view, #shop-view) .abilities-empty > span,
+#notes-view #notes-empty > svg {
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  width: 43px;
+  height: 43px;
+  margin-bottom: 5px;
+  border: 1px solid var(--collection-border);
+  border-radius: 50%;
+  color: var(--accent-bright);
+  background: var(--collection-tint);
+  font-size: 1.15rem;
+  filter: none;
+}
+
+#notes-view #notes-empty > svg { padding: 9px; }
+
+:is(#abilities-view, #inventory-view, #shop-view, #notes-view) :is(.abilities-empty, .notes-empty) strong {
+  margin: 0;
+  color: var(--text);
+  font: 600 1.12rem/1.3 Georgia, serif;
+}
+
+:is(#abilities-view, #inventory-view, #shop-view, #notes-view) :is(.abilities-empty, .notes-empty) p {
+  max-width: 47ch;
+  margin: 0;
+  font-size: .84rem;
+  line-height: 1.55;
+}
+
+#abilities-view .abilities-panel-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+#abilities-view .ability-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  width: 100%;
+  padding: 4px;
+  overflow: visible;
+  border-radius: 8px;
+  background: var(--palette-panel, #0d0e12);
+}
+
+#abilities-view .ability-tabs button {
+  flex: 1 1 auto;
+  min-height: 40px;
+  min-width: 0;
+  padding: 6px 5px;
+  border-radius: 5px;
+  color: var(--muted);
+  font-size: .74rem;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: normal;
+}
+
+#abilities-view .ability-tabs button:hover { color: var(--text); background: var(--collection-tint); }
+#abilities-view .ability-tabs button.is-active {
+  border-color: var(--collection-border);
+  color: var(--accent-bright);
+  background: var(--collection-tint);
+  box-shadow: none;
+}
+
+#abilities-view .abilities-section-copy {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  text-align: start;
+  padding: 16px var(--collection-gutter) 14px;
+}
+
+:is(#abilities-view, #inventory-view) .abilities-list,
+#shop-view .shop-list { gap: 12px; padding: 0 var(--collection-gutter) var(--collection-gutter); }
+
+:is(#abilities-view, #inventory-view, #shop-view) :is(.abilities-list, .shop-list):empty,
+#notes-view #notes-list:empty {
+  display: none;
+}
+
+:is(#abilities-view, #inventory-view) .ability-card:not(.is-equipped-weapon) {
+  border-color: var(--line);
+  border-radius: 8px;
+  background: rgba(var(--palette-container-rgb, 17, 18, 23), .55);
+}
+
+:is(#abilities-view, #inventory-view) .ability-card:not(.is-equipped-weapon)::before { opacity: .56; }
+:is(#abilities-view, #inventory-view) .ability-card:not(.is-equipped-weapon):is(:hover, :focus-within, .is-active) {
+  border-color: var(--collection-border);
+}
+
+:is(#abilities-view, #inventory-view) .creation-card :is(.item-card-icon, .ability-card-media) { border-radius: 5px; }
+
+:is(#abilities-view, #inventory-view) .creation-card-heading-main h3 {
+  font-size: clamp(1rem, 1.65vw, 1.25rem);
+  line-height: 1.28;
+}
+
+#inventory-view .creation-card-heading {
+  flex-direction: column;
+  gap: 8px;
+}
+
+#inventory-view .creation-card-heading-main h3 {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+#inventory-view .creation-card-heading-main > small {
+  color: var(--muted);
+  font-size: .74rem;
+  line-height: 1.4;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+#inventory-view .card-mini-actions {
+  order: 0;
+  flex-wrap: wrap;
+  width: auto;
+}
+
+:is(#abilities-view, #inventory-view) .ability-card-copy .creation-card-description {
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.55;
+}
+
+:is(#abilities-view, #inventory-view) .card-mini-action {
+  min-height: 30px;
+  padding-inline: 8px;
+  border-radius: 5px;
+  color: var(--muted);
+  font-size: .69rem;
+}
+
+#inventory-view .inventory-capacity-panel {
+  margin-bottom: 14px;
+  padding: 15px var(--collection-gutter);
+  border-radius: 8px;
+  background-image: linear-gradient(90deg, var(--collection-tint), transparent 70%);
+}
+
+#inventory-view .inventory-capacity-summary > strong { font-size: .95rem; }
+#inventory-view .inventory-capacity-summary { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+#inventory-view .inventory-capacity-meter { height: 5px; margin-block: 10px; }
+#inventory-view .inventory-capacity-controls > label { flex-wrap: wrap; }
+#inventory-view #inventory-load-status { flex: 1 1 auto; text-align: end; }
+
+:is(#inventory-view, #shop-view) :is(.inventory-toolbar, .shop-toolbar) {
+  gap: 10px 14px;
+  padding: 14px var(--collection-gutter) 10px;
+  border-top: 0;
+}
+
+:is(#inventory-view, #shop-view) :is(.inventory-toolbar, .shop-toolbar) .filter-input-shell {
+  flex: 1 1 260px;
+  min-width: 0;
+  max-width: 26rem;
+  width: auto;
+}
+
+:is(#inventory-view, #shop-view) .filter-input { min-height: 42px; border-radius: 6px; font-size: .84rem; }
+:is(#inventory-view, #shop-view) .item-category-tags { padding: 0 var(--collection-gutter) 14px; }
+:is(#inventory-view, #shop-view) .item-category-tags:empty { display: none; }
+:is(#inventory-view, #shop-view) .item-category-tag { border-radius: 6px; font-size: .73rem; }
+
+#shop-view .shop-wallet {
+  gap: 14px 20px;
+  margin-bottom: 14px;
+  padding: 18px var(--collection-gutter);
+  border-color: var(--line);
+  background-color: var(--palette-panel, #0d0e12);
+  background-image: radial-gradient(ellipse at 10% 0, rgba(68, 185, 104, .105), transparent 68%);
+}
+
+#shop-view .shop-wallet::after { content: none; }
+#shop-view .wallet-copy { gap: 13px; }
+#shop-view .wallet-mark { flex: 0 0 44px; width: 44px; height: 44px; }
+#shop-view .wallet-mark svg { width: 24px; height: 24px; }
+#shop-view .wallet-balance-line { flex-wrap: wrap; }
+#shop-view #wallet-balance {
+  min-width: 0;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(1.35rem, 2.3vw, 1.9rem);
+  line-height: 1.12;
+}
+#shop-view #wallet-balance > span {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: 0;
+}
+#shop-view #wallet-balance .verdeon-symbol { font-size: .65em; }
+#shop-view .wallet-balance-line > span { display: none; }
+#shop-view .wallet-history-button { font-size: .75rem; }
+#shop-view .shop-product { border-radius: 8px; background: var(--palette-container, #111217); }
+#shop-view .shop-product::before { content: none; }
+#shop-view .shop-product[open] { background: var(--palette-containerRaised, #191a20); }
+#shop-view .shop-product-description { color: var(--muted); font-size: .83rem; }
+#shop-view .shop-buy-button { font-size: .75rem; }
+
+#notes-view #notes-list { padding: var(--collection-gutter); }
+#notes-view .notebook-library { gap: 18px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 185px), 1fr)); }
+#notes-view .notebook-cover {
+  min-height: 210px;
+  padding: 19px 18px 19px 28px;
+  border-color: var(--collection-border);
+  background: linear-gradient(145deg, var(--palette-containerRaised, #191a20), var(--palette-panel, #0d0e12));
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .15);
+}
+#notes-view .notebook-cover::after { content: none; }
+#notes-view .notebook-cover::before { width: 10px; }
+#notes-view .notebook-cover-mark { margin-bottom: 16px; }
+#notes-view .notebook-cover-meta { padding-top: 16px; color: var(--muted); font-size: .75rem; }
+#notes-view .notebook-cover-open { color: var(--accent-bright); font-size: .75rem; }
+#notes-view .notebook-cover-actions { padding-top: 8px; }
+#notes-view .notebook-spread .notes-card-body { font-size: .96rem; line-height: 1.7; }
+
+body.has-theme-background.theme-background-through :is(#inventory-view .inventory-capacity-panel, #shop-view .shop-wallet) {
+  background-image: none;
+}
+
+body.has-theme-background.theme-background-through #shop-view .shop-wallet {
+  background-color: rgba(var(--palette-container-rgb, 17, 18, 23), .28);
+}
+
+@media (max-width: 1120px) {
+  #abilities-view .ability-tabs { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  #abilities-view .ability-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  #abilities-view .ability-tabs button { min-height: 44px; }
+  #abilities-view .abilities-actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #notes-view .notes-panel-head { flex-direction: row; align-items: center; }
+  #notes-view .notes-head-actions { flex: 0 1 auto; width: auto; }
+  :is(#inventory-view, #shop-view) :is(.inventory-toolbar, .shop-toolbar) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  :is(#inventory-view, #shop-view) :is(.inventory-toolbar, .shop-toolbar) .filter-input-shell {
+    flex: 1 1 155px;
+  }
+  #inventory-view #inventory-load-status { text-align: start; }
+  #shop-view .wallet-adjust-form { grid-template-columns: minmax(0, 1fr) auto auto; }
+  #shop-view .wallet-amount-control { grid-column: auto; width: auto; justify-self: stretch; }
+  #shop-view :is(.wallet-adjust-form button, .wallet-amount-field) { min-height: 40px; }
+  #shop-view .wallet-adjust-form input { height: 100%; }
+}

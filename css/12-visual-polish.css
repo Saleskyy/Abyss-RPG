@@ -1,0 +1,211 @@
+:root {
+  --polish-line: color-mix(in srgb, var(--line), var(--accent) 12%);
+  --polish-line-active: color-mix(in srgb, var(--line), var(--accent) 42%);
+  --polish-radius: 12px;
+}
+
+body {
+  background: var(--bg);
+}
+
+body:not(.has-theme-background),
+body:not(.has-theme-background) .campaign-app {
+  background:
+    linear-gradient(180deg, rgba(var(--bg-rgb, 7, 8, 10), .22), rgba(var(--bg-rgb, 7, 8, 10), .64) 23rem, var(--bg) 49rem),
+    url('../assets/images/abyss-backdrop.jpg') right top / min(100vw, 95rem) auto no-repeat,
+    var(--bg);
+  background-attachment: fixed;
+}
+
+.topbar, .campaign-topbar {
+  border-color: var(--polish-line);
+  background: rgba(var(--bg-rgb, 7, 8, 10), .92);
+  box-shadow: 0 6px 26px #0004;
+}
+
+.topbar::after, .sidebar::after, .campaign-app::before { display: none; }
+
+.brand-mark {
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  margin-left: 18px;
+  filter: none;
+  transform: none;
+}
+
+.brand-mark::before { width: 21px; height: 21px; }
+.brand-mark::after { width: 12px; height: 12px; }
+.brand-mark span { width: 4px; height: 4px; box-shadow: none; }
+.brand-copy { min-width: 0; padding-left: 10px; }
+.brand-copy strong { font: 680 1.08rem/1.15 var(--font-title); letter-spacing: .09em; }
+.brand-copy span { color: var(--muted); font-size: .66rem; letter-spacing: .06em; }
+
+.topbar-actions :is(.account-button, .theme-button, .minerva-button) {
+  border-radius: 8px;
+  border-color: var(--polish-line);
+  background: var(--surface);
+}
+
+.topbar-actions :is(.account-button, .theme-button, .minerva-button):is(:hover, [aria-expanded="true"]) {
+  border-color: var(--polish-line-active);
+  background: var(--surface-raised);
+}
+
+.sidebar {
+  border-color: var(--polish-line);
+  background: rgba(var(--bg-rgb, 7, 8, 10), .91);
+  box-shadow: none;
+}
+
+.sidebar .nav-item {
+  min-height: 45px;
+  gap: 11px;
+  border-radius: 8px;
+  color: var(--muted);
+  letter-spacing: 0;
+}
+
+.sidebar .nav-item span { letter-spacing: 0; }
+.sidebar .nav-item::before { display: none; }
+.sidebar .nav-item:hover { color: var(--text); background: var(--surface); }
+.sidebar .nav-item.is-active {
+  border-color: var(--polish-line-active);
+  color: var(--accent-bright);
+  background: color-mix(in srgb, var(--surface), var(--accent) 8%);
+  box-shadow: none;
+}
+
+.sidebar .nav-item.is-active svg { filter: none; }
+.sidebar .slots-button {
+  border-radius: 8px;
+  color: var(--accent-bright);
+  background: var(--surface);
+}
+
+.view { width: min(70rem, calc(100% - clamp(36px, 7vw, 102px))); }
+
+.view > .page-heading {
+  margin-bottom: 22px;
+  padding-bottom: 15px;
+}
+
+.view > .page-heading::after {
+  background: linear-gradient(90deg, var(--polish-line-active), var(--polish-line) 55%, transparent);
+}
+
+.view > .page-heading h1, .campaign-dashboard-head h1 {
+  color: var(--text);
+  font: 580 clamp(2.35rem, 4vw, 3.55rem)/1.05 var(--font-title);
+  letter-spacing: -.038em;
+  text-shadow: 0 3px 18px #0009;
+}
+
+.view > .page-heading .heading-note {
+  color: var(--muted);
+  font-size: .82rem;
+  letter-spacing: 0;
+}
+
+.view > .page-heading .heading-note::before { display: none; }
+
+#skills-view { max-width: 55rem; }
+#skills-view .skills-heading { align-items: center; }
+#skills-view .skills-title-zone { align-items: center; }
+#skills-view .training-key { flex-basis: 100%; }
+#skills-view #open-roll-history { border-radius: 7px; background: var(--surface); }
+#skills-view .difficulty-switch { border-radius: 8px; background: var(--surface); }
+#skills-view .difficulty-switch button { border-radius: 5px; }
+
+#skills-view :is(.skills-panel, .sheet-features-panel, .special-tests-panel) {
+  width: 100%;
+  border-color: var(--polish-line);
+  border-radius: var(--polish-radius);
+  box-shadow: 0 14px 42px #0003;
+}
+
+body:not(.theme-background-through) #skills-view :is(.skills-panel, .sheet-features-panel, .special-tests-panel) {
+  background: linear-gradient(150deg, var(--surface-raised), var(--surface) 73%);
+}
+
+#skills-view :is(.skills-panel, .sheet-features-panel, .special-tests-panel)::before,
+#skills-view :is(.skills-panel, .sheet-features-panel, .special-tests-panel)::after { display: none; }
+#skills-view .skills-panel-head h2 { font: 650 1.36rem/1.2 var(--font-title); }
+#skills-view .skills-panel-head p { color: var(--muted); }
+#skills-view :is(.skills-filters, .skills-column-head) { border-color: var(--polish-line); }
+body:not(.theme-background-through) #skills-view :is(.skills-filters, .skills-column-head) { background: rgba(var(--bg-rgb, 7, 8, 10), .22); }
+
+#skills-view :is(.filter-input, .filter-select, .filter-clear, .create-skill-button, .skill-settings-toggle, .skill-roll-button) {
+  border-radius: 7px;
+}
+
+#skills-view .skill-name-button { font: 680 .94rem/1.2 Inter, system-ui, sans-serif; }
+#skills-view .skill-row-meta { color: var(--muted); font-size: .73rem; }
+#skills-view .skill-row { border-color: var(--line); }
+#skills-view .skill-roll-button {
+  border-color: var(--polish-line-active);
+  background: color-mix(in srgb, var(--surface), var(--accent) 5%);
+}
+#skills-view .skill-roll-button:hover { border-color: var(--accent); }
+#skills-view .skill-roll-button.has-invalid-dice { border-color: var(--palette-failure, #ef646b); }
+
+:is(.roll-dialog, .skill-info-dialog, .feature-detail-dialog, .constellation-dialog, .ability-dialog, .campaign-dialog, .slot-gate-dialog) {
+  border-color: var(--polish-line-active);
+  border-radius: var(--polish-radius);
+  box-shadow: 0 24px 80px #0009;
+}
+
+:is(.roll-dialog-head, .ability-dialog-head, .skill-info-dialog-head, .feature-detail-dialog-head) { border-color: var(--polish-line); }
+.result-close { border-radius: 7px; }
+.roll-stage { background: radial-gradient(ellipse at 50% 46%, var(--outcome-tint), transparent 64%), var(--surface); }
+.roll-dialog .result-context { color: var(--muted); }
+.campaign-shell { max-width: 76rem; }
+.campaign-card, .campaign-section-panel { border-color: var(--polish-line); border-radius: var(--polish-radius); }
+.campaign-card-copy p, .campaign-empty-lane p { color: var(--muted); font-size: .78rem; }
+
+@media (min-width: 901px) {
+  :root { --topbar-height: 70px; }
+  .view { padding-top: 38px; }
+  .sidebar-nav { gap: 5px; padding-top: 23px; }
+  .sidebar-footer { margin-top: auto; padding-block: 16px; }
+}
+
+@media (min-width: 1041px) {
+  :root { --sidebar-width: 208px; }
+  .sidebar-nav { padding-inline: 12px; }
+  .sidebar-footer { padding-inline: 12px; }
+  .sidebar .slots-button { width: 100%; justify-content: flex-start; padding-inline: 13px; }
+}
+
+@media (max-width: 900px) {
+  body:not(.has-theme-background),
+  body:not(.has-theme-background) .campaign-app {
+    background-size: auto, max(100vw, 50rem) auto, auto;
+    background-attachment: scroll;
+  }
+
+  .view { width: min(100% - 24px, 45rem); padding-top: 19px; }
+  .view > .page-heading { margin-bottom: 15px; padding-bottom: 11px; }
+  .view > .page-heading h1 { font-size: clamp(1.95rem, 7vw, 2.55rem); }
+  .topbar { padding-inline: 10px; }
+  .brand-mark { margin-left: 0; flex-basis: 29px; width: 29px; }
+  .brand-mark::before { width: 17px; height: 17px; }
+  .brand-mark::after { width: 9px; height: 9px; }
+  .brand-copy { padding-left: 5px; }
+  .brand-copy strong { font-size: .92rem; }
+  .sidebar { border-top: 1px solid var(--polish-line); box-shadow: 0 -8px 24px #0005; }
+  .sidebar .nav-item { gap: 4px; min-height: 0; }
+  .sidebar .slots-button { background: transparent; }
+  .sidebar .nav-item span, .sidebar .slots-button span { letter-spacing: 0; }
+}
+
+@media (max-width: 475px) {
+  .view { width: calc(100% - 16px); }
+  #skills-view { padding-top: 14px; }
+  #skills-view .skills-heading { gap: 8px; }
+  .sidebar { grid-template-columns: minmax(0, 1fr) 39px; }
+  .sidebar-nav { grid-template-columns: .78fr .96fr 1.24fr .72fr 1.14fr .63fr 1.11fr; padding-inline: 3px 0; gap: 1px; }
+  .sidebar-footer { padding-inline: 1px 3px; }
+  .sidebar .nav-item, .sidebar .slots-button { padding-inline: 0; }
+  .sidebar .nav-item span, .sidebar .slots-button span { font-size: clamp(.51rem, 2.4vw, .59rem); white-space: nowrap; }
+}
