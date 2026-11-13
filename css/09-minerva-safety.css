@@ -1,0 +1,104 @@
+/* Recuperação do Grimório: arquivo independente, lixeira e versões. */
+#minerva-dialog .minerva-safety-open { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 36px; height: auto; white-space: normal; }
+.minerva-safety-open svg { width: 17px; height: 17px; flex: 0 0 auto; }
+#minerva-safety-modal { z-index: 250; padding: 20px; }
+.minerva-safety-dialog { position: relative; z-index: 1; display: grid; grid-template-rows: auto auto minmax(0, 1fr) auto; width: min(100%, 1020px); max-height: calc(100dvh - 40px); min-width: 0; color: var(--theme-text-eee7d8, #eee7d8); background: var(--theme-surface-101114, #101114); border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .55); border-radius: 6px; box-shadow: 0 25px 100px #000b; overflow: hidden; }
+.minerva-safety-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding: 24px 28px 20px; background: linear-gradient(125deg, rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .075), transparent 70%); }
+.minerva-safety-head > div { min-width: 0; }
+.minerva-safety-head .eyebrow { margin: 0 0 8px; }
+.minerva-safety-head h2 { margin: 0; font-family: "Cinzel", Georgia, serif; font-size: clamp(1.3rem, 3vw, 1.9rem); font-weight: 500; overflow-wrap: anywhere; }
+.minerva-safety-head p:last-child { margin: 10px 0 0; font-size: .75rem; color: var(--muted, #99968d); line-height: 1.6; }
+.minerva-safety-head .result-close { flex: 0 0 auto; }
+.minerva-safety-tabs { display: flex; gap: 4px; padding: 0 24px 10px; border-bottom: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .24); overflow-x: auto; }
+.minerva-safety-tabs button { flex: 1 0 auto; min-height: 42px; padding: 10px 16px; border: 1px solid transparent; border-bottom: 2px solid transparent; background: transparent; color: var(--muted, #99968d); font: inherit; font-size: .76rem; cursor: pointer; }
+.minerva-safety-tabs button[aria-selected="true"] { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .35); border-bottom-color: var(--accent, #cfad62); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .07); color: var(--accent, #cfad62); }
+.minerva-safety-body { min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 24px 28px; scrollbar-color: var(--accent, #cfad62) transparent; }
+.minerva-safety-body h3 { margin: 0 0 10px; font-family: "Cinzel", Georgia, serif; font-weight: 500; font-size: 1.08rem; }
+.minerva-safety-body p { font-size: .8rem; line-height: 1.75; margin: 0 0 14px; }
+.minerva-safety-intro { display: flex; align-items: center; gap: 18px; margin-bottom: 22px; }
+.minerva-safety-intro p { margin-bottom: 0; color: var(--muted, #99968d); }
+.minerva-safety-emblem { flex: 0 0 54px; display: grid; place-items: center; width: 54px; height: 54px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .35); border-radius: 50%; color: var(--accent, #cfad62); font-size: 1.55rem; }
+.minerva-safety-backup-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.minerva-safety-card { min-width: 0; padding: 22px; border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25); background: #0002; border-radius: 4px; }
+.minerva-safety-card .eyebrow { font-size: .61rem; margin-bottom: 12px; }
+.minerva-safety-card p:not(.eyebrow) { color: var(--muted, #aaa69e); }
+.minerva-safety-card .dialog-button { min-height: 42px; height: auto; padding: 10px 16px; line-height: 1.4; text-align: center; white-space: normal; }
+.minerva-safety-card small { display: block; margin-top: 14px; font-size: .68rem; line-height: 1.7; color: var(--muted, #99968d); }
+.minerva-safety-primary { border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .7); color: var(--accent, #cfad62); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .1); }
+.minerva-safety-file-label { display: inline-flex; align-items: center; justify-content: center; cursor: pointer; position: relative; }
+.minerva-safety-file-label input { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); opacity: 0; }
+.minerva-safety-file-label:focus-within { outline: 2px solid var(--accent, #cfad62); outline-offset: 3px; }
+.minerva-backup-preview { display: flex; align-items: center; gap: 24px; margin-top: 20px; border-color: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .65); }
+.minerva-backup-preview > div { min-width: 0; flex: 1; }
+#minerva-backup-file-name { overflow-wrap: anywhere; font-size: .75rem; }
+.minerva-safety-summary { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
+.minerva-safety-summary span { border: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .2); padding: 6px 9px; color: var(--accent, #cfad62); font-size: .72rem; }
+.minerva-safety-card .minerva-safety-restore-note { font-size: .72rem; margin-bottom: 0; }
+.minerva-safety-activation { margin-top: 18px; padding: 12px 16px; border: 1px solid #ffffff18; border-radius: 3px; font-size: .7rem; color: var(--muted, #99968d); }
+.minerva-safety-activation summary { cursor: pointer; }
+.minerva-safety-body .minerva-safety-activation p { margin: 12px 0 0; font-size: .7rem; }
+.minerva-safety-section-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.minerva-safety-section-heading > div { min-width: 0; }
+.minerva-safety-section-heading p { color: var(--muted, #99968d); }
+.minerva-safety-section-heading > button { flex: 0 0 auto; }
+.minerva-safety-search, .minerva-safety-select { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.minerva-safety-search span, .minerva-safety-select span { color: var(--accent, #cfad62); font-size: .66rem; letter-spacing: .05em; text-transform: uppercase; }
+.minerva-safety-search input, .minerva-safety-select select { width: 100%; min-width: 0; min-height: 42px; border: 1px solid #ffffff24; border-radius: 3px; padding: 10px 12px; background: #0004; color: var(--theme-text-eee7d8, #eee7d8); font: inherit; font-size: .8rem; }
+.minerva-safety-select select option { color: #eee7d8; background: #17181b; }
+.minerva-safety-search input:focus, .minerva-safety-select select:focus { border-color: var(--accent, #cfad62); outline: 1px solid var(--accent, #cfad62); }
+.minerva-safety-trash-list { display: grid; gap: 10px; }
+.minerva-safety-trash-row { display: flex; align-items: center; gap: 20px; padding: 16px; border: 1px solid #ffffff1c; border-left: 2px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .5); border-radius: 3px; background: #0002; }
+.minerva-safety-trash-row > div { flex: 1; min-width: 0; }
+.minerva-safety-trash-row h4 { margin: 0 0 5px; font: 500 .9rem "Cinzel", Georgia, serif; overflow-wrap: anywhere; }
+.minerva-safety-trash-row p { margin: 0; font-size: .7rem; color: var(--muted, #99968d); }
+.minerva-safety-trash-row button { flex: 0 0 auto; }
+.minerva-safety-empty { padding: 24px 18px; margin: 0; text-align: center; color: var(--muted, #99968d); border: 1px dashed #ffffff20; border-radius: 4px; }
+.minerva-safety-version-workspace { display: grid; grid-template-columns: minmax(180px, .7fr) minmax(0, 1.3fr); gap: 16px; align-items: start; min-height: 210px; }
+.minerva-safety-version-list { display: grid; gap: 8px; max-height: 330px; overflow: auto; scrollbar-color: var(--accent, #cfad62) transparent; }
+.minerva-safety-version-choice { padding: 13px; border: 1px solid #ffffff20; background: #0002; text-align: left; color: var(--theme-text-eee7d8, #eee7d8); border-radius: 3px; cursor: pointer; }
+.minerva-safety-version-choice[aria-pressed="true"] { border-color: var(--accent, #cfad62); background: rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .08); }
+.minerva-safety-version-choice strong, .minerva-safety-version-choice small { display: block; }
+.minerva-safety-version-choice strong { font: inherit; font-size: .77rem; line-height: 1.5; }
+.minerva-safety-version-choice small { margin-top: 5px; color: var(--muted, #99968d); font-size: .66rem; line-height: 1.5; }
+.minerva-safety-version-preview { padding: 20px; min-width: 0; border: 1px solid #ffffff20; background: #0002; border-radius: 3px; }
+.minerva-safety-version-preview h4 { font: 500 1rem "Cinzel", Georgia, serif; margin: 0 0 8px; overflow-wrap: anywhere; }
+.minerva-safety-version-preview .minerva-safety-version-date { font-size: .7rem; color: var(--muted, #99968d); }
+.minerva-safety-version-description { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 220px; overflow: auto; padding-right: 8px; scrollbar-color: var(--accent, #cfad62) transparent; }
+.minerva-safety-version-preview > small { display: block; margin: 14px 0; font-size: .68rem; color: var(--muted, #99968d); line-height: 1.6; }
+.minerva-safety-footer { display: flex; justify-content: space-between; align-items: center; gap: 20px; padding: 15px 28px; border-top: 1px solid rgba(var(--theme-accent-cfad62-rgb, 207, 173, 98), .25); background: #0003; }
+.minerva-safety-footer p { margin: 0; min-width: 0; font-size: .74rem; line-height: 1.6; overflow-wrap: anywhere; }
+.minerva-safety-footer p[data-tone="error"] { color: #ff9d9d; }
+.minerva-safety-footer p[data-tone="success"] { color: #a4d5bb; }
+.minerva-safety-footer > button { flex: 0 0 auto; }
+.minerva-safety-dialog button:disabled { cursor: wait; opacity: .55; }
+.minerva-safety-file-label:has(input:disabled) { opacity: .55; cursor: wait; pointer-events: none; }
+.minerva-safety-dialog button:focus-visible { outline: 2px solid var(--accent, #cfad62); outline-offset: 2px; }
+@media (max-width: 900px) {
+  #minerva-dialog > .minerva-dialog-head { flex-wrap: wrap; }
+  #minerva-dialog .minerva-head-actions { flex-wrap: wrap; max-width: 100%; }
+  #minerva-dialog .minerva-safety-open span { display: inline; }
+}
+@media (max-width: 640px) {
+  #minerva-safety-modal { padding: 10px; }
+  .minerva-safety-dialog { max-height: calc(100dvh - 20px); }
+  .minerva-safety-head { padding: 18px 16px 16px; gap: 12px; }
+  .minerva-safety-head .eyebrow { font-size: .58rem; }
+  .minerva-safety-tabs { padding: 0 12px 8px; }
+  .minerva-safety-tabs button { font-size: .69rem; padding-inline: 10px; }
+  .minerva-safety-body { padding: 18px 16px; }
+  .minerva-safety-backup-grid, .minerva-safety-version-workspace { grid-template-columns: minmax(0, 1fr); }
+  .minerva-safety-card { padding: 18px; }
+  .minerva-backup-preview { flex-direction: column; align-items: stretch; gap: 16px; }
+  .minerva-safety-trash-row { gap: 10px; padding: 13px; }
+  .minerva-safety-trash-row button { padding-inline: 10px; }
+  .minerva-safety-version-list { max-height: 170px; }
+  .minerva-safety-footer { padding: 12px 16px; gap: 12px; }
+  #minerva-dialog .minerva-safety-open { font-size: .65rem; padding-inline: 9px; }
+}
+@media (max-height: 620px) and (min-width: 641px) {
+  #minerva-safety-modal { padding-block: 10px; }
+  .minerva-safety-dialog { max-height: calc(100dvh - 20px); }
+  .minerva-safety-head { padding-block: 14px; }
+  .minerva-safety-head p:last-child { display: none; }
+  .minerva-safety-body { padding-block: 18px; }
+}
